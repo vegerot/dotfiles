@@ -181,6 +181,7 @@ mkcdir ()
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 source .aliases
+source ~/.functions
 #alias ls="colorls --sort-dirs"
 alias pman='man-preview'
 alias cdg="cd-gitroot"
