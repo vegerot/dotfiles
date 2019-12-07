@@ -16,6 +16,11 @@ alias nmap="sudo nmap"
 alias grep="grep --color=always"
 alias diff="diff --color=always"
 
+#verbose
+alias rm="rm -v"
+alias cp="cp -v"
+alias ln="ln -v"
+
 export iCloud="$HOME/Library/Mobile\\ Documents/com\~apple\~CloudDocs/"
 export workspace=$HOME/Documents/workspace
 export PYTHONPATH=$HOME/Library/Python/3.7/bin:$HOME/Documents/workspace/manim2/manim/:/Users/maxcoplan/Documents/workspace/manim2/manim/manimlib

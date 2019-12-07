@@ -14,7 +14,7 @@ echo "vim"
 
 nvim +PlugUpdate +qall
 
-read -p 'Would you like to upgrade Python: ' upgradePython
+read -p 'Would you like to upgrade Python (y/n): ' upgradePython
 if [[ "$upgradePython" == "y" ]]; then
     echo 
     echo "conda update conda"

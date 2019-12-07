@@ -1,11 +1,19 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
+set -o xtrace
+echo ${BASH_SOURCE}
 cd "$(dirname "${BASH_SOURCE}")";
 
+pwd
 git pull origin master;
 
 function doIt() {
-    find . -type f -not -path "*/.git/*" -not -path "./.DS_Store" -not -path "./.osx" -not -path "./bootstrap.sh" -not -path "./README.md" -not -path "./LICENSE-MIT.txt" -exec echo '{}' "->" ~/'{}' \;
+    if [ "$1" "==" "--dry-run" ]; then
+        find . -type f -not -path "*/.git/*" -not -path "./.DS_Store" -not -path "./.osx" -not -path "./bootstrap.sh" -not -path "./brew.sh" -not -path "./README.md" -not -path "./LICENSE-MIT.txt" -exec echo ~/dotfiles/'{}' "->" ~/'{}' \;
+    else
+        find . -type f -not -path "*/.git/*" -not -path "./.DS_Store" -not -path "./.osx" -not -path "./bootstrap.sh" -not -path "./README.md" -not -path "./LICENSE-MIT.txt" -exec mkdir -p $(dirname {}) \; -exec ln -fsv ~/dotfiles/'{}' ~/'{}' \;
+    fi
+    set +x
 	source ~/.zshrc;
 }
 
@@ -15,7 +23,8 @@ else
 	read "REPLY?This may overwrite existing files in your home directory. Are you sure? (y/n) ";
 	echo "";
 	if [[ $REPLY =~ ^[Yy]$ ]]; then
-		doIt;
+		doIt $1;
 	fi;
 fi;
 unset doIt;
+set +x
