@@ -1,4 +1,0 @@
-channels:
-  - https://ssb.stsci.edu/astroconda
-  - defaults
-ssl_verify: true

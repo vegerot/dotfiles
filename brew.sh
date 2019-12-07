@@ -17,7 +17,7 @@ export PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
 brew install coreutils
 
 # Install GnuPG to enable PGP-signing commits.
-brew install gnupg
+#brew install gnupg
 # Install gnu tools
 brew install grep
 brew install bash
