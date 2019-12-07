@@ -1,0 +1,25 @@
+. ~/bin/autoAlias.sh
+
+alias learn='~/bin/cowCommand.sh'
+
+#alias ls='ls -FGh'
+alias vi=nvim
+alias vim=nvim
+alias python=python3
+alias pip=pip3
+alias abash='bash -l'
+alias l='ls -ltrah'
+alias trash=mvtrash
+alias arp="sudo arp"
+alias arp-scan="sudo arp-scan"
+alias nmap="sudo nmap"
+alias grep="grep --color=always"
+alias diff="diff --color=always"
+
+export iCloud="$HOME/Library/Mobile\\ Documents/com\~apple\~CloudDocs/"
+export workspace=$HOME/Documents/workspace
+export PYTHONPATH=$HOME/Library/Python/3.7/bin:$HOME/Documents/workspace/manim2/manim/:/Users/maxcoplan/Documents/workspace/manim2/manim/manimlib
+function locate { mdfind "kMDItemDisplayName == '$@'wc"; }
+export OPENER=open
+
+alias atv=atvremote

@@ -1,0 +1,17 @@
+shell -$SHELL
+altscreen on
+termcapinfo xterm* ti@:te@
+
+# look and feel
+#caption always "%{= bb}%{+b w}%n %t %h %=%l %H %c"
+hardstatus alwayslastline "%-Lw%{= BW}%50>%n%f* %t%{-}%+Lw%<"
+
+activity "Activity in %t(%n)"
+
+
+bind C stuff "screen -X chdir \$PWD; screen^M"
+
+shelltitle $PWD
+
+bind R eval "source $HOME/.screenrc" "echo '.screenrc reloaded!'"
+

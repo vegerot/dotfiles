@@ -1,0 +1,19 @@
+{
+    "languageserver": {
+        "clangd": {
+            "command": "/usr/local/opt/llvm/bin/clangd",
+            "args": ["--background-index"],
+            "rootPatterns": ["compile_flags.txt", "compile_commands.json", ".vim/", ".git/", ".hg/"],
+            "filetypes": ["c", "cpp", "objc", "objcpp"]
+        }
+    },
+    "languageserver": {
+        "metals": {
+            "command": "metals-vim",
+            "rootPatterns": ["build.sbt"],
+            "filetypes": ["scala", "sbt"]
+        }
+    },
+    "coc.preferences.formatOnType": true,
+    "java.home": "/Library/Java/JavaVirtualMachines/openjdk-13.jdk/Contents/Home"
+}
