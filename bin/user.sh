@@ -1,0 +1,2 @@
+echo $(whoami)
+sudo su
