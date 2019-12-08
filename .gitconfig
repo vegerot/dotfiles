@@ -187,3 +187,8 @@
 	insteadOf = "gist:"
 [gpg]
 	program = gpg
+[user]
+	email = mchcopl@yahoo.com
+	name = Max Coplan
+[credential]
+	helper = store
