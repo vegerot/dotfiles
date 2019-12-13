@@ -35,9 +35,14 @@ brew install gnu-which
 brew install check
 brew install llvm
 brew install clang-format
-brew install node
+#Languages
+#Warning: Make sure you don't have these installed by other means
 brew install python3
+brew install node
 brew install perl
+brew install php
+brew install lua
+brew cask install java
 
 # Install GNU `find`, `locate`, `updatedb`, and `xargs`, `g`-prefixed.
 brew install findutils
@@ -66,11 +71,12 @@ brew install curl
 
 
 # Install more recent versions of some macOS tools.
+#make sure you don't have small vim installed
+brew uninstall vim
 brew install macvim --with-override-system-vi
-brew install neovim
+brew install neovim --HEAD
 brew install openssh
 brew install tmux
-brew install php
 brew install gmp
 
 # Install some CTF tools; see https://github.com/ctfs/write-ups.
@@ -83,7 +89,6 @@ brew install ack
 brew install git
 brew install git-lfs
 brew install imagemagick --with-webp
-brew install lua
 brew install lynx
 brew install pv
 brew install rename
