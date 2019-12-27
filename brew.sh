@@ -107,11 +107,11 @@ brew install ripgrep
 brew install lolcat
 
 #Install Casks
-brew cask install iterm
+brew cask install iterm2
 brew cask install font-hack-nerd-font
 brew cask install intel-power-gadget
 brew cask install karabiner-elements
-brew casks install xquartz
+brew cask install xquartz
 brew cask install anaconda
 # Remove outdated versions from the cellar.
 brew cleanup
