@@ -7,13 +7,15 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'Raimondi/delimitMate'
 
+    Plug 'morhetz/gruvbox'
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
     Plug 'edkolev/tmuxline.vim'
     "Plug 'tmux-plugins/vim-tmux'
     
     " Vim HardTime
-    Plug 'takac/vim-hardtime'
+"    Plug 'takac/vim-hardtime'
+     Plug 'wikitopian/hardmode'
     
     
     Plug '/usr/local/opt/fzf' 
@@ -31,8 +33,6 @@ call plug#begin('~/.vim/plugged')
         autocmd! User coc.nvim CocStart()
 
     Plug 'derekwyatt/vim-scala', {'for': ['scala','sbt', 'java']}
-    Plug 'mpollmeier/vim-scalaConceal', {'for': ['scala','sbt', 'java']}
-
     
     Plug 'keith/swift.vim'
     
@@ -46,7 +46,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'Vimjas/vim-python-pep8-indent'
     "Plug 'jupyter-vim/jupyter-vim', {'for': ['python'] }
     Plug 'vim-python/python-syntax'
-    Plug 'ehamberg/vim-cute-python'
     
     Plug 'google/vim-maktaba'
     Plug 'google/vim-codefmt'
@@ -102,8 +101,6 @@ set listchars=tab:→\ ,eol:↲,nbsp:␣,trail:•,extends:⟩,precedes:⟨
 
 set foldmethod=indent
 set foldlevelstart=18
-
-set conceallevel=1
 "Cursor Mode stuff
 
 let &t_SI.="\e[5 q" "SI = INSERT mode
@@ -147,7 +144,7 @@ endfunction
 call airline#add_statusline_func('WindowNumber')
 call airline#add_inactive_statusline_func('WindowNumber')
 let g:airline_powerline_fonts = 1
-let g:airline_theme='random'
+let g:airline_theme='gruvbox'
 silent! call airline#extensions#whitespace#disable()
 "let g:tmuxline_preset = {'z'    : '#track'}
 let g:airline#extensions#tmuxline#enabled = 1
@@ -180,13 +177,9 @@ endif
 endif
 
 "make things difficult
-let g:hardtime_default_on = 1
-let g:list_of_disabled_keys = ["<UP>", "<DOWN>", "<LEFT>", "<RIGHT>"]
-let g:hardtime_showmsg = 1
-let g:hardtime_allow_different_key = 1
-let g:hardtime_ignore_buffer_patterns = [  "NERD.*" ]
-let g:list_of_resetting_keys  = ['2', '3', '4', '5', '6', '7', '8', '9', '0']
-
+autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
+let g:HardMode_level = 'wannabe'
+let g:HardMode_hardmodeMsg = 'Don''t use this!'
 "Formatter stuff
 augroup autoformat_settings
   autocmd FileType c,cpp,proto,javascript AutoFormatBuffer clang-format
@@ -226,7 +219,10 @@ map <C-n> :NERDTreeToggle<CR>
 
 
 source ~/.vimFunctions.vim
+let g:gruvbox_contrast_dark = 'hard'
+colorscheme gruvbox
 
 set title
 set clipboard=unnamed,unnamedplus
 set timeoutlen=1000 ttimeoutlen=10
+
