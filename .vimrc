@@ -4,13 +4,16 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-vinegar'
     Plug 'tpope/vim-fugitive'
+    Plug 'tpope/vim-obsession'
 
     Plug 'Raimondi/delimitMate'
 
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
     Plug 'edkolev/tmuxline.vim'
-    "Plug 'tmux-plugins/vim-tmux'
+    Plug 'tmux-plugins/vim-tmux'
+    Plug 'christoomey/vim-tmux-navigator'
+ 
     
     " Vim HardTime
     Plug 'takac/vim-hardtime'
@@ -77,6 +80,7 @@ nnoremap N Nzz
 
 "Tab stuff
 set tabstop=4
+set shiftwidth=4
 set expandtab
 set smartindent
 
