@@ -27,9 +27,9 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'airblade/vim-gitgutter'
     
-    "Plug 'ycm-core/YouCompleteMe'
+    Plug 'ycm-core/YouCompleteMe' 
         autocmd! User youcompleteme.vim YCM()
-    Plug 'neoclide/coc.nvim',  {'tag': '*', 'branch': 'release'}
+    "Plug 'neoclide/coc.nvim',  {'tag': '*', 'branch': 'release'}
         autocmd! User coc.nvim CocStart()
 
     Plug 'derekwyatt/vim-scala', {'for': ['scala','sbt', 'java']}
@@ -57,7 +57,7 @@ call glaive#Install()
 Glaive codefmt plugin[mappings]
 
 "NeoVim api stuff
-let g:python_host_prog="/usr/local/bin/python"
+let g:python_host_prog="/usr/local/bin/python3"
 let g:python3_host_prog="/usr/local/bin/python3"
 
 "Netrw stuff
@@ -144,7 +144,7 @@ endfunction
 call airline#add_statusline_func('WindowNumber')
 call airline#add_inactive_statusline_func('WindowNumber')
 let g:airline_powerline_fonts = 1
-let g:airline_theme='gruvbox'
+let g:airline_theme='random'
 silent! call airline#extensions#whitespace#disable()
 "let g:tmuxline_preset = {'z'    : '#track'}
 let g:airline#extensions#tmuxline#enabled = 1
@@ -184,7 +184,7 @@ let g:HardMode_hardmodeMsg = 'Don''t use this!'
 augroup autoformat_settings
   autocmd FileType c,cpp,proto,javascript AutoFormatBuffer clang-format
   autocmd FileType html,css,sass,scss,less,json AutoFormatBuffer js-beautify
-  autocmd FileType java AutoFormatBuffer google-java-format
+  "autocmd FileType java AutoFormatBuffer google-java-format
   autocmd FileType python AutoFormatBuffer autopep8
 augroup END
 
@@ -226,3 +226,5 @@ set title
 set clipboard=unnamed,unnamedplus
 set timeoutlen=1000 ttimeoutlen=10
 
+
+set shiftwidth=4
