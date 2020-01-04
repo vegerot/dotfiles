@@ -22,6 +22,7 @@ alias rm="rm -v"
 alias mv="mv -v"
 alias cp="cp -v"
 alias ln="ln -v"
+alias mkdir="mkdir -v"
 
 export iCloud="$HOME/Library/Mobile\\ Documents/com\~apple\~CloudDocs/"
 export workspace=$HOME/Documents/workspace

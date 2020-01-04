@@ -16,7 +16,7 @@ call plug#begin('~/.vim/plugged')
  
     
     " Vim HardTime
-    Plug 'takac/vim-hardtime'
+"    Plug 'takac/vim-hardtime'
     
     
     Plug '/usr/local/opt/fzf' 
