@@ -13,7 +13,6 @@ call plug#begin('~/.vim/plugged')
     Plug 'edkolev/tmuxline.vim'
     Plug 'tmux-plugins/vim-tmux'
     Plug 'christoomey/vim-tmux-navigator'
- 
     
     " Vim HardTime
 "    Plug 'takac/vim-hardtime'
@@ -40,7 +39,8 @@ call plug#begin('~/.vim/plugged')
 
     
     Plug 'keith/swift.vim'
-    
+    Plug 'darfink/vim-plist'
+
     Plug 'arnoudbuzing/wolfram-vim'
     
     Plug 'hotoo/jsgf.vim'
@@ -190,6 +190,7 @@ let g:hardtime_default_on = 1
 let g:list_of_disabled_keys = ["<UP>", "<DOWN>", "<LEFT>", "<RIGHT>"]
 let g:hardtime_showmsg = 1
 let g:hardtime_allow_different_key = 1
+let g:hardtime_maxcount = 2
 let g:hardtime_ignore_buffer_patterns = [  "NERD.*" ]
 let g:list_of_resetting_keys  = ['2', '3', '4', '5', '6', '7', '8', '9', '0']
 

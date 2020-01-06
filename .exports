@@ -35,3 +35,5 @@ export MUSIC_APP="Spotify"
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/Users/maxcoplan/.sdkman"
 [[ -s "/Users/maxcoplan/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/maxcoplan/.sdkman/bin/sdkman-init.sh"
+
+source ~/.compFlags.sh
