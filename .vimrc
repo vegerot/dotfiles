@@ -22,6 +22,8 @@ call plug#begin('~/.vim/plugged')
     Plug '/usr/local/opt/fzf' 
     Plug 'junegunn/fzf.vim'
 
+    Plug 'lambdalisue/suda.vim'
+
     Plug 'scrooloose/nerdtree'
     Plug 'Xuyuanp/nerdtree-git-plugin'
     Plug 'ryanoasis/vim-devicons'
@@ -225,7 +227,7 @@ au BufRead,BufRead * if &syntax == '' | set syntax=sh | endif
 
 "Nerdy things
 autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 map <C-n> :NERDTreeToggle<CR>
 
 
