@@ -1,7 +1,7 @@
 {
     "languageserver": {
         "clangd": {
-            "command": "/usr/local/opt/llvm/bin/clangd",
+            "command": "/usr/lib/llvm-9/bin/clangd",
             "args": ["--background-index"],
             "rootPatterns": ["compile_flags.txt", "compile_commands.json", ".vim/", ".git/", ".hg/"],
             "filetypes": ["c", "cpp", "objc", "objcpp"]

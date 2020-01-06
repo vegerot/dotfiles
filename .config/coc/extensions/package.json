@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "coc-tsserver": ">=1.4.9",
+    "coc-utils": ">=0.0.10",
+    "coc-marketplace": ">=1.5.0",
+    "coc-json": ">=1.2.4",
+    "coc-vimlsp": ">=0.4.4"
+  }
+}
