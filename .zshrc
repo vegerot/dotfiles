@@ -17,7 +17,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 #
 fpath=(/usr/local/share/zsh-completions /usr/local/share/zsh-completions/conda-zsh-completion $fpath)
-setopt LOCAL_OPTIONS NO_NOTIFY 
+#setopt LOCAL_OPTIONS NO_NOTIFY 
 autoload -U +X compinit && compinit
 autoload -U +X bashcompinit && bashcompinit
 autoload -U promptinit && promptinit       
@@ -25,7 +25,6 @@ autoload -Uz run-help
 autoload -Uz run-help-git                  
 autoload -Uz run-help-svn                  
 autoload -Uz run-help-svk                  
-wait
 unalias run-help
 alias help=run-help
 #
@@ -109,7 +108,7 @@ RPS1="${return_code}"
 
 source ~/.iterm2_shell_integration.zsh
 #
-eval "$(jenv init -)"&
+eval "$(jenv init -)"
 #
 ## >>> conda initialize >>>
         . "/usr/local/anaconda3/etc/profile.d/conda.sh"
