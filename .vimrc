@@ -4,14 +4,18 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-vinegar'
     Plug 'tpope/vim-fugitive'
+    Plug 'tpope/vim-obsession'
 
     Plug 'Raimondi/delimitMate'
 
-    Plug 'morhetz/gruvbox'
+    "Plug 'morhetz/gruvbox'
+    Plug 'joshdick/onedark.vim'
+    Plug 'sheerun/vim-polyglot'
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
     Plug 'edkolev/tmuxline.vim'
-    "Plug 'tmux-plugins/vim-tmux'
+    Plug 'tmux-plugins/vim-tmux'
+    Plug 'christoomey/vim-tmux-navigator'
     
     " Vim HardTime
 "    Plug 'takac/vim-hardtime'
@@ -27,9 +31,9 @@ call plug#begin('~/.vim/plugged')
 
     Plug 'airblade/vim-gitgutter'
     
-    Plug 'ycm-core/YouCompleteMe' 
+    "Plug 'ycm-core/YouCompleteMe' 
         autocmd! User youcompleteme.vim YCM()
-    "Plug 'neoclide/coc.nvim',  {'tag': '*', 'branch': 'release'}
+    Plug 'neoclide/coc.nvim',  {'tag': '*', 'branch': 'release'}
         autocmd! User coc.nvim CocStart()
 
     Plug 'derekwyatt/vim-scala', {'for': ['scala','sbt', 'java']}
@@ -39,6 +43,10 @@ call plug#begin('~/.vim/plugged')
     Plug 'arnoudbuzing/wolfram-vim'
     
     Plug 'hotoo/jsgf.vim'
+    Plug 'yuezk/vim-js'
+    Plug 'maxmellon/vim-jsx-pretty'
+    Plug 'HerringtonDarkholme/yats.vim'
+    Plug 'maxmellon/vim-jsx-pretty'
 
     Plug 'justinmk/vim-syntax-extra'
     
@@ -76,6 +84,7 @@ nnoremap N Nzz
 
 "Tab stuff
 set tabstop=4
+set shiftwidth=4
 set expandtab
 set smartindent
 
@@ -141,13 +150,17 @@ function! WindowNumber(...)
         return 0
 endfunction
 
-call airline#add_statusline_func('WindowNumber')
-call airline#add_inactive_statusline_func('WindowNumber')
-let g:airline_powerline_fonts = 1
-let g:airline_theme='random'
-silent! call airline#extensions#whitespace#disable()
-"let g:tmuxline_preset = {'z'    : '#track'}
-let g:airline#extensions#tmuxline#enabled = 1
+function! Lineair()
+    call airline#add_statusline_func('WindowNumber')
+    call airline#add_inactive_statusline_func('WindowNumber')
+    let g:airline_powerline_fonts = 1
+    let g:airline_theme='powerlineish'
+    silent! call airline#extensions#whitespace#disable()
+    "let g:tmuxline_preset = {'z'    : '#track'}
+    let g:airline#extensions#tmuxline#enabled = 1
+    return 0
+endfunction
+call Lineair()
 "Window end
 
 "YouCompleteMe
@@ -183,7 +196,7 @@ let g:HardMode_hardmodeMsg = 'Don''t use this!'
 "Formatter stuff
 augroup autoformat_settings
   autocmd FileType c,cpp,proto,javascript AutoFormatBuffer clang-format
-  autocmd FileType html,css,sass,scss,less,json AutoFormatBuffer js-beautify
+  ""autocmd FileType html,css,sass,scss,less,json AutoFormatBuffer js-beautify
   "autocmd FileType java AutoFormatBuffer google-java-format
   autocmd FileType python AutoFormatBuffer autopep8
 augroup END
@@ -201,7 +214,7 @@ au BufNewFile,BufRead *.py
 "   Pylint
 let python_highlight_all=1
 let g:python_highlight_all = 1
-set background=dark
+"set background=dark
 syntax on
 
 
@@ -213,18 +226,23 @@ au BufRead,BufRead * if &syntax == '' | set syntax=sh | endif
 "Formatting end
 
 "Nerdy things
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+"autocmd StdinReadPre * let s:std_in=1
+"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 map <C-n> :NERDTreeToggle<CR>
 
 
 source ~/.vimFunctions.vim
-let g:gruvbox_contrast_dark = 'hard'
-colorscheme gruvbox
+"let g:gruvbox_contrast_dark = 'hard'
+"colorscheme gruvbox
+colorscheme onedark
+let g:onedark_hide_endofbuffer=1
+let g:onedark_terminal_italics=1
+let g:onedark_termcolors=16
+"set background=dark
+set background=dark
+highlight Normal ctermfg=7 ctermbg=0 guibg=black guifg=white
+set background=dark
 
 set title
 set clipboard=unnamed,unnamedplus
 set timeoutlen=1000 ttimeoutlen=10
-
-
-set shiftwidth=4
