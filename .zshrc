@@ -44,6 +44,7 @@ plugins=(
   vi-mode  
   zsh-syntax-highlighting
   history-substring-search
+  fzf
 ) 
 source $ZSH/oh-my-zsh.sh
 setopt vi
