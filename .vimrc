@@ -15,11 +15,12 @@ call plug#begin('~/.vim/plugged')
     Plug 'christoomey/vim-tmux-navigator'
     
     " Vim HardTime
-"    Plug 'takac/vim-hardtime'
+    "Plug 'takac/vim-hardtime'
+        autocmd! User vim-hardtime.vim HT()
     
-    
-    Plug '/usr/local/opt/fzf' 
+    Plug 'junegunn/fzf'
     Plug 'junegunn/fzf.vim'
+
 
     Plug 'lambdalisue/suda.vim'
 
@@ -71,7 +72,6 @@ let g:netrw_liststyle=3
 let g:netrw_banner = 0
 let g:netrw_altv = 1
 let g:netrw_winsize = 25
-set rtp+=/usr/local/opt/fzf
 
 
 "Search stuff
@@ -185,14 +185,21 @@ endif
     \| exe "normal! g'\"" | endif
 endif
 
-"make things difficult
-let g:hardtime_default_on = 1
-let g:list_of_disabled_keys = ["<UP>", "<DOWN>", "<LEFT>", "<RIGHT>"]
-let g:hardtime_showmsg = 1
-let g:hardtime_allow_different_key = 1
-let g:hardtime_maxcount = 2
-let g:hardtime_ignore_buffer_patterns = [  "NERD.*" ]
-let g:list_of_resetting_keys  = ['2', '3', '4', '5', '6', '7', '8', '9', '0']
+function HT()
+    "make things difficult
+    let g:hardtime_default_on = 1
+    let g:list_of_disabled_keys = ["<UP>", "<DOWN>", "<LEFT>", "<RIGHT>"]
+    let g:hardtime_showmsg = 1
+    let g:hardtime_allow_different_key = 1
+    let g:hardtime_maxcount = 2
+    let g:hardtime_ignore_buffer_patterns = [  "NERD.*" ]
+    let g:list_of_resetting_keys  = ['2', '3', '4', '5', '6', '7', '8', '9', '0']
+endfunction
+
+if has_key(plugs, "vim-hardtime")
+    call HT()
+endif
+
 
 "Formatter stuff
 augroup autoformat_settings
