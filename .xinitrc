@@ -38,14 +38,17 @@ doDWM()
     exec dwm
 }
 
-xrandr --output HDMI-1 --mode 1920x1080
+#xrandr --output HDMI-1 --mode 1920x1080
 xmodmap ~/.Xmodmap
 xcape
 setxkbmap -option ctrl:nocaps
 xcape -e 'Control_L=Escape'
-autocutsel -selection CLIPBOARD -fork
-autocutsel -selection PRIMARY -fork
+#autocutsel -selection CLIPBOARD -fork
+#autocutsel -selection PRIMARY -fork
 xrdb -merge ~/.Xresources
+#export XDG_CURRENT_DESKTOP=Gnome
 #doDWM 
-exec i3
+#exec gnome-session --session=gnome-plus-i3  #--disable-acceleration-check
+#exec gnome-session --session=gnome-plus-i3 --disable-acceleration-check "$@"
+exec i3-gnome
 . /etc/X11/xinit/xinitrc

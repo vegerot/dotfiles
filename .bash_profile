@@ -3,7 +3,7 @@ set -o vi
 source ~/.profile
 . ~/.git-prompt.sh
 source ~/.paths.sh
-~/bin/cowCommand.sh&
+1>&2 ~/bin/cowCommand.sh&
 PROMPT_COMMAND=__prompt_command
 GIT_PS1_SHOWDIRTYSTATE=true
 GIT_PS1_SHOWSTASHSTATE=true
@@ -69,9 +69,15 @@ export LS_OPTIONS=‘–color=auto’
 d=~/.dir_colors
 test -r $d && eval "$(dircolors $d)"
 
+if [ -f /usr/share/bash-completion/bash_completion ]; then
+	. /usr/share/bash-completion/bash_completion
+elif [ -f /etc/bash_completion ]; then
+	. /etc/bash_completion
+fi
+
 
 wait
 end=`date +%s.%N`
 
 runtime=$(echo "$end - $start"|bc -l)
-echo "$runtime seconds"
+1>&2 echo "$runtime seconds"
