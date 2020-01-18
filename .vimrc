@@ -6,27 +6,27 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-obsession'
 
-    Plug 'Raimondi/delimitMate'
+    "Plug 'Raimondi/delimitMate'
 
-    Plug 'vim-airline/vim-airline'
-    Plug 'vim-airline/vim-airline-themes'
-    Plug 'edkolev/tmuxline.vim'
-    Plug 'tmux-plugins/vim-tmux'
-    Plug 'christoomey/vim-tmux-navigator'
+    "Plug 'vim-airline/vim-airline'
+    "Plug 'vim-airline/vim-airline-themes'
+    "Plug 'edkolev/tmuxline.vim'
+    "Plug 'tmux-plugins/vim-tmux'
+    "Plug 'christoomey/vim-tmux-navigator'
     
     " Vim HardTime
     "Plug 'takac/vim-hardtime'
         autocmd! User vim-hardtime.vim HT()
     
-    Plug 'junegunn/fzf'
-    Plug 'junegunn/fzf.vim'
+    "Plug 'junegunn/fzf'
+    "Plug 'junegunn/fzf.vim'
 
 
     Plug 'lambdalisue/suda.vim'
 
-    Plug 'scrooloose/nerdtree'
-    Plug 'Xuyuanp/nerdtree-git-plugin'
-    Plug 'ryanoasis/vim-devicons'
+    "Plug 'scrooloose/nerdtree'
+    "Plug 'Xuyuanp/nerdtree-git-plugin'
+    "Plug 'ryanoasis/vim-devicons'
 
     Plug 'airblade/vim-gitgutter'
     
@@ -35,24 +35,24 @@ call plug#begin('~/.vim/plugged')
     Plug 'neoclide/coc.nvim',  {'tag': '*', 'branch': 'release'}
         autocmd! User coc.nvim CocStart()
 
-    Plug 'derekwyatt/vim-scala', {'for': ['scala','sbt', 'java']}
-    Plug 'mpollmeier/vim-scalaConceal', {'for': ['scala','sbt', 'java']}
+    "Plug 'derekwyatt/vim-scala', {'for': ['scala','sbt', 'java']}
+    "Plug 'mpollmeier/vim-scalaConceal', {'for': ['scala','sbt', 'java']}
 
     
-    Plug 'keith/swift.vim'
-    Plug 'darfink/vim-plist'
+    "Plug 'keith/swift.vim'
+    "Plug 'darfink/vim-plist'
 
-    Plug 'arnoudbuzing/wolfram-vim'
+    "Plug 'arnoudbuzing/wolfram-vim'
     
-    Plug 'hotoo/jsgf.vim'
+    "Plug 'hotoo/jsgf.vim'
 
-    Plug 'justinmk/vim-syntax-extra'
+    "Plug 'justinmk/vim-syntax-extra'
     
-    Plug 'nvie/vim-flake8'
-    Plug 'Vimjas/vim-python-pep8-indent'
+    "Plug 'nvie/vim-flake8'
+    "Plug 'Vimjas/vim-python-pep8-indent'
     "Plug 'jupyter-vim/jupyter-vim', {'for': ['python'] }
-    Plug 'vim-python/python-syntax'
-    Plug 'ehamberg/vim-cute-python'
+    "Plug 'vim-python/python-syntax'
+    "Plug 'ehamberg/vim-cute-python'
     
     Plug 'google/vim-maktaba'
     Plug 'google/vim-codefmt'
@@ -90,15 +90,6 @@ set smartindent
 set nu
 set relativenumber
 
-"""Autoclosing stuff
-""inoremap " ""<left>
-""inoremap ' ''<left>
-""inoremap ( ()<left>
-""inoremap [ []<left>
-""inoremap { {}<left>
-""inoremap {<CR> {<CR>}<ESC>O
-""inoremap <expr> ) strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"noremap {;<CR> {<CR>};<ESC>O
-
 nnoremap o o<Esc>==
 nnoremap O O<Esc>==
 
@@ -112,9 +103,9 @@ set foldlevelstart=18
 set conceallevel=1
 "Cursor Mode stuff
 
-let &t_SI.="\e[5 q" "SI = INSERT mode
-let &t_SR.="\e[4 q" "SR = REPLACE mode
-let &t_EI.="\e[1 q" "EI = NORMAL mode (ELSE)
+"let &t_SI.="\e[5 q" "SI = INSERT mode
+"let &t_SR.="\e[4 q" "SR = REPLACE mode
+"let &t_EI.="\e[1 q" "EI = NORMAL mode (ELSE)
 
 "Cursor settings:
 
@@ -133,7 +124,7 @@ set laststatus=2
 set showcmd
 color desert
 set wildmenu
-set wildmode=list:longest
+"set wildmode=list:longest
 
 "   Fast window movement
 let i = 1
@@ -143,20 +134,20 @@ while i <= 9
 endwhile
 
 "   Airline window numbers
-function! WindowNumber(...)
-        let builder = a:1
-        let context = a:2
-        call builder.add_section('airline_b', '%{tabpagewinnr(tabpagenr())}')
-        return 0
-endfunction
-
-call airline#add_statusline_func('WindowNumber')
-call airline#add_inactive_statusline_func('WindowNumber')
-let g:airline_powerline_fonts = 1
-let g:airline_theme='random'
-silent! call airline#extensions#whitespace#disable()
+"function! WindowNumber(...)
+"        let builder = a:1
+"        let context = a:2
+"        call builder.add_section('airline_b', '%{tabpagewinnr(tabpagenr())}')
+"        return 0
+"endfunction
+"
+"call airline#add_statusline_func('WindowNumber')
+"call airline#add_inactive_statusline_func('WindowNumber')
+"let g:airline_powerline_fonts = 1
+"let g:airline_theme='random'
+"silent! call airline#extensions#whitespace#disable()
 "let g:tmuxline_preset = {'z'    : '#track'}
-let g:airline#extensions#tmuxline#enabled = 1
+"let g:airline#extensions#tmuxline#enabled = 1
 "Window end
 
 "YouCompleteMe
@@ -222,7 +213,7 @@ au BufNewFile,BufRead *.py
 "   Pylint
 let python_highlight_all=1
 let g:python_highlight_all = 1
-set background=dark
+"set background=dark
 syntax on
 
 
@@ -234,9 +225,9 @@ au BufRead,BufRead * if &syntax == '' | set syntax=sh | endif
 "Formatting end
 
 "Nerdy things
-autocmd StdinReadPre * let s:std_in=1
+"autocmd StdinReadPre * let s:std_in=1
 "autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-map <C-n> :NERDTreeToggle<CR>
+"map <C-n> :NERDTreeToggle<CR>
 
 
 source ~/.vimFunctions.vim
