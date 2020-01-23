@@ -6,6 +6,7 @@ alias learn='~/bin/cowCommand.sh'
 #alias ls='ls -FGh'
 alias vi=nvim
 alias vim=nvim
+alias vimdiff='nvim -d'
 alias python=python3
 alias pip=pip3
 alias abash='bash -l'

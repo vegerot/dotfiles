@@ -5,8 +5,14 @@ call plug#begin('~/.vim/plugged')
     Plug 'tpope/vim-vinegar'
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-obsession'
+    Plug 'tpope/vim-repeat'
 
-    Plug 'Raimondi/delimitMate'
+    Plug 'kana/vim-textobj-user'
+    Plug 'fvictorio/vim-textobj-backticks'
+    "Plug 'Raimondi/delimitMate'
+
+    Plug 'joshdick/onedark.vim'
+    Plug 'morhetz/gruvbox'
 
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
@@ -15,7 +21,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'christoomey/vim-tmux-navigator'
     
     " Vim HardTime
-    Plug 'takac/vim-hardtime'
+    Plug 'phux/vim-hardtime'
+        autocmd! User vim-hardtime.vim HT()
     
     
     Plug '/usr/local/opt/fzf' 
@@ -42,8 +49,16 @@ call plug#begin('~/.vim/plugged')
     Plug 'arnoudbuzing/wolfram-vim'
     
     Plug 'hotoo/jsgf.vim'
+    Plug 'Quramy/vim-js-pretty-template'
+    Plug 'yuezk/vim-js'
+    "Plug 'maxmellon/vim-jsx-pretty'
+    "Plug 'HerringtonDarkholme/yats.vim'
+   " Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+    Plug 'jonsmithers/vim-html-template-literals'
+    "Plug 'pangloss/vim-javascript'
 
     Plug 'justinmk/vim-syntax-extra'
+    Plug 'sheerun/vim-polyglot'
     
     Plug 'nvie/vim-flake8'
     Plug 'Vimjas/vim-python-pep8-indent'
@@ -83,6 +98,7 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 set smartindent
+set colorcolumn=80
 
 "Number stuff
 set nu
@@ -97,8 +113,13 @@ set relativenumber
 ""inoremap {<CR> {<CR>}<ESC>O
 ""inoremap <expr> ) strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"noremap {;<CR> {<CR>};<ESC>O
 
-nnoremap o o<Esc>==
-nnoremap O O<Esc>==
+nnoremap o o <BS><Esc>:let @6=@*<CR><DEL>:let @*=@6<CR>
+nnoremap O O <BS><Esc>:let @6=@*<CR><DEL>:let @*=@6<CR>
+
+
+nnoremap gF :wincmd f <CR>
+
+nmap <c-k> :execute &keywordprg expand("<cword>")<cr>
 
 set scrolloff=1
 set showbreak=↪
@@ -126,10 +147,28 @@ let &t_EI.="\e[1 q" "EI = NORMAL mode (ELSE)
 " Allow saving of files as sudo when I forgot to start vim using sudo.
 cmap w!! w !sudo tee > /dev/null %
 
+"Color config
+"let g:gruvbox_contrast_dark = 'hard'
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+set termguicolors
+"let g:onedark_hide_endofbuffer=1
+"let g:onedark_terminal_italics=1
+"let g:onedark_termcolors=256
+syntax on
+let g:gruvbox_italic=1
+"let g:gruvbox_contrast_dark="soft"
+let g:gruvbox_italicize_strings=1
+"let g:gruvbox_improved_strings=1
+colorscheme gruvbox
+highlight NonText guifg=gray
+"highlight Normal ctermfg=145 ctermbg=235 guifg=#ABB2BF guibg=#282838
+"highlight Normal ctermfg=7 ctermbg=0  guibg=7 guifg=0
+"guibg=black guifg=white
+"
+
 "WINDOW CONFIG
 set laststatus=2
 set showcmd
-color desert
 set wildmenu
 set wildmode=list:longest
 
@@ -148,20 +187,24 @@ function! WindowNumber(...)
         return 0
 endfunction
 
-call airline#add_statusline_func('WindowNumber')
-call airline#add_inactive_statusline_func('WindowNumber')
-let g:airline_powerline_fonts = 1
-let g:airline_theme='random'
-silent! call airline#extensions#whitespace#disable()
-"let g:tmuxline_preset = {'z'    : '#track'}
-let g:airline#extensions#tmuxline#enabled = 1
+function! Lineair()
+    call airline#add_statusline_func('WindowNumber')
+    call airline#add_inactive_statusline_func('WindowNumber')
+    let g:airline_powerline_fonts = 1
+    let g:airline_theme='random'
+    silent! call airline#extensions#whitespace#disable()
+    "let g:tmuxline_preset = {'z'    : '#track'}
+    let g:airline#extensions#tmuxline#enabled = 1
+    return 0
+endfunction
+call Lineair()
 "Window end
 
 "YouCompleteMe
 function YCM()
         "let g:ycm_always_populate_location_list = 1
         let g:airline#extensions#ycm#enabled = 1
-        let g:ycm_clangd_binary_path = '/usr/local/Cellar/llvm/9.0.0/bin/clangd'
+        let g:ycm_clangd_binary_path = '/usr/local/opt/llvm/bin/clangd'
         let g:ycm_clangd_args = ['-log=verbose', '-pretty']
         let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
         nmap <c-]> :YcmCompleter GoTo<CR>
@@ -183,24 +226,44 @@ endif
     \| exe "normal! g'\"" | endif
 endif
 
-"make things difficult
-let g:hardtime_default_on = 1
-let g:list_of_disabled_keys = ["<UP>", "<DOWN>", "<LEFT>", "<RIGHT>"]
-let g:hardtime_showmsg = 1
-let g:hardtime_allow_different_key = 1
-let g:hardtime_maxcount = 2
-let g:hardtime_ignore_buffer_patterns = [  "NERD.*" ]
-let g:list_of_resetting_keys  = ['2', '3', '4', '5', '6', '7', '8', '9', '0']
+function HT()
+    "make things difficult
+    let g:hardtime_default_on = 1
+    let g:list_of_disabled_keys = ["<UP>", "<DOWN>", "<LEFT>", "<RIGHT>"]
+    let g:hardtime_showmsg = 1
+    let g:hardtime_allow_different_key = 1
+    let g:hardtime_maxcount = 2
+    let g:hardtime_ignore_buffer_patterns = [  "NERD.*" ]
+    let g:list_of_resetting_keys  = ['2', '3', '4', '5', '6', '7', '8', '9', '0']
+endfunction
+
+if has_key(plugs, "vim-hardtime")
+    call HT()
+endif
 
 "Formatter stuff
 augroup autoformat_settings
-  autocmd FileType c,cpp,proto,javascript AutoFormatBuffer clang-format
-  autocmd FileType html,css,sass,scss,less,json AutoFormatBuffer js-beautify
+  autocmd FileType c,cpp,proto AutoFormatBuffer clang-format
+  "autocmd FileType css,sass,scss,less,json,javascript AutoFormatBuffer js-beautify
+  "autocmd FileType html AutoFormatBuffer prettier
   autocmd FileType java AutoFormatBuffer google-java-format
   autocmd FileType python AutoFormatBuffer autopep8
 augroup END
 
+autocmd FocusLost Filetype html,css,sass,scss,less,json,javascript,typescript :wa
+autocmd Filetype html,css,sass,scss,less,json,javascript,typescript set autowrite
+autocmd Filetype html,css,sass,scss,less,json,javascript,typescript set autowriteall
+
+call jspretmpl#register_tag('javascript', 'javascriptreact')
+autocmd FileType javascript,js JsPreTmpl
+autocmd FileType javascript.jsx JsPreTmpl
+let g:vim_jsx_pretty_template_tags=['html', 'jsx', 'js', 'javascript']
+let g:vim_jsx_pretty_colorful_config = 1 " default 0
+let g:javascript_plugin_flow = 1
+let g:jsx_ext_required = 0
+
 autocmd FileType text set spell
+autocmd FileType json syntax match Comment +\/\/.\+$+
 
 
 "   PEP 8 indentation standards
@@ -213,8 +276,7 @@ au BufNewFile,BufRead *.py
 "   Pylint
 let python_highlight_all=1
 let g:python_highlight_all = 1
-set background=dark
-syntax on
+"syntax on
 
 
 au BufRead,BufNewFile bash-fc-* set filetype=sh
@@ -225,8 +287,8 @@ au BufRead,BufRead * if &syntax == '' | set syntax=sh | endif
 "Formatting end
 
 "Nerdy things
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+"autocmd StdinReadPre * let s:std_in=1
+"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 map <C-n> :NERDTreeToggle<CR>
 
 
@@ -234,4 +296,4 @@ source ~/.vimFunctions.vim
 
 set title
 set clipboard=unnamed,unnamedplus
-set timeoutlen=1000 ttimeoutlen=10
+set timeoutlen=1000 ttimeoutlen=1

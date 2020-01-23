@@ -1,5 +1,5 @@
 start=`gdate +%s.%N`
-#
+zmodload zsh/zprof
 ## If you come from bash you might have to change your $PATH.
 ##Open Tmux
 source ~/.profile
@@ -47,6 +47,10 @@ plugins=(
   zsh-syntax-highlighting
   history-substring-search
   cd-gitroot
+  docker
+  docker-compose
+  docker-machine
+  fzf
 ) 
 source $ZSH/oh-my-zsh.sh
 setopt vi
@@ -81,8 +85,10 @@ setopt EXTENDED_HISTORY
 export FZF_DEFAULT_OPTS='--height=70% --preview "bat --color always {} || cat {}" --preview-window=right:60%:wrap'
 export FZF_DEFAULT_COMMAND='git ls-tree -r --name-only HEAD || rg --files 2>/dev/null'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
 source "$HOME/.fzf-extras/fzf-extras.zsh"
 source "$HOME/.fzf-extras/fzf-extras.sh"
+. /usr/local/etc/profile.d/autojump.sh
 
 #
 mkcdir ()
@@ -109,7 +115,7 @@ RPS1="${return_code}"
 
 source ~/.iterm2_shell_integration.zsh
 #
-eval "$(jenv init -)"&
+#eval "$(jenv init -)"
 #
 ## >>> conda initialize >>>
         . "/usr/local/anaconda3/etc/profile.d/conda.sh"
