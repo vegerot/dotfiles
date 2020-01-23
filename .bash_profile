@@ -61,7 +61,7 @@ mkcdir () {
 }
 #if brew command command-not-found-init > /dev/null 2>&1; then eval "$(brew command-not-found-init)"; fi
 
-eval "$(brew command-not-found-init)"
+#eval "$(brew command-not-found-init)"
 #export PS1
 
 #export PS1="\[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]\n\$ "
@@ -69,7 +69,8 @@ export CLICOLOR=1
 export LSCOLORS=GxFxCxDxBxegedabagaced
 
 source ~/.aliases
-#~/bin/cowCommand.sh
+~/bin/cowCommand.sh&
+
 alias ?='. ~/bin/cowCommand.sh'
 #alias ls='ls -FGh'
 alias ccat='pygmentize -g -O style=colorful'

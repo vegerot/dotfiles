@@ -111,7 +111,21 @@ brew cask install iterm
 brew cask install font-hack-nerd-font
 brew cask install intel-power-gadget
 brew cask install karabiner-elements
-brew casks install xquartz
+brew cask install xquartz
 brew cask install anaconda
+brew cask install bettertouchtool
+brew cask install visual-studio-code-insiders
+brew cask install docker
+brew cask install spotify
+brew cask install vlc
+brew cask install gimp
+brew cask install stellarium
+brew cask install setapp
+#Redundant because I install the following through setapp:
+#brew cask install bartender
+#brew cask install istat-menus
+#brew cask install wifi-explorer
+#brew cask install cleanmymac
+
 # Remove outdated versions from the cellar.
 brew cleanup

@@ -52,6 +52,7 @@ nmap <silent> gr <Plug>(coc-references)
 
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
+nnoremap <c-i> :execute &keywordprg expand("<cword>")<CR>
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
@@ -136,4 +137,4 @@ command! -nargs=0 MetalsDoctor :call CocRequestAsync('metals', 'workspace/execut
 command! -nargs=0 MetalsImport :call CocRequestAsync('metals', 'workspace/executeCommand', { 'command': 'build-import' })
 " Manually connect with the build server
 command! -nargs=0 MetalsConnect :call CocRequestAsync('metals', 'workspace/executeCommand', { 'command': 'build-connect' })
-
+nmap <Leader>ws <Plug>(coc-metals-expand-decoration)

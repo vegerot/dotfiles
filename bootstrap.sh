@@ -1,13 +1,8 @@
 #!/usr/bin/env zsh
 
 set -o xtrace
-echo ${BASH_SOURCE}
-cd "$(dirname "${BASH_SOURCE}")";
-
 pwd
-git pull origin master;
-
-function doIt() {
+function deploy() {
     if [ "$1" "==" "--dry-run" ]; then
         find . -type f -not -path "*/.git/*" -not -path "./.DS_Store" -not -path "./.osx" -not -path "./bootstrap.sh" -not -path "./brew.sh" -not -path "./README.md" -not -path "./LICENSE-MIT.txt" -exec echo ~/dotfiles/'{}' "->" ~/'{}' \;
     elif [ "$1" "==" "--force" ]; then
