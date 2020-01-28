@@ -21,7 +21,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'christoomey/vim-tmux-navigator'
     
     " Vim HardTime
-    Plug 'phux/vim-hardtime'
+    "Plug 'phux/vim-hardtime'
         autocmd! User vim-hardtime.vim HT()
     
     
