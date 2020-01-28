@@ -3,7 +3,7 @@ zmodload zsh/zprof
 ## If you come from bash you might have to change your $PATH.
 ##Open Tmux
 source ~/.profile
-~/bin/cowCommand.sh
+#~/bin/cowCommand.sh
 source ~/.paths.sh
 #
 ## Path to your oh-my-zsh installation.
@@ -46,7 +46,6 @@ plugins=(
   vi-mode  
   zsh-syntax-highlighting
   history-substring-search
-  cd-gitroot
   docker
   docker-compose
   docker-machine
@@ -101,7 +100,6 @@ mkcdir ()
 source ~/.aliases
 source ~/.functions
 alias pman='man-preview'
-alias cdg="cd-gitroot"
 alias ls="gls --group-directories-first --color=tty -XhF"
 #
 ##ZSH-SYTAX-HIGHLIGHTING
