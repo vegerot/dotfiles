@@ -1,74 +1,91 @@
 call plug#begin('~/.vim/plugged')
+  "The legend"
+  Plug 'tpope/vim-sensible'
+  Plug 'tpope/vim-sleuth'
+  Plug 'tpope/vim-surround'
+  Plug 'tpope/vim-vinegar'
+  Plug 'tpope/vim-fugitive'
+  Plug 'tpope/vim-obsession'
+  Plug 'tpope/vim-repeat'
+  Plug 'tpope/vim-abolish'
+  Plug 'tpope/vim-dispatch' 
+  Plug 'tpope/vim-commentary' 
+   
+  Plug 'benmills/vimux' 
 
-    Plug 'tpope/vim-sensible'
-    Plug 'tpope/vim-surround'
-    Plug 'tpope/vim-vinegar'
-    Plug 'tpope/vim-fugitive'
-    Plug 'tpope/vim-obsession'
-    Plug 'tpope/vim-repeat'
+  Plug 'bkad/CamelCaseMotion' 
+  Plug 'easymotion/vim-easymotion' 
+   
+  Plug 'kana/vim-textobj-user'
+  Plug 'fvictorio/vim-textobj-backticks'
 
-    Plug 'kana/vim-textobj-user'
-    Plug 'fvictorio/vim-textobj-backticks'
-    "Plug 'Raimondi/delimitMate'
+  "Plug 'Raimondi/delimitMate'
 
-    Plug 'joshdick/onedark.vim'
-    Plug 'morhetz/gruvbox'
+  Plug 'joshdick/onedark.vim'
+  Plug 'morhetz/gruvbox'
 
-    Plug 'vim-airline/vim-airline'
-    Plug 'vim-airline/vim-airline-themes'
-    Plug 'edkolev/tmuxline.vim'
-    Plug 'tmux-plugins/vim-tmux'
-    Plug 'christoomey/vim-tmux-navigator'
-    
-    " Vim HardTime
-    "Plug 'phux/vim-hardtime'
-        autocmd! User vim-hardtime.vim HT()
-    
-    
-    Plug '/usr/local/opt/fzf' 
-    Plug 'junegunn/fzf.vim'
+  Plug 'vim-airline/vim-airline'
+  Plug 'vim-airline/vim-airline-themes'
+  
+  Plug 'edkolev/tmuxline.vim'
+  Plug 'tmux-plugins/vim-tmux'
+  Plug 'christoomey/vim-tmux-navigator'
+  Plug 'tmux-plugins/vim-tmux-focus-events'
+   
+  Plug 'janko/vim-test' 
+  
+  " Vim HardTime
+  "Plug 'phux/vim-hardtime'
+      autocmd! User vim-hardtime.vim HT()
+  
+  Plug '/usr/local/opt/fzf' 
+  Plug 'junegunn/fzf.vim'
 
-    Plug 'scrooloose/nerdtree'
-    Plug 'Xuyuanp/nerdtree-git-plugin'
-    Plug 'ryanoasis/vim-devicons'
+  Plug 'scrooloose/nerdtree'
+  "Plug 'ryanoasis/vim-devicons'
+  Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+  Plug 'Xuyuanp/nerdtree-git-plugin'
 
-    Plug 'airblade/vim-gitgutter'
-    
-    "Plug 'ycm-core/YouCompleteMe'
-        autocmd! User youcompleteme.vim YCM()
-    Plug 'neoclide/coc.nvim',  {'tag': '*', 'branch': 'release'}
-        autocmd! User coc.nvim CocStart()
+  Plug 'airblade/vim-gitgutter'
+  
+  "Plug 'ycm-core/YouCompleteMe'
+      autocmd! User youcompleteme.vim YCM()
+  Plug 'neoclide/coc.nvim',  {'tag': '*', 'branch': 'release'}
+      autocmd! User coc.nvim CocStart()
+  Plug 'liuchengxu/vista.vim'
 
-    Plug 'derekwyatt/vim-scala', {'for': ['scala','sbt', 'java']}
-    Plug 'mpollmeier/vim-scalaConceal', {'for': ['scala','sbt', 'java']}
+  Plug 'derekwyatt/vim-scala', {'for': ['scala','sbt', 'java']}
+  Plug 'mpollmeier/vim-scalaConceal', {'for': ['scala','sbt', 'java']}
 
-    
-    Plug 'keith/swift.vim'
-    Plug 'darfink/vim-plist'
+  
+  Plug 'keith/swift.vim'
+  Plug 'darfink/vim-plist'
 
-    Plug 'arnoudbuzing/wolfram-vim'
-    
-    Plug 'hotoo/jsgf.vim'
-    Plug 'Quramy/vim-js-pretty-template'
-    Plug 'yuezk/vim-js'
-    "Plug 'maxmellon/vim-jsx-pretty'
-    "Plug 'HerringtonDarkholme/yats.vim'
-   " Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
-    Plug 'jonsmithers/vim-html-template-literals'
-    "Plug 'pangloss/vim-javascript'
+  Plug 'arnoudbuzing/wolfram-vim'
+  
+  "Plug 'justinmk/vim-syntax-extra'
+  Plug 'sheerun/vim-polyglot'
+   
+  Plug 'hotoo/jsgf.vim'
+  "Plug 'Quramy/vim-js-pretty-template'
+  "Plug 'leafoftree/vim-vue-plugin'
+  Plug 'posva/vim-vue'
+  Plug 'neoclide/jsonc.vim' 
+  "Plug 'maxmellon/vim-jsx-pretty'
+  Plug 'HerringtonDarkholme/yats.vim'
+  Plug 'jonsmithers/vim-html-template-literals'
+  "Plug 'pangloss/vim-javascript'
 
-    Plug 'justinmk/vim-syntax-extra'
-    Plug 'sheerun/vim-polyglot'
-    
-    Plug 'nvie/vim-flake8'
-    Plug 'Vimjas/vim-python-pep8-indent'
-    "Plug 'jupyter-vim/jupyter-vim', {'for': ['python'] }
-    Plug 'vim-python/python-syntax'
-    Plug 'ehamberg/vim-cute-python'
-    
-    Plug 'google/vim-maktaba'
-    Plug 'google/vim-codefmt'
-    Plug 'google/vim-glaive'
+  
+  Plug 'nvie/vim-flake8'
+  Plug 'Vimjas/vim-python-pep8-indent'
+  "Plug 'jupyter-vim/jupyter-vim', {'for': ['python'] }
+  Plug 'vim-python/python-syntax'
+  Plug 'ehamberg/vim-cute-python'
+  
+  Plug 'google/vim-maktaba'
+  Plug 'google/vim-codefmt'
+  Plug 'google/vim-glaive'
 
 " All of your Plugs must be added before the following line
 call plug#end()
@@ -92,13 +109,16 @@ set incsearch
 set hlsearch
 nnoremap n nzz
 nnoremap N Nzz
+vnoremap p pgvy 
 
 "Tab stuff
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 set expandtab
 set smartindent
 set colorcolumn=80
+ 
+let g:camelcasemotion_key = '<leader>'
 
 "Number stuff
 set nu
@@ -113,13 +133,22 @@ set relativenumber
 ""inoremap {<CR> {<CR>}<ESC>O
 ""inoremap <expr> ) strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"noremap {;<CR> {<CR>};<ESC>O
 
-nnoremap o o <BS><Esc>:let @6=@*<CR><DEL>:let @*=@6<CR>
-nnoremap O O <BS><Esc>:let @6=@*<CR><DEL>:let @*=@6<CR>
+nnoremap o o   <BS><Esc>:let @6=@*<CR><DEL>:let @*=@6<CR>
+nnoremap O O   <BS><Esc>:let @6=@*<CR><DEL>:let @*=@6<CR>
 
 
 nnoremap gF :wincmd f <CR>
 
 nmap <c-k> :execute &keywordprg expand("<cword>")<cr>
+  
+ " these "Ctrl mappings" work well when Caps Lock is mapped to Ctrl
+nmap <silent> t<C-n> :TestNearest<CR>
+nmap <silent> t<C-f> :TestFile<CR>
+nmap <silent> t<C-s> :TestSuite<CR>
+nmap <silent> t<C-l> :TestLast<CR>
+nmap <silent> t<C-g> :TestVisit<CR>
+let test#strategy = "vimux" 
+ 
 
 set scrolloff=1
 set showbreak=↪
@@ -147,6 +176,8 @@ let &t_EI.="\e[1 q" "EI = NORMAL mode (ELSE)
 " Allow saving of files as sudo when I forgot to start vim using sudo.
 cmap w!! w !sudo tee > /dev/null %
 
+
+set updatetime=400
 "Color config
 "let g:gruvbox_contrast_dark = 'hard'
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
@@ -190,6 +221,7 @@ endfunction
 function! Lineair()
     call airline#add_statusline_func('WindowNumber')
     call airline#add_inactive_statusline_func('WindowNumber')
+    let g:airline#extensions#branch#format = 2
     let g:airline_powerline_fonts = 1
     let g:airline_theme='random'
     silent! call airline#extensions#whitespace#disable()
@@ -250,13 +282,17 @@ augroup autoformat_settings
   autocmd FileType python AutoFormatBuffer autopep8
 augroup END
 
-autocmd FocusLost Filetype html,css,sass,scss,less,json,javascript,typescript :wa
-autocmd Filetype html,css,sass,scss,less,json,javascript,typescript set autowrite
-autocmd Filetype html,css,sass,scss,less,json,javascript,typescript set autowriteall
+set autoread
+au FocusGained,BufEnter,CursorHold * if !bufexists("[Command Line]") && mode()!= 'c' | checktime | endif
+autocmd FocusLost Filetype html,css,sass,scss,less,json,javascript,typescript,vue :wa
+autocmd Filetype html,css,sass,scss,less,json,javascript,typescript,vue set autowrite
+autocmd Filetype html,css,sass,scss,less,json,javascript,typescript,vue set autowriteall
+set autowrite
+set autowriteall
 
-call jspretmpl#register_tag('javascript', 'javascriptreact')
-autocmd FileType javascript,js JsPreTmpl
-autocmd FileType javascript.jsx JsPreTmpl
+"#call jspretmpl#register_tag('javascript', 'javascriptreact')
+"#autocmd FileType javascript,js JsPreTmpl
+"#autocmd FileType javascript.jsx JsPreTmpl
 let g:vim_jsx_pretty_template_tags=['html', 'jsx', 'js', 'javascript']
 let g:vim_jsx_pretty_colorful_config = 1 " default 0
 let g:javascript_plugin_flow = 1
@@ -279,6 +315,7 @@ let g:python_highlight_all = 1
 "syntax on
 
 
+au BufRead,BufNewFile *rc.json set filetype=jsonc
 au BufRead,BufNewFile bash-fc-* set filetype=sh
 au BufRead,BufNewFile zsh* set filetype=zsh
 au BufRead,BufNewFile README,INSTALL,CREDITS set filetype=markdown
@@ -289,11 +326,28 @@ au BufRead,BufRead * if &syntax == '' | set syntax=sh | endif
 "Nerdy things
 "autocmd StdinReadPre * let s:std_in=1
 "autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-map <C-n> :NERDTreeToggle<CR>
+au FocusGained,BufEnter * if !bufexists("[Command Line]") && mode()!= 'c' | checktime | endif
+let g:NERDTreeWinSize=38
+let g:NERDTreeFileExtensionHighlightFullName = 1
+let g:NERDTreeExactMatchHighlightFullName = 1
+let g:NERDTreePatternMatchHighlightFullName = 1
+let g:NERDTreeHighlightCursorline = 0 
+function MyNerdToggle()
+  if &filetype == 'nerdtree'
+    :NERDTreeToggle
+  else
+    :NERDTreeFind
+  endif
+endfunction
+map <C-n> :call MyNerdToggle()<CR>
 
 
 source ~/.vimFunctions.vim
+ 
 
 set title
 set clipboard=unnamed,unnamedplus
 set timeoutlen=1000 ttimeoutlen=1
+if exists('neovim_dot_app')
+  :source ~/.gvimrc
+endif 

@@ -50,6 +50,7 @@ plugins=(
   docker-compose
   docker-machine
   fzf
+  zsh-better-npm-completion 
 ) 
 source $ZSH/oh-my-zsh.sh
 setopt vi

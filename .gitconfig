@@ -158,8 +158,12 @@
 	# Include summaries of merged commits in newly created merge commit messages
 	log = true
 	tool = vimdiff
+[mergetool]
+    keepBackup = false
 [merge "vimdiff"]
     cmd = nvim -d
+[mergetool "vscode"]
+	cmd = code-insiders --wait $MERGED
 [push]
 
 	# https://git-scm.com/docs/git-config#git-config-pushdefault
@@ -195,5 +199,7 @@
 	name = Max Coplan
 [credential]
 	helper = store
+[difftool "vscode"]
+	cmd = code-insiders --wait --diff $LOCAL $REMOTE
 [difftool "vimdiff"]
 	path = nvim

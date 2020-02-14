@@ -23,5 +23,27 @@
     "java.home": "/Library/Java/JavaVirtualMachines/openjdk-13.jdk/Contents/Home",
     "coc.preferences.formatOnType": true, 
     "coc.preferences.formatOnSaveFiletypes": ["javascript", "js", "html", "Markdown", "css", "scala"],
-    "eslint.codeAction.autoFixOnSave" : true
+    "eslint.enable":true,
+    "eslint.run":"onType",
+    "eslint.autoFixOnSave": true,
+    "eslint.filetypes": ["javascript", "typescript", "typescriptreact", "javascriptreact", "typescript.tsx", "vue"],
+    "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces":true,
+    "cSpell.userWords": [
+      "Avaito",
+      "Interop",
+      "Timeframe",
+      "VCAP",
+      "autofix",
+      "aviato",
+      "gruvbox",
+      "multiline",
+      "nestjs",
+      "postgres",
+      "postgresql",
+      "readonly",
+      "timestamptz",
+      "tpope",
+      "typeorm",
+      "varchar"
+    ],
 }
