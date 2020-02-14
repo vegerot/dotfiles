@@ -46,6 +46,8 @@
 	<false/>
 	<key>HotkeyMigratedFromSingleToMulti</key>
 	<true/>
+	<key>IRMemory</key>
+	<integer>64</integer>
 	<key>IncludePasteHistoryInAdvancedPaste</key>
 	<true/>
 	<key>LoadPrefsFromCustomFolder</key>
@@ -74,7 +76,7 @@
 	dWxs0g0ODxJaTlMub2JqZWN0c1YkY2xhc3OiEBGAAoAKgA3TFA0OFRkdV05TLmtleXOj
 	FhcYgAOABIAFoxobHIAGgAeACIAJWklkZW50aWZpZXJVV2lkdGhWSGlkZGVuUTAjQGjA
 	AAAAAAAI0iUmJyhaJGNsYXNzbmFtZVgkY2xhc3Nlc1xOU0RpY3Rpb25hcnmiJylYTlNP
-	YmplY3TTFA0OKy8doxYXGIADgASABaMwMRyAC4AMgAiACVExI0B0oZ2yLQ5W0iUmNzhe
+	YmplY3TTFA0OKy8doxYXGIADgASABaMwMRyAC4AMgAiACVExI0BzsZ2yLQ5W0iUmNzhe
 	TlNNdXRhYmxlQXJyYXmjNzkpV05TQXJyYXkACAARABoAJAApADIANwBJAEwAUgBUAGMA
 	aQBuAHkAgACDAIUAhwCJAJAAmACcAJ4AoACiAKYAqACqAKwArgC5AL8AxgDIANEA0gDX
 	AOIA6wD4APsBBAELAQ8BEQETARUBGQEbAR0BHwEhASMBLAExAUABRAAAAAAAAAIBAAAA
@@ -120,12 +122,14 @@
 	</dict>
 	<key>NSWindow Frame NSNavPanelAutosaveName</key>
 	<string>440 434 799 448 0 0 1680 1027 </string>
+	<key>NSWindow Frame SUStatusFrame</key>
+	<string>-1800 1163 400 129 -3200 -128 3200 1777 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
-	<string>530 476 620 392 0 0 1680 1027 </string>
+	<string>1290 1038 620 392 0 0 3200 1777 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>845 329 822 687 0 0 1680 1027 </string>
+	<string>-3184 831 3166 864 -3200 -73 3200 1777 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>60 332 570 447 0 0 1680 1027 </string>
+	<string>1 531 830 495 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 10</key>
 	<string>16 548 703 426 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 11</key>
@@ -133,7 +137,7 @@
 	<key>NSWindow Frame iTerm Window 12</key>
 	<string>695 180 570 426 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
-	<string>1053 359 570 447 0 0 1680 1027 </string>
+	<string>-4868 -112 1665 911 -6560 -128 3360 1867 </string>
 	<key>NSWindow Frame iTerm Window 3</key>
 	<string>921 462 570 447 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 4</key>
@@ -735,6 +739,15 @@
 				<real>0.8353000283241272</real>
 				<key>Red Component</key>
 				<real>0.70980000495910645</real>
+			</dict>
+			<key>Semantic History</key>
+			<dict>
+				<key>action</key>
+				<string>editor</string>
+				<key>editor</key>
+				<string>org.vim.MacVim</string>
+				<key>text</key>
+				<string></string>
 			</dict>
 			<key>Send Bell Alert</key>
 			<true/>
@@ -1532,7 +1545,9 @@
 	<array>
 		<string>3.3.3</string>
 		<string>3.3.20200122-nightly</string>
+		<string>3.3.20200205-nightly</string>
 		<string>3.3.20191218-nightly</string>
+		<string>3.3.20200207-nightly</string>
 		<string>3.3.5beta2</string>
 		<string>3.3.7beta1</string>
 		<string>3.3.7beta3</string>
@@ -1554,6 +1569,7 @@
 		<string>3.3.20191220-nightly</string>
 		<string>3.3.20200107-nightly</string>
 		<string>3.3.20200112-nightly</string>
+		<string>3.3.20200210-nightly</string>
 		<string>3.3.20200109-nightly</string>
 		<string>3.3.20200120-nightly</string>
 	</array>
@@ -1581,16 +1597,16 @@
 	<key>NoSyncFrame_SharedPreferences</key>
 	<dict>
 		<key>screenFrame</key>
-		<string>{{0, 0}, {1680, 1050}}</string>
+		<string>{{0, 0}, {3200, 1800}}</string>
 		<key>topLeft</key>
-		<string>{92, 673}</string>
+		<string>{293, 713}</string>
 	</dict>
 	<key>NoSyncInstallationId</key>
 	<string>9DC9D3B7-246A-48B6-B8DF-FE83CDDAA107</string>
 	<key>NoSyncLastTipTime</key>
 	<real>589737906.35891104</real>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>107</integer>
+	<integer>113</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -2490,11 +2506,13 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2020-01-22T08:26:38Z</date>
+	<date>2020-02-13T14:06:46Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
+	<key>SUUpdateGroupIdentifier</key>
+	<integer>1945974618</integer>
 	<key>SUUpdateRelaunchingMarker</key>
-	<false/>
+	<true/>
 	<key>Selection Respects Soft Boundaries</key>
 	<false/>
 	<key>SensitiveScrollWheel</key>
@@ -2503,6 +2521,8 @@
 	<false/>
 	<key>ShowMetalFPSmeter</key>
 	<false/>
+	<key>SmartPlacement</key>
+	<true/>
 	<key>SoundForEsc</key>
 	<false/>
 	<key>StatusBarPosition</key>
@@ -2517,6 +2537,8 @@
 	<true/>
 	<key>UseBorder</key>
 	<false/>
+	<key>UseLionStyleFullscreen</key>
+	<false/>
 	<key>UseModernScrollWheelAccumulator</key>
 	<true/>
 	<key>VisualIndicatorForEsc</key>
@@ -2524,7 +2546,7 @@
 	<key>findMode_iTerm</key>
 	<integer>0</integer>
 	<key>iTerm Version</key>
-	<string>3.3.20200122-nightly</string>
+	<string>3.3.20200210-nightly</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>0</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>
