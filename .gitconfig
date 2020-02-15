@@ -195,8 +195,8 @@
 [gpg]
 	program = gpg
 [user]
-	email = mchcopl@yahoo.com
-	name = Max Coplan
+	email = stillwell006@gmail.com
+	name = Matt Stillwell
 [credential]
 	helper = store
 [difftool "vscode"]
