@@ -12,7 +12,7 @@
             "filetypes": ["scala", "sbt"]
         }
     },
-    "java.home": "/Library/Java/JavaVirtualMachines/openjdk-13.jdk/Contents/Home",
+    "java.home": "/Library/Java/JavaVirtualMachines/openjdk-13.0.0.jdk/Contents/Home",
 
     "coc.preferences.formatOnType": true,
     "coc.preferences.formatOnSaveFiletypes": ["js"]
