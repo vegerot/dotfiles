@@ -1,9 +1,9 @@
 start=`gdate +%s.%N`
-zmodload zsh/zprof
+#
 ## If you come from bash you might have to change your $PATH.
 ##Open Tmux
 source ~/.profile
-#~/bin/cowCommand.sh
+~/bin/cowCommand.sh
 source ~/.paths.sh
 #
 ## Path to your oh-my-zsh installation.
@@ -17,7 +17,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 #
 fpath=(/usr/local/share/zsh-completions /usr/local/share/zsh-completions/conda-zsh-completion $fpath)
-setopt LOCAL_OPTIONS NO_NOTIFY 
+#setopt LOCAL_OPTIONS NO_NOTIFY 
 autoload -U +X compinit && compinit
 autoload -U +X bashcompinit && bashcompinit
 autoload -U promptinit && promptinit       
@@ -25,7 +25,6 @@ autoload -Uz run-help
 autoload -Uz run-help-git                  
 autoload -Uz run-help-svn                  
 autoload -Uz run-help-svk                  
-wait
 unalias run-help
 alias help=run-help
 #
@@ -46,11 +45,7 @@ plugins=(
   vi-mode  
   zsh-syntax-highlighting
   history-substring-search
-  docker
-  docker-compose
-  docker-machine
-  fzf
-  npm
+  cd-gitroot
 ) 
 source $ZSH/oh-my-zsh.sh
 setopt vi
@@ -78,7 +73,7 @@ if [[ $'\e\x5b3D' == "$(echoti cub 3)" ]] &&
 fi
 zstyle ':completion:*:*(directories|files)*' list-colors ''
 
-export export HISTSIZE=1073741823
+export HISTSIZE=1073741823
 export SAVEHIST=$HISTSIZE
 setopt EXTENDED_HISTORY
 #
@@ -114,11 +109,15 @@ RPS1="${return_code}"
 
 source ~/.iterm2_shell_integration.zsh
 #
-#eval "$(jenv init -)"
+eval "$(jenv init -)"
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+  [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 #
 ## >>> conda initialize >>>
         . "/usr/local/anaconda3/etc/profile.d/conda.sh"
 #
+source ~/.fzf.zsh
 ## To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
@@ -126,6 +125,5 @@ end=`gdate +%s.%N`
 runtime=$( echo "$end - $start"|bc -l )
 echo "$runtime seconds"
 
- # added for npm-completion https://github.com/Jephuff/npm-bash-completion
-PATH_TO_NPM_COMPLETION="/Users/maxcoplan/workspace/Prom/node_modules/npm-completion"
-source $PATH_TO_NPM_COMPLETION/npm-completion.sh
+
+
