@@ -50,6 +50,7 @@ plugins=(
   docker-compose
   docker-machine
   fzf
+  npm
 ) 
 source $ZSH/oh-my-zsh.sh
 setopt vi
@@ -124,3 +125,7 @@ source ~/.iterm2_shell_integration.zsh
 end=`gdate +%s.%N`
 runtime=$( echo "$end - $start"|bc -l )
 echo "$runtime seconds"
+
+ # added for npm-completion https://github.com/Jephuff/npm-bash-completion
+PATH_TO_NPM_COMPLETION="/Users/maxcoplan/workspace/Prom/node_modules/npm-completion"
+source $PATH_TO_NPM_COMPLETION/npm-completion.sh
