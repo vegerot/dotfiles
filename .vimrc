@@ -27,6 +27,8 @@ call plug#begin('~/.vim/plugged')
     
     Plug '/usr/local/opt/fzf' 
     Plug 'junegunn/fzf.vim'
+    Plug 'junegunn/vim-emoji'
+  
 
     Plug 'scrooloose/nerdtree'
     Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -38,6 +40,7 @@ call plug#begin('~/.vim/plugged')
         autocmd! User youcompleteme.vim YCM()
     Plug 'neoclide/coc.nvim',  {'tag': '*', 'branch': 'release'}
         autocmd! User coc.nvim CocStart()
+    Plug 'neoclide/jsonc.vim' 
 
     Plug 'derekwyatt/vim-scala', {'for': ['scala','sbt', 'java']}
     Plug 'mpollmeier/vim-scalaConceal', {'for': ['scala','sbt', 'java']}
@@ -94,8 +97,8 @@ nnoremap n nzz
 nnoremap N Nzz
 
 "Tab stuff
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 set expandtab
 set smartindent
 set colorcolumn=80
@@ -261,6 +264,11 @@ let g:vim_jsx_pretty_template_tags=['html', 'jsx', 'js', 'javascript']
 let g:vim_jsx_pretty_colorful_config = 1 " default 0
 let g:javascript_plugin_flow = 1
 let g:jsx_ext_required = 0
+let g:gitgutter_sign_added = emoji#for('small_blue_diamond')
+let g:gitgutter_sign_modified = emoji#for('small_orange_diamond')
+let g:gitgutter_sign_removed = emoji#for('small_red_triangle')
+let g:gitgutter_sign_modified_removed = emoji#for('collision')
+set completefunc=emoji#complete
 
 autocmd FileType text set spell
 autocmd FileType json syntax match Comment +\/\/.\+$+
