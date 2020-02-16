@@ -4,6 +4,9 @@ command! -bang -nargs=* Rg
   \   <bang>0 ?  fzf#vim#with_preview('right:50%:hidden')
   \           : fzf#vim#with_preview('right:60%', '?'),
   \   <bang>0)
+ 
+command! -bang -nargs=* Ag
+  \  :Files
 " ex command for toggling hex mode - define mapping if desired
 command -bar Hexmode call ToggleHex()
 
