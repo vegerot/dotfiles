@@ -115,7 +115,8 @@ set shiftwidth=4
 set expandtab
 set smartindent
 set colorcolumn=80
- 
+set textwidth=80 
+
 let g:camelcasemotion_key = '<leader>'
 
 "Number stuff
@@ -129,8 +130,8 @@ set relativenumber
 ""inoremap [ []<left>
 ""inoremap { {}<left>
 ""inoremap {<CR> {<CR>}<ESC>O
-""inoremap <expr> ) strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"noremap {;<CR> {<CR>};<ESC>O
 
+""inoremap <expr> ) strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"noremap {;<CR> {<CR>};<ESC>O
 nnoremap o o   <BS><Esc>:let @6=@*<CR><DEL>:let @*=@6<CR>
 nnoremap O O   <BS><Esc>:let @6=@*<CR><DEL>:let @*=@6<CR>
 
@@ -148,9 +149,10 @@ nmap <silent> t<C-g> :TestVisit<CR>
 let test#strategy = "vimux" 
  
 
-set scrolloff=1
+set scrolloff=15
 set showbreak=↪
 set listchars=tab:→\ ,eol:↲,nbsp:␣,trail:•,extends:⟩,precedes:⟨
+set cpoptions-=_
 
 set foldmethod=indent
 set foldlevelstart=18
@@ -295,10 +297,7 @@ au BufNewFile,BufRead *.py
 "   Pylint
 let python_highlight_all=1
 let g:python_highlight_all = 1
-"set background=dark
-syntax on
-
-
+"syntax on
 au BufRead,BufNewFile *rc.json set filetype=jsonc
 au BufRead,BufNewFile bash-fc-* set filetype=sh
 au BufRead,BufNewFile zsh* set filetype=zsh
