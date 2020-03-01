@@ -50,5 +50,5 @@ xrdb -merge ~/.Xresources
 #doDWM 
 #exec gnome-session --session=gnome-plus-i3  #--disable-acceleration-check
 #exec gnome-session --session=gnome-plus-i3 --disable-acceleration-check "$@"
-exec i3-gnome
-. /etc/X11/xinit/xinitrc
+#exec i3-gnome
+#. /etc/X11/xinit/xinitrc
