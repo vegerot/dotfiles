@@ -136,6 +136,7 @@
 
 	# https://help.github.com/articles/signing-commits-using-gpg/
 	gpgSign = false
+	template = /Users/maxcoplan/.stCommitMsg
 
 [diff]
 
@@ -195,11 +196,17 @@
 [gpg]
 	program = gpg
 [user]
-	email = stillwell006@gmail.com
-	name = Matt Stillwell
+	email = mchcopl@yahoo.com
+	name = Max Coplan
 [credential]
 	helper = store
 [difftool "vscode"]
 	cmd = code-insiders --wait --diff $LOCAL $REMOTE
 [difftool "vimdiff"]
 	path = nvim
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
