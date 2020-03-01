@@ -240,14 +240,16 @@ for_window [class="Spotify"] move to workspace $ws4
 # Make keyboard faster
 exec --no-startup-id xset r rate 168 35
 
-exec xmodmap ~/.Xmodmap
-exec xcape
-exec setxkbmap -option ctrl:nocaps
-exec xcape -e 'Control_L=Escape'
+exec_always xmodmap ~/.Xmodmap
+exec_always xcape
+exec_always setxkbmap -option ctrl:nocaps
+exec_always xcape -e 'Control_L=Escape'
 exec autocutsel -selection CLIPBOARD -fork
 exec autocutsel -selection PRIMARY -fork
 exec xrdb -merge ~/.Xresources
 #exec --always touchegg
 #
 
-#exec_always compton -b 
+#exec_always compton -b#
+#exec_always --no-startup-id gnome-power-manager
+#exec --no-startup-id gnome-flashback
