@@ -21,22 +21,8 @@ call plug#begin('~/.vim/plugged')
 
   "Plug 'Raimondi/delimitMate'
 
-    "Plug 'morhetz/gruvbox'
-    Plug 'joshdick/onedark.vim'
-    Plug 'sheerun/vim-polyglot'
-    Plug 'vim-airline/vim-airline'
-    Plug 'vim-airline/vim-airline-themes'
-    Plug 'edkolev/tmuxline.vim'
-    Plug 'tmux-plugins/vim-tmux'
-    Plug 'christoomey/vim-tmux-navigator'
-    
-    " Vim HardTime
-"    Plug 'takac/vim-hardtime'
-     Plug 'wikitopian/hardmode'
-    
-    
-    Plug '/usr/local/opt/fzf' 
-    Plug 'junegunn/fzf.vim'
+  "Plug 'joshdick/onedark.vim'
+  Plug 'morhetz/gruvbox'
 
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
@@ -62,28 +48,48 @@ call plug#begin('~/.vim/plugged')
     Plug 'neoclide/coc.nvim',  {'tag': '*', 'branch': 'release'}
         autocmd! User coc.nvim CocStart()
 
-    Plug 'derekwyatt/vim-scala', {'for': ['scala','sbt', 'java']}
-    
-    Plug 'keith/swift.vim'
-    
-    Plug 'arnoudbuzing/wolfram-vim'
-    
-    Plug 'hotoo/jsgf.vim'
-    Plug 'yuezk/vim-js'
-    Plug 'maxmellon/vim-jsx-pretty'
-    Plug 'HerringtonDarkholme/yats.vim'
-    Plug 'maxmellon/vim-jsx-pretty'
+  Plug 'airblade/vim-gitgutter'
+   
+  Plug 'luochen1990/rainbow' 
 
-    Plug 'justinmk/vim-syntax-extra'
-    
-    Plug 'nvie/vim-flake8'
-    Plug 'Vimjas/vim-python-pep8-indent'
-    "Plug 'jupyter-vim/jupyter-vim', {'for': ['python'] }
-    Plug 'vim-python/python-syntax'
-    
-    Plug 'google/vim-maktaba'
-    Plug 'google/vim-codefmt'
-    Plug 'google/vim-glaive'
+  "Plug 'ycm-core/YouCompleteMe'
+      autocmd! User youcompleteme.vim YCM()
+  Plug 'neoclide/coc.nvim',  {'tag': '*', 'branch': 'release'}
+      autocmd! User coc.nvim CocStart()
+  Plug 'liuchengxu/vista.vim'
+
+  Plug 'derekwyatt/vim-scala', {'for': ['scala','sbt', 'java']}
+  Plug 'mpollmeier/vim-scalaConceal', {'for': ['scala','sbt', 'java']}
+
+
+  Plug 'keith/swift.vim'
+  Plug 'darfink/vim-plist'
+
+  Plug 'arnoudbuzing/wolfram-vim'
+
+  "Plug 'justinmk/vim-syntax-extra'
+  Plug 'sheerun/vim-polyglot'
+
+  Plug 'hotoo/jsgf.vim'
+  "Plug 'Quramy/vim-js-pretty-template'
+  "Plug 'leafoftree/vim-vue-plugin'
+  Plug 'posva/vim-vue'
+  Plug 'neoclide/jsonc.vim'
+  "Plug 'maxmellon/vim-jsx-pretty'
+  Plug 'HerringtonDarkholme/yats.vim'
+  "Plug 'jonsmithers/vim-html-template-literals'
+  "Plug 'pangloss/vim-javascript'
+
+
+  Plug 'nvie/vim-flake8'
+  Plug 'Vimjas/vim-python-pep8-indent'
+  "Plug 'jupyter-vim/jupyter-vim', {'for': ['python'] }
+  Plug 'vim-python/python-syntax'
+  Plug 'ehamberg/vim-cute-python'
+
+  Plug 'google/vim-maktaba'
+  Plug 'google/vim-codefmt'
+  Plug 'google/vim-glaive'
 
 " All of your Plugs must be added before the following line
 call plug#end()
@@ -175,7 +181,7 @@ let &t_EI.="\e[1 q" "EI = NORMAL mode (ELSE)
 cmap w!! w !sudo tee > /dev/null %
 
 
-set updatetime=400
+set updatetime=100
 "Color config
 "let g:gruvbox_contrast_dark = 'hard'
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
@@ -282,6 +288,8 @@ let g:vim_jsx_pretty_template_tags=['html', 'jsx', 'js', 'javascript']
 let g:vim_jsx_pretty_colorful_config = 1 " default 0
 let g:javascript_plugin_flow = 1
 let g:jsx_ext_required = 0
+ 
+let g:rainbow_active = 1
 
 autocmd FileType text set spell
 autocmd FileType json syntax match Comment +\/\/.\+$+
@@ -303,6 +311,7 @@ au BufRead,BufNewFile bash-fc-* set filetype=sh
 au BufRead,BufNewFile zsh* set filetype=zsh
 au BufRead,BufNewFile README,INSTALL,CREDITS set filetype=markdown
 au BufRead,BufRead * if &syntax == '' | set syntax=sh | endif
+au BufRead,BufNewFile *.json set syntax=jsonc 
 
 "Formatting end
 
