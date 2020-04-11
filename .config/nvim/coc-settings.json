@@ -80,7 +80,9 @@
     "tpope",
     "typeorm",
     "uuidv",
-    "varchar"
+    "varchar",
+    "vuetify",
+    "whoami"
   ],
      "vetur.completion.useScaffoldSnippets": false,
     "vetur.experimental.templateInterpolationService": true,

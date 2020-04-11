@@ -8,10 +8,10 @@ call plug#begin('~/.vim/plugged')
   Plug 'tpope/vim-obsession'
   Plug 'tpope/vim-repeat'
   Plug 'tpope/vim-abolish'
-  Plug 'tpope/vim-dispatch' 
-  Plug 'tpope/vim-commentary' 
+  Plug 'tpope/vim-dispatch'
+  Plug 'tpope/vim-commentary'
    
-  Plug 'benmills/vimux' 
+  Plug 'shumphrey/fugitive-gitlab.vim' 
 
     Plug 'tpope/vim-sensible'
     Plug 'tpope/vim-surround'
@@ -40,6 +40,7 @@ call plug#begin('~/.vim/plugged')
   
   Plug '/usr/local/opt/fzf' 
   Plug 'junegunn/fzf.vim'
+  Plug 'junegunn/vim-emoji'
 
     Plug 'airblade/vim-gitgutter'
     
@@ -112,17 +113,22 @@ set rtp+=/usr/local/opt/fzf
 "Search stuff
 set incsearch
 set hlsearch
+set smartcase 
 nnoremap n nzz
 nnoremap N Nzz
-vnoremap p pgvy 
+vnoremap p pgvy
+ 
+set backupdir=~/.cache/backup// 
+set directory=~/.cache/swap// 
+set undodir=~/.cache/undo// 
 
 "Tab stuff
 set tabstop=2
 set shiftwidth=2
 set expandtab
 set smartindent
-set colorcolumn=80
-set textwidth=80 
+set colorcolumn=100
+set textwidth=80
 
 let g:camelcasemotion_key = '<leader>'
 
@@ -207,7 +213,7 @@ set laststatus=2
 set showcmd
 set wildmenu
 set wildmode=list:longest
-
+ 
 "   Fast window movement
 let i = 1
 while i <= 9
@@ -223,11 +229,25 @@ function! WindowNumber(...)
         return 0
 endfunction
 
+nmap \fi :Vista finder <CR>
+let g:vista_fzf_preview = ['right:50%'] 
+let g:vista#renderer#enable_icon = 1 
+ function! NearestMethodOrFunction(...)
+        let builder = a:1
+        let context = a:2
+        call builder.add_section('airline_b', '%{get(b:, "vista_nearest_method_or_function", "")}')
+        return 0 
+  return get(b:, 'vista_nearest_method_or_function', '')
+endfunction
+ 
 function! Lineair()
     call airline#add_statusline_func('WindowNumber')
     call airline#add_inactive_statusline_func('WindowNumber')
+    call airline#add_statusline_func('NearestMethodOrFunction') 
+    call airline#add_inactive_statusline_func('NearestMethodOrFunction') 
+    let g:airline#extensions#branch#format = 2
     let g:airline_powerline_fonts = 1
-    let g:airline_theme='powerlineish'
+    let g:airline_theme='random'
     silent! call airline#extensions#whitespace#disable()
     "let g:tmuxline_preset = {'z'    : '#track'}
     let g:airline#extensions#tmuxline#enabled = 1
@@ -319,7 +339,22 @@ au BufRead,BufNewFile *.json set syntax=jsonc
 "Nerdy things
 "autocmd StdinReadPre * let s:std_in=1
 "autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-map <C-n> :NERDTreeToggle<CR>
+au FocusGained,BufEnter * if !bufexists("[Command Line]") && mode()!= 'c' | checktime | endif
+let g:NERDTreeWinSize=38
+let g:NERDTreeFileExtensionHighlightFullName = 1
+let g:NERDTreeExactMatchHighlightFullName = 1
+let g:NERDTreePatternMatchHighlightFullName = 1
+let g:NERDTreeHighlightCursorline = 0
+function MyNerdToggle()
+  if &filetype == 'nerdtree'
+    :NERDTreeToggle
+  else
+    :NERDTreeFind
+  endif
+endfunction
+map <C-n> :call MyNerdToggle()<CR>
+ 
+let g:fugitive_gitlab_domains = ['https://git.aoc-pathfinder.cloud'] 
 
 
 source ~/.vimFunctions.vim
