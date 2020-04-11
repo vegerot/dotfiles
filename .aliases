@@ -31,3 +31,5 @@ function locate { mdfind "kMDItemDisplayName == '$@'wc"; }
 export OPENER=open
 
 alias atv=atvremote
+alias webstorm="env TMUX='' webstorm"
+alias ws="env TMUX='' webstorm"
