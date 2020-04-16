@@ -125,9 +125,9 @@
 	<key>NSWindow Frame SUStatusFrame</key>
 	<string>-1800 1163 400 129 -3200 -128 3200 1777 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
-	<string>-1910 1038 620 392 -3200 0 3200 1777 </string>
+	<string>3730 387 620 392 3200 -89 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>3201 284 948 575 3200 -317 1920 1177 </string>
+	<string>-3199 3 1585 879 -3200 0 3200 1777 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>1 531 830 495 0 0 1680 1027 </string>
 	<key>NSWindow Frame iTerm Window 10</key>
@@ -158,7 +158,19 @@
 			<key>ASCII Anti Aliased</key>
 			<true/>
 			<key>ASCII Ligatures</key>
-			<false/>
+			<true/>
+			<key>AWDS Pane Directory</key>
+			<string></string>
+			<key>AWDS Pane Option</key>
+			<string>No</string>
+			<key>AWDS Tab Directory</key>
+			<string></string>
+			<key>AWDS Tab Option</key>
+			<string>No</string>
+			<key>AWDS Window Directory</key>
+			<string></string>
+			<key>AWDS Window Option</key>
+			<string>No</string>
 			<key>Allow Paste Bracketing</key>
 			<true/>
 			<key>Allow Title Reporting</key>
@@ -372,7 +384,7 @@
 			<key>Custom Command</key>
 			<string>No</string>
 			<key>Custom Directory</key>
-			<string>No</string>
+			<string>Recycle</string>
 			<key>Default Bookmark</key>
 			<string>No</string>
 			<key>Description</key>
@@ -1139,7 +1151,7 @@
 			<key>Custom Command</key>
 			<string>No</string>
 			<key>Custom Directory</key>
-			<string>No</string>
+			<string>Recycle</string>
 			<key>Default Bookmark</key>
 			<string>No</string>
 			<key>Description</key>
@@ -1557,6 +1569,7 @@
 		<string>3.3.20200210-nightly</string>
 		<string>3.3.20200304-nightly</string>
 		<string>3.3.3</string>
+		<string>3.3.20200403-nightly</string>
 		<string>3.3.7beta3</string>
 		<string>3.3.20200325-nightly</string>
 		<string>3.3.5beta2</string>
@@ -1565,6 +1578,7 @@
 		<string>3.3.20200106-nightly</string>
 		<string>3.3.7beta1</string>
 		<string>3.3.20200312-nightly</string>
+		<string>3.3.20200402-nightly</string>
 		<string>3.3.20200324-nightly</string>
 		<string>3.3.20200109-nightly</string>
 		<string>3.3.20200122-nightly</string>
@@ -1616,16 +1630,16 @@
 	<key>NoSyncFrame_SharedPreferences</key>
 	<dict>
 		<key>screenFrame</key>
-		<string>{{0, 0}, {3200, 1800}}</string>
+		<string>{{3200, -89}, {1680, 1050}}</string>
 		<key>topLeft</key>
-		<string>{260, 680}</string>
+		<string>{3743, 799}</string>
 	</dict>
 	<key>NoSyncInstallationId</key>
 	<string>9DC9D3B7-246A-48B6-B8DF-FE83CDDAA107</string>
 	<key>NoSyncLastTipTime</key>
-	<real>607547158.46777999</real>
+	<real>608651052.31599295</real>
 	<key>NoSyncLaunchExperienceControllerRunCount</key>
-	<integer>148</integer>
+	<integer>154</integer>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -2460,16 +2474,26 @@
 	<false/>
 	<key>NoSyncTipsToNotShow</key>
 	<array>
-		<string>0006</string>
-		<string>0003</string>
-		<string>0000</string>
-		<string>0007</string>
 		<string>0004</string>
-		<string>0001</string>
-		<string>000</string>
-		<string>0005</string>
-		<string>0002</string>
+		<string>0000</string>
+		<string>0010</string>
 		<string>0008</string>
+		<string>0017</string>
+		<string>0007</string>
+		<string>0003</string>
+		<string>0013</string>
+		<string>0016</string>
+		<string>0006</string>
+		<string>0002</string>
+		<string>000</string>
+		<string>0012</string>
+		<string>0009</string>
+		<string>0005</string>
+		<string>0001</string>
+		<string>0011</string>
+		<string>0015</string>
+		<string>0014</string>
+		<string>0018</string>
 	</array>
 	<key>OpenTmuxWindowsIn</key>
 	<integer>2</integer>
@@ -2549,13 +2573,13 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2020-04-02T19:51:02Z</date>
+	<date>2020-04-15T19:08:32Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SUUpdateGroupIdentifier</key>
-	<integer>2587664595</integer>
+	<integer>2870176841</integer>
 	<key>SUUpdateRelaunchingMarker</key>
-	<true/>
+	<false/>
 	<key>Selection Respects Soft Boundaries</key>
 	<false/>
 	<key>SensitiveScrollWheel</key>
@@ -2589,7 +2613,7 @@
 	<key>findMode_iTerm</key>
 	<integer>0</integer>
 	<key>iTerm Version</key>
-	<string>3.3.20200330-nightly</string>
+	<string>3.3.20200403-nightly</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>0</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>

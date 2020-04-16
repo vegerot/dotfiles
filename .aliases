@@ -15,7 +15,7 @@ alias l='ls -ltrah'
 alias arp="sudo arp"
 alias arp-scan="sudo arp-scan"
 alias nmap="sudo nmap"
-alias grep="grep --color=always"
+alias grep="egrep --color=always"
 alias diff="diff --color=always"
 
 #verbose
@@ -33,3 +33,7 @@ export OPENER=open
 alias atv=atvremote
 alias webstorm="env TMUX='' webstorm"
 alias ws="env TMUX='' webstorm"
+ 
+#git
+alias gco="git ch"
+alias gcf="git chf"
