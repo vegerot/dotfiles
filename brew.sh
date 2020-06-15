@@ -107,25 +107,44 @@ brew install ripgrep
 brew install lolcat
 
 #Install Casks
-brew cask install iterm2
-brew cask install font-hack-nerd-font
-brew cask install intel-power-gadget
-brew cask install karabiner-elements
-brew cask install xquartz
+ 
 brew cask install anaconda
+brew cask install authy
 brew cask install bettertouchtool
-brew cask install visual-studio-code-insiders
+brew cask install discord
 brew cask install docker
-brew cask install spotify
-brew cask install vlc
-brew cask install gimp
-brew cask install stellarium
+brew cask install firefox-developer-edition
+brew cask install firefox-esr
+#brew cask install font-hack-nerd-font
+#brew cask install geekbench
+#brew cask install gimp
+brew cask install google-chrome-beta
+#brew cask install hex-fiend
+#brew cask install impactor
+brew cask install intel-power-gadget
+brew cask install iterm2-nightly
+brew cask install jetbrains-toolbox
+brew cask install karabiner-elements
+brew cask install macvim
+brew cask install microsoft-edge-dev
+brew cask install obs
+brew cask install osxfuse
+brew cask install powershell
 brew cask install setapp
+brew cask install slack-beta
+brew cask install sourcetree
+brew cask install spotify
+brew cask install stellarium
+brew cask install visual-studio-code-insiders
+brew cask install vlc
+brew cask install wireshark
+brew cask install xquartz
 #Redundant because I install the following through setapp:
 #brew cask install bartender
 #brew cask install istat-menus
 #brew cask install wifi-explorer
 #brew cask install cleanmymac
+#brew cask install datagrip 
 
 # Remove outdated versions from the cellar.
 brew cleanup
