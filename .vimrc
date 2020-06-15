@@ -18,6 +18,9 @@ if exists('firstTime')+1 | call plug#begin('~/.vim/plugged')
   Plug 'mbbill/undotree' 
 
   Plug 'benmills/vimux'
+   
+   
+  Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 
   Plug 'bkad/CamelCaseMotion'
   "Plug 'easymotion/vim-easymotion'
@@ -41,10 +44,6 @@ if exists('firstTime')+1 | call plug#begin('~/.vim/plugged')
 
   Plug 'vim-test/vim-test'
 
-  " Vim HardTime
-  "Plug 'phux/vim-hardtime'
-  autocmd! User vim-hardtime.vim HT()
-
   Plug '/usr/local/opt/fzf'
   Plug 'junegunn/fzf.vim'
   Plug 'junegunn/vim-emoji'
@@ -57,6 +56,10 @@ if exists('firstTime')+1 | call plug#begin('~/.vim/plugged')
   "Plug 'airblade/vim-gitgutter'
 
   "Plug 'luochen1990/rainbow'
+   
+  " Vim HardTime
+  "Plug 'phux/vim-hardtime'
+      autocmd! User vim-hardtime.vim HT()
 
   "Plug 'ycm-core/YouCompleteMe'
   autocmd! User youcompleteme.vim YCM()
