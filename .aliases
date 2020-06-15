@@ -19,10 +19,8 @@ alias grep="egrep --color=always"
 alias diff="diff --color=always"
 
 #verbose
-alias rm="rm -v"
-alias mv="mv -v"
-alias cp="cp -v"
 alias ln="ln -v"
+alias mkdir="mkdir -pv" 
 
 export iCloud="$HOME/Library/Mobile\\ Documents/com\~apple\~CloudDocs/"
 export workspace=$HOME/Documents/workspace
@@ -33,7 +31,25 @@ export OPENER=open
 alias atv=atvremote
 alias webstorm="env TMUX='' webstorm"
 alias ws="env TMUX='' webstorm"
- 
+
 #git
-alias gco="git ch"
-alias gcf="git chf"
+alias gch="git ch" 
+alias gco="git c"
+alias gcf="git cf"
+unalias glo 
+alias glo="git lo" 
+unalias gl 
+function gl () {
+  if git pull -ff ; then
+    return
+  else 
+    git rebase --abort
+    if git pull ; then
+      return
+    else 
+      git rebase --abort
+      git pull --rebase=false
+    fi
+  fi
+} 
+#alias gl="git pull -ff || git rebase --abort && git pull || git rebase --abort && git pull --rebase=false"
