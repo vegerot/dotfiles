@@ -71,6 +71,10 @@ zle-keymap-select () {
         echo -ne "\e[5 q"
     fi
 }
+#  
+# Bind j and k for in vim mode
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
 #
 if [[ $'\e\x5b3D' == "$(echoti cub 3)" ]] &&
    [[ $'\e\x5b33m' == "$(echoti setaf 3)" ]]; then

@@ -10,3 +10,4 @@ export PYTHONPATH='$HOME/Library/Python/3.7/bin'
 export NODE_PATH='$NODE_PATH:/usr/local/lib/node_modules'
 export PATH="/usr/local/opt/ruby/bin:$PATH"
 export PATH="$PATH:$HOME/.nimble/bin" 
+export PATH="$PATH:/Applications/Wireshark.app/Contents/MacOS/" 
