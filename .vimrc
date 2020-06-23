@@ -18,8 +18,7 @@ if exists('firstTime')+1 | call plug#begin('~/.vim/plugged')
   Plug 'mbbill/undotree' 
 
   Plug 'benmills/vimux'
-   
-   
+
   Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 
   Plug 'bkad/CamelCaseMotion'
@@ -48,7 +47,7 @@ if exists('firstTime')+1 | call plug#begin('~/.vim/plugged')
   Plug 'junegunn/fzf.vim'
   Plug 'junegunn/vim-emoji'
 
-  Plug 'scrooloose/nerdtree'
+  Plug 'schoolhouse/nerdtree'
   "Plug 'ryanoasis/vim-devicons'
   "Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
   Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -56,7 +55,7 @@ if exists('firstTime')+1 | call plug#begin('~/.vim/plugged')
   "Plug 'airblade/vim-gitgutter'
 
   "Plug 'luochen1990/rainbow'
-   
+
   " Vim HardTime
   "Plug 'phux/vim-hardtime'
       autocmd! User vim-hardtime.vim HT()
@@ -138,7 +137,7 @@ set shiftwidth=2
 set expandtab
 set smartindent
 set colorcolumn=100
-set textwidth=80
+"set textwidth=80
 
 let g:camelcasemotion_key='<leader>'
 
@@ -155,8 +154,8 @@ set relativenumber
 ""inoremap {<CR> {<CR>}<ESC>O
 
 ""inoremap <expr> ) strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"noremap {;<CR> {<CR>};<ESC>O
-nnoremap o o<SPACE><SPACE><SPACE><BS><Esc>:let @6=@*<CR><DEL>:let @*=@6<CR>
-nnoremap O O<SPACE><SPACE><SPACE><BS><Esc>:let @6=@*<CR><DEL>:let @*=@6<CR>
+"nnoremap o o<SPACE><SPACE><SPACE><BS><Esc>:let @6=@*<CR><DEL>:let @*=@6<CR>
+"nnoremap O O<SPACE><SPACE><SPACE><BS><Esc>:let @6=@*<CR><DEL>:let @*=@6<CR>
 
 
 nnoremap gF :wincmd f <CR>
@@ -181,7 +180,9 @@ set undofile
 
 set scrolloff=15
 set showbreak=↪
-set listchars=tab:→\ ,eol:↲,nbsp:␣,trail:•,extends:⟩,precedes:⟨
+"set listchars=tab:→\ ,eol:↲,nbsp:␣,trail:•,extends:⟩,precedes:⟨
+set listchars=nbsp:␣,trail:•,extends:⟩,precedes:⟨
+set list 
 set cpoptions-=_
 
 set foldmethod=indent
@@ -243,7 +244,9 @@ function! WindowNumber(...)
   return 0
 endfunction
 
-nmap \fi :Vista finder <CR>
+let g:vista_default_executive="coc"
+nmap <C-s> :Vista!!<CR>
+nmap <leader>l :Vista finder<CR>
 let g:vista_fzf_preview = ['right:50%'] 
 let g:vista#renderer#enable_icon = 1 
 function! NearestMethodOrFunction(...)
@@ -413,16 +416,8 @@ let g:firenvim_config = {
 let firenvim_config['.*'] = { 'takeover': 'never' }
 
 source ~/.vimFunctions.vim
-"let g:gruvbox_contrast_dark = 'hard'
-"colorscheme gruvbox
-colorscheme onedark
-let g:onedark_hide_endofbuffer=1
-let g:onedark_terminal_italics=1
-let g:onedark_termcolors=16
-"set background=dark
-set background=dark
-highlight Normal ctermfg=7 ctermbg=0 guibg=black guifg=white
-set background=dark
+set mouse=a 
+
 
 set title
 set clipboard=unnamed,unnamedplus

@@ -71,8 +71,11 @@ autocmd CursorHold * call CocActionAsync('highlight')
 nmap <leader>rn <Plug>(coc-rename)
 
 " Remap for format selected region
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
+vmap <leader>f  <Plug>(coc-format-selected)
+"nmap <leader>f  <Plug>(coc-format-selected)
+
+nmap <leader>f  :CocCommand eslint.executeAutofix<CR>
+nmap <A-S-f>  :CocCommand eslint.executeAutofix<CR>
 
 augroup mygroup
   autocmd!
@@ -135,8 +138,6 @@ nnoremap  <space>e  :<C-u>CocList extensions<cr>
 nnoremap  <space>c  :<C-u>CocList commands<cr>
 " Find symbol of current document
 nnoremap  <space>o  :<C-u>CocList outline<cr>
-let g:vista_default_executive="coc"
-nmap <C-s> :Vista!!<CR>
 " Search workspace symbols
 nnoremap  <space>s  :<C-u>CocList -I symbols<cr>
 " Do default action for next item.
@@ -154,3 +155,4 @@ command! -nargs=0 MetalsImport :call CocRequestAsync('metals', 'workspace/execut
 " Manually connect with the build server
 command! -nargs=0 MetalsConnect :call CocRequestAsync('metals', 'workspace/executeCommand', { 'command': 'build-connect' })
 nmap <Leader>es <Plug>(coc-metals-expand-decoration)
+set showbreak=↪
