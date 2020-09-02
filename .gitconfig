@@ -27,14 +27,14 @@
     ca = !git add -A && git commit -av
 
 	# Checkout fast
-    c = !"git branch -a | grep -v remotes | grep -i -m1 --color=never $1 | xargs -I {} sh -c \" echo {}; git checkout {}\""
+    c = !"git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/|sed -e 's-refs/heads/--'| grep -i -m1 --color=never $1 | xargs -I {} sh -c \" echo {}; git checkout {} ${@:2}\""
 
 	# Checkout fuzzy
-    cf = !"git checkout $(git branch -a | fzf)"
+    cf = !"git checkout $(git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/|sed -e 's-refs/heads/--'| fzf) $@"
 
 	# Switch to a branch, creating it if necessary
     go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f"
-   
+  
 	# Basic checkout
     ch = checkout
 	# Show verbose output about tags, branches or remotes

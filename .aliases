@@ -33,6 +33,7 @@ alias webstorm="env TMUX='' webstorm"
 alias ws="env TMUX='' webstorm"
 
 #git
+alias g.="git add -p"
 alias gch="git ch" 
 alias gco="git c"
 alias gcf="git cf"
@@ -40,16 +41,17 @@ unalias glo
 alias glo="git lo" 
 unalias gl 
 function gl () {
-  if git pull -ff ; then
+  if git pull -ff "$@"; then
     return
   else 
     git rebase --abort
-    if git pull ; then
+    if git pull "$@"; then
       return
     else 
       git rebase --abort
-      git pull --rebase=false
+      git pull --rebase=false "$@"
     fi
   fi
 } 
+source bin/clone
 #alias gl="git pull -ff || git rebase --abort && git pull || git rebase --abort && git pull --rebase=false"
