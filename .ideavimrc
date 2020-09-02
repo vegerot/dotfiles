@@ -3,6 +3,9 @@ set surround
 set multiple-cursors
 set commentary
 set argtextobs 
+set highlightedyank
+
+let g:highlightedyank_highlight_duration=69
 
 set ignorecase
 set smartcase
@@ -88,9 +91,11 @@ nmap gcc :action CommentByLineComment<cr>
 nnoremap n nzz
 nnoremap N Nzz
 vnoremap p pgvy
- 
-nmap <C-l> <C-w>l 
+
+nmap <C-l> <C-w>l
 nmap <C-h> <C-w>h
+nmap <C-j> <C-w>j
+nmap <C-k> <C-w>k
 
 nmap <C-]> :action GotoNextError<cr>
 nmap <C-[> :action GotoPreviousError<cr>

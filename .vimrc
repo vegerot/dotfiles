@@ -47,7 +47,7 @@ if exists('firstTime')+1 | call plug#begin('~/.vim/plugged')
   Plug 'junegunn/fzf.vim'
   Plug 'junegunn/vim-emoji'
 
-  Plug 'schoolhouse/nerdtree'
+  Plug 'preservim/nerdtree'
   "Plug 'ryanoasis/vim-devicons'
   "Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
   Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -116,6 +116,11 @@ let g:netrw_banner = 0
 let g:netrw_altv = 1
 let g:netrw_winsize = 25
 set rtp+=/usr/local/opt/fzf
+" Enable per-command history
+" - History files will be stored in the specified directory
+" - When set, CTRL-N and CTRL-P will be bound to 'next-history' and
+"   'previous-history' instead of 'down' and 'up'.
+let g:fzf_history_dir = '~/.local/share/fzf-history'
 
 
 "Search stuff
@@ -177,6 +182,8 @@ imap <C-j> <C-n>
 
 nmap <leader>u :UndotreeShow<CR>
 set undofile
+
+nmap <SPACE> elf<SPACE>
 
 set scrolloff=15
 set showbreak=↪
@@ -270,6 +277,8 @@ function! Lineair()
   "let g:tmuxline_preset = {'z'    : '#track'}
   let g:airline#extensions#tmuxline#enabled = 1
   let g:airline#extensions#tabline#enabled = 1
+  let g:airline_stl_path_style = 'short'
+  let g:airline_extensions = []
   return 0
 endfunction
 "Window end
@@ -418,6 +427,8 @@ let firenvim_config['.*'] = { 'takeover': 'never' }
 source ~/.vimFunctions.vim
 set mouse=a 
 
+let g:airline_stl_path_style = 'short'
+let g:airline_extensions = []
 
 set title
 set clipboard=unnamed,unnamedplus

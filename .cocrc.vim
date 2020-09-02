@@ -52,6 +52,8 @@ nmap  gy <Plug>(coc-type-definition)
 nmap  gi <Plug>(coc-implementation)
 nmap  gr <Plug>(coc-references)
 
+nnoremap <space>y  :<C-u>CocList -A --normal yank<cr>
+
 " Use K to show documentation in preview window
 nnoremap  K :call <SID>show_documentation()<CR>
 nnoremap <C-S-K> :execute &keywordprg expand("<cword>")<CR>
