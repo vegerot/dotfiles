@@ -1,4 +1,3 @@
-set easymotion
 set surround
 set multiple-cursors
 set commentary
@@ -38,8 +37,8 @@ set timeoutlen=1000 ttimeoutlen=1
 
 let mapleader = "\""
 
-imap ,. <Esc>
-vmap ,. <Esc>
+imap kj <Esc>
+vmap kj <Esc>
 
 " Use Q for formatting the current paragraph (or visual selection)
 vmap Q gq

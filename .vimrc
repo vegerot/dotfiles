@@ -192,8 +192,8 @@ set listchars=nbsp:␣,trail:•,extends:⟩,precedes:⟨
 set list 
 set cpoptions-=_
 
-set foldmethod=indent
-set foldlevelstart=18
+set foldmethod=syntax 
+set foldlevelstart=7
 "Cursor Mode stuff
 
 let &t_SI.="\e[5 q" "SI = INSERT mode
