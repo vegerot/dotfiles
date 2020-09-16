@@ -103,8 +103,8 @@ omap if <Plug>(coc-funcobj-i)
 omap af <Plug>(coc-funcobj-a)
 
 " Use <C-S-s> for select selections ranges, needs server support, like: coc-tsserver, coc-python
-nmap  <C-S-s> <Plug>(coc-range-select)
-xmap  <C-S-s> <Plug>(coc-range-select)
+nmap  <C-S-S> <Plug>(coc-range-select)
+xmap  <C-S-S> <Plug>(coc-range-select)
 
 " Use `:Format` to format current buffer
 command! -nargs=0 Format :call CocAction('format')
@@ -125,7 +125,7 @@ nnoremap <leader>te :call CocAction('runCommand', 'jest.singleTest')<CR>
 " Init jest in current cwd, require global jest command exists
 command! JestInit :call CocAction('runCommand', 'jest.init')
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
- 
+
 
 " Add status line support, for integration with other plugin, checkout `:h coc-status`
 "set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
@@ -140,6 +140,8 @@ nnoremap  <space>e  :<C-u>CocList extensions<cr>
 nnoremap  <space>c  :<C-u>CocList commands<cr>
 " Find symbol of current document
 nnoremap  <space>o  :<C-u>CocList outline<cr>
+let g:vista_default_executive="coc"
+nmap <leader><C-s> :Vista!!<CR>
 " Search workspace symbols
 nnoremap  <space>s  :<C-u>CocList -I symbols<cr>
 " Do default action for next item.
