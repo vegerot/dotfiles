@@ -52,5 +52,4 @@ function gl () {
     fi
   fi
 } 
-source bin/clone
 #alias gl="git pull -ff || git rebase --abort && git pull || git rebase --abort && git pull --rebase=false"
