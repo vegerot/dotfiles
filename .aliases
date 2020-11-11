@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 . ~/bin/autoAlias.sh
 . ~/.exports
 
@@ -6,23 +7,20 @@ alias learn='~/bin/cowCommand.sh'
 #alias ls='ls -FGh'
 alias vi=nvim
 alias vim=nvim
+alias vimdiff='nvim -d'
 alias python=python3
 alias pip=pip3
 alias abash='bash -l'
 alias l='ls -ltrah'
-alias trash=mvtrash
 alias arp="sudo arp"
 alias arp-scan="sudo arp-scan"
 alias nmap="sudo nmap"
-alias grep="grep --color=always"
+alias grep="egrep --color=always"
 alias diff="diff --color=always"
 
 #verbose
-alias rm="rm -v"
-alias mv="mv -v"
-alias cp="cp -v"
 alias ln="ln -v"
-alias mkdir="mkdir -v"
+alias mkdir="mkdir -pv" 
 
 export iCloud="$HOME/Library/Mobile\\ Documents/com\~apple\~CloudDocs/"
 export workspace=$HOME/Documents/workspace
@@ -30,3 +28,29 @@ export PYTHONPATH=$HOME/Library/Python/3.7/bin:$HOME/Documents/workspace/manim2/
 export OPENER=open
 
 alias atv=atvremote
+alias webstorm="env TMUX='' webstorm"
+alias ws="env TMUX='' webstorm"
+
+#git
+alias g.="git add -p"
+alias gch="git ch" 
+alias gco="git c"
+alias gcf="git cf"
+unalias glo 
+alias glo="git lo" 
+unalias gl 
+function gl () {
+  if git pull -ff "$@"; then
+    return
+  else 
+    git rebase --abort
+    if git pull "$@"; then
+      return
+    else 
+      git rebase --abort
+      git pull --rebase=false "$@"
+    fi
+  fi
+} 
+source bin/clone
+#alias gl="git pull -ff || git rebase --abort && git pull || git rebase --abort && git pull --rebase=false"

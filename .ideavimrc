@@ -1,0 +1,101 @@
+set easymotion
+set surround
+set multiple-cursors
+set commentary
+set argtextobs 
+set highlightedyank
+
+let g:highlightedyank_highlight_duration=69
+
+set ignorecase
+set smartcase
+set scrolloff=15
+set ideajoin
+ 
+
+" Integrate with system clipboard
+set clipboard=unnamedplus,unnamed,ideaput
+ 
+"Search stuff
+set incsearch
+set hlsearch
+ 
+set visualbell
+set noerrorbells
+ 
+"Tab stuff
+set tabstop=2
+set shiftwidth=2
+set colorcolumn=80
+set textwidth=80 
+ 
+set nu
+set relativenumber
+ 
+set title
+set showcmd
+set timeoutlen=1000 ttimeoutlen=1
+
+let mapleader = "\""
+
+imap ,. <Esc>
+vmap ,. <Esc>
+
+" Use Q for formatting the current paragraph (or visual selection)
+vmap Q gq
+nmap Q gqap
+
+" These create newlines like o and O but stay in normal mode
+nmap zj o<Esc>k
+nmap zk O<Esc>j
+ 
+nmap <leader>w [w 
+nmap <leader>e ]w 
+nmap <leader>b [b 
+nmap <leader>ge ]b 
+
+" key bindings for quickly moving between windows
+" h left, l right, k up, j down
+nmap <leader>h <c-w>h
+nmap <leader>l <c-w>l
+nmap <leader>k <c-w>k
+nmap <leader>j <c-w>j
+
+nmap <leader>g :action GotoDeclaration<cr>
+nmap <leader>b :action Back<cr>
+nmap <leader>f :action Forward<cr>
+
+nmap <leader>t :action GotoFile<cr>
+nmap <leader>c :action GotoClass<cr>
+nmap <leader>ns :action GotoSymbol<cr>
+nmap <leader>nm :action FileStructurePopup<cr>
+nmap <leader>d :action ShowErrorDescription<cr>
+nmap == :action ReformatCode<cr> 
+
+nmap <leader>rn :action RenameElement<cr>
+nmap <leader>rf :action Refactorings.QuickListPopupAction<cr>
+nmap <leader>qf :action QuickFixes<cr>
+nmap <leader>ac :action ShowIntentionActions<cr>
+command Git action Vcs.QuickListPopupAction 
+command G action Git.Menu
+command Gco action Git.Branches
+ 
+
+" Switches between .cc and .h file!
+nmap <leader>s :action GotoRelated<cr>
+
+" Won't work in visual mode (with vmap) for some reason.
+" Use default map of <c-/> for that.
+nmap gcc :action CommentByLineComment<cr>
+ 
+nnoremap n nzz
+nnoremap N Nzz
+vnoremap p pgvy
+
+nmap <C-l> <C-w>l
+nmap <C-h> <C-w>h
+nmap <C-j> <C-w>j
+nmap <C-k> <C-w>k
+
+nmap <C-]> :action GotoNextError<cr>
+nmap <C-[> :action GotoPreviousError<cr>
