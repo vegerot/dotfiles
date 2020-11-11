@@ -1,19 +1,179 @@
 {
-    "languageserver": {
-        "clangd": {
-            "command": "/usr/lib/llvm-9/bin/clangd",
-            "args": ["--background-index"],
-            "rootPatterns": ["compile_flags.txt", "compile_commands.json", ".vim/", ".git/", ".hg/"],
-            "filetypes": ["c", "cpp", "objc", "objcpp"]
-        },
-        "metals": {
-            "command": "metals-vim",
-            "rootPatterns": ["build.sbt"],
-            "filetypes": ["scala", "sbt"]
-        }
-    },
-    "java.home": "/Library/Java/JavaVirtualMachines/openjdk-13.jdk/Contents/Home",
-
-    "coc.preferences.formatOnType": true,
-    "coc.preferences.formatOnSaveFiletypes": ["js"]
+   "languageserver": {
+      "clangd": {
+         "command": "/usr/local/opt/llvm/bin/clangd",
+         "args": [
+            "--background-index"
+         ],
+         "rootPatterns": [
+            "compile_flags.txt",
+            "compile_commands.json",
+            ".vim/",
+            ".git/",
+            ".hg/"
+         ],
+         "filetypes": [
+            "c",
+            "cpp",
+            "objc",
+            "objcpp"
+         ]
+      },
+      //"metals": {
+      //    "command": "metals-vim",
+      //    "rootPatterns": ["build.sbt"],
+      //    "filetypes": ["scala", "sbt"]
+      //},
+      "flow": {
+         "command": "/usr/local/bin/flow",
+         "args": [
+            "lsp"
+         ],
+         "filetypes": [
+            "javascript",
+            "javascriptreact"
+         ],
+         "initializationOptions": {},
+         "requireRootPattern": true,
+         "rootPatterns": [
+            ".flowconfig"
+         ]
+      }
+   },
+   "java.home": "/Library/Java/JavaVirtualMachines/openjdk-13.0.0.jdk/Contents/Home",
+   "coc.preferences.formatOnType": true,
+   "coc.preferences.formatOnSaveFiletypes": [
+      "javascript",
+      "js",
+      "html",
+      "Markdown",
+      "css",
+      "scala"
+   ],
+   "yank.highlight.duration":69,
+   "eslint.enable": true,
+   "eslint.run": "onType",
+   "eslint.autoFixOnSave": true,
+   "eslint.filetypes": [
+      "javascript",
+      "typescript",
+      "typescriptreact",
+      "javascriptreact",
+      "typescript.tsx",
+      "vue"
+   ],
+   "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
+   "cSpell.userWords": [
+    "Avaito",
+    "Coplan",
+    "DGRAM",
+    "Darkholme",
+    "INET",
+    "IPPROTO",
+    "Interop",
+    "Neovim",
+    "Pylint",
+    "Quramy",
+    "Raimondi",
+    "Referer",
+    "Timeframe",
+    "UNSPEC",
+    "VCAP",
+    "Vimrc",
+    "Vuex",
+    "Xuyuanp",
+    "aircrafts",
+    "arnoudbuzing",
+    "autofix",
+    "aviato",
+    "bkad",
+    "blns",
+    "camelcase",
+    "christoomey",
+    "clangd",
+    "cocrc",
+    "deepmerge",
+    "easymotion",
+    "edkolev",
+    "ehamberg",
+    "endofbuffer",
+    "eqeqeq",
+    "ffenc",
+    "figma",
+    "firenvim",
+    "fvictorio",
+    "gitlab",
+    "glacambre",
+    "gruvbox",
+    "highlightedyank",
+    "hlsearch",
+    "hotoo",
+    "ipaddr",
+    "ipaddress",
+    "jsgf",
+    "jspretmpl",
+    "junegunn",
+    "jupyter",
+    "justinmk",
+    "krid",
+    "leafoftree",
+    "liuchengxu",
+    "llvm",
+    "luochen",
+    "maktaba",
+    "mbbill",
+    "mcoplan",
+    "mixins",
+    "morhetz",
+    "mpollmeier",
+    "multiline",
+    "neoclide",
+    "nestjs",
+    "nvie",
+    "nvim",
+    "pgvy",
+    "phux",
+    "plist",
+    "postgres",
+    "postgresql",
+    "posva",
+    "proto",
+    "readonly",
+    "sheerun",
+    "shumphrey",
+    "solargraph",
+    "stylelint",
+    "tabnine",
+    "tiagofumo",
+    "timestamptz",
+    "tinycolor",
+    "tpope",
+    "trippin",
+    "typeorm",
+    "uuidv",
+    "varchar",
+    "vetur",
+    "vimlsp",
+    "vimux",
+    "vuetify",
+    "whoami",
+    "wordlist",
+    "yats",
+    "youcompleteme"
+  ],
+     "vetur.completion.useScaffoldSnippets": false,
+    "vetur.experimental.templateInterpolationService": true,
+    "vetur.format.defaultFormatter.ts":"vscode-typescript",
+    "git.addGBlameToVirtualText": true, 
+    "git.gitlab.hosts": ["https://git.aoc-pathfinder.cloud"],
+    //"git.addedSign.text": "💚" ,
+    //"git.removedSign.text": "🟥" ,
+    //"git.changedSign.text": "🔹" ,
+    //"git.changeRemovedSign.text": "💥" ,
+    "codeLens.enable": true,
+    "tabnine.priority": 69,
+    "tsserver.execArgv": ["--nolazy", "--inspect-brk"],
+    "tsserver.trace.server": "verbose",
+     
+     
 }
