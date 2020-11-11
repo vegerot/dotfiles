@@ -90,7 +90,6 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 source "$HOME/.fzf-extras/fzf-extras.zsh"
 source "$HOME/.fzf-extras/fzf-extras.sh"
-. /usr/local/etc/profile.d/autojump.sh
 
 
 mkcdir ()
