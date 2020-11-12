@@ -39,6 +39,7 @@ alias gco="git c"
 alias gcf="git cf"
 unalias glo 
 alias glo="git lo" 
+alias gbv="git bv"
 unalias gl 
 function gl () {
   if git pull -ff "$@"; then
@@ -53,5 +54,8 @@ function gl () {
     fi
   fi
 } 
-source bin/clone
+doc () {
+        open dash://"$@"
+}
+source ~/bin/clone
 #alias gl="git pull -ff || git rebase --abort && git pull || git rebase --abort && git pull --rebase=false"

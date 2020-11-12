@@ -12,6 +12,7 @@ if exists('firstTime')+1 | call plug#begin('~/.vim/plugged')
   Plug 'tpope/vim-commentary'
   Plug 'tpope/vim-unimpaired'
 
+  Plug 'tpope/vim-rhubarb'
   Plug 'shumphrey/fugitive-gitlab.vim' 
   Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 
@@ -47,6 +48,8 @@ if exists('firstTime')+1 | call plug#begin('~/.vim/plugged')
   Plug 'junegunn/fzf.vim'
   Plug 'junegunn/vim-emoji'
 
+  Plug 'rizzatti/dash.vim'
+
   Plug 'preservim/nerdtree'
   "Plug 'ryanoasis/vim-devicons'
   "Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
@@ -61,8 +64,8 @@ if exists('firstTime')+1 | call plug#begin('~/.vim/plugged')
       autocmd! User vim-hardtime.vim HT()
 
   "Plug 'ycm-core/YouCompleteMe'
-  autocmd! User youcompleteme.vim YCM()
-  Plug 'neoclide/coc.nvim',  {'tag': '*', 'branch': 'release'}
+  " autocmd! User youcompleteme.vim YCM()
+  Plug 'neoclide/coc.nvim',  {'branch': 'release'}
   autocmd! User coc.nvim CocStart()
   Plug 'liuchengxu/vista.vim'
 
@@ -216,8 +219,8 @@ cmap w!! w !sudo tee > /dev/null %
 set updatetime=1000
 "Color config
 "let g:gruvbox_contrast_dark = 'hard'
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-set termguicolors
+" let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+" set termguicolors
 "let g:onedark_hide_endofbuffer=1
 let g:onedark_terminal_italics=1
 "let g:onedark_termcolors=256
@@ -405,7 +408,10 @@ map <C-n> :call MyNerdToggle()<CR>
 "Fugitive 
 let g:fugitive_gitlab_domains = ['https://git.aoc-pathfinder.cloud'] 
 nmap <leader>gs :Git<CR>
-nmap gh :diffget //2 \| diffupdate<CR>
+" `gh` is the hover action in VSCode
+if (!exists('plug'))
+  nmap gh :diffget //2 \| diffupdate<CR>
+endif
 nmap gl :diffget //3 \| diffupdate<CR>
 "note: you can do `dp` on one of the sides to pick that side 
 
