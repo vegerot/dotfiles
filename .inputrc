@@ -3,6 +3,12 @@
 ## arrow down
 "\e[B":history-search-forward
 
+set keymap vi-command
+Control-l: clear-screen
+
+set keymap vi-insert
+Control-l: clear-screen
+
 set colored-stats On
 set completion-prefix-display-length 3
 set mark-symlinked-directories  On

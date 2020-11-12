@@ -25,7 +25,6 @@ alias mkdir="mkdir -pv"
 export iCloud="$HOME/Library/Mobile\\ Documents/com\~apple\~CloudDocs/"
 export workspace=$HOME/Documents/workspace
 export PYTHONPATH=$HOME/Library/Python/3.7/bin:$HOME/Documents/workspace/manim2/manim/:$HOME/Documents/workspace/manim2/manim/manimlib
-function locate { mdfind "kMDItemDisplayName == '$@'wc"; }
 export OPENER=open
 
 alias atv=atvremote
@@ -54,8 +53,4 @@ function gl () {
     fi
   fi
 } 
-doc () {
-        open dash://"$@"
-}
-source ~/bin/clone
 #alias gl="git pull -ff || git rebase --abort && git pull || git rebase --abort && git pull --rebase=false"

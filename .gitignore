@@ -1,5 +1,6 @@
 # Compiled Python files
 *.pyc
+node_modules
 
 # Folder view configuration files
 .DS_Store
