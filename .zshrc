@@ -20,11 +20,11 @@ fpath=(/usr/local/share/zsh-completions /usr/local/share/zsh-completions/conda-z
 #setopt LOCAL_OPTIONS NO_NOTIFY 
 autoload -U +X compinit && compinit
 autoload -U +X bashcompinit && bashcompinit
-autoload -U promptinit && promptinit       
-autoload -Uz run-help                      
-autoload -Uz run-help-git                  
-autoload -Uz run-help-svn                  
-autoload -Uz run-help-svk                  
+autoload -U promptinit && promptinit
+autoload -Uz run-help
+# autoload -Uz run-help-git
+# autoload -Uz run-help-svn
+# autoload -Uz run-help-svk
 unalias run-help
 alias help=run-help
 #
@@ -116,6 +116,7 @@ zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 local return_code="%(?..%{$fg_bold[red]%}%? ↵%{$reset_color%})"
 RPS1="${return_code}"
 
+eval "$(gh completion -s zsh)"
 source ~/.iterm2_shell_integration.zsh
 #
 eval "$(jenv init -)"

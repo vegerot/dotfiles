@@ -38,7 +38,38 @@
          "rootPatterns": [
             ".flowconfig"
          ]
-      }
+      },
+      /* "python": { */
+      /*   "command": "python", */
+      /*   "args": [ */
+      /*     "-mpyls", */
+      /*     "-vv", */
+      /*     "--log-file", */
+      /*     "/tmp/lsp_python.log" */
+      /*   ], */
+      /*   "trace.server": "verbose", */
+      /*   "filetypes": [ */
+      /*     "python" */
+      /*   ], */
+      /*   "settings": { */
+      /*     "pyls": { */
+      /*       "enable": true, */
+      /*       "trace": { */
+      /*         "server": "verbose" */
+      /*       }, */
+      /*       "commandPath": "", */
+      /*       "configurationSources": [ */
+      /*         "pycodestyle" */
+      /*       ], */
+      /*       "plugins": { */
+      /*        "pyls_mypy": { */
+      /*          "enabled": true, */
+      /*          "live_mode":true */
+      /*        } */
+      /*       } */
+      /*     } */
+      /*   } */
+      /* } */
    },
    "java.home": "/Library/Java/JavaVirtualMachines/openjdk-13.0.0.jdk/Contents/Home",
    "coc.preferences.formatOnType": true,
@@ -68,19 +99,25 @@
     "Coplan",
     "DGRAM",
     "Darkholme",
+    "Glazar",
     "INET",
     "IPPROTO",
     "Interop",
+    "Lifecycles",
+    "Microfrontends",
     "Neovim",
     "Pylint",
+    "QLJS",
     "Quramy",
     "Raimondi",
     "Referer",
+    "Staticfile",
     "Timeframe",
     "UNSPEC",
     "VCAP",
     "Vimrc",
     "Vuex",
+    "Wzero",
     "Xuyuanp",
     "aircrafts",
     "arnoudbuzing",
@@ -88,11 +125,14 @@
     "aviato",
     "bkad",
     "blns",
+    "btns",
+    "bufnr",
     "camelcase",
     "christoomey",
     "clangd",
     "cocrc",
     "deepmerge",
+    "devtool",
     "easymotion",
     "edkolev",
     "ehamberg",
@@ -116,6 +156,7 @@
     "jupyter",
     "justinmk",
     "krid",
+    "lcov",
     "leafoftree",
     "liuchengxu",
     "llvm",
@@ -123,7 +164,10 @@
     "maktaba",
     "mbbill",
     "mcoplan",
+    "microfrontend",
+    "microservices",
     "mixins",
+    "mkdir",
     "morhetz",
     "mpollmeier",
     "multiline",
@@ -138,11 +182,15 @@
     "postgresql",
     "posva",
     "proto",
+    "qflist",
     "readonly",
+    "rerender",
     "sheerun",
     "shumphrey",
     "solargraph",
+    "sourcemap",
     "stylelint",
+    "systemjs",
     "tabnine",
     "tiagofumo",
     "timestamptz",
@@ -156,6 +204,7 @@
     "vimlsp",
     "vimux",
     "vuetify",
+    "websockets",
     "whoami",
     "wordlist",
     "yats",
