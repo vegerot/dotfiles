@@ -1,10 +1,10 @@
-start=`gdate +%s.%N`
-#
-## If you come from bash you might have to change your $PATH.
+start=`date +%s.%N`
+
+# If you come from bash you might have to change your $PATH.
 ##Open Tmux
 source ~/.profile
-~/bin/cowCommand.sh
 source ~/.paths.sh
+~/bin/cowCommand.sh
 #
 ## Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -36,12 +36,10 @@ alias help=run-help
 #fi
 plugins=(
   git
-  osx
   colored-man-pages
   colorize
   pip
   python
-  brew
   vi-mode  
   zsh-syntax-highlighting
   history-substring-search
@@ -57,11 +55,11 @@ setopt vi
 autoload -U edit-command-line
 zle -N edit-command-line
 ## 10ms for key sequences
-#KEYTIMEOUT=1
+KEYTIMEOUT=1
 bindkey -M vicmd "" edit-command-line
-#
+
 precmd_functions+=(zle-keymap-select)
-#
+
 zle-keymap-select () {
     if [[ $KEYMAP == vicmd ]]; then
         # the command mode for vi
@@ -92,16 +90,15 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 source "$HOME/.fzf-extras/fzf-extras.zsh"
 source "$HOME/.fzf-extras/fzf-extras.sh"
-. /usr/local/etc/profile.d/autojump.sh
 
-#
+
 mkcdir ()
 {
 	mkdir -p -- "$1" &&
 		cd -P -- "$1"
 }
-#
-##Aliases
+
+#Aliases
 source ~/.aliases
 source ~/.functions
 alias pman='man-preview'
@@ -131,7 +128,9 @@ source ~/.fzf.zsh
 ## To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-end=`gdate +%s.%N`
+eval "$(jump shell)"
+
+end=`date +%s.%N`
 runtime=$( echo "$end - $start"|bc -l )
 echo "$runtime seconds"
 
