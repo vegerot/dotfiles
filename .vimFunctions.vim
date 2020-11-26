@@ -1,12 +1,18 @@
-command! -bang -nargs=* Rg
-  \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
-  \   <bang>0 ?  fzf#vim#with_preview('right:50%:hidden')
-  \           : fzf#vim#with_preview('right:60%', '?'),
-  \   <bang>0)
- 
+" command! -bang -nargs=* Rg
+"   \ call fzf#vim#grep(
+"   \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1, {'options': '--delimeter: --nth 4..'},
+"   \   <bang>0 ?  fzf#vim#with_preview('right:50%:hidden')
+"   \           : fzf#vim#with_preview('right:60%', '?'),
+"   \   <bang>0)
+  command! -bang -nargs=* Rg
+        \ call fzf#vim#grep('rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+       \ <bang>0 ?  fzf#vim#with_preview({'options': '--delimiter : --nth 4..'})
+       \         : fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'right:60%', '?'),
+       \<bang>0)
+
 command! -bang -nargs=* Ag
   \  :Files
+nmap <C-p> :Files<Cr>
 " ex command for toggling hex mode - define mapping if desired
 command! -bar Hexmode call ToggleHex()
 

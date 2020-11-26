@@ -35,6 +35,12 @@
 	# Checkout fuzzy
     cf = !"git checkout $(git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/|sed -e 's-refs/heads/--'| fzf) $@"
 
+	# Checkout fast
+    s = !"git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/ refs/remotes/gitlab|sed -e 's-refs/heads/--'| sed -e 's-refs/remotes/gitlab/--' | uniq | grep -i -m1 --color=never $1 | xargs -I {} sh -c \" echo {}; git switch {}\""
+
+	# Checkout fuzzy
+    sf = !"git switch $(git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/ refs/remotes/gitlab/|sed -e 's-refs/heads/--'| sed -e 's-refs/remotes/gitlab/--' | uniq | fzf) $@"
+
 	# Switch to a branch, creating it if necessary
     go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f"
   
@@ -149,6 +155,7 @@
 	# https://help.github.com/articles/signing-commits-using-gpg/
     #gpgSign = true
     template = /Users/maxcoplan/.stCommitMsg
+    verbose = true
 
 [diff]
 
@@ -234,4 +241,4 @@
     trustExitCode = true
 [pull]
     fastforward = true
-    rebase = true
+	ff = only
