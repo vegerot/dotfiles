@@ -80,8 +80,13 @@ if [[ $'\e\x5b3D' == "$(echoti cub 3)" ]] &&
 fi
 zstyle ':completion:*:*(directories|files)*' list-colors ''
 
-export HISTSIZE=1073741823
-export SAVEHIST=$HISTSIZE
+HISTSIZE=1073741823
+SAVEHIST=$HISTSIZE
+HIST_EXPIRE_DUPS_FIRST=1
+export HISTSIZE
+export SAVEHIST
+export HIST_EXPIRE_DUPS_FIRST
+
 setopt EXTENDED_HISTORY
 #
 export FZF_DEFAULT_OPTS='--height=70% --preview "bat --color always {} || cat {}" --preview-window=right:60%:wrap'

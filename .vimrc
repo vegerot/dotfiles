@@ -28,6 +28,9 @@ if exists('firstTime')+1 | call plug#begin('~/.vim/plugged')
   Plug 'kana/vim-textobj-user'
   Plug 'fvictorio/vim-textobj-backticks'
 
+  Plug 'lervag/file-line'
+
+
   "Plug 'Raimondi/delimitMate'
 
   Plug 'joshdick/onedark.vim'
@@ -130,7 +133,7 @@ let g:fzf_history_dir = '~/.local/share/fzf-history'
 "Search stuff
 set incsearch
 set hlsearch
-set ignorecase 
+set ignorecase
 set smartcase 
 nnoremap n nzz
 nnoremap N Nzz
@@ -277,7 +280,7 @@ function! Lineair()
   let g:airline#extensions#branch#format = 2
   let g:airline_powerline_fonts = 1
   let g:airline_theme= get(g:, 'airline_theme', "random")
-  silent! call airline#extensions#whitespace#disable()
+  call airline#extensions#whitespace#disable()
   "let g:tmuxline_preset = {'z'    : '#track'}
   let g:airline#extensions#tmuxline#enabled = 1
   let g:airline#extensions#tabline#enabled = 1

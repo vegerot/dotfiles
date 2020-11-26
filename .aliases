@@ -36,21 +36,15 @@ alias g.="git add -p"
 alias gch="git ch" 
 alias gco="git c"
 alias gcf="git cf"
+alias gs="git s"
+alias gsf="git sf"
 unalias glo 
 alias glo="git lo" 
 alias gbv="git bv"
-unalias gl 
-function gl () {
-  if git pull -ff "$@"; then
-    return
-  else 
-    git rebase --abort
-    if git pull "$@"; then
-      return
-    else 
-      git rebase --abort
-      git pull --rebase=false "$@"
-    fi
-  fi
-} 
+unalias gr
+alias gr="git rebase -v"
+doc () {
+        open dash://"$@"
+}
+source ~/bin/clone
 #alias gl="git pull -ff || git rebase --abort && git pull || git rebase --abort && git pull --rebase=false"
