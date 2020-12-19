@@ -17,6 +17,7 @@ alias arp-scan="sudo arp-scan"
 alias nmap="sudo nmap"
 alias grep="egrep --color=always"
 alias diff="diff --color=always"
+alias htop="TERM=xterm-256color htop"
 
 #verbose
 alias ln="ln -v"
@@ -42,7 +43,7 @@ unalias glo
 alias glo="git lo" 
 alias gbv="git bv"
 unalias gr
-alias gr="git rebase -v"
+alias gr="git rebase"
 doc () {
         open dash://"$@"
 }

@@ -36,7 +36,7 @@
     cf = !"git checkout $(git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/|sed -e 's-refs/heads/--'| fzf) $@"
 
 	# Checkout fast
-    s = !"git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/ refs/remotes/gitlab|sed -e 's-refs/heads/--'| sed -e 's-refs/remotes/gitlab/--' | uniq | grep -i -m1 --color=never $1 | xargs -I {} sh -c \" echo {}; git switch {}\""
+    s = !"{ git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/ refs/remotes/gitlab|sed -e 's-refs/heads/--'| sed -e 's-refs/remotes/gitlab/--' & printf 'develop\nmaster\n'; } | uniq | grep -i -m1 --color=never $1 | xargs -I {} sh -c \" echo {}; git switch {}\""
 
 	# Checkout fuzzy
     sf = !"git switch $(git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/ refs/remotes/gitlab/|sed -e 's-refs/heads/--'| sed -e 's-refs/remotes/gitlab/--' | uniq | fzf) $@"
