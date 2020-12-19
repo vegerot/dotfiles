@@ -271,6 +271,8 @@ function! NearestMethodOrFunction(...)
   return get(b:, 'vista_nearest_method_or_function', '')
 endfunction
 
+let g:tmux_navigator_save_on_switch = 2
+
 let g:airline#parts#ffenc#skip_expected_string='utf-8[unix]'
 function! Lineair()
   call airline#add_statusline_func('WindowNumber')
@@ -279,7 +281,7 @@ function! Lineair()
   call airline#add_inactive_statusline_func('NearestMethodOrFunction') 
   let g:airline#extensions#branch#format = 2
   let g:airline_powerline_fonts = 1
-  let g:airline_theme= get(g:, 'airline_theme', "random")
+  let g:airline_theme=get(g:, 'airline_theme', "random")
   call airline#extensions#whitespace#disable()
   "let g:tmuxline_preset = {'z'    : '#track'}
   let g:airline#extensions#tmuxline#enabled = 1
@@ -288,6 +290,9 @@ function! Lineair()
   let g:airline_extensions = []
   return 0
 endfunction
+  " let g:airline_theme=get(g:, 'airline_theme', "random")
+" let g:tmuxline_preset='tmux'
+
 "Window end
 
 "YouCompleteMe
