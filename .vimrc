@@ -221,6 +221,9 @@ cmap w!! w !sudo tee > /dev/null %
 
 
 set updatetime=1000
+set redrawtime=1000
+set synmaxcol=2048
+autocmd BufNew,BufEnter package-lock.json "CocDisable"
 "Color config
 "let g:gruvbox_contrast_dark = 'hard'
 " let $NVIM_TUI_ENABLE_TRUE_COLOR=1

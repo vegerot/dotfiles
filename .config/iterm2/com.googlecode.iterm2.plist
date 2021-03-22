@@ -11,7 +11,7 @@
 	<key>BracketedPasteMode</key>
 	<true/>
 	<key>CheckTestRelease</key>
-	<false/>
+	<true/>
 	<key>ConvertDosNewlines</key>
 	<true/>
 	<key>CopyLastNewline</key>
