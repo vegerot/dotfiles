@@ -1,5 +1,7 @@
 start=`date +%s.%N`
 
+[ ! -z $VSCODE_TASK ] && return
+
 # If you come from bash you might have to change your $PATH.
 ##Open Tmux
 source ~/.profile
@@ -50,6 +52,7 @@ plugins=(
   fzf
   npm
   zsh-better-npm-completion
+  gradle-completion
 )
 source $ZSH/oh-my-zsh.sh
 setopt vi
@@ -81,7 +84,7 @@ if [[ $'\e\x5b3D' == "$(echoti cub 3)" ]] &&
 fi
 zstyle ':completion:*:*(directories|files)*' list-colors ''
 
-HISTSIZE=1073741823
+HISTSIZE=1073741823000
 SAVEHIST=$HISTSIZE
 HIST_EXPIRE_DUPS_FIRST=1
 export HISTSIZE
@@ -89,6 +92,11 @@ export SAVEHIST
 export HIST_EXPIRE_DUPS_FIRST
 
 setopt EXTENDED_HISTORY
+setopt histexpiredupsfirst
+setopt incappendhistorytime
+
+unsetopt histignorespace
+
 #
 export FZF_DEFAULT_OPTS='--height=70% --preview "bat --color always {} || cat {}" --preview-window=right:60%:wrap'
 export FZF_DEFAULT_COMMAND='git ls-tree -r --name-only HEAD || rg --files 2>/dev/null'

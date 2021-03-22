@@ -1,8 +1,10 @@
+" plugins
 set surround
 set multiple-cursors
 set commentary
-set argtextobs 
+set argtextobs
 set highlightedyank
+set NERDTree
 
 let g:highlightedyank_highlight_duration=69
 
@@ -36,9 +38,6 @@ set showcmd
 set timeoutlen=1000 ttimeoutlen=1
 
 let mapleader = "\""
-
-imap kj <Esc>
-vmap kj <Esc>
 
 " Use Q for formatting the current paragraph (or visual selection)
 vmap Q gq
@@ -98,3 +97,5 @@ nmap <C-k> <C-w>k
 
 nmap <C-]> :action GotoNextError<cr>
 nmap <C-[> :action GotoPreviousError<cr>
+
+map <C-n> :NERDTreeToggle<CR>
