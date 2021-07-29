@@ -30,14 +30,15 @@ if exists('firstTime')+1 | call plug#begin('~/.vim/plugged')
 
   Plug 'lervag/file-line'
 
+Plug 'editorconfig/editorconfig-vim'
 
   "Plug 'Raimondi/delimitMate'
 
   Plug 'joshdick/onedark.vim'
   Plug 'morhetz/gruvbox'
 
-  Plug 'vim-airline/vim-airline'
-  Plug 'vim-airline/vim-airline-themes'
+  "Plug 'vim-airline/vim-airline'
+  "Plug 'vim-airline/vim-airline-themes'
   autocmd! User airline.vim call Lineair() 
 
   Plug 'edkolev/tmuxline.vim'
@@ -389,13 +390,11 @@ au BufNewFile,BufRead *.py
 let python_highlight_all=1
 let g:python_highlight_all = 1
 "syntax on
-au BufRead,BufNewFile *rc.json set filetype=jsonc
 au BufRead,BufNewFile bash-fc-* set filetype=sh
 au BufRead,BufNewFile zsh* set filetype=zsh
 au BufRead,BufNewFile *.heapprofile set filetype=json
 au BufRead,BufNewFile README,INSTALL,CREDITS set filetype=markdown
 au BufRead,BufRead * if &syntax == '' | set syntax=sh | endif
-au BufRead,BufNewFile *.json set syntax=jsonc 
 
 "Formatting end
 

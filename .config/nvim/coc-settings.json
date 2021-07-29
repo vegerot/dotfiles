@@ -1,5 +1,6 @@
 {
   "languageserver": {
+     /*
     "clangd": {
       "command": "/usr/lib/llvm-9/bin/clangd",
       "args": [
@@ -19,6 +20,7 @@
         "objcpp"
       ]
     },
+    */
     //"metals": {
       //    "command": "metals-vim",
       //    "rootPatterns": ["build.sbt"],
@@ -112,12 +114,15 @@
     "Quramy",
     "Raimondi",
     "Referer",
+    "SDLK",
+    "STRNE",
     "Staticfile",
     "Timeframe",
     "UNSPEC",
     "VCAP",
     "Vimrc",
     "Vuex",
+    "Wextra",
     "Wzero",
     "Xuyuanp",
     "aircrafts",
@@ -178,6 +183,7 @@
     "multiline",
     "neoclide",
     "nestjs",
+    "nnn's",
     "npmjs",
     "nvie",
     "nvim",
@@ -210,6 +216,7 @@
     "vetur",
     "vimlsp",
     "vimux",
+    "vkey",
     "vuetify",
     "websockets",
     "whoami",
@@ -220,7 +227,7 @@
      "vetur.completion.useScaffoldSnippets": false,
     "vetur.experimental.templateInterpolationService": true,
     "vetur.format.defaultFormatter.ts":"vscode-typescript",
-    "git.addGBlameToVirtualText": true, 
+    "git.addGBlameToVirtualText": true,
     "git.gitlab.hosts": ["https://git.aoc-pathfinder.cloud"],
     //"git.addedSign.text": "💚" ,
     //"git.removedSign.text": "🟥" ,
@@ -229,7 +236,6 @@
     "codeLens.enable": true,
     "tabnine.priority": 69,
     "tsserver.execArgv": ["--nolazy", "--inspect-brk"],
-    "tsserver.trace.server": "verbose",
     "python.jediEnabled": false,
     "python.autoComplete.extraPaths":["./",
       "/Users/maxcoplan/workspace/build/RADD/secrel-pipeline-v2/scripts/"]
