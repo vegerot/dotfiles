@@ -15,10 +15,10 @@
     bv = bisect view --graph --decorate --abbrev-commit
 
 	# Show the diff between the latest commit and the current state
-    d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
+    d = "!git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
 
 	# `git di $number` shows the diff between the state `$number` revisions ago and the current state
-    di = !"d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
+    di = "!d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
 
 	# Pull in remote changes for the current repository and all its submodules
     p = git pull --recurse-submodules
@@ -30,20 +30,20 @@
     ca = !git add -A && git commit -av
 
 	# Checkout fast
-    c = !"git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/|sed -e 's-refs/heads/--'| grep -i -m1 --color=never $1 | xargs -I {} sh -c \" echo {}; git checkout {} ${@:2}\""
+    c = "!git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/|sed -e 's-refs/heads/--'| grep -i -m1 --color=never $1 | xargs -I {} sh -c \" echo {}; git checkout {} ${@:2}\""
 
 	# Checkout fuzzy
-    cf = !"git checkout $(git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/|sed -e 's-refs/heads/--'| fzf) $@"
+    cf = !git checkout $(git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/|sed -e 's-refs/heads/--'| fzf) $@
 
 	# Checkout fast
-    s = !"{ git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/ refs/remotes/$(git remote || printf origin)|sed -e 's-refs/heads/--'| sed -e \"s-refs/remotes/$(git remote || printf origin)/--\" & printf 'develop\nmaster\n'; } | uniq | grep -i -m1 --color=never $1 | xargs -I {} sh -c \" echo {}; git switch {}\""
+    s = "!{ git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/ refs/remotes/$(git remote || printf origin)|sed -e 's-refs/heads/--'| sed -e \"s-refs/remotes/$(git remote || printf origin)/--\" & printf 'develop\nmaster\n'; } | uniq | grep -i -m1 --color=never $1 | xargs -I {} sh -c \" echo {}; git switch {}\""
 
 	# Checkout fuzzy
-    sf = !"git switch $(git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/ refs/remotes/$(git remote || printf origin)/|sed -e 's-refs/heads/--'| sed -e \"s-refs/remotes/$(git remote || printf origin)/--\" | uniq | fzf) $@"
+    sf = !git switch $(git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/ refs/remotes/$(git remote || printf origin)/|sed -e 's-refs/heads/--'| sed -e \"s-refs/remotes/$(git remote || printf origin)/--\" | uniq | fzf) $@
 
 	# Switch to a branch, creating it if necessary
     go = "!f() { git checkout -b \"$1\" 2> /dev/null || git checkout \"$1\"; }; f"
-  
+
 	# Basic checkout
     ch = checkout
 	# Show verbose output about tags, branches or remotes
@@ -76,26 +76,14 @@
 
 	# Remove branches that have already been merged with master
 	# a.k.a. ‘delete merged’
-    dm = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+    dm = !git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d
 
 	# List contributors with number of commits
     contributors = shortlog --summary --numbered
 
 	# Merge GitHub pull request on top of the current branch or,
 	# if a branch name is specified, on top of the specified branch
-    mpr = "!f() { \
-	declare currentBranch=\"$(git symbolic-ref --short HEAD)\"; \
-	declare branch=\"${2:-$currentBranch}\"; \
-	if [ $(printf \"%s\" \"$1\" | grep '^[0-9]\\+$' > /dev/null; printf $?) -eq 0 ]; then \
-	git fetch origin refs/pull/$1/head:pr/$1 && \
-	git checkout -B $branch && \
-	git rebase $branch pr/$1 && \
-	git checkout -B $branch && \
-	git merge pr/$1 && \
-	git branch -D pr/$1 && \
-	git commit --amend -m \"$(git log -1 --pretty=%B)\n\nCloses #$1.\"; \
-	fi \
-	}; f"
+    mpr = "!f() { \tdeclare currentBranch=\"$(git symbolic-ref --short HEAD)\"; \tdeclare branch=\"${2:-$currentBranch}\"; \tif [ $(printf \"%s\" \"$1\" | grep '^[0-9]\\+$' > /dev/null; printf $?) -eq 0 ]; then \tgit fetch origin refs/pull/$1/head:pr/$1 && \tgit checkout -B $branch && \tgit rebase $branch pr/$1 && \tgit checkout -B $branch && \tgit merge pr/$1 && \tgit branch -D pr/$1 && \tgit commit --amend -m \"$(git log -1 --pretty=%B)\n\nCloses #$1.\"; \tfi \t}; f"
 
 [apply]
 
@@ -103,6 +91,7 @@
     whitespace = fix
 
 [core]
+    pager = "$_GIT_CONTRIB/diff-highlight/diff-highlight | $PAGER"
 
 	# Use custom `.gitignore` and `.gitattributes`
     excludesfile = ~/.gitignore
@@ -164,15 +153,14 @@
     tool = vimdiff
 
 [diff "bin"]
-
 	# Use `hexdump` to diff binary files
     textconv = hexdump -v -C
 
 [help]
 
 	# Automatically correct and execute mistyped commands
-    autocorrect = 1
-   
+	autocorrect = 0
+
 [init]
     templatedir = ~/.git_template
 
@@ -191,6 +179,8 @@
     cmd = code-insiders --wait $MERGED
 [mergetool "webstorm"]
     cmd = webstorm $MERGED
+[interactive]
+	diffFilter = "$_GIT_CONTRIB/diff-highlight/diff-highlight | $PAGER"
 [push]
 
 	# https://git-scm.com/docs/git-config#git-config-pushdefault
@@ -242,3 +232,5 @@
 [pull]
     fastforward = true
 	ff = only
+[rebase]
+	instructionFormat = (%al) %s
