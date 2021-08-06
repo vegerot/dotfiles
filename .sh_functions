@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+InitNvm() {
+	export NVM_DIR="$HOME/.nvm"
+	NVM_INSTALL_DIR="/usr/local/opt/nvm/"
+	. "${NVM_INSTALL_DIR}/nvm.sh"  # This loads nvm
+	. "${NVM_INSTALL_DIR}/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+}
