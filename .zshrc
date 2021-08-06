@@ -1,5 +1,9 @@
 # Compute how long startup takes
 start=`gdate +%s.%N`
+
+#start Tmux, maybe
+source ~/.profile
+
 # Command line editing
 setopt vi
 autoload -U edit-command-line

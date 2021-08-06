@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-InitNvm() {
+NvmInit() {
 	export NVM_DIR="$HOME/.nvm"
 	NVM_INSTALL_DIR="/usr/local/opt/nvm/"
 	. "${NVM_INSTALL_DIR}/nvm.sh"  # This loads nvm
