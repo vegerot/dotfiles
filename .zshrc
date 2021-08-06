@@ -46,6 +46,11 @@ COMPLETION_WAITING_DOTS="true"
 plugins=(
 	git
 	vi-mode
+	zsh-syntax-highlighting
+	zsh-autosuggestions
+	history-substring-search
+	npm
+	zsh-better-npm-completion
 )
 
 
@@ -56,12 +61,17 @@ source $ZSH/oh-my-zsh.sh
 # User configuration
 
 
+eval "$(jump shell)"
+
 source ~/.env
 source ~/.aliases
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 # Compute time taken
 end=`gdate +%s.%N`
 runtime=$( echo "$end - $start"|bc -l )
 echo "$runtime seconds"
+
+
 
 

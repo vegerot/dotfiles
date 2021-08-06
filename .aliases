@@ -15,3 +15,6 @@ alias mkdir="mkdir -pv"
 alias g.="git add -p"
 unalias gr
 alias gr="git rebase"
+
+#vscode
+alias code="code-insiders"
