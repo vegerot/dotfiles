@@ -65,6 +65,7 @@ eval "$(jump shell)"
 
 source ~/.env
 source ~/.aliases
+source ~/.sh_functions
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 # Compute time taken
