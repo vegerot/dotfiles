@@ -70,6 +70,25 @@ eval "$(jump shell)"
 source ~/.env
 source ~/.aliases
 source ~/.sh_functions
+
+# change cursor shape in vi mode
+precmd_functions+=(zle-keymap-select)
+
+zle-keymap-select () {
+    if [[ $KEYMAP == vicmd ]]; then
+        # the command mode for vi
+        echo -ne "\e[2 q"
+    else
+        # the insert mode for vi
+        echo -ne "\e[5 q"
+    fi
+}
+
+# Bind j and k for history-substring-search in vim mode
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
+
+
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 # Compute time taken
