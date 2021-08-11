@@ -6,3 +6,8 @@ NvmInit() {
 	. "${NVM_INSTALL_DIR}/nvm.sh"  # This loads nvm
 	. "${NVM_INSTALL_DIR}/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 }
+
+SdkManInit() {
+	export SDKMAN_DIR="$HOME/.sdkman"
+	[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+}
