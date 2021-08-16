@@ -37,8 +37,11 @@ export ZSH="/Users/m0c0j7y/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
 # Uncomment the following line to enable command auto-correction.
 ENABLE_CORRECTION="true"
 
@@ -53,6 +56,7 @@ plugins=(
 	zsh-syntax-highlighting
 	zsh-autosuggestions
 	history-substring-search
+	fzf
 	npm
 	zsh-better-npm-completion
 )
@@ -64,8 +68,15 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-
 eval "$(jump shell)"
+
+# fzf
+export FZF_DEFAULT_OPTS='--height=70% --preview "bat --color always {} || cat {}" --preview-window=right:60%:wrap'
+export FZF_DEFAULT_COMMAND='git ls-tree -r --name-only HEAD || rg --files 2>/dev/null'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+source "$HOME/.fzf-extras/fzf-extras.zsh"
+source "$HOME/.fzf-extras/fzf-extras.sh"
 
 source ~/.env
 source ~/.aliases
@@ -88,6 +99,8 @@ zle-keymap-select () {
 bindkey -M vicmd 'k' history-substring-search-up
 bindkey -M vicmd 'j' history-substring-search-down
 
+## To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
@@ -95,6 +108,7 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 end=`gdate +%s.%N`
 runtime=$( echo "$end - $start"|bc -l )
 echo "$runtime seconds"
+
 
 
 
