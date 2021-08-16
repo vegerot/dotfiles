@@ -1820,6 +1820,8 @@
 	<false/>
 	<key>TabsHaveCloseButton</key>
 	<true/>
+	<key>TmuxUsesDedicatedProfile</key>
+	<true/>
 	<key>Use background pattern indicator</key>
 	<true/>
 	<key>UseBorder</key>
