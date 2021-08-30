@@ -4,10 +4,26 @@ NvmInit() {
 	export NVM_DIR="$HOME/.nvm"
 	NVM_INSTALL_DIR="/usr/local/opt/nvm/"
 	. "${NVM_INSTALL_DIR}/nvm.sh"  # This loads nvm
-	. "${NVM_INSTALL_DIR}/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+	. "${NVM_INSTALL_DIR}/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 }
 
 SdkManInit() {
 	export SDKMAN_DIR="$HOME/.sdkman"
 	[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+}
+
+function vpn-up() {
+  local VPN_HOST=sslvpngwgec.wal-mart.com/Walmart_Associate_MAC_Yubi
+  local VPN_USER=$(whoami)
+ 
+  if [ ! -f ~/.vpn_password ]; then
+    echo "Error: missing ~/.vpn_password"
+    return
+  fi
+  echo "Starting the vpn ..."
+  echo "$(cat ~/.vpn_password)\n$(2fa walmart)" | sudo openconnect --passwd-on-stdin --user=$VPN_USER $VPN_HOST $@
+}
+ 
+function vpn-down() {
+  sudo kill -2 `pgrep openconnect`
 }
