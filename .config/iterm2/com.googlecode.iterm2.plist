@@ -910,7 +910,7 @@
 				<string></string>
 			</dict>
 			<key>Send Bell Alert</key>
-			<true/>
+			<false/>
 			<key>Send Code When Idle</key>
 			<false/>
 			<key>Send Idle Alert</key>

@@ -66,6 +66,7 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
+
 # User configuration
 
 eval "$(jump shell)"
