@@ -3,6 +3,8 @@ call plug#begin(stdpath('data') . '/plugged')
    Plug 'junegunn/fzf.vim'
 
    Plug 'editorconfig/editorconfig-vim'
+
+   Plug 'christoomey/vim-tmux-navigator'
 call plug#end()
 
 
