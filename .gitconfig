@@ -23,25 +23,25 @@
 
 [commit]
 
-	# https://help.github.com/articles/signing-commits-using-gpg/
-    #gpgSign = true
-    verbose = true
+  # https://help.github.com/articles/signing-commits-using-gpg/
+  #gpgSign = true
+  verbose = true
 
 [interactive]
- 	diffFilter = "$_GIT_CONTRIB/diff-highlight/diff-highlight | $PAGER"
+  diffFilter = "$_GIT_CONTRIB/diff-highlight/diff-highlight | $PAGER"
 
 [rebase]
- 	instructionFormat = (%al) %s
+  instructionFormat = (%al) %s
 
 [pull]
-    fastforward = true
-    ff = only
+  fastforward = true
+  ff = only
 
 [user]
-    email = Max.Coplan@walmart.com
-    name = Max 👨🏽‍💻 Coplan
+  email = Max.Coplan@walmart.com
+  name = Max 👨🏽‍💻 Coplan
 
 [help]
-	autocorrect = 1
+  autocorrect = 1
 
 
