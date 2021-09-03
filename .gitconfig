@@ -2,7 +2,24 @@
 
 
 [core]
-    pager = "$_GIT_CONTRIB/diff-highlight/diff-highlight | $PAGER"
+  pager = "$_GIT_CONTRIB/diff-highlight/diff-highlight | $PAGER"
+
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+
+[color "diff"]
+  meta = yellow bold
+  frag = magenta bold # line info
+  #old = red # deletions # this is the default
+  #new = green # additions # this is the default
+
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan
+
 
 [commit]
 
