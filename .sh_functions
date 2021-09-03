@@ -27,3 +27,9 @@ function vpn-up() {
 function vpn-down() {
   sudo kill -2 `pgrep openconnect`
 }
+
+function sudome() {
+  set -x
+  sudo jamf policy -id 854
+  set +x
+}
