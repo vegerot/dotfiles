@@ -4,9 +4,13 @@ call plug#begin(stdpath('data') . '/plugged')
 
    Plug 'editorconfig/editorconfig-vim'
 
+   Plug 'bkad/CamelCaseMotion'
+
    Plug 'christoomey/vim-tmux-navigator'
 call plug#end()
 
+
+""" PLUGINS start
 
 "" FZF start
 " Enable per-command history
@@ -19,6 +23,11 @@ command! -bang -nargs=* Ag
   \  :Files
 nmap <C-p> :Files<Cr>
 "" FZF end
+
+let g:camelcasemotion_key = '<leader>'
+
+""" PLUGINS end
+
 
 "" VANILLA start
 " Sync nvim clipboard with system pastboard
@@ -36,6 +45,10 @@ set backupdir=~/.cache/backup//
 set directory=~/.cache/swap//
 set undodir=~/.cache/undo//
 set undofile
+
+" neovim jump to the last position when reopening a file
+au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
+  \| exe "normal! g'\"" | endif
 
 " Don't warn about existing swap files being open, since neovim will update a
 " file when a write is detected
