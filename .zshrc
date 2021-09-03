@@ -51,19 +51,20 @@ ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
 
 plugins=(
-	git
+	# line editing
 	vi-mode
 	zsh-syntax-highlighting
 	zsh-autosuggestions
 	history-substring-search
 	fzf
+
+	# command completions
+	git
 	npm
 	zsh-better-npm-completion
+
+	colored-man-pages
 )
-
-
-
-
 source $ZSH/oh-my-zsh.sh
 
 
@@ -79,6 +80,7 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 source "$HOME/.fzf-extras/fzf-extras.zsh"
 source "$HOME/.fzf-extras/fzf-extras.sh"
 
+# add things to shell
 source ~/.env
 source ~/.aliases
 source ~/.sh_functions
@@ -103,14 +105,12 @@ bindkey -M vicmd 'j' history-substring-search-down
 ## To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+source "${HOME}/.iterm2_shell_integration.zsh"
+
+
+autoload -Uz compinit && compinit
 
 # Compute time taken
 end=`gdate +%s.%N`
 runtime=$( echo "$end - $start"|bc -l )
 echo "$runtime seconds"
-
-
-
-
-
