@@ -1,5 +1,11 @@
 [alias]
 
+    # Switch fast
+    s = "!{ git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/ refs/remotes/$(git remote || printf origin)|sed -e 's-refs/heads/--'| sed -e \"s-refs/remotes/$(git remote || printf origin)/--\" & printf 'develop\nmaster\n'; } | uniq | grep -i -m1 --color=never $1 | xargs -I {} sh -c \" echo {}; git switch {}\""
+
+    # Switch fuzzy
+    sf = !git switch $(git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/ refs/remotes/$(git remote || printf origin)/|sed -e 's-refs/heads/--'| sed -e \"s-refs/remotes/$(git remote || printf origin)/--\" | uniq | fzf) $@
+
 
 [core]
   pager = "$_GIT_CONTRIB/diff-highlight/diff-highlight | $PAGER"

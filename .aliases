@@ -9,12 +9,14 @@ alias grep="egrep --color=always"
 
 #verbose
 alias ln="ln -v"
-alias mkdir="mkdir -pv" 
+alias mkdir="mkdir -pv"
 
 #git
 alias g.="git add -p"
 unalias gr
 alias gr="git rebase"
+alias gs="git s"
+alias gsf="git sf"
 
 #vscode
 alias code="code-insiders"
