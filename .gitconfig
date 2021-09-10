@@ -22,9 +22,10 @@
   #new = green # additions # this is the default
 
 [color "status"]
-  added = yellow
-  changed = green
+  added = green bold
+  changed = red bold strike
   untracked = cyan
+  branch = yellow bold ul
 
 
 [commit]
