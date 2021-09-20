@@ -20,3 +20,6 @@ alias gsf="git sf"
 
 #vscode
 alias code="code-insiders"
+
+# k8s
+alias k="kubectl"
