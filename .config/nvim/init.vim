@@ -1,29 +1,29 @@
 call plug#begin(stdpath('data') . '/plugged')
-   " The legend
-   Plug 'tpope/vim-surround'
-   Plug 'tpope/vim-sleuth'
-   Plug 'tpope/vim-vinegar'
-   Plug 'tpope/vim-repeat'
-   Plug 'tpope/vim-commentary'
-   Plug 'tpope/vim-unimpaired'
+  " The legend
+  Plug 'tpope/vim-surround'
+  Plug 'tpope/vim-sleuth'
+  Plug 'tpope/vim-vinegar'
+  Plug 'tpope/vim-repeat'
+  Plug 'tpope/vim-commentary'
+  Plug 'tpope/vim-unimpaired'
 
 
-   " Copy link to Git{Lab,Hub{,Enterprise}}
-   Plug 'ruanyl/vim-gh-line'
+  " Copy link to Git{Lab,Hub{,Enterprise}}
+  Plug 'ruanyl/vim-gh-line'
 
-   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-   Plug 'junegunn/fzf.vim'
+  Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+  Plug 'junegunn/fzf.vim'
 
-   Plug 'editorconfig/editorconfig-vim'
+  Plug 'editorconfig/editorconfig-vim'
 
-   Plug 'bkad/CamelCaseMotion'
+  Plug 'bkad/CamelCaseMotion'
 
-   Plug 'kana/vim-textobj-user'
-   Plug 'fvictorio/vim-textobj-backticks'
-   Plug 'lervag/file-line'
+  Plug 'kana/vim-textobj-user'
+  Plug 'fvictorio/vim-textobj-backticks'
+  Plug 'lervag/file-line'
 
 
-   Plug 'christoomey/vim-tmux-navigator'
+  Plug 'christoomey/vim-tmux-navigator'
 call plug#end()
 
 
