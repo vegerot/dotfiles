@@ -43,6 +43,8 @@ nmap <C-p> :Files<Cr>
 
 let g:camelcasemotion_key = '<leader>'
 
+nmap <leader>u :UndotreeShow<CR>
+
 """ PLUGINS end
 
 
@@ -74,4 +76,23 @@ set shortmess+=A
 " replace currently selected text with default register
 " without yanking it
 vnoremap p "_dP
+
+" center search results
+nnoremap n nzz
+nnoremap N Nzz
+nmap <leader>n :nohl<CR>
+
+" emacs-like movement in insert mode
+cmap <C-k> <C-p>
+cmap <C-j> <C-n>
+imap <C-k> <C-p>
+imap <C-j> <C-n>
+
+" always have at least 3 lines on top-bottom
+set scrolloff=15
+
+" show special characters in bad spots
+set showbreak=↪
+set listchars=nbsp:␣,trail:•,extends:⟩,precedes:⟨
+
 "" VANILLA end
