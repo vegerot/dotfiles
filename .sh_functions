@@ -15,18 +15,21 @@ SdkManInit() {
 
 function vpn-up() {
   local VPN_HOST=sslvpngwgec.wal-mart.com/Walmart_Associate_MAC_Yubi
-  local VPN_USER=$(whoami)
+  #local VPN_USER=$(whoami) #for openconnect
 
   if [ ! -f ~/.vpn_password ]; then
     echo "Error: missing ~/.vpn_password"
     return
   fi
   echo "Starting the vpn ..."
-  echo "$(cat ~/.vpn_password)\n$(2fa walmart)" | sudo openconnect --passwd-on-stdin --user=$VPN_USER $VPN_HOST $@
+  echo "\n$(cat ~/.vpn_password)\n$(2fa walmart)\ny" | /opt/cisco/anyconnect/bin/vpn -s connect $VPN_HOST $@
+
+  # echo "$(cat ~/.vpn_password)\n$(2fa walmart)" | sudo openconnect --passwd-on-stdin --user=$VPN_USER $VPN_HOST $@ # for openconnect
 }
 
 function vpn-down() {
-  sudo kill -2 `pgrep openconnect`
+  # sudo kill -2 `pgrep openconnect` # for openconncet
+  /opt/cisco/anyconnect/bin/vpn disconnect
 }
 
 function sudome() {
