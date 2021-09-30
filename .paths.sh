@@ -1,8 +1,13 @@
 #Path stuff
 
-export PATH="$PATH:$HOME/go/bin:/usr/local/lib:$HOME/dotfiles/bin"
+## important stuff goes first
 
-#sledge:binary path
+
+
+## Unimportant stuff goes at the end
+export PATH="$PATH:/usr/local/lib:$HOME/go/bin:/opt/cisco/anyconnect/bin:$HOME/dotfiles/bin"
+
+# sledge:binary path
 export SLEDGE_BIN=/Users/m0c0j7y/.sledge/bin
 export PATH="${PATH}:${SLEDGE_BIN}"
 
