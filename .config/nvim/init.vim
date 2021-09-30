@@ -7,7 +7,6 @@ call plug#begin(stdpath('data') . '/plugged')
   Plug 'tpope/vim-commentary'
   Plug 'tpope/vim-unimpaired'
 
-
   " Copy link to Git{Lab,Hub{,Enterprise}}
   Plug 'ruanyl/vim-gh-line'
 
@@ -20,6 +19,10 @@ call plug#begin(stdpath('data') . '/plugged')
 
   Plug 'kana/vim-textobj-user'
   Plug 'fvictorio/vim-textobj-backticks'
+
+  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+  Plug 'neovim/nvim-lspconfig'
+
   Plug 'lervag/file-line'
 
 
@@ -45,12 +48,23 @@ let g:camelcasemotion_key = '<leader>'
 
 nmap <leader>u :UndotreeShow<CR>
 
+
+" TreeSitter
+lua require('treesitterConfig')
+
+" LSP
+lua require('lspconfigConfig')
+set omnifunc=v:lua.vim.lsp.omnifunc
+
+
 """ PLUGINS end
 
 
 "" VANILLA start
 " Sync nvim clipboard with system pastboard
 set clipboard=unnamed,unnamedplus
+
+set mouse=a
 
 set ignorecase
 set smartcase
@@ -94,5 +108,15 @@ set scrolloff=15
 " show special characters in bad spots
 set showbreak=↪
 set listchars=nbsp:␣,trail:•,extends:⟩,precedes:⟨
+
+
+"NetRW (should netrw config go in vanilla or plugin section?? 🤔)
+
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 4
+let g:netrw_winsize = 25
+let g:netrw_altv = 1
+
+nmap <unique> <c-S-R> <Plug>NetrwRefresh
 
 "" VANILLA end
