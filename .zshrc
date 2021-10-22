@@ -27,6 +27,8 @@ setopt incappendhistorytime
 
 unsetopt histignorespace
 
+setopt correct
+
 # without this, oh-my-zsh enables `bracketed-paste-magic` and `url-quote-magic`
 # which are freaking *slow*
 DISABLE_MAGIC_FUNCTIONS=true
@@ -46,8 +48,6 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
-# Uncomment the following line to enable command auto-correction.
-ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 # Caution: this setting can cause issues with multiline prompts (zsh 5.7.1 and newer seem to work)
