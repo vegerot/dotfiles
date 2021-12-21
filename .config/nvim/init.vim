@@ -20,13 +20,19 @@ call plug#begin(stdpath('data') . '/plugged')
   Plug 'kana/vim-textobj-user'
   Plug 'fvictorio/vim-textobj-backticks'
 
+  Plug 'lervag/file-line'
+
+  Plug 'christoomey/vim-tmux-navigator'
+
+  "LSP and TreeSitter stuff"
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
   Plug 'neovim/nvim-lspconfig'
 
-  Plug 'lervag/file-line'
+  Plug 'ms-jpq/coq_nvim', {'branch': 'coq'} "main
+  Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'} " required extras
+  Plug 'ms-jpq/coq.thirdparty', {'branch': '3p'} " - shell repl nvim lua api scientific calculator comment banner etc
 
 
-  Plug 'christoomey/vim-tmux-navigator'
 call plug#end()
 
 
@@ -39,10 +45,18 @@ call plug#end()
 "   'previous-history' instead of 'down' and 'up'.
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 
-command! -bang -nargs=* Ag
+command -bang -nargs=* Ag
   \  :Files
 nmap <C-p> :Files<Cr>
+
 "" FZF end
+
+"" grep start
+" use ripgrep instead of grep
+set grepprg=rg\ --vimgrep\ --no-heading
+
+command -nargs=+ Gr :grep <args>
+"" grep end
 
 let g:camelcasemotion_key = '<leader>'
 
@@ -51,6 +65,9 @@ nmap <leader>u :UndotreeShow<CR>
 
 " TreeSitter
 lua require('treesitterConfig')
+
+"" Autocomplete
+lua require('coqConfig')
 
 " LSP
 lua require('lspconfigConfig')
@@ -102,6 +119,10 @@ cmap <C-j> <C-n>
 imap <C-k> <C-p>
 imap <C-j> <C-n>
 
+"" Appearance
+" make popup menu not a gross pink color
+highlight Pmenu ctermfg=111 ctermbg=239
+
 " always have at least 3 lines on top-bottom
 set scrolloff=15
 
@@ -109,6 +130,7 @@ set scrolloff=15
 set showbreak=↪
 set listchars=nbsp:␣,trail:•,extends:⟩,precedes:⟨
 
+"" Appearance end
 
 "NetRW (should netrw config go in vanilla or plugin section?? 🤔)
 

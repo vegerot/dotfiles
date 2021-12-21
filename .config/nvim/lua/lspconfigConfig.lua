@@ -1,4 +1,5 @@
 local nvim_lsp = require('lspconfig')
+local coq = require('coq')
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -38,10 +39,10 @@ end
 -- map buffer local keybindings when the language server attaches
 local servers = { 'tsserver' }
 for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup {
+  nvim_lsp[lsp].setup (coq.lsp_ensure_capabilities {
     on_attach = on_attach,
     flags = {
       debounce_text_changes = 150,
     }
-  }
+  })
 end
