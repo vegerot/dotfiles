@@ -1,3 +1,6 @@
+if exists('g:vscode')
+  runtime vscode.vim
+endif
 call plug#begin(stdpath('data') . '/plugged')
   " The legend
   Plug 'tpope/vim-surround'
@@ -32,7 +35,7 @@ call plug#begin(stdpath('data') . '/plugged')
   Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'} " required extras
   Plug 'ms-jpq/coq.thirdparty', {'branch': '3p'} " - shell repl nvim lua api scientific calculator comment banner etc
 
-
+  Plug 'github/copilot.vim'
 call plug#end()
 
 
@@ -73,6 +76,11 @@ lua require('coqConfig')
 lua require('lspconfigConfig')
 set omnifunc=v:lua.vim.lsp.omnifunc
 
+" Copilot
+let g:copilot_no_tab_map = v:true
+let g:copilot_assume_mapped = v:true
+let g:copilot_tab_fallback = ""
+
 
 """ PLUGINS end
 
@@ -81,6 +89,7 @@ set omnifunc=v:lua.vim.lsp.omnifunc
 " Sync nvim clipboard with system pastboard
 set clipboard=unnamed,unnamedplus
 
+" for "pair programming", don't @me
 set mouse=a
 
 set ignorecase
