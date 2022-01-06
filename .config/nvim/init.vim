@@ -1,6 +1,3 @@
-if exists('g:vscode')
-  runtime vscode.vim
-endif
 call plug#begin(stdpath('data') . '/plugged')
   " The legend
   Plug 'tpope/vim-surround'
@@ -41,6 +38,9 @@ call plug#end()
 
 """ PLUGINS start
 
+"nmap <C-[> :lprevious<Cr>
+nmap <C-]> :lnext<Cr>
+
 "" FZF start
 " Enable per-command history
 " - History files will be stored in the specified directory
@@ -80,8 +80,12 @@ set omnifunc=v:lua.vim.lsp.omnifunc
 let g:copilot_no_tab_map = v:true
 let g:copilot_assume_mapped = v:true
 let g:copilot_tab_fallback = ""
+imap <script><expr> <C-e> copilot#Accept("\<CR>")
 
 
+if exists('g:vscode')
+  runtime vscode.vim
+endif
 """ PLUGINS end
 
 
@@ -113,6 +117,7 @@ au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
 " file when a write is detected
 set shortmess+=A
 
+
 " replace currently selected text with default register
 " without yanking it
 vnoremap p "_dP
@@ -127,6 +132,7 @@ cmap <C-k> <C-p>
 cmap <C-j> <C-n>
 imap <C-k> <C-p>
 imap <C-j> <C-n>
+
 
 "" Appearance
 " make popup menu not a gross pink color
