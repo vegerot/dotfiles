@@ -33,11 +33,9 @@ setopt correct
 # which are freaking *slow*
 DISABLE_MAGIC_FUNCTIONS=true
 
-
-
 ## OMZ bs
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/m0c0j7y/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -84,7 +82,9 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 source "$HOME/.fzf-extras/fzf-extras.zsh"
 source "$HOME/.fzf-extras/fzf-extras.sh"
 
-# add things to shell
+bindkey '^p' fzf-file-widget
+
+# add things to shell environment
 source ~/.env
 source ~/.aliases
 source ~/.sh_functions
