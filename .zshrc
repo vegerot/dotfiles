@@ -55,7 +55,7 @@ COMPLETION_WAITING_DOTS="true"
 plugins=(
 	# line editing
 	vi-mode
-	zsh-syntax-highlighting
+	fast-syntax-highlighting
 	zsh-autosuggestions
 	history-substring-search
 	fzf
@@ -64,6 +64,7 @@ plugins=(
 	git
 	npm
 	zsh-better-npm-completion
+	yarn-autocompletions
 
 	colored-man-pages
 )
