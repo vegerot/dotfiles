@@ -13,6 +13,10 @@ SdkManInit() {
 	[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 }
 
+RBInit() {
+	eval "$(rbenv init - zsh)"
+}
+
 source ~/dotfiles/bin/clone
 
 function vpn-up() {

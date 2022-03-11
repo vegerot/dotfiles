@@ -32,8 +32,8 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('i', '<C-<Space>>', '<cmd>lua vim.lsp.buf.completion()<CR>', opts)
   buf_set_keymap('n', 'gr', ':lua vim.lsp.buf.references()<CR>', opts)
   buf_set_keymap('n', '<leader>e', ':lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  buf_set_keymap('n', '[d', ':lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', ']d', ':lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '[d', ':lua vim.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', ']d', ':lua vim.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', '<leader>l', ':lua vim.lsp.diagnostic.set_loclist({open=true})<CR>', opts)
   buf_set_keymap('n', '<leader>f', ':lua vim.lsp.buf.formatting()<CR>', opts)
 
@@ -41,7 +41,7 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'tsserver' }
+local servers = { 'tsserver', 'gopls' }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup (coq.lsp_ensure_capabilities {
     on_attach = on_attach,
