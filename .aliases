@@ -17,6 +17,9 @@ unalias gr
 alias gr="git rebase"
 alias gs="git s"
 alias gsf="git sf"
+alias gres="git restore"
+alias gfr="git fr"
+alias gfru="git fru"
 
 #vscode
 alias code="code-insiders"

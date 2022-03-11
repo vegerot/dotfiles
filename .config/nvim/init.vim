@@ -32,6 +32,8 @@ call plug#begin(stdpath('data') . '/plugged')
   Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'} " required extras
   Plug 'ms-jpq/coq.thirdparty', {'branch': '3p'} " - shell repl nvim lua api scientific calculator comment banner etc
 
+  Plug 'ray-x/go.nvim'
+
   Plug 'github/copilot.vim'
 call plug#end()
 
@@ -68,13 +70,17 @@ nmap <leader>u :UndotreeShow<CR>
 
 " TreeSitter
 lua require('treesitterConfig')
-
-"" Autocomplete
+"
+""" Autocomplete
 lua require('coqConfig')
-
-" LSP
+"
+"" LSP
 lua require('lspconfigConfig')
 set omnifunc=v:lua.vim.lsp.omnifunc
+
+" go
+autocmd FileType go lua require('go').setup()
+autocmd BufWritePre *.go lua require('go.format').goimport()
 
 " Copilot
 let g:copilot_no_tab_map = v:true
@@ -117,7 +123,6 @@ au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
 " file when a write is detected
 set shortmess+=A
 
-
 " replace currently selected text with default register
 " without yanking it
 vnoremap p "_dP
@@ -144,6 +149,9 @@ set scrolloff=15
 " show special characters in bad spots
 set showbreak=↪
 set listchars=nbsp:␣,trail:•,extends:⟩,precedes:⟨
+
+set shiftwidth=4
+set tabstop=4
 
 "" Appearance end
 
