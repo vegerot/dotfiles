@@ -20,6 +20,10 @@ alias gsf="git sf"
 alias gres="git restore"
 alias gfr="git fr"
 alias gfru="git fru"
+alias gcw="git cw"
+gsfz() {
+	git switch $(git for-each-ref --sort=-committerdate --format='%(refname:short)' refs/ | fzf --height=70% --preview-window=right:60%:wrap --preview='git log --color=always --oneline --decorate {}')
+}
 
 #vscode
 alias code="code-insiders"
