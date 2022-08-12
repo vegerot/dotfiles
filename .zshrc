@@ -76,13 +76,18 @@ source $ZSH/oh-my-zsh.sh
 eval "$(jump shell)"
 
 # fzf
-export FZF_DEFAULT_OPTS='--height=70% --preview "bat --color always {} || cat {}" --preview-window=right:60%:wrap'
-export FZF_DEFAULT_COMMAND='git ls-tree -r --name-only HEAD || rg --files 2>/dev/null'
+## read by fzf program (see man fzf)
+export FZF_DEFAULT_OPTS='--height=70% '
+export FZF_DEFAULT_COMMAND='git ls-tree -r --name-only HEAD || fd '
+# read by fzf/shell/key-bindings.zsh
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_PREVIEW_OPTS='--preview "bat --color always {} || cat {}" --preview-window=right:60%:wrap'
+export FZF_CTRL_T_OPTS=$FZF_PREVIEW_OPTS
 
 source "$HOME/.fzf-extras/fzf-extras.zsh"
-source "$HOME/.fzf-extras/fzf-extras.sh"
+#source "$HOME/.fzf-extras/fzf-extras.sh"
 
+# from fzf.zsh plugin
 bindkey '^p' fzf-file-widget
 
 # add things to shell environment
