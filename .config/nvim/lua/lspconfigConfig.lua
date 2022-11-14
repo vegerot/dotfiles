@@ -39,14 +39,42 @@ local on_attach = function(client, bufnr)
 
 end
 
+local defaultConfig = {
+  on_attach = on_attach,
+  flags = {
+    debounce_text_changes = 150,
+  }
+}
+
+local lua_config = {'sumneko_lua', {
+  on_attach = on_attach,
+  flags = {
+    debounce_text_changes = 150,
+  },
+  settings = {
+    Lua = {
+      runtime = {
+        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+        version = 'LuaJIT',
+      },
+      diagnostics = {
+        -- Get the language server to recognize the `vim` global
+        globals = {'vim'},
+      },
+      workspace = {
+        -- Make the server aware of Neovim runtime files
+        library = vim.api.nvim_get_runtime_file("", true),
+      },
+    },
+  },
+}}
+
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'tsserver', 'gopls' }
+local servers = { lua_config, {'gopls'}, {'tsserver'}, {'clangd'}, {'quick_lint_js'} }
 for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup (coq.lsp_ensure_capabilities {
-    on_attach = on_attach,
-    flags = {
-      debounce_text_changes = 150,
-    }
-  })
+  local name, settings = unpack(lsp)
+  if settings == nil then settings = defaultConfig end
+  nvim_lsp[name].setup (coq.lsp_ensure_capabilities(settings) )
 end
+
