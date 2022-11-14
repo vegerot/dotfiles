@@ -21,16 +21,15 @@ RBInit() {
 source ~/dotfiles/bin/clone
 
 function vpn-up() {
-  local VPN_HOST=sslvpngwgec.wal-mart.com/Walmart_Associate_MAC_Yubi
-  #local VPN_HOST=http://sslvpngwwec.wal-mart.com/Walmart_Associate_Yubi
+  #local VPN_HOST=sslvpngwgec.wal-mart.com/Walmart_Associate_MAC_Yubi
+  local VPN_HOST=http://sslvpngwwec.wal-mart.com/Walmart_Associate_Yubi
+  #local VPN_HOST=http://sslvpngw.wal-mart.com/Walmart_Associate_Yubi
   local VPN_USER=$(whoami) #for openconnect
 
-  if [ ! -f ~/.vpn_password ]; then
-    echo "Error: missing ~/.vpn_password"
-    return
-  fi
   echo "Starting the vpn ..."
-  echo "\n$(cat ~/.vpn_password)\n$(2fa walmart)\ny" | /opt/cisco/anyconnect/bin/vpn -s connect $VPN_HOST $@
+  local vpn_password="$(security find-generic-password -w -s 'wmt-sso' -a $VPN_USER)"
+  local mfa_code="$(2fa walmart)"
+  printf "\n${vpn_password}\n${mfa_code}\ny" | /opt/cisco/anyconnect/bin/vpn -s connect $VPN_HOST $@
 
   #echo "$(cat ~/.vpn_password)\n$(2fa walmart)" | sudo openconnect --passwd-on-stdin --user=$VPN_USER $VPN_HOST $@ # for openconnect
 }
