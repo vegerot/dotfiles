@@ -2,7 +2,7 @@
 start=`gdate +%s.%N`
 
 #start Tmux, maybe
-source ~/.profile
+#source ~/.profile
 
 # Command line editing
 setopt vi
@@ -28,6 +28,9 @@ setopt incappendhistorytime
 unsetopt histignorespace
 
 setopt correct
+
+# increase maximum amount of open files in macOS
+ulimit -n 512
 
 # without this, oh-my-zsh enables `bracketed-paste-magic` and `url-quote-magic`
 # which are freaking *slow*
@@ -118,9 +121,23 @@ bindkey -M vicmd 'j' history-substring-search-down
 source "${HOME}/.iterm2_shell_integration.zsh"
 
 
-autoload -Uz compinit && compinit
+## Only check compinit once a day
+## credit: https://medium.com/@dannysmith/little-thing-2-speeding-up-zsh-f1860390f92
+autoload -Uz compinit
+for dump in ~/.zcompdump(N.mh+24); do
+  compinit
+done
+compinit -C
 
 # Compute time taken
 end=`gdate +%s.%N`
 runtime=$( echo "$end - $start"|bc -l )
 echo "$runtime seconds"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# cargo
+. "$HOME/.cargo/env"
+
