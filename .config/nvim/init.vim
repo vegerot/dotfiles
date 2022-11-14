@@ -7,13 +7,12 @@ call plug#begin(stdpath('data') . '/plugged')
   Plug 'tpope/vim-commentary'
   Plug 'tpope/vim-unimpaired'
 
+  "" Simple plugins
   " Copy link to Git{Lab,Hub{,Enterprise}}
   Plug 'ruanyl/vim-gh-line'
 
-  Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-  Plug 'junegunn/fzf.vim'
 
-  Plug 'editorconfig/editorconfig-vim'
+  "Plug 'editorconfig/editorconfig-vim'
 
   Plug 'bkad/CamelCaseMotion'
 
@@ -22,10 +21,22 @@ call plug#begin(stdpath('data') . '/plugged')
 
   Plug 'lervag/file-line'
 
+  "" Complex plugins
   Plug 'christoomey/vim-tmux-navigator'
+
+  Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+  Plug 'junegunn/fzf.vim'
+
+  Plug 'nvim-lua/plenary.nvim' 
+  Plug 'ThePrimeagen/harpoon'
+
+  "Plug 'kamykn/spelunker.vim'
 
   "LSP and TreeSitter stuff"
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+  Plug 'nvim-treesitter/nvim-treesitter-context'
+  Plug 'nvim-treesitter/playground'
+
   Plug 'neovim/nvim-lspconfig'
 
   Plug 'ms-jpq/coq_nvim', {'branch': 'coq'} "main
@@ -40,6 +51,7 @@ call plug#end()
 
 """ PLUGINS start
 
+let g:spelunker_check_type = 2
 "nmap <C-[> :lprevious<Cr>
 nmap <C-]> :lnext<Cr>
 
@@ -82,10 +94,14 @@ set omnifunc=v:lua.vim.lsp.omnifunc
 autocmd FileType go lua require('go').setup()
 autocmd BufWritePre *.go lua require('go.format').goimport()
 
+"sql
+lua require('nvim-sql')
+
 " Copilot
 let g:copilot_no_tab_map = v:true
 let g:copilot_assume_mapped = v:true
 let g:copilot_tab_fallback = ""
+let g:copilot_node_command = "~/.nvm/versions/node/v16.18.0/bin/node"
 imap <script><expr> <C-e> copilot#Accept("\<CR>")
 
 
@@ -132,6 +148,15 @@ nnoremap n nzz
 nnoremap N Nzz
 nmap <leader>n :nohl<CR>
 
+
+" Undo break points (cred: Prime)
+" TODO: function that takes list of chars and does this remap for them
+inoremap , ,<c-g>u
+inoremap . .<c-g>u
+inoremap ! !<c-g>u
+inoremap ? ?<c-g>u
+inoremap <Space> <Space><c-g>u
+
 " emacs-like movement in insert mode
 cmap <C-k> <C-p>
 cmap <C-j> <C-n>
@@ -148,9 +173,9 @@ set scrolloff=15
 
 " show special characters in bad spots
 set showbreak=↪
-set listchars=nbsp:␣,trail:•,extends:⟩,precedes:⟨
+set list
+set listchars=tab:→\ ,nbsp:␣,trail:•,extends:⟩,precedes:⟨
 
-set shiftwidth=4
 set tabstop=4
 
 "" Appearance end
