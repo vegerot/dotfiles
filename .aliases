@@ -18,10 +18,14 @@ alias mkdir="mkdir -pv"
 
 #git
 alias g.="git add -p"
-unalias gr
+#unalias gr
+alias gc="git commit"
+alias gp="git push"
+alias gst="git status"
 alias gr="git rebase"
 alias gs="git s"
 alias gsf="git sf"
+alias gsw="git switch"
 alias gres="git restore"
 alias gfr="git fr"
 alias gfru="git fru"
