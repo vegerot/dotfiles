@@ -44,3 +44,12 @@ function sudome() {
   sudo jamf policy -id 854
   set +x
 }
+
+function afk() {
+  echo "set i to 0
+  repeat while i < 20
+  tell application \"System Events\" to key code 80
+  set i to i + 1
+  delay 180
+end repeat" | osascript
+}
