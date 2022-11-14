@@ -12,7 +12,7 @@
   cw = commit --fixup=wip
 
 [core]
-  pager = "$_GIT_CONTRIB/diff-highlight/diff-highlight | $PAGER"
+  pager = "${_GIT_CONTRIB:-/usr/local/share/git-core/contrib}/diff-highlight/diff-highlight | $PAGER"
 
 [color "branch"]
   current = yellow reverse
@@ -56,4 +56,6 @@
 [help]
   autocorrect = 1
 
-
+# force ssh
+[url "git@github.com:"]
+  insteadOf = "https://github.com/"

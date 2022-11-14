@@ -3,10 +3,12 @@
 #source ~/.profile_mycroft
 
 export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=YES
-#export TERM=xterm-256color
-if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
-       tmux new-session -t default \; new-window || tmux new -s default -u
-fi
-source ~/.sh_functions
+##export TERM=xterm-256color
+#if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
+#       tmux new-session -t default \; new-window || tmux new -s default -u
+#fi
+. ~/.env
+. ~/.sh_functions
+. ~/.aliases
 
 #eval "$( /usr/local/opt/coreutils/libexec/gnubin/dircolors ~/.dir_colors)"

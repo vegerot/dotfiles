@@ -1,11 +1,16 @@
 #!/usr/bin/env bash
 
+# basics
+
+alias ls="ls -G"
+
 # vim
-alias vi=nvim
-alias vim=nvim
-alias vimdiff='nvim -d'
+#alias vi=nvim
+#alias vim=nvim
+#alias vimdiff='nvim -d'
 
 alias grep="egrep --color=always"
+alias rgv="rg --vimgrep --color=auto"
 
 #verbose
 alias ln="ln -v"

@@ -1,18 +1,18 @@
-## arrow up
-"\e[A":history-search-backward
-## arrow down
-"\e[B":history-search-forward
-
-set keymap vi-command
-Control-l: clear-screen
-
-set keymap vi-insert
-Control-l: clear-screen
-
-set colored-stats On
-set completion-prefix-display-length 3
-set mark-symlinked-directories  On
-set show-all-if-ambiguous On
-set visible-stats On
-set editing-mode vi
-set keymap vi-command
+### arrow up
+#"\e[A":history-search-backward
+### arrow down
+#"\e[B":history-search-forward
+#
+#set keymap vi-command
+#Control-l: clear-screen
+#
+#set keymap vi-insert
+#Control-l: clear-screen
+#
+#set colored-stats On
+#set completion-prefix-display-length 3
+#set mark-symlinked-directories  On
+#set show-all-if-ambiguous On
+#set visible-stats On
+#set editing-mode vi
+#set keymap vi-command
