@@ -40,3 +40,4 @@ There are other things that I miss at _least_ once an hour:
 
 ### bash
 - no syntax highlighting
+- colored man pages helped more than I thought it would
