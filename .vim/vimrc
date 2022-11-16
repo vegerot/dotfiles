@@ -3,3 +3,10 @@ set tabstop=4
 set clipboard=unnamed
 set ignorecase
 
+"" grep start
+" use ripgrep instead of grep
+set grepprg=rg\ --vimgrep\ --no-heading
+
+command -nargs=+ Gr :grep <args>
+"" grep end
+
