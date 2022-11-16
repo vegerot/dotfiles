@@ -53,3 +53,7 @@ function afk() {
   delay 180
 end repeat" | osascript
 }
+
+function vo() {
+		vim $(fd | fzf)
+}
