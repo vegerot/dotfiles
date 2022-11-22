@@ -8,6 +8,9 @@ I have soooo many features in Neovim, and passed the first two days I stopped mi
 - `<leader>w/b/etc` to move forward camel-cased
 - Syntax highlighting sucks
 - Can't find the types of things
+- vim-tmux-movement
+- Need to save files before editing new files
+- can't open files like `src/utils/helper.ts:369:14`. `lervag/file-line` does this
 
 ### bash
 - bash history splitting multi-line commands into different history entries
@@ -31,13 +34,19 @@ There are other things that I miss at _least_ once an hour:
 - Maybe just because I’m so used to nvim, but I’m used to my cursor changing shape depending on mode and not having that in vim makes me get confused sometimes
 - vim-surround
 - copy/pasting to/from system clipboard is annoying.  Forget to say `"+y"`
+- files auto-reload when edited elsewhere
 
 ### bash
 - zsh will guess-complete tab-completions.  For example, if I have directories `ce-smartlists`, `ce-fart` then in zsh if I type `cd smart<tab>` it will autocomplete `cd ce-smartlists
+- case-insensitive tab completion
 
 
 ## Nice-to-haves
 
+### vim
+- swap files clutter working directory
+
 ### bash
 - no syntax highlighting
 - colored man pages helped more than I thought it would
+- cli autocorrect (`gti` changed to `git`)
