@@ -12,6 +12,13 @@ export PATH="$PATH:/usr/local/lib:$HOME/go/bin:/opt/cisco/anyconnect/bin:$HOME/d
 export SLEDGE_BIN="$HOME/.sledge/bin"
 export PATH="${PATH}:${SLEDGE_BIN}"
 
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# cargo
+. "$HOME/.cargo/env"
+
 # make sure this is the last thing
 export PATH="$PATH:."
 
