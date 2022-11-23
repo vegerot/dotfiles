@@ -7,7 +7,7 @@ I have soooo many features in Neovim, and passed the first two days I stopped mi
 - finding files in vim: I bind <c-p> to an fzf thing in Neovim and it’s great.  Unfortunately vim doesn’t have anything like that built-in.
 - `<leader>w/b/etc` to move forward camel-cased
 - Syntax highlighting sucks
-    - `import type {}` in TypeScript breaks the whole file
+    - `import { type foo }` in TypeScript breaks the whole file
 - Can't find the types of things
 - vim-tmux-movement
 - Need to save files before editing new files
