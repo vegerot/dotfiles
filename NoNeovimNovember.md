@@ -32,6 +32,8 @@ There are other things that I miss at _least_ once an hour:
 - LSP stuff
   - I reflexively hit `gd` at one point and my mind was blown when it worked.  I forgot vim does a pretty good job at figuring this out from syntax alone!  If not for this “not having goto definition” would have been in the “very frequent” category
 - Way better syntax highlighting
+    - fewer languages support out of the box
+        - graphql
 - Maybe just because I’m so used to nvim, but I’m used to my cursor changing shape depending on mode and not having that in vim makes me get confused sometimes
 - vim-surround
 - copy/pasting to/from system clipboard is annoying.  Forget to say `"+y"`

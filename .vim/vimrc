@@ -10,3 +10,13 @@ set grepprg=rg\ --vimgrep\ --no-heading
 command -nargs=+ Gr :grep <args>
 "" grep end
 
+
+nmap <C-j> <C-w>j
+nmap <C-k> <C-w>k
+nmap <C-h> <C-w>h
+nmap <C-l> <C-w>l
+
+command Edir :e %:h
+command VEdir :Ve %:h
+
+set path+="./**/*"
