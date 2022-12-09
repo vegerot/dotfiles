@@ -244,6 +244,7 @@
     .tool-version
     .shorten_folder_marker
     .svn
+    .sl
     .terraform
     CVS
     Cargo.toml
