@@ -22,8 +22,8 @@ source ~/dotfiles/bin/clone
 
 function vpn-up() {
   #local VPN_HOST=sslvpngwgec.wal-mart.com/Walmart_Associate_MAC_Yubi
-  local VPN_HOST=http://sslvpngwwec.wal-mart.com/Walmart_Associate_Yubi
-  #local VPN_HOST=http://sslvpngw.wal-mart.com/Walmart_Associate_Yubi
+  #local VPN_HOST=http://sslvpngwwec.wal-mart.com/Walmart_Associate_Yubi
+  local VPN_HOST=http://sslvpngw.wal-mart.com/Walmart_Associate_Yubi
   local VPN_USER=$(whoami) #for openconnect
 
   echo "Starting the vpn ..."
