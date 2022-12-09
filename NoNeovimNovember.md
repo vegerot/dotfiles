@@ -30,7 +30,8 @@ There are other things that I miss at _least_ once an hour:
 ### vim
 
 - LSP stuff
-  - I reflexively hit `gd` at one point and my mind was blown when it worked.  I forgot vim does a pretty good job at figuring this out from syntax alone!  If not for this “not having goto definition” would have been in the “very frequent” category
+    - I reflexively hit `gd` at one point and my mind was blown when it worked.  I forgot vim does a pretty good job at figuring this out from syntax alone!  If not for this “not having goto definition” would have been in the “very frequent” category
+    - Figuring out if my code has errors sucks.  Would be a lot less bad if my build times were fast, but since they're slow AF my feedback loops take a long time
 - Way better syntax highlighting
     - fewer languages support out of the box
         - graphql
