@@ -6,11 +6,12 @@ alias ls="ls -G"
 
 # vim
 #alias vi=nvim
-#alias vim=nvim
-#alias vimdiff='nvim -d'
+alias vim=nvim
+alias vimdiff='nvim -d'
 
 alias grep="egrep --color=always"
 alias rgv="rg --vimgrep --color=auto"
+alias rgt="rg --glob '!*.spec.ts' --glob '!*mx*' --glob '!*mock*'"
 
 #verbose
 alias ln="ln -v"

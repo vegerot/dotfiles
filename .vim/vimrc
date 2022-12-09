@@ -19,4 +19,5 @@ nmap <C-l> <C-w>l
 command Edir :e %:h
 command VEdir :Ve %:h
 
-set path+="./**/*"
+set path+=./**/*
+set path+=,./**/*
