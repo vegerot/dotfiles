@@ -1,1 +1,1 @@
-/Users/m0c0j7y/workspace/github.com/neovim/neovim/runtime/syntax/hgcommit.vim
+/Users/m0c0j7y/workspace/github.com/vim/vim/runtime/syntax/hgcommit.vim
