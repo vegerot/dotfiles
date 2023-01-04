@@ -19,6 +19,7 @@
 [[ ! -o 'no_brace_expand' ]] || p10k_config_opts+=('no_brace_expand')
 'builtin' 'setopt' 'no_aliases' 'no_sh_glob' 'brace_expand'
 
+
 () {
   emulate -L zsh -o extended_glob
 
@@ -29,12 +30,20 @@
   # Zsh >= 5.1 is required.
   autoload -Uz is-at-least && is-at-least 5.1 || return
 
+  function prompt_my_sapling_status() {
+    [[ -n ./(../)#.sl(#qN) ]] || return
+    local content
+    content=$(_scm_prompt) || return
+    p10k segment -b green -f black -i 'sl' -t "$content"
+  }
+
   # The list of segments shown on the left. Fill it with the most important segments.
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
     # =========================[ Line #1 ]=========================
     os_icon                 # os identifier
     dir                     # current directory
     vcs                     # git status
+    my_sapling_status       # sapling status
     # =========================[ Line #2 ]=========================
     newline                 # \n
     prompt_char             # prompt symbol
