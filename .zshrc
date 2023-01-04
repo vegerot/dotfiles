@@ -1,5 +1,11 @@
+# add things to shell environment
+source ~/.env
 # Compute how long startup takes
 start=`gdate +%s.%N`
+
+# remove duplicates from PATH
+typeset -aU path
+typeset -U PATH
 
 #start Tmux, maybe
 #source ~/.profile
@@ -45,6 +51,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="powerlevel10k/powerlevel10k"
+#ZSH_THEME="robbyrussell"
 
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
@@ -94,8 +101,7 @@ source "$HOME/.fzf-extras/fzf-extras.zsh"
 # from fzf.zsh plugin
 bindkey '^p' fzf-file-widget
 
-# add things to shell environment
-source ~/.env
+# add more things to shell environment
 source ~/.aliases
 source ~/.sh_functions
 
