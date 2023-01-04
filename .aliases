@@ -36,6 +36,13 @@ gsfz() {
 	git switch $(git for-each-ref --sort=-committerdate --format='%(refname:short)' refs/ | fzf --height=70% --preview-window=right:60%:wrap --preview='git log --color=always --oneline --decorate {}')
 }
 
+#sapling
+
+alias sst="sl status && sl ssl"
+alias slc="sl commit --verbose"
+alias slci="sl commit --interactive"
+alias slca="sl commit --amend --verbose"
+
 #vscode
 alias code="code-insiders"
 
@@ -44,10 +51,10 @@ alias k="kubectl"
 alias kns="kubens ce-smartlists-gql"
 alias kn="kubens"
 #alias sl="sledge"
-alias slc="sledge connect"
-alias slprod_w="slc wus-prod-a31 && kns"
-alias slprod_s="slc scus-prod-a29 && kns"
-alias slprod_e="slc eus2-prod-a18 && kns"
+#alias slc="sledge connect"
+alias slprod_w="sledge connect wus-prod-a31 && kns"
+alias slprod_s="sledge connect scus-prod-a29 && kns"
+alias slprod_e="sledge connect eus2-prod-a18 && kns"
 alias kpods="k get pods -o wide --sort-by=.metadata.creationTimestamp"
 alias kwpod="k get pod -w -o wide --sort-by=.metadata.creationTimestamp"
 alias kevents="k get events -w --sort-by=.metadata.creationTimestamp"
