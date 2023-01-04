@@ -1,0 +1,1 @@
+/Users/m0c0j7y/workspace/github.com/vim/vim/runtime/syntax/shared/hgcommitDiff.vim
