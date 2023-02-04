@@ -69,9 +69,16 @@ local lua_config = {'sumneko_lua', {
   },
 }}
 
+nvim_lsp['quick_lint_js'].setup { filetypes = {
+	"javascript", "javascriptreact",
+	"typescript", "typescriptreact",
+	},
+	cmd = {"quick-lint-js", "--lsp-server", "--snarky"},
+}
+
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { lua_config, {'gopls'}, {'tsserver'}, {'clangd'}, {'quick_lint_js'}, {'rust_analyzer'} }
+local servers = { lua_config, {'gopls'}, {'tsserver'}, {'clangd'}, {'rust_analyzer'} }
 for _, lsp in ipairs(servers) do
   local name, settings = unpack(lsp)
   if settings == nil then settings = defaultConfig end
