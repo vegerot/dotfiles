@@ -55,5 +55,5 @@ end repeat" | osascript
 }
 
 function vo() {
-		vim $(fd | fzf)
+	vim $(fd | fzf)
 }
