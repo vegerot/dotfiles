@@ -91,7 +91,10 @@ lua require('lspconfigConfig')
 set omnifunc=v:lua.vim.lsp.omnifunc
 
 " go
+"" go lsp
 autocmd FileType go lua require('go').setup()
+"" setup :make
+autocmd FileType go set makeprg=go\ test\ ./...
 autocmd BufWritePre *.go lua require('go.format').goimport()
 
 "sql
