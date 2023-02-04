@@ -33,7 +33,8 @@ setopt incappendhistorytime
 
 unsetopt histignorespace
 
-setopt correct
+# This conflicts with tea's magic
+#setopt correct
 
 # increase maximum amount of open files in macOS
 ulimit -n 512
