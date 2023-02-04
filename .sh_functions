@@ -18,6 +18,10 @@ RBInit() {
 	eval "$(rbenv init - zsh)"
 }
 
+tea-magic() {
+	[[ -d "$HOME/.tea" ]] && source <("$HOME/.tea/tea.xyz/v*/bin/tea" --magic)
+}
+
 source ~/dotfiles/bin/clone
 
 function vpn-up() {
