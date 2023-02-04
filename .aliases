@@ -40,8 +40,8 @@ gsfz() {
 
 alias sst="sl status && sl ssl"
 alias slc="sl commit --verbose"
-alias slci="sl commit --interactive"
-alias slca="sl commit --amend --verbose"
+alias slci="slc --interactive"
+alias slca="slc --amend"
 
 #vscode
 alias code="code-insiders"
