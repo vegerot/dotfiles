@@ -46,7 +46,7 @@ local defaultConfig = {
   }
 }
 
-local lua_config = {'sumneko_lua', {
+local lua_config = {'lua_ls', {
   on_attach = on_attach,
   flags = {
     debounce_text_changes = 150,
