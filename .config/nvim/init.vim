@@ -79,6 +79,7 @@ let g:camelcasemotion_key = '<leader>'
 
 nmap <leader>u :UndotreeShow<CR>
 
+lua require('open-remote')
 
 " TreeSitter
 lua require('treesitterConfig')
