@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# Description: Test the open-remote plugin
+set -e
+
+function unit_tests() {
+	nvim -u NONE +"source ~/.config/nvim/lua/open-remote.lua" +"lua Open_Remote_Test()"
+}
+unit_tests
+
+function e2e_test_1() {
+	function setup_e2e_test(){
+		local tmp_dir=$(mktemp -d)
+		echo "running in: $tmp_dir"
+		cd $tmp_dir
+		sl init --git .
+		printf 'hello\nworld\ndufus' > foo.txt
+		sl add foo.txt
+		sl commit -m lol
+		sl paths --add default ssh://git@github.com/testuser/testrepo.git
+		sl debugremotebookmark upstream .
+	}
+	setup_e2e_test
+	nvim -u NONE foo.txt -Vvim.log +"source ~/.config/nvim/lua/open-remote.lua" +2 +"OpenRemoteTestE2e"
+}
+
+e2e_test_1
+
+function e2e_test_2() {
+	function setup_e2e_test(){
+		local tmp_dir=$(mktemp -d)
+		echo "running in: $tmp_dir"
+		cd $tmp_dir
+		sl init --git .
+		printf 'hello\nworld\ndufus' > foo.txt
+		sl add foo.txt
+		sl commit -m lol
+		sl paths --add default ssh://git@github.com/testuser/testrepo.git
+	}
+	setup_e2e_test
+	nvim -u NONE foo.txt +"source ~/.config/nvim/lua/open-remote.lua" +2 +"OpenRemoteTestE2e2"
+}
+e2e_test_2
+
