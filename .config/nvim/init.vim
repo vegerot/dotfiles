@@ -51,6 +51,9 @@ call plug#end()
 
 """ PLUGINS start
 
+" Open remote
+nmap <leader>op :OpenFile<CR>
+
 let g:spelunker_check_type = 2
 "nmap <C-[> :lprevious<Cr>
 nmap <C-]> :lnext<Cr>
