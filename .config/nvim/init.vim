@@ -11,9 +11,6 @@ call plug#begin(stdpath('data') . '/plugged')
   " Copy link to Git{Lab,Hub{,Enterprise}}
   Plug 'ruanyl/vim-gh-line'
 
-
-  "Plug 'editorconfig/editorconfig-vim'
-
   Plug 'bkad/CamelCaseMotion'
 
   Plug 'kana/vim-textobj-user'
@@ -27,7 +24,7 @@ call plug#begin(stdpath('data') . '/plugged')
   Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
   Plug 'junegunn/fzf.vim'
 
-  Plug 'nvim-lua/plenary.nvim' 
+  Plug 'nvim-lua/plenary.nvim'
   Plug 'ThePrimeagen/harpoon'
 
   "Plug 'kamykn/spelunker.vim'
@@ -100,6 +97,10 @@ autocmd FileType go lua require('go').setup()
 "" setup :make
 autocmd FileType go set makeprg=go\ test\ ./...
 autocmd BufWritePre *.go lua require('go.format').goimport()
+
+" TypeScript
+"" :make
+autocmd FileType typescript set makeprg=yarn\ tsc
 
 "sql
 lua require('nvim-sql')
