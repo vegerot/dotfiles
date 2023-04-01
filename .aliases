@@ -39,10 +39,13 @@ gsfz() {
 #sapling
 
 alias sst="sl status && sl ssl"
+
 alias slc="sl commit --verbose"
 alias slci="slc --interactive"
 alias sla="sl amend"
 alias slai="sl amend --interactive"
+
+alias slr="sl rebase"
 
 #vscode
 alias code="code-insiders"
