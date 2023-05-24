@@ -171,6 +171,10 @@ cmap <C-j> <C-n>
 imap <C-k> <C-p>
 imap <C-j> <C-n>
 
+" Make myself use `:x` instead of `:wq`
+command -nargs=0 UseXInsteadOfWq echo "use :x"
+cnoreabbrev wq UseXInsteadOfWq
+
 
 "" Appearance
 " make popup menu not a gross pink color
