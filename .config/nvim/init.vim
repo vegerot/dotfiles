@@ -188,7 +188,6 @@ imap <C-j> <C-n>
 command -nargs=0 UseXInsteadOfWq echo "use :x"
 cnoreabbrev wq UseXInsteadOfWq
 
-
 "" Appearance
 " make popup menu not a gross pink color
 highlight Pmenu ctermfg=111 ctermbg=239
@@ -202,6 +201,7 @@ set list
 set listchars=tab:→\ ,nbsp:␣,trail:•,extends:⟩,precedes:⟨
 
 set tabstop=4
+set shiftwidth=4
 
 "" Appearance end
 
