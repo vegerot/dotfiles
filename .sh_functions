@@ -69,3 +69,17 @@ end repeat" | osascript
 function vo() {
 	vim $(fd | fzf)
 }
+
+kubeparallel() {
+	local clusters=(scus-prod-a29 eus2-prod-a18 uswest-prod-az-002)
+	local clusters_separated_by_newlines_extra_newline=$(printf "\n%s" "${clusters[@]}") # \nscus-prod-a29\neus2-prod-a18\nuswest-prod-az-002
+	local clusters_separated_by_newlines=${clusters_separated_by_newlines_extra_newline:1} # scus-prod-a29\neus2-prod-a18\nuswest-prod-az-002
+	printf "$clusters_separated_by_newlines" | parallel -j3 "printf '\e[34m\e[40m{}\e[0m\n'; kubectl $@ --context={} ; printf '\n'"
+}
+
+kubesequential() {
+	local clusters=("scus-prod-a29" "eus2-prod-a18" "uswest-prod-az-002")
+	local clusters_separated_by_newlines_extra_newline=$(printf "\n%s" "${clusters[@]}") # \nscus-prod-a29\neus2-prod-a18\nuswest-prod-az-002
+	local clusters_separated_by_newlines=${clusters_separated_by_newlines_extra_newline:1} # scus-prod-a29\neus2-prod-a18\nuswest-prod-az-002
+	printf "$clusters_separated_by_newlines" | xargs -r -I{} zsh -c "echo '\e[34m\e[40m{}\e[0m' ; kubectl $* --context={} ; printf '\n'"
+}
