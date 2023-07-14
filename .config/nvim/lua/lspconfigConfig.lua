@@ -35,7 +35,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '[d', ':lua vim.diagnostic.goto_prev()<CR>', opts)
   buf_set_keymap('n', ']d', ':lua vim.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', '<leader>l', ':lua vim.lsp.diagnostic.set_loclist({open=true})<CR>', opts)
-  buf_set_keymap('n', '<leader>f', ':lua vim.lsp.buf.formatting()<CR>', opts)
+  buf_set_keymap('n', '<leader>f', ':lua vim.lsp.buf.format()<CR>', opts)
 
 end
 
