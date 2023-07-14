@@ -18,7 +18,7 @@ alias ln="ln -v"
 alias mkdir="mkdir -pv"
 
 #git
-alias g.="git add -p"
+alias g.="git add -p ."
 alias ga="git add"
 #unalias gr
 alias gc="git commit"
