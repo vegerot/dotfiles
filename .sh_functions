@@ -32,9 +32,10 @@ SetWebCerts() {
 source ~/dotfiles/bin/clone
 
 function vpn-up() {
-  local VPN_HOST=sslvpngwgec.wal-mart.com/Walmart_Associate_MAC_Yubi
-  #local VPN_HOST=http://sslvpngwwec.wal-mart.com/Walmart_Associate_Yubi
-  #local VPN_HOST=http://sslvpngw.wal-mart.com/Walmart_Associate_Yubi
+  #local VPN_HOST=sslvpngwgec.wal-mart.com/Walmart_Associate_MAC_Yubi # blocks Spotify
+  #local VPN_HOST=http://sslvpngwwec.wal-mart.com/Walmart_Associate_Yubi # blocks Spotify
+  #local VPN_HOST=http://sslvpngw.wal-mart.com/Walmart_Associate_Yubi # seamlessly switches on Zoom calls; blocks Spotify
+  local VPN_HOST=sslvpngwwec.wal-mart.com/Walmart_Associate_Yubi # blocks Spotify
   local VPN_USER=$(whoami) #for openconnect
 
   echo "Starting the vpn ..."
