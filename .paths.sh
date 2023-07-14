@@ -33,3 +33,23 @@ export PATH="$PATH:."
 
         ;;
 esac
+
+### MAN path
+
+export MANPATH="/usr/local/share/man:$MANPATH:"
+
+# pnpm
+export PNPM_HOME="/Users/m0c0j7y/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end# setup pyenv
+
+#if command -v pyenv 1>/dev/null 2>&1; then
+if false; then
+  export PYENV_ROOT="$HOME/.pyenv"
+  export PATH="$PYENV_ROOT/bin:$PATH"
+  eval "$(pyenv init --path)"
+  eval "$(pyenv init -)"
+fi
