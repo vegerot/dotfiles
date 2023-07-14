@@ -11,11 +11,14 @@ export PATH="$HOME/.cargo/bin:/usr/local/opt/ruby/bin:$PATH"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+# Walmart iOS dev stuff
+export PATH=$HOME/.mint/bin:$PATH
+
 
 
 ## Unimportant stuff goes at the end
 export GOPATH="$HOME/go"
-export PATH="$PATH:/usr/local/lib:$GOPATH/bin:/opt/cisco/anyconnect/bin:$HOME/dotfiles/bin:$HOME/.mint/bin/"
+export PATH="$PATH:/usr/local/lib:$GOPATH/bin:/Users/m0c0j7y/.deno/bin:/opt/cisco/anyconnect/bin:$HOME/dotfiles/bin:$HOME/.mint/bin/"
 
 # sledge:binary path
 export SLEDGE_BIN="$HOME/.sledge/bin"
