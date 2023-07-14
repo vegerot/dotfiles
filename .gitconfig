@@ -6,7 +6,7 @@
     # Switch fuzzy
     sf = !git switch $(git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/ refs/remotes/$(git remote || printf origin)/|sed -e 's-refs/heads/--'| sed -e \"s-refs/remotes/$(git remote || printf origin)/--\" | uniq | fzf) $@
 
-  fr = !git fetch $(git remote | head) && git rebase 
+  fr = !git fetch $(git remote | head) && git rebase
   frm = !git fetch $(git remote | head) && git rebase $(git remote | head)/main
   fru = !git fetch upstream && git rebase upstream/main
   cw = commit --fixup=wip
