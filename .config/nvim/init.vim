@@ -1,4 +1,7 @@
 call plug#begin(stdpath('data') . '/plugged')
+  " My plugins
+  Plug 'vegerot/open-remote'
+
   " The legend
   Plug 'tpope/vim-surround'
   Plug 'tpope/vim-sleuth'
@@ -50,6 +53,9 @@ call plug#end()
 
 " Open remote
 nmap <leader>op :OpenFile<CR>
+vmap <leader>op :OpenFile<CR>
+nmap <leader>cp :CopyFile<CR>
+vmap <leader>cp :CopyFile<CR>
 
 let g:spelunker_check_type = 2
 "nmap <C-[> :lprevious<Cr>
@@ -78,8 +84,6 @@ command -nargs=+ Gr :grep <args>
 let g:camelcasemotion_key = '<leader>'
 
 nmap <leader>u :UndotreeShow<CR>
-
-lua require('open-remote')
 
 " TreeSitter
 lua require('treesitterConfig')
