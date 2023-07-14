@@ -104,7 +104,8 @@ autocmd BufWritePre *.go lua require('go.format').goimport()
 
 " TypeScript
 "" :make
-autocmd FileType typescript set makeprg=yarn\ tsc
+autocmd FileType typescript set makeprg=yarn\ tsc\ --pretty\ false
+autocmd FileType typescript set errorformat+=%f(%l\\,%c):\ %m
 
 "sql
 lua require('nvim-sql')
