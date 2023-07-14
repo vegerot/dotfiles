@@ -18,9 +18,16 @@ RBInit() {
 	eval "$(rbenv init - zsh)"
 }
 
-tea-magic() {
-	[[ -d "$HOME/.tea" ]] && source <("$HOME/.tea/tea.xyz/v*/bin/tea" --magic)
+SetWebCerts() {
+	export NODE_EXTRA_CA_CERTS="/tmp/mega.pem"
+	if [ ! -f $NODE_EXTRA_CA_CERTS ]; then
+		security find-certificate -a -p /Library/Keychains/System.keychain > $NODE_EXTRA_CA_CERTS
+	fi
 }
+
+#tea-magic() {
+#	[[ -d "$HOME/.tea" ]] && source <("$HOME/.tea/tea.xyz/v*/bin/tea" --magic)
+#}
 
 source ~/dotfiles/bin/clone
 
