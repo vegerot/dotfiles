@@ -141,4 +141,3 @@ compinit -C
 end=`gdate +%s.%N`
 runtime=$( echo "$end - $start"|bc -l )
 echo "$runtime seconds"
-
