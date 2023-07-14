@@ -69,14 +69,22 @@ local lua_config = {'lua_ls', {
   },
 }}
 
+local use_deno_instead_of_tsserver = false
 local deno_config = {'denols', {
-	on_attach = on_attach,
-	root_dir = nvim_lsp.util.root_pattern("deno.jsonc"),
-	init_options = {
-		lint = true
-	},
-	}
+        on_attach = on_attach,
+        --root_dir = nvim_lsp.util.root_pattern("deno.jsonc"),
+        init_options = {
+                lint = true
+        },
+        }
 }
+local tsserver_config = {'tsserver'}
+local typescript_server;
+if use_deno_instead_of_tsserver then
+        typescript_server = deno_config
+else
+        typescript_server = tsserver_config
+end
 
 nvim_lsp['quick_lint_js'].setup { filetypes = {
 	"javascript", "javascriptreact",
@@ -87,7 +95,7 @@ nvim_lsp['quick_lint_js'].setup { filetypes = {
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { lua_config, {'gopls'}, {'tsserver'}, --[[deno_config,]] {'clangd'}, {'rust_analyzer'} }
+local servers = { lua_config, {'gopls'}, typescript_server, {'clangd'}, {'rust_analyzer'} }
 for _, lsp in ipairs(servers) do
   local name, settings = unpack(lsp)
   if settings == nil then settings = defaultConfig end
