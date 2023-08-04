@@ -1,5 +1,7 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhistcnt =5
+let g:netrw_dirhistcnt =7
+let g:netrw_dirhist_7='/Users/m0c0j7y/notes/SEO/browse-page'
+let g:netrw_dirhist_6='/Users/m0c0j7y/notes/SEO'
 let g:netrw_dirhist_5='/Users/m0c0j7y/gecgithub01.walmart.com/ce-orchestration/ce-smartlists/mocks'
 let g:netrw_dirhist_4='/usr/local/share/vim/vim90/autoload'
 let g:netrw_dirhist_3='/usr/local/share/vim/vim90'
@@ -8,5 +10,3 @@ let g:netrw_dirhist_1='/usr/local/share/vim/vimfiles'
 let g:netrw_dirhist_0='/usr/local/share/vim'
 let g:netrw_dirhist_9='/Users/m0c0j7y/gecgithub01.walmart.com/ce-orchestration/ce-smartlists/src/resolvers/query/lists/__tests__'
 let g:netrw_dirhist_8='/Users/m0c0j7y/gecgithub01.walmart.com/ce-orchestration/ce-smartlists/src/resolvers/query/lists'
-let g:netrw_dirhist_7='/Users/m0c0j7y/workspace/github.com/flawiddsouza/Restfox/packages/tauri/src-tauri'
-let g:netrw_dirhist_6='/Users/m0c0j7y/workspace/github.com/flawiddsouza/Restfox/packages/tauri/src-tauri/target'

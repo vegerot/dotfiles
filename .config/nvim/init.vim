@@ -203,6 +203,8 @@ set listchars=tab:→\ ,nbsp:␣,trail:•,extends:⟩,precedes:⟨
 set tabstop=4
 set shiftwidth=4
 
+set splitright " splitting a window will put the new window right of the current one
+
 "" Appearance end
 
 "NetRW (should netrw config go in vanilla or plugin section?? 🤔)
@@ -210,7 +212,8 @@ set shiftwidth=4
 let g:netrw_liststyle = 3
 let g:netrw_browse_split = 4
 let g:netrw_winsize = 25
-let g:netrw_altv = 1
+let g:netrw_altv = 1 " set automatically by `splitright`
+let g:netrw_altfile=1 "make CTRL-^ return to last edited file instead of netrw browsing buffer
 
 nmap <unique> <c-S-R> <Plug>NetrwRefresh
 
