@@ -21,6 +21,8 @@ call plug#begin(stdpath('data') . '/plugged')
 
   Plug 'lervag/file-line'
 
+  Plug 'AndrewRadev/splitjoin.vim'
+
   "" Complex plugins
   Plug 'christoomey/vim-tmux-navigator'
 
@@ -29,6 +31,8 @@ call plug#begin(stdpath('data') . '/plugged')
 
   Plug 'nvim-lua/plenary.nvim'
   Plug 'ThePrimeagen/harpoon'
+
+  Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 
   "Plug 'kamykn/spelunker.vim'
 
@@ -57,9 +61,10 @@ vmap <leader>op :OpenFile<CR>
 nmap <leader>cp :CopyFile<CR>
 vmap <leader>cp :CopyFile<CR>
 
+
+autocmd filetype markdown let g:surround_{char2nr('b')} = "**\r**"
+
 let g:spelunker_check_type = 2
-"nmap <C-[> :lprevious<Cr>
-nmap <C-]> :lnext<Cr>
 
 "" FZF start
 " Enable per-command history
@@ -183,6 +188,9 @@ cmap <C-k> <C-p>
 cmap <C-j> <C-n>
 imap <C-k> <C-p>
 imap <C-j> <C-n>
+
+"nmap <C-[> :lprevious<Cr>
+nmap <C-]> :lnext<Cr>
 
 " Make myself use `:x` instead of `:wq`
 command -nargs=0 UseXInsteadOfWq echo "use :x"
