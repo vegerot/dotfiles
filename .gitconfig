@@ -1,5 +1,4 @@
 [alias]
-
     # Switch fast
     s = "!{ git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/ refs/remotes/$(git remote || printf origin)|sed -e 's-refs/heads/--'| sed -e \"s-refs/remotes/$(git remote || printf origin)/--\" & printf 'develop\nmain\nmaster\n'; } | uniq | grep -i -m1 --color=never $1 | xargs -I {} sh -c \" echo {}; git switch {}\""
 
@@ -31,9 +30,7 @@
   untracked = cyan
   branch = yellow bold ul
 
-
 [commit]
-
   # https://help.github.com/articles/signing-commits-using-gpg/
   #gpgSign = true
   verbose = true
@@ -47,7 +44,7 @@
 [pull]
   fastforward = true
   ff = only
-	rebase = true
+  rebase = true
 
 [user]
   email = Max.Coplan@walmart.com
