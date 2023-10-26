@@ -51,6 +51,19 @@ function vpn-down() {
   /opt/cisco/anyconnect/bin/vpn disconnect
 }
 
+function vpn-status() {
+    local vpn=/opt/cisco/anyconnect/bin/vpn
+    if [[ ! -x $vpn ]]; then
+	echo "N/A"
+	return 1
+    fi
+
+    /opt/cisco/anyconnect/bin/vpn state\
+	| sed -r 's/^.*state: (Connected|Disconnected)$/\1/g'\
+	| grep -E --color=never 'Connected|Disconnected'\
+	| head -n1
+}
+
 function sudome() {
   set -x
   sudo jamf policy -id 854
