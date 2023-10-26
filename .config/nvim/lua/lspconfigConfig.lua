@@ -86,21 +86,25 @@ else
         typescript_server = tsserver_config
 end
 
-nvim_lsp['quick_lint_js'].setup { filetypes = {
+nvim_lsp['quick_lint_js'].setup {
+  handlers = {
+    ['textDocument/publishDiagnostics'] = vim.lsp.with(
+      vim.lsp.diagnostic.on_publish_diagnostics, {
+        update_in_insert = true
+      }
+    )
+  },
+  filetypes = {
   "javascript", "javascriptreact",
   "typescript", "typescriptreact",
   },
   cmd = {"quick-lint-js", "--lsp-server", "--snarky"},
-  settings= {
-    ["quick-lint-js"] = {
-      ["tracing-directory"] = "/tmp/quick-lint-js-logs",
-    }
-  }
+  -- settings= {
+  --   ["quick-lint-js"] = {
+  --     ["tracing-directory"] = "/tmp/quick-lint-js-logs",
+  --   }
+  -- }
 }
-
-vim.diagnostic.config({
-  update_in_insert=true,
-})
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
