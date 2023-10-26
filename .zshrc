@@ -129,6 +129,8 @@ bindkey -M vicmd 'j' history-substring-search-down
 source "${HOME}/.iterm2_shell_integration.zsh"
 
 
+# bun completions
+[ -s "/Users/m0c0j7y/.bun/_bun" ] && source "/Users/m0c0j7y/.bun/_bun"
 ## Only check compinit once a day
 ## credit: https://medium.com/@dannysmith/little-thing-2-speeding-up-zsh-f1860390f92
 autoload -Uz compinit
