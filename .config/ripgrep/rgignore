@@ -1,0 +1,2 @@
+# ripgrep does not support sapling https://github.com/BurntSushi/ripgrep/issues/2374
+--no-require-git
