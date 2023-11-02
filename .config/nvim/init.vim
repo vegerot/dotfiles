@@ -32,7 +32,7 @@ call plug#begin(stdpath('data') . '/plugged')
   Plug 'nvim-lua/plenary.nvim'
   Plug 'ThePrimeagen/harpoon'
 
-  Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
+  "Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 
   "Plug 'kamykn/spelunker.vim'
 
