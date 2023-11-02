@@ -19,6 +19,9 @@ export PATH=$HOME/.mint/bin:$PATH
 export GOPATH="$HOME/go"
 export PATH="$PATH:/usr/local/lib:$GOPATH/bin:/Users/m0c0j7y/.deno/bin:/opt/cisco/anyconnect/bin:$HOME/dotfiles/bin:$HOME/.mint/bin/"
 
+# ADB installed by Android Studio
+export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools/"
+
 # sledge:binary path
 export SLEDGE_BIN="$HOME/.sledge/bin"
 export PATH="${PATH}:${SLEDGE_BIN}"
