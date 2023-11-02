@@ -7,13 +7,12 @@ case ":${PATH}:" in
 
 source /etc/zprofile
 ## important stuff goes first
-export PATH="$HOME/.cargo/bin:/usr/local/opt/ruby/bin:$PATH"
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$HOME/.cargo/bin:/usr/local/opt/ruby/bin:$PATH"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 # Walmart iOS dev stuff
 export PATH=$HOME/.mint/bin:$PATH
-
 
 
 ## Unimportant stuff goes at the end
@@ -37,6 +36,11 @@ esac
 ### MAN path
 
 export MANPATH="/usr/local/share/man:$MANPATH:"
+export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
+export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
+
+### fpath stuff for zsh
+export FPATH="/opt/homebrew/share/zsh/site-functions:$FPATH"
 
 # pnpm
 export PNPM_HOME="/Users/m0c0j7y/Library/pnpm"
