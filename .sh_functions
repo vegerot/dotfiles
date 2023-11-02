@@ -1,11 +1,10 @@
 #!/usr/bin/env sh
 
 # TODO: rewrite in dash-compatible way
-NvmUse() {
+nvmuse() {
 	export NVM_DIR="$HOME/.nvm"
-	NVM_INSTALL_DIR="/usr/local/opt/nvm/"
-	. "${NVM_INSTALL_DIR}/nvm.sh"  # This loads nvm
-	. "${NVM_INSTALL_DIR}/bash_completion"  # This loads nvm bash_completion
+	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+	[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 	nvm use $@
 }
 
@@ -81,6 +80,17 @@ end repeat" | osascript
 
 function vo() {
 	vim $(fd | fzf)
+}
+
+function killwd() {
+	sudo killall wdavdaemon wdavdaemon_unprivileged wdavdaemon_enterprise
+}
+
+function keepkillwd() {
+	while true; do
+		killwd
+		sleep 3
+	done
 }
 
 kubeparallel() {
