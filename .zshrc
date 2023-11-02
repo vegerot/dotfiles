@@ -1,4 +1,3 @@
-# add things to shell environment
 source ~/.env
 # Compute how long startup takes
 start=`gdate +%s.%N`
@@ -51,13 +50,16 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="powerlevel10k/powerlevel10k"
+if [[ $TERM_PROGRAM != "WarpTerminal" ]]; then
+    ZSH_THEME="powerlevel10k/powerlevel10k"
+    if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+	source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+    fi
+    source ~/workspace/github.com/facebook/sapling/eden/scm/contrib/scm-prompt.sh
+fi
+
 #ZSH_THEME="robbyrussell"
 
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-source ~/workspace/github.com/facebook/sapling/eden/scm/contrib/scm-prompt.sh
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 # Caution: this setting can cause issues with multiline prompts (zsh 5.7.1 and newer seem to work)
@@ -76,7 +78,6 @@ plugins=(
 	git
 	npm
 	zsh-better-npm-completion
-	yarn-autocompletions
 
 	colored-man-pages
 )
@@ -123,11 +124,10 @@ zle-keymap-select () {
 bindkey -M vicmd 'k' history-substring-search-up
 bindkey -M vicmd 'j' history-substring-search-down
 
-## To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-source "${HOME}/.iterm2_shell_integration.zsh"
-
+if [[ $TERM_PROGRAM != "WarpTerminal" ]]; then
+    ## To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+    [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+fi
 
 # bun completions
 [ -s "/Users/m0c0j7y/.bun/_bun" ] && source "/Users/m0c0j7y/.bun/_bun"
