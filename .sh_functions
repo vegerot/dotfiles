@@ -83,15 +83,12 @@ function vo() {
 	vim $(fd | fzf)
 }
 
-function killwd() {
-	sudo killall wdavdaemon wdavdaemon_unprivileged wdavdaemon_enterprise
-}
-
 function keepkillwd() {
-	while true; do
-		killwd
-		sleep 3
-	done
+  local nextSleep=1;
+  while true; do
+	  sudo killall -9 wdavdaemon wdavdaemon_unprivileged wdavdaemon_enterprise 2>/dev/null && echo $nextSleep && nextSleep=1 || nextSleep=$(($nextSleep + 1))
+	  sleep $nextSleep
+  done
 }
 
 kubeparallel() {
