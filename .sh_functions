@@ -86,7 +86,7 @@ function vo() {
 function keepkillwd() {
   local nextSleep=1;
   while true; do
-	  sudo killall -9 wdavdaemon wdavdaemon_unprivileged wdavdaemon_enterprise 2>/dev/null && echo $nextSleep && nextSleep=1 || nextSleep=$(($nextSleep + 1))
+	  sudo killall -9 wdavdaemon wdavdaemon_unprivileged wdavdaemon_enterprise 2>/dev/null && nextSleep=1 || nextSleep=$(($nextSleep + 1))
 	  sleep $nextSleep
   done
 }
