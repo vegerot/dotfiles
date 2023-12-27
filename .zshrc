@@ -9,6 +9,11 @@ else
 fi
 
 source ~/.profile
+if [[ $TERM_PROGRAM != "WarpTerminal" \
+  && -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"\
+  ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
 ~/dotfiles/bin/randomcowcommand&
 
 export CDPATH="$CDPATH:$HOME/gecgithub01.walmart.com/m0c0j7y/:$HOME/gecgithub01.walmart.com/walmart-web/walmart-web-worktree/"
@@ -92,6 +97,14 @@ load_plugins() {
   export FZF_CTRL_T_OPTS=$FZF_PREVIEW_OPTS
   source ~/workspace/github.com/ohmyzsh/ohmyzsh/plugins/fzf/fzf.plugin.zsh
   source "$HOME/.fzf-extras/fzf-extras.zsh"
+
+  ## POWERLEVEL10K
+  if [[ $TERM_PROGRAM != "WarpTerminal" ]]; then
+    source ~/workspace/github.com/romkatv/powerlevel10k/powerlevel10k.zsh-theme
+    source ~/workspace/github.com/facebook/sapling/eden/scm/contrib/scm-prompt.sh
+    ## To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+    [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+  fi
 }
 if [[ -z $ZSH_SKIP_LOADING_PLUGINS ]]; then
   load_plugins
