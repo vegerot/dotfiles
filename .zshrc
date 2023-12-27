@@ -43,7 +43,9 @@ bindkey '^x^e' edit-command-line
 KEYTIMEOUT=1
 bindkey -M vicmd "" edit-command-line
 
-# change cursor shape in vi mode
+bindkey "^R" history-incremental-search-backward
+
+## change cursor shape in vi mode
 zle-keymap-select () {
     if [[ $KEYMAP == vicmd ]]; then
         # the command mode for vi
@@ -56,7 +58,6 @@ zle-keymap-select () {
 precmd_functions+=(zle-keymap-select)
 zle -N zle-keymap-select
 
-
 setopt correct
 COMPLETION_WAITING_DOTS="true"
 ## Only check compinit once a day
@@ -68,6 +69,33 @@ for dump in ~/.zcompdump(N.mh+24); do
 done
 compinit -C
 
+# PLUGINS
+load_plugins() {
+  source ~/workspace/github.com/zdharma-continuum/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+  source ~/workspace/github.com/zsh-users/zsh-autosuggestions/zsh-autosuggestions.zsh
+  source ~/workspace/github.com/ohmyzsh/ohmyzsh/plugins/colored-man-pages/colored-man-pages.plugin.zsh
+  source ~/workspace/github.com/zsh-users/zsh-history-substring-search/zsh-history-substring-search.zsh
+  ## Bind j and k for history-substring-search in normal mode
+  bindkey -M vicmd 'k' history-substring-search-up
+  bindkey -M vicmd 'j' history-substring-search-down
+  ## Bind ⬆️ and ⬇️ for history-substring-search in insert mode
+  bindkey '^[[A' history-substring-search-up
+  bindkey '^[[B' history-substring-search-down
+
+  ## FZF
+  ## read by fzf program (see man fzf)
+  export FZF_DEFAULT_OPTS='--height=70% '
+  export FZF_DEFAULT_COMMAND='fd --no-require-git || git ls-tree -r --name-only HEAD'
+  ## read by fzf/shell/key-bindings.zsh
+  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+  export FZF_PREVIEW_OPTS='--preview "bat --color always {} || cat {}" --preview-window=right:60%:wrap'
+  export FZF_CTRL_T_OPTS=$FZF_PREVIEW_OPTS
+  source ~/workspace/github.com/ohmyzsh/ohmyzsh/plugins/fzf/fzf.plugin.zsh
+  source "$HOME/.fzf-extras/fzf-extras.zsh"
+}
+if [[ -z $ZSH_SKIP_LOADING_PLUGINS ]]; then
+  load_plugins
+fi
 
 # Compute time taken
 if type gdate > /dev/null; then
