@@ -1,3 +1,4 @@
+"" VANILLA start
 set scrolloff=5
 set clipboard=unnamed
 
@@ -33,8 +34,61 @@ autocmd BufReadPost *
 \ |   execute "normal! g`\""
 \ | endif
 
+" Undo and backup
+set backupdir=~/.local/state/nvim/backup//
 set undofile
 
+" Don't warn about existing swap files being open, since neovim will update a
+" file when a write is detected
+set shortmess+=A
+
+
+" replace currently selected text with default register
+" without yanking it
+vnoremap p "_dP
+
+" center search results
+nnoremap n nzz
+nnoremap N Nzz
+nmap <leader>n :nohl<CR>
+
+" Undo break points (cred: Prime)
+" TODO: function that takes list of chars and does this remap for them
+inoremap , ,<c-g>u
+inoremap . .<c-g>u
+inoremap ! !<c-g>u
+inoremap ? ?<c-g>u
+inoremap <Space> <Space><c-g>u
+
+"" Appearance
+" make popup menu not a gross pink color
+highlight Pmenu ctermfg=111 ctermbg=239
+
+" always have at least 3 lines on top-bottom
+set scrolloff=15
+" show special characters in bad spots
+set showbreak=↪
+set list
+set listchars=tab:→\ ,nbsp:␣,trail:•,extends:⟩,precedes:⟨
+
+set tabstop=4
+set shiftwidth=4
+set splitright " splitting a window will put the new window right of the current one
+"" Appearance end
+
+"NetRW (should netrw config go in vanilla or plugin section?? 🤔)
+
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 4
+let g:netrw_winsize = 25
+let g:netrw_altv = 1 " set automatically by `splitright`
+let g:netrw_altfile=1 "make CTRL-^ return to last edited file instead of netrw browsing buffer
+
+nmap <unique> <c-S-R> <Plug>NetrwRefresh
+
+"" VANILLA end
+
+"" quick-lint
 autocmd FileType javascript,javascriptreact,typescript,typescriptreact lua vim.lsp.start({cmd={"quick-lint-js", "--lsp", "--snarky"}})
 
 
