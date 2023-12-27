@@ -109,7 +109,6 @@ LUAEND
 
 "" PLUGINS start
 
-packloadall
 
 let g:camelcasemotion_key = '<leader>'
 
@@ -189,7 +188,6 @@ require("coq_3p") {
         { src = "copilot", short_name = "✈", accept_key = "<c-f>" }
 }
 LUAEND
-COQnow --shut-up
 
 " Copilot
 let g:copilot_no_tab_map = v:true
