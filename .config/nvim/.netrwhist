@@ -1,7 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhistcnt =5
-let g:netrw_dirhist_5='/Users/maxcoplan/Aviato/aviato-api/src/modules/users'
-let g:netrw_dirhist_4='/Users/maxcoplan/Aviato/aviato-api/src/modules'
-let g:netrw_dirhist_3='/Users/maxcoplan/Aviato/aviato-api/src'
-let g:netrw_dirhist_2='/Users/maxcoplan/Aviato/aviato-api'
-let g:netrw_dirhist_1='/Users/maxcoplan/Documents/workspace/C'
