@@ -39,6 +39,7 @@ unsetopt histignorespace
 
 # COMMAND LINE EDITING
 setopt vi
+bindkey -v '^?' backward-delete-char
 ## edit the current line in vim with `C-x C-e` like in bash
 autoload -U edit-command-line
 zle -N edit-command-line
