@@ -108,7 +108,7 @@ nvim_lsp['quick_lint_js'].setup {
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { lua_config, {'gopls'}, {'clangd'}, {'rust_analyzer'} }
+local servers = { lua_config, {'gopls'}, typescript_server, {'clangd'}, {'rust_analyzer'} }
 for _, lsp in ipairs(servers) do
   local name, settings = unpack(lsp)
   if settings == nil then settings = defaultConfig end
