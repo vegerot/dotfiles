@@ -1,5 +1,10 @@
 #!/usr/bin/env sh
 
+mkcd() {
+  mkdir -pv $1 && cd $1
+}
+
+
 # TODO: rewrite in dash-compatible way
 nvmuse() {
 	export NVM_DIR="$HOME/.nvm"
