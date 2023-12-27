@@ -88,9 +88,27 @@ nmap <unique> <c-S-R> <Plug>NetrwRefresh
 
 "" VANILLA end
 
+"" PLUGINS start
+
+let g:camelcasemotion_key = '<leader>'
+
 "" quick-lint
 autocmd FileType javascript,javascriptreact,typescript,typescriptreact lua vim.lsp.start({cmd={"quick-lint-js", "--lsp", "--snarky"}})
 
+"" FZF start
+" Enable per-command history
+" - History files will be stored in the specified directory
+" - When set, CTRL-N and CTRL-P will be bound to 'next-history' and
+"   'previous-history' instead of 'down' and 'up'.
+let g:fzf_history_dir = '~/.local/share/fzf-history'
+
+command -bang -nargs=* Ag
+  \  :Files
+
+" conflicts with FindFiles
+" nmap <C-p> :Files<Cr>
+
+"" FZF end
 
 lua << LUAEND
     vim.api.nvim_create_autocmd('LspAttach', {
