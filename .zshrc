@@ -76,6 +76,8 @@ compinit -C
 
 # PLUGINS
 load_plugins() {
+  eval "$(jump shell zsh)"
+
   source ~/workspace/github.com/zdharma-continuum/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
   source ~/workspace/github.com/zsh-users/zsh-autosuggestions/zsh-autosuggestions.zsh
   source ~/workspace/github.com/ohmyzsh/ohmyzsh/plugins/colored-man-pages/colored-man-pages.plugin.zsh
