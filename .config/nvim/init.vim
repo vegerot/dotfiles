@@ -133,7 +133,7 @@ lua << LUAEND
 local configs_plugin_name='nvim-treesitter.configs'
 local status, configs_plugin = pcall(require, configs_plugin_name)
 if not status then
-    print(configs_plugin .. " plugin not loaded.  Not loading treesitter")
+    print(configs_plugin_name .. " plugin not loaded.  Not loading treesitter")
     return false
 end
 
@@ -183,8 +183,13 @@ vim.g.coq_settings = {
         -- conflicts with Tmux
         ["keymap.jump_to_mark"] = ''
 }
+local status, coq_3p = pcall(require, "coq_3p")
+if not status then
+    print("didn't load coq_3p.  Skipping loading coq")
+    return false;
+end
 
-require("coq_3p") {
+coq_3p {
         { src = "copilot", short_name = "✈", accept_key = "<c-f>" }
 }
 LUAEND
@@ -193,7 +198,6 @@ LUAEND
 let g:copilot_no_tab_map = v:true
 let g:copilot_assume_mapped = v:true
 let g:copilot_tab_fallback = ""
-let g:copilot_node_command = "~/.nvm/versions/node/v16.18.0/bin/node"
 imap <script><expr> <C-e> copilot#Accept("\<CR>")
 " copilot is disabled in markdown (and other languages) by default
 " copilot appends g:copilot_filetypes to s:filetype_defaults (in copilot.vim)
