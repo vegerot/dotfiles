@@ -175,3 +175,19 @@ LUAEND
 
 " start autocomplete
 COQnow --shut-up
+
+" Copilot
+let g:copilot_no_tab_map = v:true
+let g:copilot_assume_mapped = v:true
+let g:copilot_tab_fallback = ""
+let g:copilot_node_command = "~/.nvm/versions/node/v16.18.0/bin/node"
+imap <script><expr> <C-e> copilot#Accept("\<CR>")
+" copilot is disabled in markdown (and other languages) by default
+" copilot appends g:copilot_filetypes to s:filetype_defaults (in copilot.vim)
+" so we can override the defaults by putting them all to true
+let g:copilot_filetypes = {
+			\ '*': v:true,
+			\ 'c': v:false,
+			\ 'cpp': v:false,
+			\}
+" Copilot end

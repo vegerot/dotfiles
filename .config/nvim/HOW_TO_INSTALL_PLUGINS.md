@@ -7,6 +7,7 @@ Make sure everything you're cloning has a `plugins/` directory in it
 
 
 ## List of plugins to install
+
 | plugin             	| directory                                                 	| command                                                             	|   	|   	|
 |--------------------	|-----------------------------------------------------------	|---------------------------------------------------------------------	|---	|---	|
 | surround           	| ~/.local/share/nvim/site/pack/tpope/start/                	| sl clone git@github.com:tpope/vim-surround.git                      	|   	|   	|
@@ -25,5 +26,5 @@ Make sure everything you're cloning has a `plugins/` directory in it
 | coq                	| ~/.local/share/nvim/site/pack/autocomplete-and-lsp/start/ 	| sl clone git@github.com:ms-jpq/coq.git                              	|   	|   	|
 |                    	|                                                           	| sl clone git@github.com:ms-jpq/coq.thirdparty.git                   	|   	|   	|
 |                    	|                                                           	| sl clone git@github.com:ms-jpq/coq.artifacts.git                    	|   	|   	|
-|                    	|                                                           	|                                                                     	|   	|   	|
-|                    	|                                                           	|                                                                     	|   	|   	|
+| copilot            	| ~/.local/share/nvim/site/pack/autocomplete-and-lsp/start/ 	| sl clone git@github.com:github/copilot.vim.git                      	|   	|   	|
+
