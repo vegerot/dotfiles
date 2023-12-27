@@ -172,3 +172,6 @@ configs_plugin.setup {
 }
 install_plugin.prefer_git = true
 LUAEND
+
+" start autocomplete
+COQnow --shut-up
