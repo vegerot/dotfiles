@@ -81,10 +81,10 @@ nmap <unique> <c-S-R> <Plug>NetrwRefresh
 
 "" VANILLA end
 
-"" quick-lint start
-
+"" LSP start
 lua << LUAEND
   local lspconfig_plugin = require('lspconfig')
+  local coq = require("coq")
   -- Use an on_attach function to only map the following keys
   -- after the language server attaches to the current buffer
   local on_attach = function(client, bufnr)
@@ -123,7 +123,7 @@ lua << LUAEND
 
   end
 
-  lspconfig_plugin['quick_lint_js'].setup {
+  local quick_lint_js = {'quick_lint_js', {
     on_attach = on_attach,
     handlers = {
       ['textDocument/publishDiagnostics'] = vim.lsp.with(
@@ -142,8 +142,15 @@ lua << LUAEND
             --     ["tracing-directory"] = "/tmp/quick-lint-js-logs",
             --   }
             -- }
-  }
-  return
+  }}
+  -- Use a loop to conveniently call 'setup' on multiple servers and
+  -- map buffer local keybindings when the language server attaches
+  local servers = {quick_lint_js}
+  for _, lsp in ipairs(servers) do
+      local name, settings = unpack(lsp)
+      if settings == nil then settings = defaultConfig end
+      lspconfig_plugin[name].setup (coq.lsp_ensure_capabilities(settings) )
+  end
 
 LUAEND
 "" quick-lint end
