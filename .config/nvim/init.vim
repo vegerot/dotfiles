@@ -84,91 +84,67 @@ nmap <unique> <c-S-R> <Plug>NetrwRefresh
 "" quick-lint start
 
 lua << LUAEND
-    local lspconfig_plugin = require('lspconfig')
-    if os.getenv("USE_LSPCONFIG") then
-        -- Use an on_attach function to only map the following keys
-        -- after the language server attaches to the current buffer
-        local on_attach = function(client, bufnr)
-          local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-          local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+  local lspconfig_plugin = require('lspconfig')
+  -- Use an on_attach function to only map the following keys
+  -- after the language server attaches to the current buffer
+  local on_attach = function(client, bufnr)
+    local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+    local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
-          -- Enable completion triggered by <c-x><c-o>
-          buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+    -- Enable completion triggered by <c-x><c-o>
+    buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-          -- Mappings.
-          local opts = { noremap=true, silent=false }
+    -- Mappings.
+    local opts = { noremap=true, silent=false }
 
-          -- <cmd> `map-cmd`s are never echoed, making `silent` unneeded,
-          -- but I personally like seeing what each mapping does, so I use `:` instead,
-          -- besides for insert-mode mappings, since <cmd> can improve performance
+    -- <cmd> `map-cmd`s are never echoed, making `silent` unneeded,
+    -- but I personally like seeing what each mapping does, so I use `:` instead,
+    -- besides for insert-mode mappings, since <cmd> can improve performance
 
-          -- See `:help vim.lsp.*` for documentation on any of the below functions
-          buf_set_keymap('n', 'gD', ':lua vim.lsp.buf.declaration()<CR>', opts)
-          buf_set_keymap('n', 'gd', ':lua vim.lsp.buf.definition()<CR>', opts)
-          buf_set_keymap('n', 'K', ':lua vim.lsp.buf.hover()<CR>', opts)
-          buf_set_keymap('n', 'gi', ':lua vim.lsp.buf.implementation()<CR>', opts)
-          buf_set_keymap('n', '<leader>k', ':lua vim.lsp.buf.signature_help()<CR>', opts)
-          buf_set_keymap('n', '<leader>da', ':lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-          buf_set_keymap('n', '<leader>dr', ':lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-          buf_set_keymap('n', '<leader>dl', ':lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-          buf_set_keymap('n', '<leader>D', ':lua vim.lsp.buf.type_definition()<CR>', opts)
-          buf_set_keymap('n', '<leader>rn', ':lua vim.lsp.buf.rename()<CR>', opts)
-          buf_set_keymap('n', '<leader>ca', ':lua vim.lsp.buf.code_action()<CR>', opts)
-          buf_set_keymap('i', '<C-<Space>>', '<cmd>lua vim.lsp.buf.completion()<CR>', opts)
-          buf_set_keymap('n', 'gr', ':lua vim.lsp.buf.references()<CR>', opts)
-          buf_set_keymap('n', '<leader>e', ':lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-          buf_set_keymap('n', '[d', ':lua vim.diagnostic.goto_prev()<CR>', opts)
-          buf_set_keymap('n', ']d', ':lua vim.diagnostic.goto_next()<CR>', opts)
-          buf_set_keymap('n', '<leader>l', ':lua vim.lsp.diagnostic.set_loclist({open=true})<CR>', opts)
-          buf_set_keymap('n', '<leader>f', ':lua vim.lsp.buf.format()<CR>', opts)
+    -- See `:help vim.lsp.*` for documentation on any of the below functions
+    buf_set_keymap('n', 'gD', ':lua vim.lsp.buf.declaration()<CR>', opts)
+    buf_set_keymap('n', 'gd', ':lua vim.lsp.buf.definition()<CR>', opts)
+    buf_set_keymap('n', 'K', ':lua vim.lsp.buf.hover()<CR>', opts)
+    buf_set_keymap('n', 'gi', ':lua vim.lsp.buf.implementation()<CR>', opts)
+    buf_set_keymap('n', '<leader>k', ':lua vim.lsp.buf.signature_help()<CR>', opts)
+    buf_set_keymap('n', '<leader>da', ':lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+    buf_set_keymap('n', '<leader>dr', ':lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+    buf_set_keymap('n', '<leader>dl', ':lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+    buf_set_keymap('n', '<leader>D', ':lua vim.lsp.buf.type_definition()<CR>', opts)
+    buf_set_keymap('n', '<leader>rn', ':lua vim.lsp.buf.rename()<CR>', opts)
+    buf_set_keymap('n', '<leader>ca', ':lua vim.lsp.buf.code_action()<CR>', opts)
+    buf_set_keymap('i', '<C-<Space>>', '<cmd>lua vim.lsp.buf.completion()<CR>', opts)
+    buf_set_keymap('n', 'gr', ':lua vim.lsp.buf.references()<CR>', opts)
+    buf_set_keymap('n', '<leader>e', ':lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+    buf_set_keymap('n', '[d', ':lua vim.diagnostic.goto_prev()<CR>', opts)
+    buf_set_keymap('n', ']d', ':lua vim.diagnostic.goto_next()<CR>', opts)
+    buf_set_keymap('n', '<leader>l', ':lua vim.lsp.diagnostic.set_loclist({open=true})<CR>', opts)
+    buf_set_keymap('n', '<leader>f', ':lua vim.lsp.buf.format()<CR>', opts)
 
-        end
+  end
 
-        lspconfig_plugin['quick_lint_js'].setup {
-            on_attech = on_attach,
-            handlers = {
-                ['textDocument/publishDiagnostics'] = vim.lsp.with(
-                vim.lsp.diagnostic.on_publish_diagnostics, {
-                    update_in_insert = true
-                }
-                )
-            },
-            filetypes = {
-                "javascript", "javascriptreact",
-                "typescript", "typescriptreact",
-            },
-            cmd = {"quick-lint-js", "--lsp-server", "--snarky"},
-            -- settings= {
-                --   ["quick-lint-js"] = {
-                    --     ["tracing-directory"] = "/tmp/quick-lint-js-logs",
-                    --   }
-                    -- }
+  lspconfig_plugin['quick_lint_js'].setup {
+    on_attach = on_attach,
+    handlers = {
+      ['textDocument/publishDiagnostics'] = vim.lsp.with(
+        vim.lsp.diagnostic.on_publish_diagnostics, {
+          update_in_insert = true
         }
-        return
+      )
+    },
+    filetypes = {
+        "javascript", "javascriptreact",
+        "typescript", "typescriptreact",
+    },
+    cmd = {"quick-lint-js", "--lsp-server", "--snarky"},
+    -- settings= {
+        --   ["quick-lint-js"] = {
+            --     ["tracing-directory"] = "/tmp/quick-lint-js-logs",
+            --   }
+            -- }
+  }
+  return
 
-    else
-        vim.api.nvim_create_autocmd("FileType",
-
-        {
-            pattern=  "javascript,javascriptreact,typescript,typescriptreact",
-            callback=function()
-                vim.lsp.start({cmd={"quick-lint-js", "--lsp", "--snarky"}})
-            end
-        }
-        )
-        vim.api.nvim_create_autocmd('LspAttach', {
-          callback = function(args)
-        vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
-              vim.lsp.diagnostic.on_publish_diagnostics, {
-                update_in_insert = true
-              }
-            )
-            vim.keymap.set('n', 'K', vim.diagnostic.open_float)
-            vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
-            vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
-          end,
-        })
-    end
 LUAEND
 "" quick-lint end
 
