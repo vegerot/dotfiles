@@ -66,9 +66,13 @@ zle -N zle-keymap-select
 
 setopt correct
 COMPLETION_WAITING_DOTS="true"
+
+## give case-insensitive filepath completions
+## credit: https://stackoverflow.com/a/24237590/6100005
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+
 ## Only check compinit once a day
 ## credit: https://medium.com/@dannysmith/little-thing-2-speeding-up-zsh-f1860390f92
-
 autoload -Uz compinit
 for dump in ~/.zcompdump(N.mh+24); do
   compinit
