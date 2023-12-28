@@ -166,9 +166,34 @@ lua << LUAEND
             --   }
             -- }
   }}
+
+  local clangd_config = {
+    'clangd', {
+      on_attach = on_attach,
+      flags = {
+        debounce_text_changes = 150,
+      },
+      cmd = { "clangd", "--offset-encoding=utf-16" },
+    }
+  }
+  local configure_clangd_for_chromium = function()
+    -- TODO: just check if "chrom" is _anywhere_ in the path
+    local chromium_src = "/home/max/workspace/chromium.org/chromium/chromium/src"
+    local chromium_src_len = string.len(chromium_src)
+    local path = vim.fn.expand("%:p:h")
+    local in_chromium = string.sub(path, 1, chromium_src_len) == chromium_src
+    if in_chromium then
+      clangd_config[2].cmd = { "clangd", "--offset-encoding=utf-16",
+        "--project-root=" .. chromium_src,
+        "--remote-index-address=linux.clangd-index.chromium.org:5900"
+      }
+    end
+  end
+  configure_clangd_for_chromium()
+
   -- Use a loop to conveniently call 'setup' on multiple servers and
   -- map buffer local keybindings when the language server attaches
-  local servers = {quick_lint_js}
+  local servers = {quick_lint_js, clangd_config}
   for _, lsp in ipairs(servers) do
       local name, settings = unpack(lsp)
       if settings == nil then settings = defaultConfig end
