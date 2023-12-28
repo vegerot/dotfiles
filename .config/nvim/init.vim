@@ -81,6 +81,29 @@ nmap <unique> <c-S-R> <Plug>NetrwRefresh
 
 "" VANILLA end
 
+" autocomplete with COQ
+" note: MUST be before `require("coq")`!
+lua <<LUAEND
+vim.g.coq_settings = {
+        ["clients.tabnine"] = {
+                enabled = true,
+                weight_adjust = -0.4,
+        },
+        auto_start = 'shut-up',
+        -- conflicts with Tmux
+        ["keymap.jump_to_mark"] = ''
+}
+local status, coq_3p = pcall(require, "coq_3p")
+if not status then
+    print("didn't load coq_3p.  Skipping loading coq")
+    return false;
+end
+
+coq_3p {
+        { src = "copilot", short_name = "✈", accept_key = "<c-f>" }
+}
+LUAEND
+
 "" LSP start
 lua << LUAEND
   local lspconfig_plugin = require('lspconfig')
@@ -225,27 +248,6 @@ configs_plugin.setup {
 install_plugin.prefer_git = true
 LUAEND
 
-" autocomplete with COQ
-lua <<LUAEND
-vim.g.coq_settings = {
-        ["clients.tabnine"] = {
-                enabled = true,
-                weight_adjust = -0.4,
-        },
-        auto_start = 'shut-up',
-        -- conflicts with Tmux
-        ["keymap.jump_to_mark"] = ''
-}
-local status, coq_3p = pcall(require, "coq_3p")
-if not status then
-    print("didn't load coq_3p.  Skipping loading coq")
-    return false;
-end
-
-coq_3p {
-        { src = "copilot", short_name = "✈", accept_key = "<c-f>" }
-}
-LUAEND
 
 " Copilot
 let g:copilot_no_tab_map = v:true
@@ -261,3 +263,4 @@ let g:copilot_filetypes = {
 			\ 'cpp': v:false,
 			\}
 " Copilot end
+
