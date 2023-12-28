@@ -18,9 +18,6 @@ set exrc
 
 nmap <leader>n :nohl<CR>
 
-command! -nargs=* FindFile tabnew | execute "0read !fd <args> | sort" | set nomodified | 0
-nmap <C-p> :FindFile<SPACE>
-
 " When editing a file, always jump to the last known cursor position.
 " Don't do it when the position is invalid, when inside an event handler
 " (happens when dropping a file on gvim), for a commit or rebase message
@@ -124,8 +121,7 @@ let g:fzf_history_dir = '~/.local/share/fzf-history'
 command! -bang -nargs=* Ag
   \  :Files
 
-" conflicts with FindFiles
-" nmap <C-p> :Files<Cr>
+nmap <C-p> :Files<Cr>
 
 "" FZF end
 
