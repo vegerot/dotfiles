@@ -60,10 +60,6 @@ inoremap ! !<c-g>u
 inoremap ? ?<c-g>u
 inoremap <Space> <Space><c-g>u
 
-"" Appearance
-" make popup menu not a gross pink color
-highlight Pmenu ctermfg=111 ctermbg=239
-
 " always have at least 3 lines on top-bottom
 set scrolloff=15
 " show special characters in bad spots
