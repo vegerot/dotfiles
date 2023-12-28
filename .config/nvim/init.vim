@@ -109,6 +109,12 @@ LUAEND
 
 "" PLUGINS start
 
+" Open remote
+nmap <leader>op :OpenFile<CR>
+vmap <leader>op :OpenFile<CR>
+nmap <leader>cp :CopyFile<CR>
+vmap <leader>cp :CopyFile<CR>
+
 
 let g:camelcasemotion_key = '<leader>'
 

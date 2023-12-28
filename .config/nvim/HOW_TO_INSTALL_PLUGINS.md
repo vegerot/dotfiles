@@ -27,3 +27,4 @@ Make sure everything you're cloning has a `plugins/` directory in it
 |                    	|                                                           	| sl clone git@github.com:ms-jpq/coq.thirdparty.git                   	|
 |                    	|                                                           	| sl clone git@github.com:ms-jpq/coq.artifacts.git                    	|
 | copilot            	| ~/.local/share/nvim/site/pack/autocomplete-and-lsp/start/ 	| sl clone git@github.com:github/copilot.vim.git                      	|
+| open-remote        	| ~/.local/share/nvim/site/pack/simple-plugins/start/       	| sl clone git@github.com:vegerot/open-remote.git                     	|
