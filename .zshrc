@@ -94,16 +94,22 @@ load_plugins() {
   bindkey '^[[A' history-substring-search-up
   bindkey '^[[B' history-substring-search-down
 
-  ## FZF
+  # FZF start
   ## read by fzf program (see man fzf)
   export FZF_DEFAULT_OPTS='--height=70% '
   export FZF_DEFAULT_COMMAND='fd --no-require-git || git ls-tree -r --name-only HEAD'
+
   ## read by fzf/shell/key-bindings.zsh
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
   export FZF_PREVIEW_OPTS='--preview "bat --color always {} || cat {}" --preview-window=right:60%:wrap'
   export FZF_CTRL_T_OPTS=$FZF_PREVIEW_OPTS
   source ~/workspace/github.com/ohmyzsh/ohmyzsh/plugins/fzf/fzf.plugin.zsh
+  source ~/workspace/github.com/junegunn/fzf/shell/key-bindings.zsh
   source "$HOME/.fzf-extras/fzf-extras.zsh"
+
+  ## from fzf.zsh plugin
+  bindkey '^p' fzf-file-widget
+  # FZF end
 
   ## POWERLEVEL10K
   if [[ $TERM_PROGRAM != "WarpTerminal" ]]; then
