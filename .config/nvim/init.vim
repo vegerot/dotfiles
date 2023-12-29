@@ -10,9 +10,7 @@ set smartcase
 set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
 
 set smartindent
-set expandtab
 set tabstop=2
-set shiftwidth=2
 
 set exrc
 
