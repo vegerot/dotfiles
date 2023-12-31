@@ -103,6 +103,8 @@ load_plugins() {
   ## Bind ⬆️ and ⬇️ for history-substring-search in insert mode
   bindkey '^[[A' history-substring-search-up
   bindkey '^[[B' history-substring-search-down
+  bindkey "$terminfo[kcuu1]" history-substring-search-up
+  bindkey "$terminfo[kcud1]" history-substring-search-down
 
   # FZF
   ## read by fzf program (see man fzf)
