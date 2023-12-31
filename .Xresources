@@ -6,6 +6,7 @@ URxvt.boldItalicFont:      xft:JetBrainsMono Nerd Font Mono:size=13:bold:italic
 URxvt.letterSpace:         1
 
 URxvt.scrollBar: false
+URxvt.saveLines: 69420
 
 Xcursor.theme: DMZ-White
 
