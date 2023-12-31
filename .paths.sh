@@ -6,7 +6,7 @@ case ":${PATH}:" in
         ;;
     *)
 
-source /etc/zprofile
+[[ -f /etc/zprofile ]] && source /etc/zprofile
 ## important stuff goes first
 export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$HOME/.cargo/bin:/usr/local/opt/ruby/bin:$PATH"
 # bun
