@@ -1,0 +1,88 @@
+URxvt.font: xft:JetBrainsMono Nerd Font Mono:pixelsize=16
+URxvt.scrollBar: false
+Xcursor.theme: DMZ-White
+
+URxvt.boldFont:            xft:JetBrainsMono Nerd Font Mono:pixelsize=16:bold
+URxvt.italicFont:          xft:JetBrainsMono Nerd Font Mono:pixelsize=16:italic
+URxvt.boldItalicFont:      xft:JetBrainsMono Nerd Font Mono:pixelsize=16:bold:italic
+URxvt.letterSpace:         -1
+
+*background: #232C31
+*foreground: #C5C8C6
+! black
+*color0: #2D3C46
+*color8: #425059
+! red
+*color1: #A54242
+*color9: #CC6666
+! green
+*color2: #8C9440
+*color10: #B5BD68
+! yellow
+*color3: #DE935F
+*color11: #F0C674
+! blue
+*color4: #5F819D
+*color12: #81A2BE
+! magenta
+*color5: #85678F
+*color13: #B294BB
+! cyan
+*color6: #5E8D87
+*color14: #8ABEB7
+! white
+*color7: #6C7A80
+*color15: #C5C8C6
+
+URxvt.internalBorder:      0
+URxvt.externalBorder:      0
+
+URxvt*fading:              30
+
+URxvt.perl-ext-common:     default,matcher,resize-font,fullscreen,clipboard
+
+URxvt.keysym.F11:          perl:fullscreen:switch
+
+URxvt.resize-font.smaller: C-Down
+URxvt.resize-font.bigger:  C-Up
+
+URxvt.url-launcher:        /usr/bin/chromium-browser
+URxvt.keysym.M-Delete:     perl:matcher:list
+
+URxvt.clipboard.autocopy: true
+URxvt.keysys.M-c: perl:clipboard:copy
+URxvt.keysys.M-v: perl:clipboard:paste
+
+
+URxvt.colorUL:             #7780a1
+URxvt.depth:32
+URxvt.transparent:  true
+URxvt*highlightSelection: true
+URxvt*background: [75]#232C31
+URxvt*geometry: 100x30
+URxvt*shading: 50
+URxvt*tintColor: #666666
+URxvt*blurRadius: 5
+
+!URxvt*background: rgba:2300/2c00/3100/8888
+
+!URxvt*shading: 20
+!Dracula Xresources palette
+!*.foreground: #F8F8F2
+!*.background: #282A36
+!*.color0:     #000000
+!*.color8:     #4D4D4D
+!*.color1:     #FF5555
+!*.color9:     #FF6E67
+!*.color2:     #50FA7B
+!*.color10:    #5AF78E
+!*.color3:     #F1FA8C
+!*.color11:    #F4F99D
+!*.color4:     #BD93F9
+!*.color12:    #CAA9FA
+!*.color5:     #FF79C6
+!*.color13:    #FF92D0
+!*.color6:     #8BE9FD
+!*.color14:    #9AEDFE
+!*.color7:     #BFBFBF
+!*.color15:    #E6E6E6
