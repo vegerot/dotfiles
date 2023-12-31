@@ -160,6 +160,8 @@ local on_attach = function(client, bufnr)
     buf_set_keymap("n", "<leader>D", ":lua vim.lsp.buf.type_definition()<CR>", opts)
     buf_set_keymap("n", "<leader>rn", ":lua vim.lsp.buf.rename()<CR>", opts)
     buf_set_keymap("n", "<leader>ca", ":lua vim.lsp.buf.code_action()<CR>", opts)
+	-- same as previous, but if there's only one possible action, just apply it
+    buf_set_keymap("n", "<leader>qf", ":lua vim.lsp.buf.code_action({apply=1})<CR>", opts)
     buf_set_keymap("i", "<C-<Space>>", "<cmd>lua vim.lsp.buf.completion()<CR>", opts)
     buf_set_keymap("n", "gr", ":lua vim.lsp.buf.references()<CR>", opts)
     buf_set_keymap("n", "<leader>e", ":lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", opts)
