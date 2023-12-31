@@ -104,7 +104,17 @@ LUAEND
 
 "" LSP start
 lua << LUAEND
-local lspconfig_plugin = require("lspconfig")
+local status, lspconfig_plugin = pcall(require, "lspconfig")
+if not status then
+    print("lspconfig" .. " plugin not loaded.  Not loading lsp stuff")
+    return false
+end
+
+local status, coq = pcall(require, "coq")
+if not status then
+    print("coq" .. " plugin not loaded.  Not loading coq")
+    return false
+end
 local coq = require("coq")
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
