@@ -2,6 +2,7 @@
 
 case ":${PATH}:" in
     *:"$HOME/.cargo/bin":*)
+		echo "skipping path stuff"
         ;;
     *)
 
@@ -18,6 +19,13 @@ export PATH=$HOME/.mint/bin:$PATH
 ## Unimportant stuff goes at the end
 export GOPATH="$HOME/go"
 export PATH="$PATH:/usr/local/lib:$GOPATH/bin:/Users/m0c0j7y/.deno/bin:/opt/cisco/anyconnect/bin:$HOME/dotfiles/bin:$HOME/.mint/bin/"
+
+## macOS' toolchain doesn't come with tools like clang-format and clang-tidy
+## instead, use LLVM for those tools but stick with the builtin ones otherwise
+local llvm=/opt/homebrew/opt/llvm/bin
+if [[ -d ${llvm} ]]; then
+	export PATH="$PATH:${llvm}"
+fi
 
 # ADB installed by Android Studio
 export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools/"
