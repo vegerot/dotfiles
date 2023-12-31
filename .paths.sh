@@ -24,7 +24,7 @@ export DENO_INSTALL="$HOME/.deno"
 [[ -d $DENO_INSTALL ]] && export PATH="$PATH:$DENO_INSTALL/bin"
 
 export GOPATH="$HOME/go"
-export PATH="$PATH:/usr/local/lib:$GOPATH/bin:/Users/m0c0j7y/.deno/bin:/opt/cisco/anyconnect/bin:$HOME/dotfiles/bin:$HOME/.mint/bin/"
+export PATH="$PATH:/usr/local/lib:$GOPATH/bin:$HOME/dotfiles/bin"
 
 CISCO_BIN="/opt/cisco/anyconnect/bin"
 [[ -d $CISCO_BIN ]] && export PATH="$PATH:$CISCO_BIN"
@@ -53,12 +53,12 @@ esac
 # pnpm end
 
 # sledge:binary path
-export SLEDGE_BIN="$HOME/.sledge/bin"
-export PATH="${PATH}:${SLEDGE_BIN}"
-
+#export SLEDGE_BIN="$HOME/.sledge/bin"
+#export PATH="${PATH}:${SLEDGE_BIN}"
 
 # cargo
 #. "$HOME/.cargo/env"
+
 
 # make sure this is the last thing
 export PATH="$PATH:."
@@ -79,3 +79,10 @@ if false; then
   eval "$(pyenv init --path)"
   eval "$(pyenv init -)"
 fi
+
+# bun completions
+[ -s "/home/max/.bun/_bun" ] && [ "$SHELL" = "zsh" ] && source "/home/max/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
