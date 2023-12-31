@@ -8,6 +8,10 @@ else
   start=$(python3 -c "import time; print(time.time())")
 fi
 
+# remove duplicates from PATH
+typeset -aU path
+typeset -U PATH
+
 source ~/.profile
 if [[ $TERM_PROGRAM != "WarpTerminal" \
   && -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"\
@@ -76,25 +80,9 @@ keymaps() {
 }
 [[ $OSTYPE == "linux-gnu"* ]] && keymaps
 
-eval "$(jump shell)"
-
-# fzf
-## read by fzf program (see man fzf)
-export FZF_DEFAULT_OPTS='--height=70% '
-export FZF_DEFAULT_COMMAND='fd --no-require-git || git ls-tree -r --name-only HEAD'
-# read by fzf/shell/key-bindings.zsh
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_PREVIEW_OPTS='--preview "bat --color always {} || cat {}" --preview-window=right:60%:wrap'
-export FZF_CTRL_T_OPTS=$FZF_PREVIEW_OPTS
-
-source "$HOME/.fzf-extras/fzf-extras.zsh"
-source "$HOME/.fzf-extras/fzf-extras.sh"
-
-# add more things to shell environment
 source ~/.aliases
 source ~/.sh_functions
 
->>>>>>> histedit: 460ff480175f - Max: feat(zsh): make zsh config cross platform
 bindkey "^R" history-incremental-search-backward
 
 ## change cursor shape in vi mode
