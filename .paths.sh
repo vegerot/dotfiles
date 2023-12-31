@@ -69,16 +69,8 @@ export MANPATH="/usr/local/share/man:$MANPATH:"
 export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
 export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
 
-### fpath stuff for zsh
-export FPATH="/opt/homebrew/share/zsh/site-functions:$FPATH"
-
-# pnpm
-export PNPM_HOME="/Users/m0c0j7y/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end# setup pyenv
+### fpath stuff for zsh on macOS
+[[ $OSTYPE == "darwin"* ]] && export FPATH="/opt/homebrew/share/zsh/site-functions:$FPATH"
 
 #if command -v pyenv 1>/dev/null 2>&1; then
 if false; then
