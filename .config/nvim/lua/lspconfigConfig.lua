@@ -105,6 +105,11 @@ nvim_lsp['quick_lint_js'].setup {
   --   }
   -- }
 }
+vim.diagnostic.config({
+	underline = true,
+	severity_sort = true,
+	update_in_insert = true,
+})
 
 local clangd_config = {
   'clangd', {
