@@ -34,8 +34,8 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<leader>e', ':lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
   buf_set_keymap('n', '[d', ':lua vim.diagnostic.goto_prev()<CR>', opts)
   buf_set_keymap('n', ']d', ':lua vim.diagnostic.goto_next()<CR>', opts)
-  buf_set_keymap('n', '<leader>l', ':lua vim.lsp.diagnostic.set_loclist({open=true})<CR>', opts)
-  buf_set_keymap('n', '<leader>f', ':lua vim.lsp.buf.format()<CR>', opts)
+  buf_set_keymap('n', '<leader>l', ':lua vim.diagnostic.setloclist({open=true})<CR>', opts)
+  buf_set_keymap('n', '<leader>f', ':lua vim.lsp.buf.formatting()<CR>', opts)
 
 end
 
@@ -106,9 +106,39 @@ nvim_lsp['quick_lint_js'].setup {
   -- }
 }
 
+local clangd_config = {
+  'clangd', {
+    on_attach = on_attach,
+    flags = {
+      debounce_text_changes = 150,
+    },
+    cmd = { "clangd", "--offset-encoding=utf-16" },
+  }
+}
+local configure_clangd_for_chromium = function()
+  local chromium_src = "/home/max/workspace/chromium.org/chromium/chromium/src"
+  local chromium_src_len = string.len(chromium_src)
+  local path = vim.fn.expand("%:p:h")
+  local in_chromium = string.sub(path, 1, chromium_src_len) == chromium_src
+  if in_chromium then
+    clangd_config[2].cmd = { "clangd", "--offset-encoding=utf-16",
+      "--project-root=" .. chromium_src,
+      "--remote-index-address=linux.clangd-index.chromium.org:5900"
+    }
+  end
+end
+configure_clangd_for_chromium()
+
+
+vim.diagnostic.config({
+	underline = true,
+	severity_sort = true,
+	update_in_insert = true,
+})
+
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { lua_config, {'gopls'}, typescript_server, {'clangd'}, {'rust_analyzer'} }
+local servers = { lua_config, {'gopls'}, typescript_server, clangd_config, {'rust_analyzer'} }
 for _, lsp in ipairs(servers) do
   local name, settings = unpack(lsp)
   if settings == nil then settings = defaultConfig end

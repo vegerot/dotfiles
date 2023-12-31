@@ -320,7 +320,7 @@ imap <script><expr> <C-e> copilot#Accept("\<CR>")
 let g:copilot_filetypes = {
 			\ '*': v:true,
 			\ 'c': v:false,
-			\ 'cpp': v:false,
+			\ 'cpp': v:true,
 			\}
 " Copilot end
 
