@@ -1,11 +1,13 @@
-URxvt.font: xft:JetBrainsMono Nerd Font Mono:pixelsize=16
-URxvt.scrollBar: false
-Xcursor.theme: DMZ-White
+! font
+URxvt.font:                xft:JetBrainsMono Nerd Font Mono:size=13
+URxvt.boldFont:            xft:JetBrainsMono Nerd Font Mono:size=13:bold
+URxvt.italicFont:          xft:JetBrainsMono Nerd Font Mono:size=13:italic
+URxvt.boldItalicFont:      xft:JetBrainsMono Nerd Font Mono:size=13:bold:italic
+URxvt.letterSpace:         1
 
-URxvt.boldFont:            xft:JetBrainsMono Nerd Font Mono:pixelsize=16:bold
-URxvt.italicFont:          xft:JetBrainsMono Nerd Font Mono:pixelsize=16:italic
-URxvt.boldItalicFont:      xft:JetBrainsMono Nerd Font Mono:pixelsize=16:bold:italic
-URxvt.letterSpace:         -1
+URxvt.scrollBar: false
+
+Xcursor.theme: DMZ-White
 
 *background: #232C31
 *foreground: #C5C8C6
@@ -46,7 +48,8 @@ URxvt.keysym.F11:          perl:fullscreen:switch
 URxvt.resize-font.smaller: C-Down
 URxvt.resize-font.bigger:  C-Up
 
-URxvt.url-launcher:        /usr/bin/chromium-browser
+URxvt.url-launcher:        /usr/bin/xdg-open
+URxvt.matcher.button:      1
 URxvt.keysym.M-Delete:     perl:matcher:list
 
 URxvt.clipboard.autocopy: true
