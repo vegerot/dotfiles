@@ -7,17 +7,27 @@ fi
 
 [[ -f /etc/zprofile ]] && source /etc/zprofile
 ## important stuff goes first
-export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$HOME/.cargo/bin:/usr/local/opt/ruby/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+
+[[ "$OSTYPE" == "darwin"* ]] && export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$HOME/.cargo/bin:/usr/local/opt/ruby/bin:$PATH"
+
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 # Walmart iOS dev stuff
-export PATH=$HOME/.mint/bin:$PATH
+MINT_PATH=$HOME/.mint
+[[ -d $MINT_PATH ]] && export PATH=$MINT_PATH/bin:$PATH
 
 
 ## Unimportant stuff goes at the end
+export DENO_INSTALL="$HOME/.deno"
+[[ -d $DENO_INSTALL ]] && export PATH="$PATH:$DENO_INSTALL/bin"
+
 export GOPATH="$HOME/go"
 export PATH="$PATH:/usr/local/lib:$GOPATH/bin:/Users/m0c0j7y/.deno/bin:/opt/cisco/anyconnect/bin:$HOME/dotfiles/bin:$HOME/.mint/bin/"
+
+CISCO_BIN="/opt/cisco/anyconnect/bin"
+[[ -d $CISCO_BIN ]] && export PATH="$PATH:$CISCO_BIN"
 
 export FZF_BASE="$HOME/workspace/github.com/junegunn/fzf/"
 if [[ ! "$PATH" == *$FZF_BASE/bin* ]]; then
