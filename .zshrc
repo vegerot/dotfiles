@@ -83,10 +83,19 @@ compinit -C
 # PLUGINS
 load_plugins() {
   eval "$(jump shell zsh)"
+  source ~/workspace/github.com/ohmyzsh/ohmyzsh/plugins/colored-man-pages/colored-man-pages.plugin.zsh
+
+  ## POWERLEVEL10K
+  if [[ $TERM_PROGRAM == "WarpTerminal" ]]; then
+	  return
+  fi
+  source ~/workspace/github.com/romkatv/powerlevel10k/powerlevel10k.zsh-theme
+  source ~/workspace/github.com/facebook/sapling/eden/scm/contrib/scm-prompt.sh
+  ## To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+  [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
   source ~/workspace/github.com/zdharma-continuum/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
   source ~/workspace/github.com/zsh-users/zsh-autosuggestions/zsh-autosuggestions.zsh
-  source ~/workspace/github.com/ohmyzsh/ohmyzsh/plugins/colored-man-pages/colored-man-pages.plugin.zsh
   source ~/workspace/github.com/zsh-users/zsh-history-substring-search/zsh-history-substring-search.zsh
   ## Bind j and k for history-substring-search in normal mode
   bindkey -M vicmd 'k' history-substring-search-up
@@ -118,13 +127,6 @@ load_plugins() {
   bindkey '^p' fzf-file-widget
   # FZF end
 
-  ## POWERLEVEL10K
-  if [[ $TERM_PROGRAM != "WarpTerminal" ]]; then
-    source ~/workspace/github.com/romkatv/powerlevel10k/powerlevel10k.zsh-theme
-    source ~/workspace/github.com/facebook/sapling/eden/scm/contrib/scm-prompt.sh
-    ## To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-    [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-  fi
 }
 if [[ -z $ZSH_SKIP_LOADING_PLUGINS ]]; then
   load_plugins
