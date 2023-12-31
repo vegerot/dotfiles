@@ -1,10 +1,9 @@
 #Path stuff
 
-case ":${PATH}:" in
-    *:"$HOME/.cargo/bin":*)
-		echo "skipping path stuff"
-        ;;
-    *)
+if [[ "$PATH" == *$HOME/.cargo/bin* && -z $ALWAYS_SOURCE_PATHS ]]; then
+	echo "skipping path stuff"
+	return
+fi
 
 [[ -f /etc/zprofile ]] && source /etc/zprofile
 ## important stuff goes first
@@ -20,6 +19,11 @@ export PATH=$HOME/.mint/bin:$PATH
 export GOPATH="$HOME/go"
 export PATH="$PATH:/usr/local/lib:$GOPATH/bin:/Users/m0c0j7y/.deno/bin:/opt/cisco/anyconnect/bin:$HOME/dotfiles/bin:$HOME/.mint/bin/"
 
+export FZF_BASE="$HOME/workspace/github.com/junegunn/fzf/"
+if [[ ! "$PATH" == *$FZF_BASE/bin* ]]; then
+	PATH="${PATH:+${PATH}:}$FZF_BASE/bin"
+fi
+
 ## macOS' toolchain doesn't come with tools like clang-format and clang-tidy
 ## instead, use LLVM for those tools but stick with the builtin ones otherwise
 local llvm=/opt/homebrew/opt/llvm/bin
@@ -29,6 +33,14 @@ fi
 
 # ADB installed by Android Studio
 export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools/"
+
+# pnpm
+export PNPM_HOME="/home/max/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
 
 # sledge:binary path
 export SLEDGE_BIN="$HOME/.sledge/bin"
@@ -40,9 +52,6 @@ export PATH="${PATH}:${SLEDGE_BIN}"
 
 # make sure this is the last thing
 export PATH="$PATH:."
-
-        ;;
-esac
 
 ### MAN path
 
