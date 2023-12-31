@@ -14,7 +14,12 @@ if [[ $TERM_PROGRAM != "WarpTerminal" \
   ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
-~/dotfiles/bin/randomcowcommand&
+
+if [[ $OSTYPE == "darwin"* ]]; then
+	~/dotfiles/bin/randomcowcommand&
+else
+	~/dotfiles/bin/randomcowcommand
+fi;
 
 export CDPATH="$CDPATH:$HOME/gecgithub01.walmart.com/m0c0j7y/:$HOME/gecgithub01.walmart.com/walmart-web/walmart-web-worktree/"
 
@@ -50,6 +55,46 @@ bindkey '^x^e' edit-command-line
 KEYTIMEOUT=1
 bindkey -M vicmd "" edit-command-line
 
+# User configuration
+
+# set up keymap stuff here because it's not working other places
+keymaps() {
+	if [[ -z $DISPLAY && -z $ALWAYS_SET_CAPS ]]; then
+		return
+	fi
+	local is_caps_already_mapped=$(xmodmap -pke | rg --count-matches "keycode\s+66\s*=\s*Control_L")
+	if [[ $is_caps_already_mapped -gt 0 && -z $ALWAYS_SET_CAPS ]]; then
+		return
+	fi
+	echo $is_caps_already_mapped
+	echo "Caps is not mapped to Control_L, mapping it now"
+	echo "caps is currently mapped to: $(xmodmap -pke | rg "keycode\s+66\s*= ")"
+	xmodmap ~/.Xmodmap
+	xcape
+	setxkbmap -option ctrl:nocaps
+	xcape -e 'Control_L=Escape'
+}
+[[ $OSTYPE == "linux-gnu"* ]] && keymaps
+
+eval "$(jump shell)"
+
+# fzf
+## read by fzf program (see man fzf)
+export FZF_DEFAULT_OPTS='--height=70% '
+export FZF_DEFAULT_COMMAND='fd --no-require-git || git ls-tree -r --name-only HEAD'
+# read by fzf/shell/key-bindings.zsh
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_PREVIEW_OPTS='--preview "bat --color always {} || cat {}" --preview-window=right:60%:wrap'
+export FZF_CTRL_T_OPTS=$FZF_PREVIEW_OPTS
+
+source "$HOME/.fzf-extras/fzf-extras.zsh"
+source "$HOME/.fzf-extras/fzf-extras.sh"
+
+# add more things to shell environment
+source ~/.aliases
+source ~/.sh_functions
+
+>>>>>>> histedit: 460ff480175f - Max: feat(zsh): make zsh config cross platform
 bindkey "^R" history-incremental-search-backward
 
 ## change cursor shape in vi mode
