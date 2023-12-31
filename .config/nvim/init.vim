@@ -75,7 +75,19 @@ let g:netrw_winsize = 25
 let g:netrw_altv = 1 " set automatically by `splitright`
 let g:netrw_altfile=1 "make CTRL-^ return to last edited file instead of netrw browsing buffer
 
-nmap <unique> <c-S-R> <Plug>NetrwRefresh
+nmap <c-S-R> <Plug>NetrwRefresh
+
+" random colorscheme
+" inspiration https://gist.github.com/ryanflorence/1381526
+function RandomColorScheme()
+  let mycolors = split(globpath(&rtp,"**/colors/*.vim"),"\n")
+  let randomcolor = mycolors[localtime() % len(mycolors)]
+  echo randomcolor
+  exe 'so ' . randomcolor
+  unlet mycolors randomcolor
+endfunction
+
+:command RandomColor call RandomColorScheme()
 
 "" VANILLA end
 
