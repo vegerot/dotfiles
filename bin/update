@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+set -o xtrace
+echo "brew upgrade"
+brew outdated||\
+    brew update&&\
+    # TODO: don't ask to `brew upgrade` if there are no outdated packages
+    read -p 'Would you like to upgrade Brew (y/n): ' upgradeBrew
+if [[ "$upgradeBrew" == "y" ]]; then
+    brew upgrade
+    echo "brew upgrade --cask"
+    brew upgrade --cask
+fi
+
+echo
+echo "neovim"
+
+# `Plug` is so fast at updating, let's not even ask
+nvim +PlugUpdate +qall
+
+read -p 'Would you like to upgrade Node (y/n): ' upgradeNode
+if [[ "$upgradeNode" == "y" ]]; then
+    npm outdated
+    echo "npm update -g"
+    npm install npm -g --force
+    npm update -g
+
+fi
+
+echo "App Store"
+# open "macappstore://showUpdatesPage"
+mas outdated
+# TODO: Don't ask to upgrade apps if nothing is outdated
+read -p 'Would you like to upgrade apps?  (y/n): ' upgradeApps
+if [[ "$upgradeApps" == "y" ]]; then
+    mas upgrade
+fi
+echo
+
+echo "softwareupdate -l"
+softwareupdate -l
+# TODO: Don't ask to upgrade macOS if nothing is outdated
+read -p 'Would you like to upgrade macOS (y/n): ' upgradeMacOS
+if [[ "$upgradeMacOS" == "y" ]]; then
+    softwareupdate -i -a --verbose
+fi
+
+set +o xtrace
+

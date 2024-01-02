@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+
+find_random_manpage() {
+	OLDIFS=$IFS
+	IFS=:
+	for dir in $(manpath -q); do
+		[[ -n $dir ]] && printf "%s\n" $dir/man1/*
+	done | shuf -n 1
+	IFS=$OLDIFS
+}
+manpagefile=$(find_random_manpage)
+get_description_of_manpage() {
+  if ! type lexgrog > /dev/null 2>&1; then
+    man $1 | col -bpx | grep NAME -A1 | tail -1
+  else
+    lexgrog -w $1 | shuf -n 1 | sed -E 's/^.*: "(.*)"$/\1/'
+  fi
+}
+commanddescription=$(get_description_of_manpage $manpagefile)
+echo $commanddescription | cowsay -f $( cowsay -l| tail -n+2|tr " " "\n"|sort -R|head -1) | lolcat
+
