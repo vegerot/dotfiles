@@ -41,7 +41,7 @@ function vpn-up() {
   #local VPN_HOST=http://sslvpngwwec.wal-mart.com/Walmart_Associate_Yubi # blocks Spotify
   #local VPN_HOST=http://sslvpngw.wal-mart.com/Walmart_Associate_Yubi # seamlessly switches on Zoom calls; blocks Spotify; makes Slack go offline when switching
   local VPN_HOST=sslvpngwwec.wal-mart.com/Walmart_Associate_Yubi # blocks Spotify, i like this one
-  local VPN_USER=$(whoami) #for openconnect
+  local VPN_USER=$USER #for openconnect
 
   echo "Starting the vpn ..."
   local mfa_code="$(2fa walmart)"
@@ -49,7 +49,7 @@ function vpn-up() {
   if [[ -f /opt/cisco/anyconnect/bin/vpn ]]; then
 	  printf "\n${vpn_password}\n${mfa_code}\ny" | /opt/cisco/anyconnect/bin/vpn -s connect $VPN_HOST $@
   else
-	  echo "$(cat ~/.vpn_password)\n$(2fa walmart)" | sudo openconnect --passwd-on-stdin --background -u $VPN_USER $VPN_HOST $@  # for openconnect
+	  echo "${vpn_password}\n${mfa_code}\n" | sudo openconnect --passwd-on-stdin --background -u $VPN_USER $VPN_HOST $@ # for openconnect
   fi
 }
 
