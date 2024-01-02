@@ -45,8 +45,8 @@ function vpn-up() {
 
   echo "Starting the vpn ..."
   local mfa_code="$(2fa walmart)"
-  if [[ -f /opt/anyconnect/bin/vpn ]]; then
-	  local vpn_password="$(security find-generic-password -w -s 'wmt-sso' -a $VPN_USER)"
+  local vpn_password="$(security find-generic-password -w -s 'wmt-sso' -a $VPN_USER || cat ~/.vpn_password)"
+  if [[ -f /opt/cisco/anyconnect/bin/vpn ]]; then
 	  printf "\n${vpn_password}\n${mfa_code}\ny" | /opt/cisco/anyconnect/bin/vpn -s connect $VPN_HOST $@
   else
 	  echo "$(cat ~/.vpn_password)\n$(2fa walmart)" | sudo openconnect --passwd-on-stdin --background -u $VPN_USER $VPN_HOST $@  # for openconnect
@@ -54,7 +54,7 @@ function vpn-up() {
 }
 
 function vpn-down() {
-  if [[ -f /opt/anyconnect/bin/vpn ]]; then
+  if [[ -f /opt/cisco/anyconnect/bin/vpn ]]; then
 	  /opt/cisco/anyconnect/bin/vpn disconnect
   else
 	  sudo kill -2 `pgrep openconnect` # for openconncet
