@@ -1,6 +1,6 @@
 "" VANILLA start
 set scrolloff=5
-set clipboard=unnamed
+set clipboard=unnamed,unnamedplus
 
 set number
 set relativenumber
