@@ -44,6 +44,10 @@ function vpn-up() {
   local VPN_USER=$USER #for openconnect
 
   echo "Starting the vpn ..."
+  if [[ ! -x "$(command -v 2fa)" ]] ; then
+	  printf "requires [2fa](https://github.com/rsc/2fa)\n"
+	  return 1
+  fi
   local mfa_code="$(2fa walmart)"
   local vpn_password="$(security find-generic-password -w -s 'wmt-sso' -a $VPN_USER || cat ~/.vpn_password)"
   if [[ -f /opt/cisco/anyconnect/bin/vpn ]]; then
