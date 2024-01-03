@@ -47,9 +47,12 @@ function vpn-up() {
   local mfa_code="$(2fa walmart)"
   local vpn_password="$(security find-generic-password -w -s 'wmt-sso' -a $VPN_USER || cat ~/.vpn_password)"
   if [[ -f /opt/cisco/anyconnect/bin/vpn ]]; then
+	  local VPN_USER=$(whoami)
 	  printf "\n${vpn_password}\n${mfa_code}\ny" | /opt/cisco/anyconnect/bin/vpn -s connect $VPN_HOST $@
   else
-	  echo "${vpn_password}\n${mfa_code}\n" | sudo openconnect --passwd-on-stdin --background -u $VPN_USER $VPN_HOST $@ # for openconnect
+	  # for some reason this is the only one I've found that works with openconnect
+	  local VPN_HOST=sslvpngwgec.wal-mart.com/Walmart_Associate_MAC_Yubi
+	  echo "${vpn_password}\n${mfa_code}\n" | sudo openconnect --passwd-on-stdin --background -u $VPN_USER $VPN_HOST $@
   fi
 }
 
