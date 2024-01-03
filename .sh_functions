@@ -36,12 +36,30 @@ SetWebCerts() {
 
 source ~/dotfiles/bin/clone
 
+function is-walmart-mac() {
+  [[ -f "/Users/Shared/Start Here - Mac At Walmart.pdf" ]]
+}
+
 function vpn-up() {
+  # STEPS TO MAKE THIS WORK
+  # 1. Install [2fa](https://github.com/rsc/2fa)
+  #   a. Make a [new TOTP](https://linotp.wal-mart.com/selfservice/login) token
+  # 2. Set up your VPN account in the Mac Keychain, inserting your user id and password
+  #  a. `security add-generic-password -s 'wmt-sso' -a $USER -w`
+  #  b. credit: @a0c01gr
+  # 3. run this function!
+  # 4. profit???
+
+
   #local VPN_HOST=sslvpngwgec.wal-mart.com/Walmart_Associate_MAC_Yubi # blocks Spotify
   #local VPN_HOST=http://sslvpngwwec.wal-mart.com/Walmart_Associate_Yubi # blocks Spotify
   #local VPN_HOST=http://sslvpngw.wal-mart.com/Walmart_Associate_Yubi # seamlessly switches on Zoom calls; blocks Spotify; makes Slack go offline when switching
   local VPN_HOST=sslvpngwwec.wal-mart.com/Walmart_Associate_Yubi # blocks Spotify, i like this one
-  local VPN_USER=$USER #for openconnect
+  if is-walmart-mac; then
+	  local VPN_USER=$USER
+  else
+	  local VPN_USER=${VPN_USER}
+  fi
 
   echo "Starting the vpn ..."
   if [[ ! -x "$(command -v 2fa)" ]] ; then
@@ -51,7 +69,7 @@ function vpn-up() {
   local mfa_code="$(2fa walmart)"
   local vpn_password="$(security find-generic-password -w -s 'wmt-sso' -a $VPN_USER || cat ~/.vpn_password)"
   if [[ -f /opt/cisco/anyconnect/bin/vpn ]]; then
-	  local VPN_USER=$(whoami)
+	  local VPN_USER=$USER
 	  printf "\n${vpn_password}\n${mfa_code}\ny" | /opt/cisco/anyconnect/bin/vpn -s connect $VPN_HOST $@
   else
 	  # for some reason this is the only one I've found that works with openconnect
@@ -64,7 +82,7 @@ function vpn-down() {
   if [[ -f /opt/cisco/anyconnect/bin/vpn ]]; then
 	  /opt/cisco/anyconnect/bin/vpn disconnect
   else
-	  sudo kill -2 `pgrep openconnect` # for openconncet
+	  sudo kill -2 `pgrep openconnect`
   fi
 }
 
