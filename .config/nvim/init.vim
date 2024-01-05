@@ -149,44 +149,43 @@ local on_attach = function(client, bufnr)
     -- besides for insert-mode mappings, since <cmd> can improve performance
 
     -- See `:help vim.lsp.*` for documentation on any of the below functions
-	local methodsAndKeymaps = {
-		["textDocument/declaration"] = {{"n", "gD", ":lua vim.lsp.buf.declaration()<CR>"}},
-		["textDocument/definition"] = {{"n", "gf", ":lua vim.lsp.buf.defintion()<CR>"}},
-		["textDocument/hover"] = {{"n", "K", ":lua vim.lsp.buf.hover()<CR>"}},
-		["textDocument/signatureHelp"] = {{"n", "<leader>k", ":lua vim.lsp.buf.signature_help()<CR>"}},
-		["textDocument/workspaceFolders"] = {
-			{"n", "<leader>da", ":lua vim.lsp.buf.add_workspace_folder()<CR>"},
-			{"n", "<leader>dr", ":lua vim.lsp.buf.remove_workspace_folder()<CR>"},
-			{"n", "<leader>dl", ":lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>"}
-		},
-		["textDocument/rename"] = {{"n", "<leader>rn", ":lua vim.lsp.buf.rename()<CR>"}},
-		["textDocument/codeAction"] = {
-			{"n", "<leader>ca", ":lua vim.lsp.buf.code_action()<CR>"},
-			-- same as previous, but if there's only one possible action, just apply it
-			{"n", "<leader>qf", ":lua vim.lsp.buf.code_action({apply=1})<CR>"},
-		},
-		["textDocument/completion"] = {	{"i", "<C-<Space>>", "<cmd>lua vim.lsp.buf.completion()<CR>"}},
-		["textDocument/references"] = {	{"n", "gr", ":lua vim.lsp.buf.references()<CR>"}},
-		["textDocument/publishDiagnostics"] = {
-			{"n", "<leader>e", ":lua vim.lsp.diagnostic.show_line_diagnostics()<CR>"},
-			{"n", "[d", ":lua vim.diagnostic.goto_prev()<CR>"},
-			{"n", "]d", ":lua vim.diagnostic.goto_next()<CR>"},
-			{"n", "<leader>l", ":lua vim.lsp.diagnostic.set_loclist({open=true})<CR>"},
-		},
-		["textDocument/formatting"] = {{"n", "<leader>f", ":lua vim.lsp.buf.format()<CR>"}}
-	}
-			for method, keymaps in pairs(methodsAndKeymaps) do
-				if client.supports_method(method) then
-					for _, keymap in ipairs(keymaps) do
-						local mode, map, cmd = unpack(keymap)
-						buf_set_keymap(mode, map, cmd, opts)
-					end
-				end
-			end
-	-- * thingies
+    local methodsAndKeymaps = {
+        ["textDocument/declaration"] = {{"n", "gD", ":lua vim.lsp.buf.declaration()<CR>"}},
+        ["textDocument/definition"] = {{"n", "gf", ":lua vim.lsp.buf.defintion()<CR>"}},
+        ["textDocument/hover"] = {{"n", "K", ":lua vim.lsp.buf.hover()<CR>"}},
+        ["textDocument/signatureHelp"] = {{"n", "<leader>k", ":lua vim.lsp.buf.signature_help()<CR>"}},
+        ["textDocument/workspaceFolders"] = {
+            {"n", "<leader>da", ":lua vim.lsp.buf.add_workspace_folder()<CR>"},
+            {"n", "<leader>dr", ":lua vim.lsp.buf.remove_workspace_folder()<CR>"},
+            {"n", "<leader>dl", ":lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>"}
+        },
+        ["textDocument/rename"] = {{"n", "<leader>rn", ":lua vim.lsp.buf.rename()<CR>"}},
+        ["textDocument/codeAction"] = {
+            {"n", "<leader>ca", ":lua vim.lsp.buf.code_action()<CR>"},
+            -- same as previous, but if there's only one possible action, just apply it
+            {"n", "<leader>qf", ":lua vim.lsp.buf.code_action({apply=1})<CR>"}
+        },
+        ["textDocument/completion"] = {{"i", "<C-<Space>>", "<cmd>lua vim.lsp.buf.completion()<CR>"}},
+        ["textDocument/references"] = {{"n", "gr", ":lua vim.lsp.buf.references()<CR>"}},
+        ["textDocument/publishDiagnostics"] = {
+            {"n", "<leader>e", ":lua vim.lsp.diagnostic.show_line_diagnostics()<CR>"},
+            {"n", "[d", ":lua vim.diagnostic.goto_prev()<CR>"},
+            {"n", "]d", ":lua vim.diagnostic.goto_next()<CR>"},
+            {"n", "<leader>l", ":lua vim.lsp.diagnostic.set_loclist({open=true})<CR>"}
+        },
+        ["textDocument/formatting"] = {{"n", "<leader>f", ":lua vim.lsp.buf.format()<CR>"}}
+    }
+    for method, keymaps in pairs(methodsAndKeymaps) do
+        if client.supports_method(method) then
+            for _, keymap in ipairs(keymaps) do
+                local mode, map, cmd = unpack(keymap)
+                buf_set_keymap(mode, map, cmd, opts)
+            end
+        end
+    end
+    -- * thingies
     buf_set_keymap("n", "<leader>D", ":lua vim.lsp.buf.type_definition()<CR>", opts)
     buf_set_keymap("n", "gi", ":lua vim.lsp.buf.implementation()<CR>", opts)
-
 end
 
 local quick_lint_js = {
