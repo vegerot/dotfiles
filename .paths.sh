@@ -1,7 +1,7 @@
 #Path stuff
 
 if [[ "$PATH" == *$HOME/.cargo/bin* && -z $ALWAYS_SOURCE_PATHS ]]; then
-	echo "skipping path stuff"
+	#echo "skipping path stuff"
 	return
 fi
 
