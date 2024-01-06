@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
+killall gnome-screenshot
 gnome-screenshot --interactive --clipboard --area
