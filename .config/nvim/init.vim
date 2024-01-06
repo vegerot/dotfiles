@@ -152,7 +152,7 @@ local on_attach = function(client, bufnr)
     -- See `:help vim.lsp.*` for documentation on any of the below functions
     local methodsAndKeymaps = {
         ["textDocument/declaration"] = {{"n", "gD", ":lua vim.lsp.buf.declaration()<CR>"}},
-        ["textDocument/definition"] = {{"n", "gf", ":lua vim.lsp.buf.defintion()<CR>"}},
+        ["textDocument/definition"] = {{"n", "gd", ":lua vim.lsp.buf.definition()<CR>"}},
         ["textDocument/hover"] = {{"n", "K", ":lua vim.lsp.buf.hover()<CR>"}},
         ["textDocument/signatureHelp"] = {{"n", "<leader>k", ":lua vim.lsp.buf.signature_help()<CR>"}},
         ["textDocument/workspaceFolders"] = {
