@@ -1,4 +1,5 @@
 "" VANILLA start
+colorscheme retrobox
 set scrolloff=5
 set clipboard=unnamed,unnamedplus
 
