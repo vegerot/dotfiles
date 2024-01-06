@@ -172,4 +172,4 @@ else
   end=$(python3 -c "import time; print(time.time())")
 fi
 runtime=$( echo "$end - $start" | bc -l )
-printf "%.2f seconds\n" $runtime
+printf "%.2f seconds\n" $runtime | lolcat --truecolor --force
