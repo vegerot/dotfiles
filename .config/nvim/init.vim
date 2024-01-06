@@ -316,12 +316,16 @@ configs_plugin.setup {
             node_decremental = "grm"
         }
     },
+	textobjects = {enable = true},
     indent = {
         enable = true,
         disable = {"go"}
     }
 }
 install_plugin.prefer_git = true
+vim.keymap.set("n", "[c", function()
+  require("treesitter-context").go_to_context(vim.v.count1)
+end)
 LUAEND
 
 
