@@ -18,5 +18,5 @@ get_description_of_manpage() {
   fi
 }
 commanddescription=$(get_description_of_manpage $manpagefile)
-echo $commanddescription | cowsay -f $( cowsay -l| tail -n+2|tr " " "\n"|sort -R|head -1) | lolcat
+echo $commanddescription | cowsay -f $( cowsay -l| tail -n+2|tr " " "\n"|sort -R|head -1) | lolcat --truecolor --force
 
