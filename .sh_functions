@@ -69,7 +69,6 @@ function vpn-up() {
   local mfa_code="$(2fa walmart)"
   local vpn_password="$(security find-generic-password -w -s 'wmt-sso' -a $VPN_USER || cat ~/.vpn_password)"
   if [[ -f /opt/cisco/anyconnect/bin/vpn ]]; then
-	  local VPN_USER=$USER
 	  printf "\n${vpn_password}\n${mfa_code}\ny" | /opt/cisco/anyconnect/bin/vpn -s connect $VPN_HOST $@
   else
 	  # for some reason this is the only one I've found that works with openconnect
