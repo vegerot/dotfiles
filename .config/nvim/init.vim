@@ -13,6 +13,10 @@ set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
 set smartindent
 set tabstop=2
 
+" when going to a quickfix item, switch to an existing window that already has
+" the buffer in it and if not, open it in a vsplit
+set switchbuf=usetab,vsplit
+
 set exrc
 
 nmap <leader>n :nohl<CR>
