@@ -290,6 +290,8 @@ vmap <leader>cp :CopyFile<CR>
 
 let g:camelcasemotion_key = '<leader>'
 
+command! -nargs=* FindFile tabnew | execute "0read !fd <args> | sort" | set nomodified | 0
+
 "" FZF start
 " Enable per-command history
 " - History files will be stored in the specified directory
@@ -300,7 +302,12 @@ let g:fzf_history_dir = '~/.local/share/fzf-history'
 command! -bang -nargs=* Ag
   \  :Files
 
-nmap <C-p> :Files<Cr>
+silent! packadd fzf.vim
+if exists(":Files")
+	nmap <C-p> :Files<Cr>
+else
+	nmap <C-p> :FindFile<SPACE>
+endif
 
 "" FZF end
 
