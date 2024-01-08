@@ -261,6 +261,24 @@ for _, lsp in ipairs(servers) do
 end
 LUAEND
 
+
+" Copilot
+let g:copilot_no_tab_map = v:true
+let g:copilot_assume_mapped = v:true
+let g:copilot_tab_fallback = ""
+let g:copilot_node_command = "/opt/homebrew/bin/node"
+imap <script><expr> <C-e> copilot#Accept("\<CR>")
+" copilot is disabled in markdown (and other languages) by default
+" copilot appends g:copilot_filetypes to s:filetype_defaults (in copilot.vim)
+" so we can override the defaults by putting them all to true
+let g:copilot_filetypes = {
+			\ '*': v:true,
+			\ 'c': v:false,
+			\ 'cpp': v:true,
+			\}
+" Copilot end
+
+
 "" PLUGINS start
 
 " Open remote
@@ -333,20 +351,3 @@ vim.keymap.set("n", "[c", function()
   require("treesitter-context").go_to_context(vim.v.count1)
 end)
 LUAEND
-
-
-" Copilot
-let g:copilot_no_tab_map = v:true
-let g:copilot_assume_mapped = v:true
-let g:copilot_tab_fallback = ""
-imap <script><expr> <C-e> copilot#Accept("\<CR>")
-" copilot is disabled in markdown (and other languages) by default
-" copilot appends g:copilot_filetypes to s:filetype_defaults (in copilot.vim)
-" so we can override the defaults by putting them all to true
-let g:copilot_filetypes = {
-			\ '*': v:true,
-			\ 'c': v:false,
-			\ 'cpp': v:true,
-			\}
-" Copilot end
-
