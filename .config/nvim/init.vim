@@ -259,6 +259,9 @@ for _, lsp in ipairs(servers) do
     end
     lspconfig_plugin[name].setup(coq.lsp_ensure_capabilities(settings))
 end
+
+-- experimental.  Might break soon
+vim.lsp.inlay_hint.enable(0, true)
 LUAEND
 
 
