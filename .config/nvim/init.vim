@@ -112,7 +112,7 @@ vim.g.coq_settings = {
 }
 local status, coq_3p = pcall(require, "coq_3p")
 if not status then
-    print("didn't load coq_3p.  Skipping loading coq")
+    --print("didn't load coq_3p.  Skipping loading coq")
     return false
 end
 
@@ -125,13 +125,13 @@ LUAEND
 lua << LUAEND
 local status, lspconfig_plugin = pcall(require, "lspconfig")
 if not status then
-    print("lspconfig" .. " plugin not loaded.  Not loading lsp stuff")
+    --print("lspconfig" .. " plugin not loaded.  Not loading lsp stuff")
     return false
 end
 
 local status, coq = pcall(require, "coq")
 if not status then
-    print("coq" .. " plugin not loaded.  Not loading coq")
+    --print("coq" .. " plugin not loaded.  Not loading coq")
     return false
 end
 local coq = require("coq")
@@ -317,14 +317,14 @@ lua << LUAEND
 local configs_plugin_name = "nvim-treesitter.configs"
 local status, configs_plugin = pcall(require, configs_plugin_name)
 if not status then
-    print(configs_plugin_name .. " plugin not loaded.  Not loading treesitter")
+    --print(configs_plugin_name .. " plugin not loaded.  Not loading treesitter")
     return false
 end
 
 local install_plugin_name = "nvim-treesitter.install"
 local status, install_plugin = pcall(require, install_plugin_name)
 if not status then
-    print(install_plugin .. " plugin not loaded.  Not loading treesitter")
+    --print(install_plugin .. " plugin not loaded.  Not loading treesitter")
     return false
 end
 
