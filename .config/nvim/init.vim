@@ -10,7 +10,7 @@ set ignorecase
 set smartcase
 set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
 
-command -nargs=* GrepNoTests grep --glob="!*.test.*" --glob "!*.spec.*" --glob "!e2e/" <args>
+command -nargs=* GrepNoTests grep --glob="!__tests__/" --glob "!e2e/" --glob="!*.test.*" --glob "!*.spec.*" <args>
 
 set smartindent
 set tabstop=2
