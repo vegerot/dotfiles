@@ -98,10 +98,19 @@ function vpn-status() {
 	| head -n1
 }
 
-function sudome() {
+function wmt_sudome() {
   set -x
   sudo jamf policy -id 854
   set +x
+}
+
+function wmt_fixmynetwork() {
+	set -x
+	sudo jamf policy -id 906
+	if [[ $1 == "eagle" ]]; then
+		sudo jamf policy -id 809
+	fi
+	set +x
 }
 
 function afk() {
