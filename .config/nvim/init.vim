@@ -269,7 +269,6 @@ LUAEND
 let g:copilot_no_tab_map = v:true
 let g:copilot_assume_mapped = v:true
 let g:copilot_tab_fallback = ""
-let g:copilot_node_command = "/opt/homebrew/bin/node"
 imap <script><expr> <C-e> copilot#Accept("\<CR>")
 " copilot is disabled in markdown (and other languages) by default
 " copilot appends g:copilot_filetypes to s:filetype_defaults (in copilot.vim)
@@ -360,4 +359,15 @@ install_plugin.prefer_git = true
 vim.keymap.set("n", "[c", function()
   require("treesitter-context").go_to_context(vim.v.count1)
 end)
+LUAEND
+
+lua << LUAEND
+
+local status, devicons_plugin = pcall(require, "nvim-web-devicons")
+if status then
+	devicons_plugin.setup {
+		default=true
+	}
+end
+
 LUAEND

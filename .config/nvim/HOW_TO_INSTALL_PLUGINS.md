@@ -21,6 +21,7 @@ Make sure everything you're cloning has a `plugins/` directory in it
 | vim-tmux-navigator 	| ~/.local/share/nvim/site/pack/complex-plugins/start/      	| sl clone git@github.com:christoomey/vim-tmux-navigator.git          	|
 | telescope.nvim     	|                                                           	| sl clone git@github.com:nvim-telescope/telescope.nvim               	|
 | plenary.nvim       	|                                                           	| sl clone git@github.com:nvim-lua/plenary.nvim                       	|
+| nvim-web-devicons  	|                                                           	| sl clone git@github.com:nvim-tree/nvim-web-devicons                 	|
 | fzf                	| ~/.local/share/nvim/site/pack/fzf/start/                  	| sl clone git@github.com:junegunn/fzf.git                            	|
 |                    	|                                                           	| sl clone git@github.com:junegunn/fzf.vim.git                        	|
 | treesitter         	| ~/.local/share/nvim/site/pack/treesitter/start/           	| sl clone git@github.com:nvim-treesitter/nvim-treesitter.git         	|
