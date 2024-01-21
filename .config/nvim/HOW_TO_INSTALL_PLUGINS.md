@@ -19,11 +19,13 @@ Make sure everything you're cloning has a `plugins/` directory in it
 | file-line          	| ~/.local/share/nvim/site/pack/simple-plugins/start/       	| sl clone git@github.com:lervag/file-line.git                        	|
 | splitjoin          	| ~/.local/share/nvim/site/pack/simple-plugins/start/       	| sl clone git@github.com:AndrewRadev/splitjoin.vim.git               	|
 | vim-tmux-navigator 	| ~/.local/share/nvim/site/pack/complex-plugins/start/      	| sl clone git@github.com:christoomey/vim-tmux-navigator.git          	|
+| telescope.nvim     	|                                                           	| sl clone git@github.com:nvim-telescope/telescope.nvim               	|
+| plenary.nvim       	|                                                           	| sl clone git@github.com:nvim-lua/plenary.nvim                       	|
 | fzf                	| ~/.local/share/nvim/site/pack/fzf/start/                  	| sl clone git@github.com:junegunn/fzf.git                            	|
 |                    	|                                                           	| sl clone git@github.com:junegunn/fzf.vim.git                        	|
 | treesitter         	| ~/.local/share/nvim/site/pack/treesitter/start/           	| sl clone git@github.com:nvim-treesitter/nvim-treesitter.git         	|
 | treesitter-context 	| ~/.local/share/nvim/site/pack/treesitter/start/           	| sl clone git@github.com:nvim-treesitter/nvim-treesitter-context.git 	|
-| coq                	| ~/.local/share/nvim/site/pack/autocomplete-and-lsp/start/ 	| sl clone git@github.com:ms-jpq/coq_nvim.git                              	|
+| coq                	| ~/.local/share/nvim/site/pack/autocomplete-and-lsp/start/ 	| sl clone git@github.com:ms-jpq/coq_nvim.git                         	|
 |                    	|                                                           	| sl clone git@github.com:ms-jpq/coq.thirdparty.git                   	|
 |                    	|                                                           	| sl clone git@github.com:ms-jpq/coq.artifacts.git                    	|
 | copilot            	| ~/.local/share/nvim/site/pack/autocomplete-and-lsp/start/ 	| sl clone git@github.com:github/copilot.vim.git                      	|
