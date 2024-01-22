@@ -202,6 +202,10 @@ local on_attach = function(client, bufnr)
     -- * thingies
     buf_set_keymap("n", "<leader>D", ":lua vim.lsp.buf.type_definition()<CR>", opts)
     buf_set_keymap("n", "gi", ":lua vim.lsp.buf.implementation()<CR>", opts)
+	if client.supports_method("textDocument/inlayHint") then
+		-- experimental.  Might break soon
+		vim.lsp.inlay_hint.enable(0, true)
+	end
 end
 
 local quick_lint_js = {
@@ -269,8 +273,6 @@ for _, lsp in ipairs(servers) do
     lspconfig_plugin[name].setup(coq.lsp_ensure_capabilities(settings))
 end
 
--- experimental.  Might break soon
-vim.lsp.inlay_hint.enable(0, true)
 LUAEND
 
 
