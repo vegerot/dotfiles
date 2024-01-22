@@ -322,6 +322,18 @@ else
 	nmap <C-p> :FindFile<SPACE>
 endif
 
+lua <<LUAEND
+local status, telescope = pcall(require, "telescope")
+if not status then
+	return false
+end
+local status, fzy_native = pcall(require, "telescope._extensions.fzy_native")
+if not status then
+	return false
+end
+telescope.load_extension("fzy_native")
+LUAEND
+
 " TREESITTER start
 lua << LUAEND
 

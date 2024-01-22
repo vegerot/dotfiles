@@ -8,25 +8,26 @@ Make sure everything you're cloning has a `plugins/` directory in it
 
 ## List of plugins to install
 
-| plugin             	| directory                                                 	| command                                                             	|
-|--------------------	|-----------------------------------------------------------	|---------------------------------------------------------------------	|
-| surround           	| ~/.local/share/nvim/site/pack/tpope/start/                	| sl clone git@github.com:tpope/vim-surround.git                      	|
-| commentary         	|                                                           	| git clone https://tpope.io/vim/commentary.git                       	|
-| repeat             	|                                                           	| sl clone https://tpope.io/vim/repeat.git                            	|
-| vinegar            	|                                                           	| sl clone https://github.com/tpope/vim-vinegar.git                   	|
-| unimpaired         	|                                                           	| sl clone https://tpope.io/vim/unimpaired.git                        	|
-| open-remote        	| ~/.local/share/nvim/site/pack/simple-plugins/start/       	| sl clone git@github.com:vegerot/open-remote.git                     	|
-| CamelCaseMotion    	|                                                           	| sl clone git@github.com:bkad/CamelCaseMotion.git                    	|
-| file-line          	|                                                           	| sl clone git@github.com:lervag/file-line.git                        	|
-| splitjoin          	|                                                           	| sl clone git@github.com:AndrewRadev/splitjoin.vim.git               	|
-| vim-tmux-navigator 	| ~/.local/share/nvim/site/pack/complex-plugins/start/      	| sl clone git@github.com:christoomey/vim-tmux-navigator.git          	|
-| telescope.nvim     	|                                                           	| sl clone git@github.com:nvim-telescope/telescope.nvim               	|
-| plenary.nvim       	|                                                           	| sl clone git@github.com:nvim-lua/plenary.nvim                       	|
-| nvim-web-devicons  	|                                                           	| sl clone git@github.com:nvim-tree/nvim-web-devicons                 	|
-| treesitter         	| ~/.local/share/nvim/site/pack/treesitter/start/           	| sl clone git@github.com:nvim-treesitter/nvim-treesitter.git         	|
-| treesitter-context 	|                                                           	| sl clone git@github.com:nvim-treesitter/nvim-treesitter-context.git 	|
-| coq                	| ~/.local/share/nvim/site/pack/autocomplete-and-lsp/start/ 	| sl clone git@github.com:ms-jpq/coq_nvim.git                         	|
-|                    	|                                                           	| sl clone git@github.com:ms-jpq/coq.thirdparty.git                   	|
-|                    	|                                                           	| sl clone git@github.com:ms-jpq/coq.artifacts.git                    	|
-| copilot            	|                                                           	| sl clone git@github.com:github/copilot.vim.git                      	|
-| nvim-lspconfig     	|                                                           	| sl clone git@github.com:neovim/nvim-lspconfig.git                   	|
+| plugin             	| directory                                                 	| command                                                                	|
+|--------------------	|-----------------------------------------------------------	|------------------------------------------------------------------------	|
+| surround           	| ~/.local/share/nvim/site/pack/tpope/start/                	| sl clone git@github.com:tpope/vim-surround.git                         	|
+| commentary         	|                                                           	| git clone https://tpope.io/vim/commentary.git                          	|
+| repeat             	|                                                           	| sl clone https://tpope.io/vim/repeat.git                               	|
+| vinegar            	|                                                           	| sl clone https://github.com/tpope/vim-vinegar.git                      	|
+| unimpaired         	|                                                           	| sl clone https://tpope.io/vim/unimpaired.git                           	|
+| open-remote        	| ~/.local/share/nvim/site/pack/simple-plugins/start/       	| sl clone git@github.com:vegerot/open-remote.git                        	|
+| CamelCaseMotion    	|                                                           	| sl clone git@github.com:bkad/CamelCaseMotion.git                       	|
+| file-line          	|                                                           	| sl clone git@github.com:lervag/file-line.git                           	|
+| splitjoin          	|                                                           	| sl clone git@github.com:AndrewRadev/splitjoin.vim.git                  	|
+| vim-tmux-navigator 	| ~/.local/share/nvim/site/pack/complex-plugins/start/      	| sl clone git@github.com:christoomey/vim-tmux-navigator.git             	|
+| telescope.nvim     	|                                                           	| sl clone git@github.com:nvim-telescope/telescope.nvim                  	|
+| plenary.nvim       	|                                                           	| sl clone git@github.com:nvim-lua/plenary.nvim                          	|
+| nvim-web-devicons  	|                                                           	| sl clone git@github.com:nvim-tree/nvim-web-devicons                    	|
+| fzy-native         	|                                                           	| sl clone git@github.com:nvim-telescope/telescope-fzy-native.nvim.git   	|
+| treesitter         	| ~/.local/share/nvim/site/pack/treesitter/start/           	| sl clone git@github.com:nvim-treesitter/nvim-treesitter.git            	|
+| treesitter-context 	|                                                           	| sl clone git@github.com:nvim-treesitter/nvim-treesitter-context.git    	|
+| coq                	| ~/.local/share/nvim/site/pack/autocomplete-and-lsp/start/ 	| sl clone git@github.com:ms-jpq/coq_nvim.git                            	|
+|                    	|                                                           	| sl clone git@github.com:ms-jpq/coq.thirdparty.git                      	|
+|                    	|                                                           	| sl clone git@github.com:ms-jpq/coq.artifacts.git                       	|
+| copilot            	|                                                           	| sl clone git@github.com:github/copilot.vim.git                         	|
+| nvim-lspconfig     	|                                                           	| sl clone git@github.com:neovim/nvim-lspconfig.git                      	|
