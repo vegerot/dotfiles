@@ -303,25 +303,6 @@ let g:camelcasemotion_key = '<leader>'
 
 command! -nargs=* FindFile tabnew | execute "0read !fd <args> | sort" | set nomodified | 0
 
-"" FZF start
-" Enable per-command history
-" - History files will be stored in the specified directory
-" - When set, CTRL-N and CTRL-P will be bound to 'next-history' and
-"   'previous-history' instead of 'down' and 'up'.
-let g:fzf_history_dir = '~/.local/share/fzf-history'
-
-command! -bang -nargs=* Ag
-  \  :Files
-
-silent! packadd fzf.vim
-if exists(":Files")
-	nmap <C-p> :Files<Cr>
-else
-	nmap <C-p> :FindFile<SPACE>
-endif
-
-"" FZF end
-
 silent! packadd telescope.nvim
 if exists(":Telescope")
 	nmap <leader>fr <cmd>Telescope resume<Cr>

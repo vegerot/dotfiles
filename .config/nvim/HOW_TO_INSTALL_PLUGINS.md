@@ -22,8 +22,6 @@ Make sure everything you're cloning has a `plugins/` directory in it
 | telescope.nvim     	|                                                           	| sl clone git@github.com:nvim-telescope/telescope.nvim               	|
 | plenary.nvim       	|                                                           	| sl clone git@github.com:nvim-lua/plenary.nvim                       	|
 | nvim-web-devicons  	|                                                           	| sl clone git@github.com:nvim-tree/nvim-web-devicons                 	|
-| fzf                	| ~/.local/share/nvim/site/pack/fzf/start/                  	| sl clone git@github.com:junegunn/fzf.git                            	|
-|                    	|                                                           	| sl clone git@github.com:junegunn/fzf.vim.git                        	|
 | treesitter         	| ~/.local/share/nvim/site/pack/treesitter/start/           	| sl clone git@github.com:nvim-treesitter/nvim-treesitter.git         	|
 | treesitter-context 	| ~/.local/share/nvim/site/pack/treesitter/start/           	| sl clone git@github.com:nvim-treesitter/nvim-treesitter-context.git 	|
 | coq                	| ~/.local/share/nvim/site/pack/autocomplete-and-lsp/start/ 	| sl clone git@github.com:ms-jpq/coq_nvim.git                         	|
