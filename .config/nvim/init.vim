@@ -278,6 +278,9 @@ LUAEND
 let g:copilot_no_tab_map = v:true
 let g:copilot_assume_mapped = v:true
 let g:copilot_tab_fallback = ""
+if isdirectory("/opt/homebrew/bin/node")
+  let g:copilot_node_command = "/opt/homebrew/bin/node"
+endif
 imap <script><expr> <C-e> copilot#Accept("\<CR>")
 " copilot is disabled in markdown (and other languages) by default
 " copilot appends g:copilot_filetypes to s:filetype_defaults (in copilot.vim)
