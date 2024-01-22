@@ -30,7 +30,7 @@ export CDPATH="$CDPATH:$HOME/gecgithub01.walmart.com/m0c0j7y/:$HOME/gecgithub01.
 # for some reason "\n" doesn't work in $PS1??
 NEWLINE="
 "
-export PS1="${NEWLINE}$PS1${NEWLINE}$ "
+export PS1="${NEWLINE}%m%#${NEWLINE}$ "
 
 # HISTORY
 HISTFILE="${HISTFILE:-$HOME/.zsh_history}"
