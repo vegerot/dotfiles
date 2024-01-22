@@ -313,6 +313,18 @@ endif
 
 "" FZF end
 
+silent! packadd telescope.nvim
+if exists(":Telescope")
+	nmap <C-p> :Telescope find_files<Cr>
+	nmap <leader>fg <cmd>Telescope live_grep<Cr>
+	nmap <leader>fb <cmd>Telescope buffers<Cr>
+	nmap <leader>fo <cmd>Telescope old_files<Cr>
+	nmap <leader>fh <cmd>Telescope help_tags<Cr>
+	nmap <leader>fm <cmd>Telescope man_pages<Cr>
+else
+	nmap <C-p> :FindFile<SPACE>
+endif
+
 " TREESITTER start
 lua << LUAEND
 
