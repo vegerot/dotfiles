@@ -134,7 +134,6 @@ if not status then
     --print("coq" .. " plugin not loaded.  Not loading coq")
     return false
 end
-local coq = require("coq")
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
@@ -178,7 +177,8 @@ local on_attach = function(client, bufnr)
             {"n", "<leader>e", ":lua vim.lsp.diagnostic.show_line_diagnostics()<CR>"},
             {"n", "[d", ":lua vim.diagnostic.goto_prev()<CR>"},
             {"n", "]d", ":lua vim.diagnostic.goto_next()<CR>"},
-            {"n", "<leader>l", ":lua vim.lsp.diagnostic.set_loclist({open=true})<CR>"}
+            {"n", "<leader>q", ":lua vim.diagnostic.setqflist({open=true})<CR>"},
+            {"n", "<leader>l", ":lua vim.diagnostic.setloclist({open=true})<CR>"}
         },
         ["textDocument/formatting"] = {{"n", "<leader>f", ":lua vim.lsp.buf.format()<CR>"}}
     }
