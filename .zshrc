@@ -78,7 +78,13 @@ keymaps() {
 	setxkbmap -option ctrl:nocaps
 	xcape -e 'Control_L=Escape'
 }
-[[ $OSTYPE == "linux-gnu"* ]] && keymaps
+if command -v cmd.exe &>/dev/null; then
+  local isWSL=true
+else
+  local isWSL=false
+fi
+
+[[ $OSTYPE == "linux-gnu"* ]] && ! $isWSL && keymaps
 
 source ~/.aliases
 source ~/.sh_functions
