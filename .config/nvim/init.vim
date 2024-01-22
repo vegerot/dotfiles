@@ -182,6 +182,15 @@ local on_attach = function(client, bufnr)
         },
         ["textDocument/formatting"] = {{"n", "<leader>f", ":lua vim.lsp.buf.format()<CR>"}}
     }
+	local status, telescope_builtin = pcall(require, "telescope.builtin")
+	if status then
+		methodsAndKeymaps["textDocument/definition"] = {
+			{"n", "gd", ":lua require('telescope.builtin').lsp_definitions()<CR>"}
+		}
+		methodsAndKeymaps["textDocument/references"] = {
+			{"n", "gr", ":lua require('telescope.builtin').lsp_references()<CR>"}
+		}
+	end
     for method, keymaps in pairs(methodsAndKeymaps) do
         if client.supports_method(method) then
             for _, keymap in ipairs(keymaps) do
@@ -315,12 +324,14 @@ endif
 
 silent! packadd telescope.nvim
 if exists(":Telescope")
+	nmap <leader>fr <cmd>Telescope resume<Cr>
 	nmap <C-p> :Telescope find_files<Cr>
 	nmap <leader>fg <cmd>Telescope live_grep<Cr>
 	nmap <leader>fb <cmd>Telescope buffers<Cr>
 	nmap <leader>fo <cmd>Telescope old_files<Cr>
 	nmap <leader>fh <cmd>Telescope help_tags<Cr>
 	nmap <leader>fm <cmd>Telescope man_pages<Cr>
+	nmap <leader>fd <cmd>Telescope diagnostics<Cr>
 else
 	nmap <C-p> :FindFile<SPACE>
 endif
