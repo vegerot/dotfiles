@@ -18,8 +18,16 @@ echo
 function upgrade_neovim() {
 	echo "neovim"
 
-	# `Plug` is so fast at updating, let's not even ask
-	nvim +PlugUpdate +qall
+	read -p 'Would you like to upgrade Neovim plugins (y/n): ' upgradeNvim
+	if [[ "$upgradeNvim" == "y" ]]; then
+		for dir in ~/.local/share/nvim/site/pack/*/start/*; do
+			if [[ -d "$dir/.git" ]]; then
+				(cd "$dir" && git pull)
+			elif [[ -d "$dir/.sl" ]]; then
+				(cd "$dir" && sl pull && sl go tip)
+			fi
+		done
+	fi
 }
 
 
