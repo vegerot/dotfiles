@@ -158,8 +158,6 @@ load_plugins() {
   source "${FZF_BASE:="$HOME/workspace/github.com/junegunn/fzf/"}/shell/key-bindings.zsh"
   source "$FZF_BASE/shell/completion.zsh"
 
-  source "$HOME/.fzf-extras/fzf-extras.zsh"
-
   ## from fzf.zsh plugin
   bindkey '^p' fzf-file-widget
   # FZF end
