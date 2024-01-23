@@ -1,0 +1,22 @@
+// put in "$HOME/Library/Application Support/Code/User/keybindings.json" on macOS
+[
+    {
+        "key": "shift+alt+f",
+        "command": "eslint.executeAutofix"
+    },
+    {
+        "key": "shift+[Minus]",
+        "command": "editor.emmet.action.matchTag",
+        "when": "editor.textFocus && vim.active"
+    },
+    {
+        "key": "ctrl+h",
+        "command": "workbench.action.compareEditor.focusOtherSide",
+        "when": "textCompareEditorVisible"
+    },
+    {
+        "key": "ctrl+l",
+        "command": "workbench.action.compareEditor.focusOtherSide",
+        "when": "textCompareEditorVisible"
+    }
+]

@@ -1,0 +1,536 @@
+// put in "$HOME/Library/Application Support/Code/User/settings.json" on macOS
+{
+  "[javascript, typescript, Vue, javascriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.formatOnSave": true
+    // "editor.formatOnType": true
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "stylelint.vscode-stylelint"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "stylelint.vscode-stylelint"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[html, Vue]": {
+    "editor.renameOnType": true
+  },
+  "auto-close-tag.activationOnLanguage": [
+    "html",
+    "xml",
+    "javascript",
+    "javascriptreact",
+    "typescriptreact",
+    "vue"
+  ],
+  "breadcrumbs.enabled": true,
+  "clangd.path": "/Users/maxcoplan/Library/Application Support/Code - Insiders/User/globalStorage/llvm-vs-code-extensions.vscode-clangd/install/10.0.0/clangd_10.0.0/bin/clangd",
+  "cSpell.userWords": [
+    "accesscontrol",
+    "aircrafts",
+    "apodesktop",
+    "asdfkjdaslkjfhadskljfhlkadsjhf",
+    "asvetliakov",
+    "autofix",
+    "Avaito",
+    "Aviato",
+    "Aviato's",
+    "Axios",
+    "Blazingly",
+    "bufferutil",
+    "camelcase",
+    "CELISTS",
+    "Chainable",
+    "charsets",
+    "codegen",
+    "combobox",
+    "Comlink",
+    "commitlint",
+    "Datepicker",
+    "Deno",
+    "devs",
+    "devtools",
+    "dont",
+    "downlevel",
+    "draggable",
+    "eqeqeq",
+    "esnext",
+    "Fastify",
+    "figcaption",
+    "frameguard",
+    "frontends",
+    "gapi",
+    "geocode",
+    "gitmoji",
+    "gmail",
+    "greenishkeeper",
+    "hsts",
+    "instanceof",
+    "jank",
+    "jsonb",
+    "Keyval",
+    "Kitt",
+    "krid",
+    "libphonenumber",
+    "linebreak",
+    "listapp",
+    "LRCWE",
+    "LROSWing",
+    "LRWE",
+    "maxcoplan",
+    "mds's",
+    "microservices",
+    "mixins",
+    "multiselect",
+    "neovim",
+    "nestjs",
+    "npmjs",
+    "OAUTH",
+    "orchestrainfo",
+    "ormconfig",
+    "parallelizable",
+    "pino",
+    "postgres",
+    "postgresql",
+    "preact",
+    "prefetch",
+    "prepend",
+    "pubx",
+    "RATELIMIT",
+    "readonly",
+    "Recents",
+    "Referer",
+    "refuelers",
+    "reme",
+    "requestidlecallback",
+    "resave",
+    "scripthost",
+    "smartlists",
+    "spid",
+    "Staticfile",
+    "stylelint",
+    "stylelintrc",
+    "substr",
+    "swapi",
+    "timestamptz",
+    "trippin",
+    "tslib",
+    "typechecking",
+    "typeof",
+    "typeorm",
+    "updatefound",
+    "uuidv",
+    "vaporboy",
+    "varchar",
+    "vuetify",
+    "Vuex",
+    "Wasm",
+    "wasmboy",
+    "websockets",
+    "wmglass"
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.stylelint": "explicit"
+  },
+  "editor.cursorSurroundingLines": 15,
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  "editor.lineNumbers": "relative",
+  "editor.quickSuggestions": {
+    "comments": "on",
+    "strings": "on",
+    "other": "on"
+  },
+  "editor.snippetSuggestions": "bottom",
+  "editor.tabCompletion": "on",
+  "editor.tokenColorCustomizations": {
+    "enabled": true
+  },
+  "editor.wordWrap": "on",
+  "editor.wrappingIndent": "deepIndent",
+  "emmet.showSuggestionsAsSnippets": true,
+  "eslint.validate": [
+    "vue",
+    "html",
+    "javascript",
+    "javascriptreact",
+    "typescript"
+  ],
+  "explorer.confirmDelete": false,
+  "files.autoSave": "afterDelay",
+  "gitlab.instanceUrl": "https://git.aoc-pathfinder.cloud/",
+  "gitlab.enableExperimentalFeatures": true,
+  "git.enableCommitSigning": true,
+  "java.home": "/Library/Java/JavaVirtualMachines/openjdk-13.jdk/Contents/Home",
+  "javascript.format.enable": true,
+  "python.jediEnabled": false,
+  "sync.gist": "d9e484f74d30f59cafcc267cd9dfb581",
+  "terminal.integrated.env.osx": {
+    "TMUX": ""
+  },
+  "terminal.integrated.experimentalUseTitleEvent": true,
+  "terminal.integrated.macOptionClickForcesSelection": true,
+  "terminal.integrated.scrollback": 100000,
+  "terminal.integrated.enableShellIntegration": true,
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
+  "vetur.completion.useScaffoldSnippets": false,
+  "vetur.experimental.templateInterpolationService": true,
+  "vetur.format.defaultFormatter.ts": "vscode-typescript",
+  "vim.surround": true,
+  "vim.history": 50000,
+  "vim.visualstar": true,
+  "vim.camelCaseMotion.enable": true,
+  "vim.changeWordIncludesWhitespace": true,
+  "vim.easymotion": true,
+  "vim.enableNeovim": true,
+  "vim.highlightedyank.duration": 100,
+  "vim.highlightedyank.enable": true,
+  "vim.hlsearch": true,
+  "vim.neovimPath": "/usr/local/bin/nvim",
+  "vim.smartRelativeLine": true,
+  "vim.normalModeKeyBindings": [
+    {
+      "before": [
+        "<leader>",
+        "r",
+        "n"
+      ],
+      "commands": [
+        "editor.action.rename"
+      ]
+    },
+    {
+      "after": [
+        "g",
+        "h"
+      ],
+      "before": [
+        "K"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "q",
+        "f"
+      ],
+      "commands": [
+        "editor.action.autoFix"
+      ]
+    },
+    {
+      "before": [
+        "<leader>",
+        "c",
+        "a"
+      ],
+      "commands": [
+        "editor.action.quickFix"
+      ]
+    },
+    {
+      "before": [
+        "]",
+        "g"
+      ],
+      "commands": [
+        "editor.action.marker.next"
+      ],
+      "when": "editorFocus"
+    },
+    {
+      "before": [
+        "[",
+        "g"
+      ],
+      "commands": [
+        "editor.action.marker.prev"
+      ],
+      "when": "editorFocus"
+    },
+    {
+      "before": [
+        "<C-]>"
+      ],
+      "commands": [
+        "editor.action.marker.next"
+      ]
+    },
+    {
+      "before": [
+        "<C-[>"
+      ],
+      "commands": [
+        "editor.action.marker.prev"
+      ]
+    },
+    {
+      "before": [
+        "<leader>f"
+      ],
+      "commands": [
+        "editor.action.formatDocument.multiple"
+      ]
+    }
+  ],
+  "vim.sneak": true,
+  "vim.useSystemClipboard": true,
+  "vim.vimrc.enable": true,
+  "vim.visualModeKeyBindingsNonRecursive": [
+    {
+      "after": [
+        "p",
+        "g",
+        "v",
+        "y"
+      ],
+      "before": [
+        "p"
+      ]
+    }
+  ],
+  "vim.textwidth": 100,
+  "vsonline.planFilter": "/subscriptions/17c4cb8e-63b4-484d-a755-8019694686cc/resourceGroups/vso-rg-60fc617/providers/Microsoft.VSOnline/plans/vso-plan-eastus",
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "gitlens.views.repositories.files.layout": "tree",
+  "[vue]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "vue.referencesCodeLens.enabled": true,
+  "editor.wordWrapColumn": 100,
+  "html.format.wrapLineLength": 100,
+  "material-icon-theme.activeIconPack": "vue_vuex",
+  "yaml.schemas": {
+    "file:///Users/maxcoplan/.vscode-insiders/extensions/atlassian.atlascode-2.6.3/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml"
+  },
+  "atlascode.bitbucket.enabled": false,
+  "atlascode.jira.jqlList": [
+    {
+      "id": "1718cbcb-be17-4140-9be4-e34ad8755e2b",
+      "enabled": true,
+      "name": "My fearless Issues",
+      "query": "assignee = currentUser() AND resolution = Unresolved ORDER BY lastViewed DESC",
+      "siteId": "0bf7b56c-f198-48d4-8a5a-1afcf2ad2ebf",
+      "monitor": true
+    }
+  ],
+  "atlascode.jira.statusbar.showUser": false,
+  "atlascode.jira.statusbar.showProduct": false,
+  "atlascode.jira.statusbar.showLogin": true,
+  "atlascode.jira.statusbar.showActiveIssue": true,
+  "workbench.statusBar.visible": true,
+  "editor.suggest.statusBar.visible": true,
+  "editor.fontLigatures": true,
+  "problems.showCurrentInStatus": true,
+  "jest.autoEnable": false,
+  "jest.enableInlineErrorMessages": true,
+  "jest.showCoverageOnLoad": true,
+  "editor.rulers": [
+    100
+  ],
+  "editor.suggest.shareSuggestSelections": true,
+  "pgsql.connections": [
+    {
+      "host": "localhost",
+      "dbname": "aviato",
+      "user": "maxcoplan",
+      "password": "password",
+      "emptyPasswordInput": false,
+      "port": "5432",
+      "profileName": "aviato",
+      "connectTimeout": 15,
+      "encrypt": false,
+      "applicationName": "pgsql",
+      "hostaddr": "",
+      "options": "",
+      "sslmode": "prefer",
+      "clientEncoding": "",
+      "sslcompression": true,
+      "sslcert": "",
+      "sslkey": "",
+      "sslrootcert": "",
+      "sslcrl": "",
+      "requirepeer": ""
+    }
+  ],
+  "tabnine.experimentalAutoImports": true,
+  "rainbow_csv.enable_context_menu_tail": true,
+  "terminal.external.osxExec": "iTerm2.app",
+  "codespaces.accountProvider": "Uninitialized",
+  "refreshBrowser.browser": "Safari Technology Preview", // the browser to refresh
+  "refreshBrowser.runBuildTask": true,
+  "debug.javascript.usePreview": true,
+  "debug.inlineValues": true,
+  "debug.showBreakpointsInOverviewRuler": true,
+  "debug.toolBarLocation": "docked",
+  "typescript.implementationsCodeLens.enabled": true,
+  "typescript.referencesCodeLens.enabled": true,
+  "javascript.referencesCodeLens.enabled": true,
+  "javascript.referencesCodeLens.showOnAllFunctions": true,
+  "typescript.referencesCodeLens.showOnAllFunctions": true,
+  "vetur.useWorkspaceDependencies": true,
+  "vetur.format.enable": false,
+  "files.trimTrailingWhitespace": true,
+  "gitlens.blame.ignoreWhitespace": true,
+  "codespaces.planFilter": "/subscriptions/17c4cb8e-63b4-484d-a755-8019694686cc/resourceGroups/vso-rg-60fc617/providers/Microsoft.VSOnline/plans/vso-plan-eastus",
+  "stylelint.enable": true,
+  "css.validate": true,
+  "scss.validate": true,
+  "color-highlight.languages": [
+    "*"
+  ],
+  "color-highlight.matchWords": true,
+  "colorize.languages": [
+    "vue",
+    "css",
+    "html"
+  ],
+  "editor.semanticHighlighting.enabled": true,
+  "scm.alwaysShowRepositories": true,
+  "editor.hover.delay": 150,
+  "editor.quickSuggestionsDelay": 6,
+  "task.slowProviderWarning": true,
+  "editor.renderWhitespace": "trailing",
+  "typescript.preferences.useAliasesForRenames": false,
+  "files.watcherExclude": {
+    "**/.bloop": true,
+    "**/.metals": true,
+    "**/.ammonite": true
+  },
+  "C_Cpp.updateChannel": "Insiders",
+  "liveshare.allowInvites": "all",
+  // "liveshare.featureSet": "insiders",
+  "liveshare.showInStatusBar": "whileCollaborating",
+  "editor.suggest.showStatusBar": true,
+  "cSpell.enableFiletypes": [
+    "vue"
+  ],
+  "gitlens.codeLens.scopes": [
+    "document",
+    "containers",
+    "blocks"
+  ],
+  "gitlens.views.branches.files.layout": "list",
+  "auto-close-tag.fullMode": true,
+  "auto-close-tag.SublimeText3Mode": true,
+  "javascript.suggest.completeFunctionCalls": true,
+  "typescript.suggest.completeFunctionCalls": true,
+  "typescript.tsserver.maxTsServerMemory": 6143,
+  "workbench.iconTheme": "vscode-icons",
+  "gitlens.remotes": [
+    {
+      "domain": "https://git.aoc-pathfinder.cloud/",
+      "type": "GitLab"
+    }
+  ],
+  "gitlens.views.repositories.includeWorkingTree": true,
+  "gitlab.showPipelineUpdateNotifications": true,
+  "gitlens.debug": true,
+  "metals.showImplicitArguments": true,
+  "metals.showImplicitConversionsAndClasses": true,
+  "metals.showInferredType": true,
+  "metals.superMethodLensesEnabled": true,
+  "metals.javaHome": "/Users/maxcoplan/.jabba/jdk/adopt@1.11.0-9/Contents/Home",
+  "githubPullRequests.remotes": [
+    "walmart",
+    "origin",
+    "upstream",
+    "github"
+  ],
+  "restoreGitBranchTabs.newBranchPreserveTabs": true,
+  "sqltools.codelensLanguages": [
+    "sql",
+    "typescript"
+  ],
+  "sqltools.completionLanguages": [
+    "sql",
+    "typescript"
+  ],
+  "sqltools.formatLanguages": [
+    "sql",
+    "typescript"
+  ],
+  "sqltools.queryParams.enableReplace": true,
+  "workbench.editor.wrapTabs": true,
+  "workbench.editor.decorations.badges": true,
+  "colorize.include": [
+    "**/*.css",
+    "**/*.scss",
+    "**/*.sass",
+    "**/*.less",
+    "**/*.styl"
+  ],
+  "gitlab.remoteName": "gitlab",
+  "extensions.autoUpdate": "onlyEnabledExtensions",
+  "editor.linkedEditing": true,
+  "redhat.telemetry.enabled": true,
+  "editor.suggest.preview": true,
+  "editor.suggest.localityBonus": true,
+  "files.insertFinalNewline": true,
+  "javascript.updateImportsOnFileMove.enabled": "never",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "editor.inlineSuggest.enabled": true,
+  "debug.javascript.autoAttachFilter": "onlyWithFlag",
+  "typescript.inlayHints.enumMemberValues.enabled": true,
+  "typescript.inlayHints.parameterNames.enabled": "all",
+  "typescript.inlayHints.propertyDeclarationTypes.enabled": true,
+  "typescript.inlayHints.parameterTypes.enabled": true,
+  "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
+  "github.copilot.enable": {
+    "*": true,
+    "yaml": true,
+    "plaintext": false,
+    "markdown": true
+  },
+  "gitweblinks.gitHubEnterprise": [
+    {
+      "http": "https://gecgithub01.walmart.com",
+      "ssh": "git@gecgithub01.walmart.com"
+    }
+  ],
+  "debug.javascript.terminalOptions": {
+    "env": {
+      "TMUX": "false"
+    }
+  },
+  "editor.foldingImportsByDefault": true,
+  "editor.bracketPairColorization.enabled": true,
+  "workbench.editor.limit.enabled": true,
+  "github-enterprise.uri": "https://gecgithub01.walmart.com/",
+  "diffEditor.ignoreTrimWhitespace": false,
+  "git.autofetch": true,
+  "editor.guides.bracketPairs": true,
+  "vscode-neovim.neovimExecutablePaths.darwin": "/usr/local/bin/nvim",
+  "versionlens.logging.level": "debug",
+  "eslint.format.enable": true,
+  "audioCues.lineHasFoldedArea": "on",
+  "audioCues.debuggerStoppedOnBreakpoint": "on",
+  "editor.fontFamily": "SFMono Nerd Font, Consolas, 'Courier New', Monaco, monospace",
+  "go.toolsManagement.autoUpdate": true,
+  "vs-kubernetes": {
+    "vscode-kubernetes.helm-path.mac": "/Users/m0c0j7y/.vs-kubernetes/tools/helm/darwin-amd64/helm",
+    "vscode-kubernetes.minikube-path.mac": "/Users/m0c0j7y/.vs-kubernetes/tools/minikube/darwin-amd64/minikube"
+  },
+  "explorer.fileNesting.enabled": true,
+  "editor.inlayHints.enabled": "onUnlessPressed",
+  "githubPullRequests.pullBranch": "never",
+  "window.commandCenter": true,
+  "editor.stickyScroll.enabled": true,
+  "debug.javascript.automaticallyTunnelRemoteServer": false,
+  "jest.autoRun": "off",
+  "tabnine.receiveBetaChannelUpdates": true,
+  "nxConsole.showNodeVersionOnStartup": false,
+  "window.autoDetectColorScheme": true,
+  "workbench.colorTheme": "Default Light Modern",
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  },
+}
