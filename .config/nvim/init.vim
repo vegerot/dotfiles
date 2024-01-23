@@ -364,7 +364,7 @@ LUAEND
 " TREESITTER start
 lua << LUAEND
 
-local configs_plugin_name = "nvim-treesitter.configs"
+local configs_plugin_name = "nvim-treesitter.config"
 local status, configs_plugin = pcall(require, configs_plugin_name)
 if not status then
     --print(configs_plugin_name .. " plugin not loaded.  Not loading treesitter")
