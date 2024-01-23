@@ -308,18 +308,35 @@ let g:camelcasemotion_key = '<leader>'
 
 command! -nargs=* FindFile tabnew | execute "0read !fd <args> | sort" | set nomodified | 0
 
-silent! packadd telescope.nvim
+"" FZF start
+" Enable per-command history
+" - History files will be stored in the specified directory
+" - When set, CTRL-N and CTRL-P will be bound to 'next-history' and
+"   'previous-history' instead of 'down' and 'up'.
+let g:fzf_history_dir = '~/.local/share/fzf-history'
+
+command! -bang -nargs=* Ag
+  \  :Files
+
+silent! packadd fzf.vim
+if exists(":Files")
+       nmap <C-p> :Files<Cr>
+else
+       nmap <C-p> :FindFile<SPACE>
+endif
+
+"" FZF end
+
+"" TELESCOPE start
 if exists(":Telescope")
 	nmap <leader>fr <cmd>Telescope resume<Cr>
-	nmap <C-p> :Telescope find_files<Cr>
+	nmap <leader>ff :lua require('telescope.builtin').find_files({hidden=true})<Cr>
 	nmap <leader>fg <cmd>Telescope live_grep<Cr>
 	nmap <leader>fb <cmd>Telescope buffers<Cr>
 	nmap <leader>fo <cmd>Telescope old_files<Cr>
 	nmap <leader>fh <cmd>Telescope help_tags<Cr>
 	nmap <leader>fm <cmd>Telescope man_pages<Cr>
 	nmap <leader>fd <cmd>Telescope diagnostics<Cr>
-else
-	nmap <C-p> :FindFile<SPACE>
 endif
 
 lua <<LUAEND
@@ -333,6 +350,7 @@ if not status then
 end
 telescope.load_extension("fzy_native")
 LUAEND
+"" TELESCOPE end
 
 " TREESITTER start
 lua << LUAEND
