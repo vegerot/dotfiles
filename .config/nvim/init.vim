@@ -98,6 +98,23 @@ endfunction
 
 "" VANILLA end
 
+
+" Open remote
+nmap <leader>op :OpenFile<CR>
+vmap <leader>op :OpenFile<CR>
+nmap <leader>cp :CopyFile<CR>
+vmap <leader>cp :CopyFile<CR>
+
+
+let g:camelcasemotion_key = '<leader>'
+
+if exists('g:vscode')
+	echo hi
+	packadd open-remote
+	set noloadplugins
+	finish
+endif
+
 " autocomplete with COQ
 " note: MUST be before `require("coq")`!
 lua <<LUAEND
@@ -296,15 +313,6 @@ let g:copilot_filetypes = {
 
 
 "" PLUGINS start
-
-" Open remote
-nmap <leader>op :OpenFile<CR>
-vmap <leader>op :OpenFile<CR>
-nmap <leader>cp :CopyFile<CR>
-vmap <leader>cp :CopyFile<CR>
-
-
-let g:camelcasemotion_key = '<leader>'
 
 command! -nargs=* FindFile tabnew | execute "0read !fd <args> | sort" | set nomodified | 0
 
