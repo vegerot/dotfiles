@@ -58,6 +58,7 @@
     "dont",
     "downlevel",
     "draggable",
+    "elementtiming",
     "eqeqeq",
     "esnext",
     "Fastify",
@@ -139,7 +140,6 @@
     "source.fixAll.stylelint": "explicit"
   },
   "editor.cursorSurroundingLines": 15,
-  "editor.formatOnSave": true,
   "editor.formatOnType": true,
   "editor.lineNumbers": "relative",
   "editor.quickSuggestions": {
@@ -163,7 +163,7 @@
     "typescript"
   ],
   "explorer.confirmDelete": false,
-  "files.autoSave": "afterDelay",
+  "files.autoSave": "onFocusChange",
   "gitlab.instanceUrl": "https://git.aoc-pathfinder.cloud/",
   "gitlab.enableExperimentalFeatures": true,
   "git.enableCommitSigning": true,
@@ -529,8 +529,11 @@
   "tabnine.receiveBetaChannelUpdates": true,
   "nxConsole.showNodeVersionOnStartup": false,
   "window.autoDetectColorScheme": true,
-  "workbench.colorTheme": "Default Light Modern",
   "extensions.experimental.affinity": {
     "asvetliakov.vscode-neovim": 1
   },
+  "workbench.colorTheme": "Default Light Modern",
+  "gitlens.ai.experimental.provider": "openai",
+  "gitlens.ai.experimental.openai.model": "gpt-4-1106-preview",
+  "editor.formatOnSaveMode": "modificationsIfAvailable",
 }
