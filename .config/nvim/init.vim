@@ -205,8 +205,8 @@ local on_attach = function(client, bufnr)
         },
         ["textDocument/formatting"] = {{"n", "<leader>f", ":lua vim.lsp.buf.format()<CR>"}}
     }
-	local status, telescope_builtin = pcall(require, "telescope.builtin")
-	if status then
+	local telescope_installed, telescope_builtin = pcall(require, "telescope.builtin")
+	if telescope_installed then
 		methodsAndKeymaps["textDocument/definition"] = {
 			{"n", "gd", ":lua require('telescope.builtin').lsp_definitions()<CR>"}
 		}
@@ -348,10 +348,11 @@ if exists(":Telescope")
 	nmap <leader>ff :lua require('telescope.builtin').find_files({hidden=true})<Cr>
 	nmap <leader>fg <cmd>Telescope live_grep<Cr>
 	nmap <leader>fb <cmd>Telescope buffers<Cr>
-	nmap <leader>fo <cmd>Telescope old_files<Cr>
+	nmap <leader>fo <cmd>Telescope oldfiles<Cr>
 	nmap <leader>fh <cmd>Telescope help_tags<Cr>
 	nmap <leader>fm <cmd>Telescope man_pages<Cr>
 	nmap <leader>fd <cmd>Telescope diagnostics<Cr>
+	nmap <leader>fq <cmd>Telescope quickfix<Cr>
 endif
 
 lua <<LUAEND
