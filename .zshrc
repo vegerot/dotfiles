@@ -20,7 +20,7 @@ if [[ $TERM_PROGRAM != "WarpTerminal" \
 fi
 
 if [[ $OSTYPE == "darwin"* ]]; then
-	~/dotfiles/bin/randomcowcommand&
+	sh -c "sleep 1 && ~/dotfiles/bin/randomcowcommand" &
 else
 	~/dotfiles/bin/randomcowcommand
 fi;
