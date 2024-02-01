@@ -4,6 +4,13 @@ mkcd() {
   mkdir -pv $1 && cd $1
 }
 
+fdNvimRtp() {
+	local search_term="${1:-.}"
+	nvim -e -s -c "set runtimepath?" \
+		| sed s/runtimepath=// | tr "," $IFS | awk '{$1=$1};1' \
+		| xargs fd $search_term --max-depth=1 2>/dev/null
+}
+
 
 # TODO: rewrite in dash-compatible way
 nvmuse() {
@@ -128,6 +135,8 @@ function vo() {
 
 function keepkillwd() {
   local nextSleep=1;
+  # use sudo here so that we're not prompted in the loop
+  sudo echo "started successfully"
   while true; do
 	  sudo killall -9 wdavdaemon wdavdaemon_unprivileged wdavdaemon_enterprise 2>/dev/null && nextSleep=1 || nextSleep=$(($nextSleep + 1))
 	  sleep $nextSleep
