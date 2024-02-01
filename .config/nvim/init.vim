@@ -1,6 +1,4 @@
 "" VANILLA start
-colorscheme retrobox
-set scrolloff=5
 set clipboard=unnamed,unnamedplus
 
 set number
@@ -20,7 +18,6 @@ set tabstop=2
 set switchbuf=usetab,uselast
 
 set exrc
-
 nmap <leader>n :nohl<CR>
 
 " When editing a file, always jump to the last known cursor position.
@@ -83,6 +80,8 @@ let g:netrw_altv = 1 " set automatically by `splitright`
 let g:netrw_altfile=1 "make CTRL-^ return to last edited file instead of netrw browsing buffer
 
 nmap <c-S-R> <Plug>NetrwRefresh
+
+colorscheme retrobox
 
 " random colorscheme
 " inspiration https://gist.github.com/ryanflorence/1381526
