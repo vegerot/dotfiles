@@ -108,8 +108,15 @@ vmap <leader>cp :CopyFile<CR>
 let g:camelcasemotion_key = '<leader>'
 
 if exists('g:vscode')
-	echo hi
+	set scrolloff=0
+	nnoremap <c-u> <c-u>zz
+	nnoremap <c-d> <c-d>zz
 	packadd open-remote
+	packadd CamelCaseMotion
+	packadd splitjoin.vim
+	packadd commentary
+	packadd unimpaired
+	packadd vim-surround
 	set noloadplugins
 	finish
 endif
