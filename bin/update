@@ -2,7 +2,7 @@
 set -o xtrace
 
 function upgrade_brew() {
-	echo "brew upgrade"
+	echo "brew"
 	brew outdated||\
 		brew update&&\
 		# TODO: don't ask to `brew upgrade` if there are no outdated packages
@@ -24,7 +24,7 @@ function upgrade_neovim() {
 			if [[ -d "$dir/.git" ]]; then
 				(cd "$dir" && git pull)
 			elif [[ -d "$dir/.sl" ]]; then
-				(cd "$dir" && sl pull && sl go tip)
+				(cd "$dir" && sl pull && sl go top)
 			fi
 		done
 	fi
@@ -35,9 +35,9 @@ function upgrade_npm() {
 	read -p 'Would you like to upgrade Node (y/n): ' upgradeNode
 	if [[ "$upgradeNode" == "y" ]]; then
 		npm outdated
-		echo "npm update -g"
-		npm install npm -g --force
-		npm update -g
+		echo "npm update --global"
+		npm install npm --global --force
+		npm update --global
 
 	fi
 }
@@ -55,12 +55,12 @@ function upgrade_app_store() {
 }
 
 function upgrade_macos() {
-	echo "softwareupdate -l"
-	softwareupdate -l
+	echo "macOS"
+	softwareupdate --list
 	# TODO: Don't ask to upgrade macOS if nothing is outdated
 	read -p 'Would you like to upgrade macOS (y/n): ' upgradeMacOS
 	if [[ "$upgradeMacOS" == "y" ]]; then
-		softwareupdate -i -a --verbose
+		softwareupdate --install --all --verbose
 	fi
 }
 
