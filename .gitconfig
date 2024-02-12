@@ -58,3 +58,5 @@
 #  insteadOf = "https://github.com/"
 [http]
 	cookiefile = /Users/m0c0j7y/.gitcookies
+[rerere]
+	enabled = true
