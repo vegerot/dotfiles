@@ -115,14 +115,15 @@ let g:camelcasemotion_key = '<leader>'
 
 if exists('g:vscode')
 	set scrolloff=0
-	nnoremap <c-u> <c-u>zz
-	nnoremap <c-d> <c-d>zz
+	nnoremap <c-u> <c-u>zzjk
+	nnoremap <c-d> <c-d>zzjk
 	packadd open-remote
 	packadd CamelCaseMotion
 	packadd splitjoin.vim
 	packadd commentary
 	packadd unimpaired
 	packadd vim-surround
+	set nospell
 	set noloadplugins
 	finish
 endif
