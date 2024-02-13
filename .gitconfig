@@ -60,3 +60,7 @@
 	cookiefile = /Users/m0c0j7y/.gitcookies
 [rerere]
 	enabled = true
+
+[includeIf "gitdir:~/gecgithub01.walmart.com/"]
+  [user]
+    email = Max.Coplan@Walmart.com
