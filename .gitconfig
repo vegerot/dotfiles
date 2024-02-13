@@ -12,6 +12,8 @@
 
 [core]
   pager = "${_GIT_CONTRIB:-/usr/local/share/git-core/contrib}/diff-highlight/diff-highlight | $PAGER -R"
+	fsmonitor = true
+	untrackedCache = true
 
 [color "branch"]
   current = yellow reverse
