@@ -61,8 +61,10 @@
 [http]
 	cookiefile = /Users/m0c0j7y/.gitcookies
 [rerere]
-	enabled = true
+  enabled = true
 
 [includeIf "gitdir:~/gecgithub01.walmart.com/"]
   [user]
     email = Max.Coplan@Walmart.com
+[maintenance]
+  repo = ~/gecgithub01.walmart.com/walmart-web/walmart-web-worktree/main
