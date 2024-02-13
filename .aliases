@@ -23,6 +23,8 @@ alias g.="git add -p ."
 alias ga="git add"
 #unalias gr
 alias gc="git commit"
+alias glog="git log --graph --decorate=full"
+alias glo="git log --graph --decorate=full --oneline"
 alias gp="git push"
 alias gst="git status"
 alias gstu="git status -uno"
