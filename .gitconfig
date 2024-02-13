@@ -51,6 +51,7 @@
 [user]
   email = mchcopl@gmail.com
   name = Max 👨🏽‍💻 Coplan
+  signingKey = ~/.ssh/id_rsa.pub
 
 [help]
   autocorrect = 1
@@ -59,12 +60,15 @@
 #[url "git@github.com:"]
 #  insteadOf = "https://github.com/"
 [http]
-	cookiefile = /Users/m0c0j7y/.gitcookies
+	cookiefile = ~/.gitcookies
 [rerere]
   enabled = true
 
 [includeIf "gitdir:~/gecgithub01.walmart.com/"]
   [user]
     email = Max.Coplan@Walmart.com
+
 [maintenance]
   repo = ~/gecgithub01.walmart.com/walmart-web/walmart-web-worktree/main
+[gpg]
+  format = ssh
