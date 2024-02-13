@@ -1,15 +1,3 @@
-[alias]
-    # Switch fast
-    s = "!{ git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/ refs/remotes/$(git remote || printf origin)|sed -e 's-refs/heads/--'| sed -e \"s-refs/remotes/$(git remote || printf origin)/--\" & printf 'develop\nmain\nmaster\n'; } | uniq | grep -i -m1 --color=never $1 | xargs -I {} sh -c \" echo {}; git switch {}\""
-
-    # Switch fuzzy
-    sf = !git switch $(git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/ refs/remotes/$(git remote || printf origin)/|sed -e 's-refs/heads/--'| sed -e \"s-refs/remotes/$(git remote || printf origin)/--\" | uniq | fzf) $@
-
-  fr = !git fetch $(git remote | head) && git rebase
-  frm = !git fetch $(git remote | head) && git rebase $(git remote | head)/main
-  fru = !git fetch upstream && git rebase upstream/main
-  cw = commit --fixup=wip
-
 [core]
   pager = "${_GIT_CONTRIB:-/usr/local/share/git-core/contrib}/diff-highlight/diff-highlight | $PAGER -R"
 	fsmonitor = true
@@ -72,3 +60,16 @@
   repo = ~/gecgithub01.walmart.com/walmart-web/walmart-web-worktree/main
 [gpg]
   format = ssh
+
+[alias]
+    # Switch fast
+    s = "!{ git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/ refs/remotes/$(git remote || printf origin)|sed -e 's-refs/heads/--'| sed -e \"s-refs/remotes/$(git remote || printf origin)/--\" & printf 'develop\nmain\nmaster\n'; } | uniq | grep -i -m1 --color=never $1 | xargs -I {} sh -c \" echo {}; git switch {}\""
+
+    # Switch fuzzy
+    sf = !git switch $(git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/ refs/remotes/$(git remote || printf origin)/|sed -e 's-refs/heads/--'| sed -e \"s-refs/remotes/$(git remote || printf origin)/--\" | uniq | fzf) $@
+
+  fr = !git fetch $(git remote | head) && git rebase
+  frm = !git fetch $(git remote | head) && git rebase $(git remote | head)/main
+  fru = !git fetch upstream && git rebase upstream/main
+  cw = commit --fixup=wip
+
