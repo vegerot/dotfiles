@@ -55,6 +55,8 @@
 [includeIf "gitdir:~/gecgithub01.walmart.com/"]
   [user]
     email = Max.Coplan@Walmart.com
+  [commit]
+    gpgSign
 
 [maintenance]
   repo = ~/gecgithub01.walmart.com/walmart-web/walmart-web-worktree/main
