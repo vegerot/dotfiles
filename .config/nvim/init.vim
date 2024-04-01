@@ -314,6 +314,8 @@ if filereadable("/opt/homebrew/bin/node")
   let g:copilot_node_command = "/opt/homebrew/bin/node"
 endif
 imap <script><expr> <C-e> copilot#Accept("\<CR>")
+imap <C-f> <Plug>(copilot-accept-word)
+
 " copilot is disabled in markdown (and other languages) by default
 " copilot appends g:copilot_filetypes to s:filetype_defaults (in copilot.vim)
 " so we can override the defaults by putting them all to true
