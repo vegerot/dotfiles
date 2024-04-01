@@ -134,6 +134,16 @@ function vo() {
 }
 
 function keepkillwd() {
+## Microsoft antivirus runs every time we write to the filesystem.  This makes
+# write-heavy processes a lot slower.  This function keeps the antivirus
+# software contained to speed up disk writes
+#
+# While running this function, I've measured `git switch` to be 2x faster and
+# web production builds to be 20% faster
+#
+# Run this function in a separate terminal window like
+# `sudo zsh -c "source $HOME/.sh_functions; keepkillwd"`
+# to prevent being prompted when waking the machine from sleep
   local nextSleep=1;
   # use sudo here so that we're not prompted in the loop
   sudo echo "started successfully"
