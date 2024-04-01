@@ -511,7 +511,6 @@
   "vscode-neovim.neovimExecutablePaths.darwin": "/usr/local/bin/nvim",
   "versionlens.logging.level": "debug",
   "eslint.format.enable": true,
-  "audioCues.lineHasFoldedArea": "on",
   "audioCues.debuggerStoppedOnBreakpoint": "on",
   "editor.fontFamily": "SFMono Nerd Font, Consolas, 'Courier New', Monaco, monospace",
   "go.toolsManagement.autoUpdate": true,
@@ -532,10 +531,16 @@
   "extensions.experimental.affinity": {
     "asvetliakov.vscode-neovim": 1
   },
-  "workbench.colorTheme": "Default Light Modern",
   "gitlens.ai.experimental.provider": "openai",
   "gitlens.ai.experimental.openai.model": "gpt-4-1106-preview",
   "editor.formatOnSaveMode": "modificationsIfAvailable",
   "eslint.run": "onSave",
+  "accessibility.signals.lineHasFoldedArea": {
+    "sound": "on"
+  },
+  "typescript.preferences.preferTypeOnlyAutoImports": true,
+  "typescript.implementationsCodeLens.showOnInterfaceMethods": true,
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.experimental.tsserver.web.typeAcquisition.enabled": true,
   "quick-lint-js.snarky": true,
 }
