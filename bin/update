@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -o xtrace
+set -o errexit
 
 function upgrade_brew() {
 	echo "brew"
