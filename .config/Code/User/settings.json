@@ -537,4 +537,5 @@
   "gitlens.ai.experimental.openai.model": "gpt-4-1106-preview",
   "editor.formatOnSaveMode": "modificationsIfAvailable",
   "eslint.run": "onSave",
+  "quick-lint-js.snarky": true,
 }
