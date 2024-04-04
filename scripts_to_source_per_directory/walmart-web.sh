@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 # symlink me in `walmart-web/max_scripts_source_on_cd.sh`
 
@@ -83,3 +83,5 @@ function node() {
 function pnpm() {
 	node_nvm_wrapper $0 $*
 }
+
+alias gc="setUpNvmIfNotExists && git commit"
