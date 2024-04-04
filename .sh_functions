@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 mkcd() {
   mkdir -pv $1 && cd $1
