@@ -9,7 +9,7 @@ fi
 ## important stuff goes first
 export PATH="$HOME/.cargo/bin:$PATH"
 
-[[ "$OSTYPE" == "darwin"* ]] && export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$HOME/.cargo/bin:/usr/local/opt/ruby/bin:/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+[[ "$OSTYPE" == "darwin"* ]] && export PATH="/usr/local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:$HOME/.cargo/bin:/usr/local/opt/ruby/bin:/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
