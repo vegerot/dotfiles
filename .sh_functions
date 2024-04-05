@@ -113,8 +113,10 @@ function wmt_sudome() {
 
 function wmt_fixmynetwork() {
 	set -x
+	# Fix My Network
 	sudo jamf policy -id 906
 	if [[ $1 == "eagle" ]]; then
+		# Fix My Eagle Configuration
 		sudo jamf policy -id 809
 	fi
 	set +x
