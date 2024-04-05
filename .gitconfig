@@ -52,11 +52,8 @@
 [rerere]
   enabled = true
 
-[includeIf "gitdir:~/gecgithub01.walmart.com/"]
-  [user]
-    email = Max.Coplan@Walmart.com
-  [commit]
-    gpgSign
+[includeIf "gitdir:~/gecgithub01.walmart.com/**/"]
+	path = ~/dotfiles/work.gitconfig
 
 [maintenance]
   repo = ~/gecgithub01.walmart.com/walmart-web/walmart-web-worktree/main
