@@ -115,19 +115,19 @@ function setUpNvmIfNotSetUp() {
 
 function node_nvm_wrapper() {
 	setUpNvmIfNotSetUp
-	command $*;
+	command $*
 }
 
 function node() {
-	node_nvm_wrapper $0 $*;
+	node_nvm_wrapper $0 $*
 }
 
 function pnpm() {
-	node_nvm_wrapper $0 $*;
+	node_nvm_wrapper $0 $*
 }
 
 function pnpx() {
-	node_nvm_wrapper $0 $*;
+	node_nvm_wrapper $0 $*
 }
 
 alias gc="setUpNvmIfNotSetUp && git commit"
