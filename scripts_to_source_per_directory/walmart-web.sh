@@ -68,7 +68,7 @@ function fast_nvm_use() {
 	export NVM_DIR="$HOME/.nvm/"
 	local nvm_versions_dir="$NVM_DIR/versions/node/"
 	# TODO: search upwards for `.nvmrc`
-	local node_version="$(cat .nvmrc)"
+	local node_version="$(<.nvmrc)"
 	local node_path="$nvm_versions_dir/$node_version"
 
 	if [[ ! -d "$node_path" ]]; then
@@ -97,7 +97,7 @@ function setUpNvmIfNotSetUp() {
 	fi
 
 	local got_version=$(command node --version 2>/dev/null)
-	local want_version=$(cat .nvmrc)
+	local want_version=$(<.nvmrc)
 
 	if [[ $got_version != $want_version ]]; then
 		debug "changing PATH to Node $want_version from Node $got_version"
