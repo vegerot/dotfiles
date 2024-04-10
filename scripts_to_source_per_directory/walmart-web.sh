@@ -41,13 +41,28 @@ function debug() {
 	echo "$@"
 }
 
+
+SetWebCerts() {
+	export NODE_EXTRA_CA_CERTS="/tmp/mega.pem"
+	if [ ! -f $NODE_EXTRA_CA_CERTS ]; then
+		security find-certificate -a -p /Library/Keychains/System.keychain > $NODE_EXTRA_CA_CERTS
+	fi
+}
+
+function vanilla_nvm_use() {
+	export NVM_DIR="$HOME/.nvm"
+	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+	[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+	nvm use $@
+}
+
 function fast_nvm_use() {
 	local has_nvmrc_file=$([[ -f .nvmrc ]]&& true || false)
-	# this comes from ~/.sh_functions
-	local has_nvmuse=$(command -v nvmuse) && true || false
 
-	if [[ $has_nvmrc == false || $has_nvmuse == false ]]; then
-		debug "not setting up fast nvm because requirement is missing"
+	if [[ $has_nvmrc == false ]]; then
+		debug "not setting up fast nvm because no nvmrc is found"
+		debug "make sure you have a .nvmrc file in the current directory"
+		debug "TODO: soon we will support searching upwards for the file"
 		return
 	fi
 	export NVM_DIR="$HOME/.nvm/"
@@ -59,16 +74,14 @@ function fast_nvm_use() {
 	if [[ ! -d "$node_path" ]]; then
 		debug "not setting up fast nvm because can't find the requested node version"
 		debug "doing slow version instead 🐢"
-		set +x
-		export NVM_DIR="$HOME/.nvm"
-		[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-		[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-		nvm use $@
+		vanilla_nvm_use "$@"
 		return 1
 	fi
 
 	export PATH="$node_path/bin:$PATH"
 	export MANPATH="$node_path/share/man:$MANPATH"
+
+	SetWebCerts
 }
 
 function nvmuse() {
@@ -95,22 +108,22 @@ function setUpNvmIfNotSetUp() {
 	fi
 }
 
-# acceptable overhead: ~17ms slower
+# acceptable overhead: ~20ms slower
 # ```sh
 # ❯ hyperfine \
-#         "source ../../../max_scripts_source_on_cd.sh && command node --version"\
-#         "source ../../../max_scripts_source_on_cd.sh && node --version"
-# Benchmark 1: source ../../../max_scripts_source_on_cd.sh && command node --version
-#   Time (mean ± σ):      16.2 ms ±   4.8 ms    [User: 7.6 ms, System: 1.9 ms]
-#   Range (min … max):     6.9 ms …  37.5 ms    161 runs
+#          "source ../../max_scripts_source_on_cd.sh && command node --version"\
+#          "source ../../max_scripts_source_on_cd.sh && node --version"
+# Benchmark 1: source ../../max_scripts_source_on_cd.sh && command node --version
+#   Time (mean ± σ):      31.4 ms ±   2.3 ms    [User: 18.0 ms, System: 5.1 ms]
+#   Range (min … max):    28.3 ms …  39.9 ms    80 runs
 #
-# Benchmark 2: source ../../../max_scripts_source_on_cd.sh && node --version
-#   Time (mean ± σ):      33.2 ms ±   6.4 ms    [User: 9.0 ms, System: 6.8 ms]
-#   Range (min … max):    21.4 ms …  51.3 ms    66 runs
+# Benchmark 2: source ../../max_scripts_source_on_cd.sh && node --version
+#   Time (mean ± σ):      48.6 ms ±   2.9 ms    [User: 19.7 ms, System: 12.1 ms]
+#   Range (min … max):    44.6 ms …  56.3 ms    48 runs
 #
 # Summary
-#   source ../../../max_scripts_source_on_cd.sh && command node --version ran
-#     2.05 ± 0.73 times faster than source ../../../max_scripts_source_on_cd.sh && node --version
+#   source ../../max_scripts_source_on_cd.sh && command node --version ran
+#     1.54 ± 0.15 times faster than source ../../max_scripts_source_on_cd.sh && node --version
 #```
 
 function node_nvm_wrapper() {
