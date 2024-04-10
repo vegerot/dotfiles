@@ -90,10 +90,8 @@ function nvmuse() {
 
 function setUpNvmIfNotSetUp() {
 	local has_nvmrc_file=$([[ -f .nvmrc ]]&& true || false)
-	# this comes from ~/.sh_functions
-	local has_nvmuse=$(command -v nvmuse) && true || false
 
-	if [[ $has_nvmrc == false || $has_nvmuse == false ]]; then
+	if [[ $has_nvmrc == false ]]; then
 		debug "not setting up nvm because requirement is missing"
 		return
 	fi
