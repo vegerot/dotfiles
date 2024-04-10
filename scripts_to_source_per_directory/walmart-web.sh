@@ -63,7 +63,7 @@ function fast_nvm_use() {
 		debug "not setting up fast nvm because no nvmrc is found"
 		debug "make sure you have a .nvmrc file in the current directory"
 		debug "TODO: soon we will support searching upwards for the file"
-		return
+		return 1
 	fi
 	export NVM_DIR="$HOME/.nvm/"
 	local nvm_versions_dir="$NVM_DIR/versions/node/"
