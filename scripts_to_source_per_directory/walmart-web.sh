@@ -114,7 +114,7 @@ function setUpNvmIfNotSetUp() {
 #```
 
 function node_nvm_wrapper() {
-	setUpNvmIfNotSetUp;
+	setUpNvmIfNotSetUp
 	command $*;
 }
 
@@ -126,4 +126,8 @@ function pnpm() {
 	node_nvm_wrapper $0 $*;
 }
 
-alias gc="setUpNvmIfNotExists && git commit"
+function pnpx() {
+	node_nvm_wrapper $0 $*;
+}
+
+alias gc="setUpNvmIfNotSetUp && git commit"
