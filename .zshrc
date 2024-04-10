@@ -20,7 +20,7 @@ if [[ $TERM_PROGRAM != "WarpTerminal" \
 fi
 
 if [[ $OSTYPE == "darwin"* ]]; then
-	sh -c "sleep 1 && ~/dotfiles/bin/randomcowcommand" &
+	sh -c "sleep 0.2 && ~/dotfiles/bin/randomcowcommand > $HOME/cowtput.txt" &
 else
 	~/dotfiles/bin/randomcowcommand
 fi;
@@ -193,6 +193,8 @@ if [[ -z $ZSH_SKIP_LOADING_PLUGINS ]]; then
 fi
 
 source_max_scripts
+
+[[ $OSTYPE == "darwin"* && -f $HOME/cowtput.txt ]] && cat $HOME/cowtput.txt
 
 # Compute time taken
 if type gdate > /dev/null; then
