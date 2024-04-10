@@ -101,7 +101,7 @@ endfunction
 
 :command RandomColor call RandomColorScheme()
 
-nmap gD :GrepNoTests --case-sensitive "(const\\|function) <cword>\b" <CR>
+autocmd FileType typescript,javascript nmap <leader>gD :GrepNoTests --case-sensitive "(const\\|function) <cword>\b" <CR>
 
 "" VANILLA end
 
