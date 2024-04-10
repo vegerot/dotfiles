@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# see README.md
 # symlink me in `walmart-web/max_scripts_source_on_cd.sh`
 
 function instrument_for_profiling() {
@@ -68,7 +69,6 @@ function fast_nvm_use() {
 
 	export PATH="$node_path/bin:$PATH"
 	export MANPATH="$node_path/share/man:$MANPATH"
-	set +x
 }
 
 function nvmuse() {
