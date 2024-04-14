@@ -84,7 +84,13 @@ else
   local isWSL=false
 fi
 
-[[ $OSTYPE == "linux-gnu"* ]] && ! $isWSL && keymaps
+if [[ -n "$XDG_CURRENT_SESSION" ]]; then
+	local has_gnulinux_window_manager=true
+else
+	local has_gnulinux_window_manager=false
+fi
+
+[[ $OSTYPE == "linux-gnu"* && $has_gnulinux_window_manager == true ]] && ! $isWSL && keymaps
 
 source ~/.aliases
 source ~/.sh_functions
