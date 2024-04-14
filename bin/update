@@ -30,15 +30,18 @@ function upgrade_apt() {
 function upgrade_neovim() {
 	echo "neovim"
 
+	function pull_and_update() {
+		dir=$1
+		if [[ -d "$dir/.git" ]]; then
+			(cd "$dir" && git pull)
+		elif [[ -d "$dir/.sl" ]]; then
+			(cd "$dir" && sl pull && sl go top)
+		fi
+	}
+
 	read -p 'Would you like to upgrade Neovim plugins (y/n): ' upgradeNvim
 	if [[ "$upgradeNvim" == "y" ]]; then
-		for dir in ~/.local/share/nvim/site/pack/*/start/*; do
-			if [[ -d "$dir/.git" ]]; then
-				(cd "$dir" && git pull)
-			elif [[ -d "$dir/.sl" ]]; then
-				(cd "$dir" && sl pull && sl go top)
-			fi
-		done
+		fd . --type d --max-depth 1 --full-path ~/.local/share/nvim/site/pack/*/start/ | parallel "($(declare -f pull_and_update) && pull_and_update {})"
 	fi
 }
 
