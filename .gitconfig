@@ -22,7 +22,7 @@
 
 [commit]
   # https://help.github.com/articles/signing-commits-using-gpg/
-  #gpgSign = true
+  gpgSign = true
   verbose = true
 
 [interactive]
