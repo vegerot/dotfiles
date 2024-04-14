@@ -15,7 +15,18 @@ function upgrade_brew() {
 			fi
 }
 
-echo
+function upgrade_apt() {
+	echo "apt update"
+	sudo apt update
+	echo "apt list --upgradable"
+	apt list --upgradable
+
+	read -p 'Would you like to upgrade APT (y/n): ' upgradeApt
+	if [[ "$upgradeApt" == "y" ]]; then
+		sudo apt upgrade
+	fi
+}
+
 function upgrade_neovim() {
 	echo "neovim"
 
@@ -37,9 +48,13 @@ function upgrade_npm() {
 	if [[ "$upgradeNode" == "y" ]]; then
 		npm outdated
 		echo "npm update --global"
-		npm install npm --global --force
-		npm update --global
-
+		if [[ $OSTYPE != "darwin"* ]]; then
+			sudo npm install npm --global --force
+			sudo npm update --global
+		else
+			npm install npm --global --force
+			npm update --global
+		fi
 	fi
 }
 
@@ -65,11 +80,17 @@ function upgrade_macos() {
 	fi
 }
 
-upgrade_brew
+if [[ $OSTYPE == "darwin"* ]]; then
+	upgrade_brew
+else
+	upgrade_apt
+fi
 upgrade_neovim
 upgrade_npm
-upgrade_app_store
-upgrade_macos
+if [[ $OSTYPE == "darwin"* ]]; then
+	upgrade_app_store
+	upgrade_macos
+fi
 
 
 set +o xtrace
