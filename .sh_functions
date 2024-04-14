@@ -65,7 +65,7 @@ function vpn-up() {
   if is-walmart-mac; then
 	  local VPN_USER=$USER
   else
-	  local VPN_USER=${VPN_USER}
+	  local VPN_USER=${VPN_USER:-m0c0j7y}
   fi
 
   echo "Starting the vpn ..."
@@ -74,7 +74,11 @@ function vpn-up() {
 	  return 1
   fi
   local mfa_code="$(2fa walmart)"
-  local vpn_password="$(security find-generic-password -w -s 'wmt-sso' -a $VPN_USER || cat ~/.vpn_password)"
+  if [[ -x "$(command -v security)" ]]; then
+	  local vpn_password=$(security find-generic-password -w -s 'wmt-sso' -a $VPN_USER || cat ~/.vpn_password)
+  else
+	  local vpn_password=$(cat ~/.vpn_password)
+  fi
   if [[ -f /opt/cisco/anyconnect/bin/vpn ]]; then
 	  printf "\n${vpn_password}\n${mfa_code}\ny" | /opt/cisco/anyconnect/bin/vpn -s connect $VPN_HOST $@
   else
