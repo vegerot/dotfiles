@@ -1,28 +1,26 @@
 #!/usr/bin/env bash
 
-
 find_random_manpage() {
 	OLDIFS=$IFS
 	IFS=:
 	for dir in $(manpath -q); do
-		[[ -n $dir ]] && printf "%s\n" $dir/man1/*
+		[[ -n $dir ]] && printf "%s\n" $dir/man1/* 2>/dev/null
 	done | shuf -n 1
 	IFS=$OLDIFS
 }
 manpagefile=$(find_random_manpage)
 get_description_of_manpage() {
-  if ! type lexgrog > /dev/null 2>&1; then
-	  local manPageText="$(man $1)"
-	  local formatted=$(echo "$manPageText" | col -bpx | grep NAME -A1 | tail -1)
-	  if [[ -z "$formatted" ]]; then
-		  echo "Something went wrong" 1>&2
-		  echo "$manpagefile $manPageText" 1>&2
-	  fi
-	  echo $formatted
-  else
-    lexgrog -w $1 | shuf -n 1 | sed -E 's/^.*: "(.*)"$/\1/'
-  fi
+	if ! type lexgrog >/dev/null 2>&1; then
+		local manPageText="$(man $1)"
+		local formatted=$(echo "$manPageText" | col -bpx | grep NAME -A1 | tail -1)
+		if [[ -z "$formatted" ]]; then
+			echo "Something went wrong" 1>&2
+			echo "$manpagefile $manPageText" 1>&2
+		fi
+		echo $formatted
+	else
+		lexgrog -w $1 | shuf -n 1 | sed -E 's/^.*: "(.*)"$/\1/'
+	fi
 }
 commanddescription=$(get_description_of_manpage $manpagefile)
-echo "$commanddescription" | cowsay -f $( cowsay -l| tail -n+2|tr " " "\n"|sort -R|head -1) | lolcat --truecolor --force
-
+echo "$commanddescription" | cowsay -f $(cowsay -l | tail -n+2 | tr " " "\n" | sort -R | head -1) | lolcat --truecolor --force
