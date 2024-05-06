@@ -20,7 +20,7 @@ if [[ $TERM_PROGRAM != "WarpTerminal" \
 fi
 
 if [[ $OSTYPE == "darwin"* ]]; then
-	sh -c "sleep 0.2 && ~/dotfiles/bin/randomcowcommand > $HOME/cowtput.txt" &
+	 zsh -c 'STUFF=$(~/dotfiles/bin/randomcowcommand); echo $STUFF > $HOME/cowtput.txt' & disown
 else
 	~/dotfiles/bin/randomcowcommand
 fi;
