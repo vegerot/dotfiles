@@ -153,7 +153,6 @@ compinit -C
 # PLUGINS
 load_plugins() {
   eval "$(jump shell zsh)"
-  source ~/workspace/github.com/ohmyzsh/ohmyzsh/plugins/colored-man-pages/colored-man-pages.plugin.zsh
 
   ## POWERLEVEL10K
   if [[ $TERM_PROGRAM == "WarpTerminal" ]]; then
