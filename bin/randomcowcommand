@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+set -o pipefail
 
 find_random_manpage() {
 	OLDIFS=$IFS
@@ -21,8 +23,7 @@ get_description_of_manpage() {
 	  local manPageText=$(/usr/bin/zcat -f "$1" | /usr/bin/mandoc)
 	  local formatted=$(echo "$manPageText" | col -bpx | grep NAME -A1 | tail -1)
 	  if [[ -z "$formatted" ]]; then
-		  echo "Something went wrong" 1>&2
-		  echo "$manpagefile $manPageText" 1>&2
+		  echo "randomcowcommand: We messed up with $manpagefile" 1>&2
 	  fi
 	  echo $formatted
   else
@@ -30,6 +31,11 @@ get_description_of_manpage() {
   fi
 }
 commanddescription=$(get_description_of_manpage $manpagefile)
+if [[ -z "$commanddescription" ]]; then
+	# we'll never get two duds in a row, right?
+	manpagefile=$(find_random_manpage)
+	commanddescription=$(get_description_of_manpage $manpagefile)
+fi
 cow=$(echo "$commanddescription" | cowsay -f $( cowsay -l| tail -n+2|tr " " "\n"|sort -R|head -1))
 if type rainbow > /dev/null; then
 	echo "$cow" | rainbow
