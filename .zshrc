@@ -20,6 +20,8 @@ if [[ $TERM_PROGRAM != "WarpTerminal" \
 fi
 
 if [[ $OSTYPE == "darwin"* ]]; then
+	# don't report job status
+	setopt LOCAL_OPTIONS NO_NOTIFY NO_MONITOR
 	local cowtput=/tmp/cowtput.txt
 	# HACK(max): on my MacBook, `randomcowcommand` takes 200ms which is way too long.
 	# Instead, I'll get the cow in the background and save it to disk and then
@@ -31,6 +33,7 @@ if [[ $OSTYPE == "darwin"* ]]; then
 	# put this line after the `cat` to avoid a race condition where cowtput.txt
 	# is empty because of the redirect
 	sh -c "~/dotfiles/bin/randomcowcommand > $cowtput" & disown
+	setopt LOCAL_OPTIONS NOTIFY MONITOR
 else
 	~/dotfiles/bin/randomcowcommand
 fi;
