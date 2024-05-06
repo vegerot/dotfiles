@@ -3,7 +3,6 @@
 # basics
 
 alias ls="ls --color"
-[[ "$OSTYPE" == "darwin"* || "$OSTYPE" == *"bsd"* ]] && alias ls="ls -G"
 
 # vim
 #alias vi=nvim
