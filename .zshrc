@@ -211,4 +211,10 @@ else
   end=$(python3 -c "import time; print(time.time())")
 fi
 runtime=$( echo "$end - $start" | bc -l )
-printf "%.2f seconds\n" $runtime | lolcat --truecolor --force
+
+startuptime=$(printf '%.2f seconds\n' $runtime)
+if type lolcat > /dev/null; then
+  printf "$startuptime\n" | lolcat --truecolor --force
+else
+  printf "$startuptime\n"
+fi
