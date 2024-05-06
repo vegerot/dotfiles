@@ -294,9 +294,21 @@ local configure_clangd_for_chromium = function()
 end
 configure_clangd_for_chromium()
 
+local gopls_config = {
+	"gopls",
+	{
+		on_attach = on_attach,
+		flags = {
+			debounce_text_changes = 150
+		},
+		cmd = {"gopls"}
+
+	}
+	}
+
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = {quick_lint_js, clangd_config}
+local servers = {quick_lint_js, clangd_config, gopls_config}
 for _, lsp in ipairs(servers) do
     local name, settings = unpack(lsp)
     if settings == nil then
