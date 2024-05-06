@@ -27,19 +27,10 @@ if [[ $OSTYPE == "darwin"* ]]; then
 	# The trick is that I'm always showing the _previous_ invocation of the
 	# cow.
 	[[ -f $cowtput ]] && cat $cowtput
-	# 2 things to pay attention to here:
-	# 1. Why `& disown`?
-	# 2. Why am I saving the cow to a variable instead of just writing it?
-	#
-	# 1. `& disown` is needed because I want it to be in the background and
-	# don't want to print a message when it's done.
-	# 2. If I just did `randomcowcommand > cowtput.txt` then the file would be
-	# overwritten immediately, causing a race condition between the `cat` on
-	# the line above and the `cow` command.
-	# So, I'm saving the cow to a temp variable and then writing it to the
-	# file, which unblocks the `cat` command above.  The race condition should
-	# be almost impossible to hit now.
-	zsh -c "STUFF=\$(~/dotfiles/bin/randomcowcommand); echo \$STUFF > $cowtput" & disown
+	# `disown` makes it not print a message when done
+	# put this line after the `cat` to avoid a race condition where cowtput.txt
+	# is empty because of the redirect
+	sh -c "~/dotfiles/bin/randomcowcommand > $cowtput" & disown
 else
 	~/dotfiles/bin/randomcowcommand
 fi;
