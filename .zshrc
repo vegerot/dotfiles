@@ -213,8 +213,8 @@ fi
 runtime=$( echo "$end - $start" | bc -l )
 
 startuptime=$(printf '%.2f seconds\n' $runtime)
-if type lolcat > /dev/null; then
-  printf "$startuptime\n" | lolcat --truecolor --force
+if type rainbow > /dev/null; then
+  printf "$startuptime\n" | rainbow
 else
   printf "$startuptime\n"
 fi
