@@ -12,7 +12,13 @@ find_random_manpage() {
 manpagefile=$(find_random_manpage)
 get_description_of_manpage() {
   if ! type lexgrog > /dev/null 2>&1; then
-	  local manPageText="$(man $1)"
+	  #local manPageText="$(man -P cat $1)"
+	  ## HACK(max): If you give `man` the path to the file, it won't correctly
+	  # import `.so`s (because it `cd`s to the wrong directory for the relative
+	  # imports to work).
+	  # Workaround: do what `man FILEPATH` does, but in the right directory.
+	  cd $(dirname $1)/..
+	  local manPageText=$(/usr/bin/zcat -f "$1" | /usr/bin/mandoc)
 	  local formatted=$(echo "$manPageText" | col -bpx | grep NAME -A1 | tail -1)
 	  if [[ -z "$formatted" ]]; then
 		  echo "Something went wrong" 1>&2
