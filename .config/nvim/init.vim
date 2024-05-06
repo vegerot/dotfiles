@@ -8,7 +8,7 @@ set ignorecase
 set smartcase
 set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
 
-command -nargs=* GrepNoTests grep --glob="!__tests__/" --glob "!e2e/" --glob="!*.test.*" --glob "!*.spec.*" <args>
+command -nargs=* GrepNoTests grep --glob="!test/" --glob="!__tests__/" --glob "!e2e/" --glob="!*.test.*" --glob "!*.spec.*" <args>
 
 set smartindent
 set tabstop=2
@@ -101,7 +101,7 @@ endfunction
 
 :command RandomColor call RandomColorScheme()
 
-autocmd FileType typescript,javascript nmap <leader>gD :GrepNoTests --case-sensitive "(const\\|function) <cword>\b" <CR>
+autocmd FileType typescript,javascript,typescriptreact,javascriptreact nmap gD :GrepNoTests --case-sensitive "(const\\|function) <cword>\b" <CR>
 
 "" VANILLA end
 
