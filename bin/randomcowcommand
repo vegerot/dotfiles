@@ -7,7 +7,7 @@ find_random_manpage() {
 	OLDIFS=$IFS
 	IFS=:
  	for dir in $(manpath -q); do
- 		[[ -n $dir ]] && printf "%s\n" $dir/man1/* | grep -i perl
+ 		[[ -n $dir ]] && printf "%s\n" $dir/man1/* | grep -v perl
  	done | shuf -n 1
 	IFS=$OLDIFS
 }
