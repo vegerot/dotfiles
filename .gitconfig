@@ -1,5 +1,5 @@
 [core]
-  pager = "${_GIT_CONTRIB:-/usr/local/share/git-core/contrib}/diff-highlight/diff-highlight | $PAGER -R"
+	pager = "${_GIT_CONTRIB:-/usr/local/share/git-core/contrib}/diff-highlight/diff-highlight | less -R "
 	fsmonitor = true
 	untrackedCache = true
 
