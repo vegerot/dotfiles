@@ -102,7 +102,11 @@ endfunction
 :command RandomColor call RandomColorScheme()
 
 autocmd FileType typescript,javascript,typescriptreact,javascriptreact nmap gD :GrepNoTests --case-sensitive "(const\\|function) <cword>\b" <CR>
+
 autocmd FileType man set nospell
+
+autocmd FileType c let g:c_syntax_for_h=v:true
+autocmd FileType cpp let g:c_syntax_for_h=v:false
 
 "" VANILLA end
 
