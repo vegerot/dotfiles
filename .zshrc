@@ -33,7 +33,6 @@ else
 	~/dotfiles/bin/randomcowcommand
 fi;
 
-export CDPATH="$CDPATH:$HOME/gecgithub01.walmart.com/m0c0j7y/:$HOME/gecgithub01.walmart.com/walmart-web/walmart-web-worktree/"
 if [[ $TERM_PROGRAM != "WarpTerminal" \
   && -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"\
   ]]; then
@@ -208,6 +207,13 @@ load_plugins() {
 }
 if [[ -z $ZSH_SKIP_LOADING_PLUGINS ]]; then
   load_plugins
+fi
+
+# j makes jumping to directories easier
+# if j isn't installed, then do the poverty method of adding common directories
+# to CDPATH
+if ! type j > /dev/null; then
+	export CDPATH="$CDPATH:$HOME/gecgithub01.walmart.com/m0c0j7y/:$HOME/gecgithub01.walmart.com/walmart-web/walmart-web-worktree/"
 fi
 
 source_max_scripts
