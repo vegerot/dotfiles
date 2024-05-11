@@ -1,11 +1,11 @@
 #Path stuff
 
-if [[ "$PATH" == *$HOME/.cargo/bin* && -z $ALWAYS_SOURCE_PATHS ]]; then
-	#echo "skipping path stuff"
-	return
-fi
+#if [[ "$PATH" == *$HOME/.cargo/bin* && -z $ALWAYS_SOURCE_PATHS ]]; then
+#	#echo "skipping path stuff"
+#	return
+#fi
 
-[[ -f /etc/zprofile ]] && source /etc/zprofile
+#[[ -f /etc/zprofile ]] && source /etc/zprofile
 ## important stuff goes first
 export PATH="$HOME/.cargo/bin:$PATH"
 
