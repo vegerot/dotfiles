@@ -43,3 +43,20 @@ else
 	echo "$cow"
 fi
 
+
+
+# fun benchmark:
+#
+# ```sh
+# hyperfine -w 2 \
+# 	'find $(manpath -q | tr ":" " ") -type f -name "*.1" | shuf -n 1' \
+# 	'gfind $(manpath -q | tr ":" " ") -type f -name "*.1" | shuf -n 1' \
+# 	'fd \.1 $(manpath -q | tr ":" " ") --type=file | shuf -n 1' \
+# 	'OLDIFS=$IFS
+# 	IFS=:
+# 	for dir in $(manpath -q); do
+# 		[[ -n $dir ]] && printf "%s\n" $dir/man1/*
+# 	done | shuf -n 1
+# 	IFS=$OLDIFS'
+#```
+
