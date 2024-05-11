@@ -13,11 +13,6 @@ typeset -aU path
 typeset -U PATH
 
 source ~/.profile
-if [[ $TERM_PROGRAM != "WarpTerminal" \
-  && -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"\
-  ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
 
 if [[ $OSTYPE == "darwin"* ]]; then
 	# don't report job status
@@ -39,6 +34,11 @@ else
 fi;
 
 export CDPATH="$CDPATH:$HOME/gecgithub01.walmart.com/m0c0j7y/:$HOME/gecgithub01.walmart.com/walmart-web/walmart-web-worktree/"
+if [[ $TERM_PROGRAM != "WarpTerminal" \
+  && -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"\
+  ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
 
 # for some reason "\n" doesn't work in $PS1??
 NEWLINE="
