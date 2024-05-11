@@ -6,9 +6,9 @@ set -o pipefail
 find_random_manpage() {
 	OLDIFS=$IFS
 	IFS=:
-	for dir in $(manpath -q); do
-		[[ -n $dir ]] && fd --exact-depth=2 . $dir/ | rg -vi pearl
-	done | shuf -n 1
+ 	for dir in $(manpath -q); do
+ 		[[ -n $dir ]] && printf "%s\n" $dir/man1/* | grep -i perl
+ 	done | shuf -n 1
 	IFS=$OLDIFS
 }
 manpagefile=$(find_random_manpage)
@@ -55,8 +55,16 @@ fi
 # 	'OLDIFS=$IFS
 # 	IFS=:
 # 	for dir in $(manpath -q); do
-# 		[[ -n $dir ]] && printf "%s\n" $dir/man1/*
+# 		[[ -n $dir ]] && printf "%s\n" $dir/man1/* | grep -i perl
 # 	done | shuf -n 1
 # 	IFS=$OLDIFS'
+# 	'
+# 	OLDIFS=$IFS
+# 	IFS=:
+# 	for dir in $(manpath -q); do
+# 		[[ -n $dir ]] && fd --exact-depth=2 . $dir/ | grep -i perl
+# 	done | shuf -n 1
+# 	IFS=$OLDIFS
+# 	'
 #```
 
