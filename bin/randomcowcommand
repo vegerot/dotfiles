@@ -20,7 +20,7 @@ get_description_of_manpage() {
 	  # imports to work).
 	  # Workaround: do what `man FILEPATH` does, but in the right directory.
 	  cd $(dirname $1)/..
-	  local manPageText=$(/usr/bin/zcat -f "$1" | /usr/bin/mandoc)
+	  local manPageText=$(zcat -f "$1" | mandoc)
 	  local formatted=$(echo "$manPageText" | col -bpx | grep NAME -A1 | tail -1)
 	  if [[ -z "$formatted" ]]; then
 		  echo "randomcowcommand: We messed up with $1" 1>&2
