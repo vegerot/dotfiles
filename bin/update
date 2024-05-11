@@ -41,7 +41,16 @@ function upgrade_neovim() {
 
 	read -p 'Would you like to upgrade Neovim plugins (y/n): ' upgradeNvim
 	if [[ "$upgradeNvim" == "y" ]]; then
-		fd . --type d --max-depth 1 --full-path ~/.local/share/nvim/site/pack/*/start/ | parallel "($(declare -f pull_and_update) && pull_and_update {})"
+		local plugins=$(fd . --type d --max-depth 1 --full-path ~/.local/share/nvim/site/pack/*/start/)
+		local has_gnu_parallel=false; #TODO: detect if gnu parallel or moreutils parallel is installed
+		if [[ $has_gnu_parallel == true ]]; then
+			echo $plugins \
+				| parallel "($(declare -f pull_and_update) && pull_and_update {})";
+		else # using moreutils parallel
+			parallel -i sh -c "($(declare -f pull_and_update) && pull_and_update {})" --  \
+				$plugins
+
+		fi
 	fi
 }
 
