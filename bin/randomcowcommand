@@ -37,7 +37,7 @@ if [[ -z "$commanddescription" ]]; then
 	commanddescription=$(get_description_of_manpage $manpagefile)
 fi
 cow=$(echo "$commanddescription" | cowsay -f $( cowsay -l| tail -n+2|tr " " "\n"|sort -R|head -1))
-if type rainbow 2>&1 1> /dev/null; then
+if type rainbow 1>/dev/null 2>&1; then
 	echo "$cow" | rainbow
 else
 	echo "$cow"
