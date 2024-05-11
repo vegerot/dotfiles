@@ -27,7 +27,13 @@ get_description_of_manpage() {
 	  fi
 	  echo $formatted
   else
-    lexgrog -w $1 | shuf -n 1 | sed -E 's/^.*: "(.*)"$/\1/'
+	  local manPageText;
+	  manPageText=$(lexgrog -w $1)
+	  if [[ $? -ne 0 ]]; then
+		  echo "randomcowcommand: We messed up with $1" 1>&2
+		  manPageText=""
+	  fi
+     echo $manPageText| shuf -n 1 | sed -E 's/^.*: "(.*)"$/\1/'
   fi
 }
 commanddescription=$(get_description_of_manpage $manpagefile)
