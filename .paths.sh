@@ -66,8 +66,10 @@ export PATH="$PATH:."
 ### MAN path
 
 export MANPATH="/usr/local/share/man:$MANPATH:"
-export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
-export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
+if [[ $OSTYPE == "darwin"* ]]; then
+	export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
+	export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
+fi
 
 ### fpath stuff for zsh on macOS
 [[ $OSTYPE == "darwin"* ]] && export FPATH="/opt/homebrew/share/zsh/site-functions:$FPATH"
