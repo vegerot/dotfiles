@@ -240,8 +240,8 @@ local on_attach = function(client, bufnr)
     buf_set_keymap("n", "<leader>D", ":lua vim.lsp.buf.type_definition()<CR>", opts)
     buf_set_keymap("n", "gi", ":lua vim.lsp.buf.implementation()<CR>", opts)
 	if client.supports_method("textDocument/inlayHint") then
-		-- experimental.  Might break soon
-		vim.lsp.inlay_hint.enable(0, true)
+		-- unstable API.  Might break soon
+		vim.lsp.inlay_hint.enable(true)
 	end
 end
 
