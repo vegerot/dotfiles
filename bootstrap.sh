@@ -19,7 +19,7 @@ function doIt() {
 if [[ "$1" == "--force" ]]; then
 		doIt $1;
 else
-	read "REPLY?This may overwrite existing files in your home directory. Are you sure? (y/n) ";
+	read -p "This may overwrite existing files in your home directory. Are you sure? (y/n) " REPLY
 	if [[ $REPLY =~ ^[Yy]$ ]]; then
 		doIt $1;
 	fi;
