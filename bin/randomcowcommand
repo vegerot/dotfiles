@@ -11,7 +11,6 @@ find_random_manpage() {
  	done | shuf -n 1
 	IFS=$OLDIFS
 }
-manpagefile=$(find_random_manpage)
 get_description_of_manpage() {
   if ! type lexgrog > /dev/null 2>&1; then
 	  #local manPageText="$(man -P cat $1)"
@@ -36,17 +35,42 @@ get_description_of_manpage() {
      echo $manPageText| shuf -n 1 | sed -E 's/^.*: "(.*)"$/\1/'
   fi
 }
-commanddescription=$(get_description_of_manpage $manpagefile)
-if [[ -z "$commanddescription" ]]; then
-	# we'll never get two duds in a row, right?
+main() {
 	manpagefile=$(find_random_manpage)
 	commanddescription=$(get_description_of_manpage $manpagefile)
-fi
-cow=$(echo "$commanddescription" | cowsay -f $( cowsay -l| tail -n+2|tr " " "\n"|sort -R|head -1))
-if type rainbow 1>/dev/null 2>&1; then
-	echo "$cow" | rainbow
+	if [[ -z "$commanddescription" ]]; then
+		# we'll never get two duds in a row, right?
+		manpagefile=$(find_random_manpage)
+		commanddescription=$(get_description_of_manpage $manpagefile)
+	fi
+	cow=$(echo "$commanddescription" | cowsay -f $( cowsay -l| tail -n+2|tr " " "\n"|sort -R|head -1))
+	if type rainbow 1>/dev/null 2>&1; then
+		echo "$cow" | rainbow
+	else
+		echo "$cow"
+	fi
+}
+# HACK(max): on my MacBook, `randomcowcommand` takes 200ms which is way too long.
+# Instead, I'll get the cow in the background and save it to disk and then
+# cat it here.
+# The trick is that I'm always showing the _previous_ invocation of the
+# cow.
+if [[ $1 == "--async" ]]; then
+	# don't report job status
+	zsh -c '
+	setopt LOCAL_OPTIONS NO_NOTIFY NO_MONITOR
+	local cowtput=/tmp/cowtput.txt
+	[[ -f $cowtput ]] && cat $cowtput
+	# `disown` makes it not print a message when done
+	# put this line after the `cat` to avoid a race condition where cowtput.txt
+	# is empty because of the redirect
+	(source randomcowcommand --source && main > $cowtput) & disown
+	setopt LOCAL_OPTIONS NOTIFY MONITOR
+	'
+elif [[ $1 == "--source" ]]; then
+	return
 else
-	echo "$cow"
+	main
 fi
 
 

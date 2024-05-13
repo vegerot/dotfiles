@@ -14,21 +14,8 @@ typeset -U PATH
 
 source ~/.profile
 
-# HACK(max): on my MacBook, `randomcowcommand` takes 200ms which is way too long.
-# Instead, I'll get the cow in the background and save it to disk and then
-# cat it here.
-# The trick is that I'm always showing the _previous_ invocation of the
-# cow.
 if [[ $OSTYPE == "darwin"* ]]; then
-	# don't report job status
-	setopt LOCAL_OPTIONS NO_NOTIFY NO_MONITOR
-	local cowtput=/tmp/cowtput.txt
-	[[ -f $cowtput ]] && cat $cowtput
-	# `disown` makes it not print a message when done
-	# put this line after the `cat` to avoid a race condition where cowtput.txt
-	# is empty because of the redirect
-	(~/dotfiles/bin/randomcowcommand > $cowtput) & disown
-	setopt LOCAL_OPTIONS NOTIFY MONITOR
+	~/dotfiles/bin/randomcowcommand --async
 else
 	~/dotfiles/bin/randomcowcommand
 fi;
