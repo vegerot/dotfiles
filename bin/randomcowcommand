@@ -48,10 +48,14 @@ get_description_of_manpage() {
 main() {
 	manpagefile=$(find_random_manpage)
 	commanddescription=$(get_description_of_manpage $manpagefile)
-	if [[ -z "$commanddescription" ]]; then
+	if [[ -z "$commanddescription" || "$commanddescription" == "builtin"*  ]]; then
 		# we'll never get two duds in a row, right?
 		manpagefile=$(find_random_manpage)
 		commanddescription=$(get_description_of_manpage $manpagefile)
+	fi
+	if [[ -z "$commanddescription" ]]; then
+		# we'll never get three duds in a row, right?
+		commanddescription="randomcowcommand - a script that works sometimes 😢\n"
 	fi
 	cow=$(echo "$commanddescription" | cowsay -f $( cowsay -l| tail -n+2|tr " " "\n"|sort -R|head -1))
 	if type rainbow 1>/dev/null 2>&1; then
