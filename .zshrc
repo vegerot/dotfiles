@@ -49,7 +49,7 @@ unsetopt histignorespace
 export HELPDIR=/usr/share/zsh/$ZSH_VERSION/help
 unalias run-help
 autoload -U run-help
-alias man=run-help
+alias help=run-help
 
 # COMMAND LINE EDITING
 setopt vi
