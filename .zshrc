@@ -59,6 +59,11 @@ setopt incappendhistorytime
 
 unsetopt histignorespace
 
+export HELPDIR=/usr/share/zsh/$ZSH_VERSION/help
+unalias run-help
+autoload -U run-help
+alias man=run-help
+
 # COMMAND LINE EDITING
 setopt vi
 bindkey -v '^?' backward-delete-char
