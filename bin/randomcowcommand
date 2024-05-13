@@ -12,7 +12,16 @@ find_random_manpage() {
 	IFS=$OLDIFS
 }
 get_description_of_manpage() {
-  if ! type lexgrog > /dev/null 2>&1; then
+	# source: https://stackoverflow.com/a/3352015/6100005
+	trim() {
+		local var="$*"
+		# remove leading whitespace characters
+		var="${var#"${var%%[![:space:]]*}"}"
+		# remove trailing whitespace characters
+		var="${var%"${var##*[![:space:]]}"}"
+		printf '%s' "$var"
+	}
+	if ! type lexgrog > /dev/null 2>&1; then
 	  #local manPageText="$(man -P cat $1)"
 	  ## HACK(max): If you give `man` the path to the file, it won't correctly
 	  # import `.so`s (because it `cd`s to the wrong directory for the relative
@@ -20,7 +29,8 @@ get_description_of_manpage() {
 	  # Workaround: do what `man FILEPATH` does, but in the right directory.
 	  cd $(dirname $1)/..
 	  local manPageText=$(zcat -f "$1" | mandoc)
-	  local formatted=$(echo "$manPageText" | col -bpx | grep NAME -A1 | tail -1)
+	  local formatted_with_whitespace=$(echo "$manPageText" | col -bpx | grep NAME -A1 | tail -1)
+	  formatted=$(trim "$formatted_with_whitespace")
 	  if [[ -z "$formatted" ]]; then
 		  echo "randomcowcommand: We messed up with $1" 1>&2
 	  fi
