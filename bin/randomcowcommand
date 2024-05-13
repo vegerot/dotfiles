@@ -70,19 +70,12 @@ main() {
 # The trick is that I'm always showing the _previous_ invocation of the
 # cow.
 if [[ $1 == "--async" ]]; then
-	# don't report job status
-	zsh -c '
-	setopt LOCAL_OPTIONS NO_NOTIFY NO_MONITOR
-	local cowtput=/tmp/cowtput.txt
+	cowtput=/tmp/cowtput.txt
 	[[ -f $cowtput ]] && cat $cowtput
 	# `disown` makes it not print a message when done
 	# put this line after the `cat` to avoid a race condition where cowtput.txt
 	# is empty because of the redirect
-	(source randomcowcommand --source && main > $cowtput) & disown
-	setopt LOCAL_OPTIONS NOTIFY MONITOR
-	'
-elif [[ $1 == "--source" ]]; then
-	return
+	(main 2>/dev/null 1> $cowtput) & disown
 else
 	main
 fi
