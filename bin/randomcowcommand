@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
-set -o pipefail
+set -e -u -o pipefail
 
 find_random_manpage() {
 	OLDIFS=$IFS
@@ -69,7 +68,7 @@ main() {
 # cat it here.
 # The trick is that I'm always showing the _previous_ invocation of the
 # cow.
-if [[ $1 == "--async" ]]; then
+if [[ ${1:-} == "--async" ]]; then
 	cowtput=/tmp/cowtput.txt
 	[[ -f $cowtput ]] && cat $cowtput
 	# `disown` makes it not print a message when done
