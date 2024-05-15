@@ -28,7 +28,7 @@ get_description_of_manpage() {
 	  # Workaround: do what `man FILEPATH` does, but in the right directory.
 	  cd $(dirname $1)/..
 	  local manPageText=$(zcat -f "$1" | mandoc)
-	  local formatted_with_whitespace=$(echo "$manPageText" | col -bpx | grep NAME -A1 | tail -1)
+	  local formatted_with_whitespace=$(echo "$manPageText" | col -bpx | grep "^NAME$" -A1 | tail -1)
 	  formatted=$(trim "$formatted_with_whitespace")
 	  if [[ -z "$formatted" ]]; then
 		  echo "randomcowcommand: We messed up with $1" 1>&2
