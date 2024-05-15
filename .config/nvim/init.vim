@@ -311,9 +311,21 @@ local gopls_config = {
 	}
 	}
 
+local tsserver_config = {
+	"tsserver",
+	{
+		on_attach = on_attach,
+		flags = {
+			debounce_text_changes = 150
+		},
+		cmd = {"typescript-language-server", "--stdio"}
+
+	}
+	}
+
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = {quick_lint_js, clangd_config, gopls_config}
+local servers = {quick_lint_js, clangd_config, gopls_config, tsserver_config}
 for _, lsp in ipairs(servers) do
     local name, settings = unpack(lsp)
     if settings == nil then
