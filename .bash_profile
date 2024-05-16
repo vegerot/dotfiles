@@ -1,5 +1,5 @@
 # POSIX stuff
-source ~/.profile
+[[ -r "$HOME/.profile" ]] && source ~/.profile
 
 # completions
 [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
@@ -30,3 +30,6 @@ shopt -s histverify
 shopt -s lithist
 export PROMPT_COMMAND="history -a"
 
+if type randomcowcommand 2>&1 >/dev/null; then
+  randomcowcommand --async
+fi
