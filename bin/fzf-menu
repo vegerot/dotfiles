@@ -11,7 +11,7 @@ get_selection() {
 get_programs_in_path() {
   pathDeduped=$(printf '%s\n' $PATH | tr ':' '\n' | uniq )
   for p in $pathDeduped; do
-	find "$p" -maxdepth 1
+    find "$p"/ -type f,l -executable -maxdepth 1 -printf '%f\n' 2>/dev/null
   done \
     | awk '!x[$0]++'
     # awk removes duplicates without sorting.  Thanks https://stackoverflow.com/a/11532197/6100005 \
