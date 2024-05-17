@@ -27,18 +27,24 @@ filetype plugin indent on
 " (likely a different one than last time), and when using xxd(1) to filter
 " and edit binary files (it transforms input files back and forth, causing
 " them to have dual nature, so to speak)
-autocmd BufReadPost *
-\ let line = line("'\"")
-\ | if line >= 1 && line <= line("$") && &filetype !~# 'commit'
-\      && index(['xxd', 'gitrebase'], &filetype) == -1
-\ |   execute "normal! g`\""
-\ | endif
+if has('autocmd') && has('eval')
+	autocmd BufReadPost *
+		\ let line = line("'\"")
+		\ | if line >= 1 && line <= line("$") && &filetype !~# 'commit'
+		\      && index(['xxd', 'gitrebase'], &filetype) == -1
+		\ |   execute "normal! g`\""
+		\ | endif
+endif
 
-syntax on
+if has('syntax')
+  syntax on
 
-" I like highlighting strings inside C comments.
-" Revert with ":unlet c_comment_strings".
-let c_comment_strings=1
+  " I like highlighting strings inside C comments.
+  " Revert with ":unlet c_comment_strings".
+  if has('eval')
+    let c_comment_strings=1
+  endif
+endif
 
 " Convencommand to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
