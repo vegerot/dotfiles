@@ -47,7 +47,7 @@ setopt incappendhistorytime
 unsetopt histignorespace
 
 export HELPDIR=/usr/share/zsh/$ZSH_VERSION/help
-unalias run-help
+unalias run-help 2>/dev/null # sometimes this alias is set and sometimes it isn't
 autoload -U run-help
 alias help=run-help
 
