@@ -5,11 +5,15 @@
 #TODO: teach how to understand `.desktop` files in /usr/share/applications
 
 get_selection() {
+    get_programs_in_path | fzf
+}
+
+get_programs_in_path() {
   pathDeduped=$(printf '%s\n' $PATH | tr ':' '\n' | uniq )
   for p in $pathDeduped; do
 	find "$p" -maxdepth 1
   done \
-    | awk '!x[$0]++' | fzf
+    | awk '!x[$0]++'
     # awk removes duplicates without sorting.  Thanks https://stackoverflow.com/a/11532197/6100005 \
 }
 
