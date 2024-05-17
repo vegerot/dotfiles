@@ -7,6 +7,7 @@
 # prompt
 PROMPT_DIRTRIM=3
 
+RED_START='\033[01;31m'
 GREEN_START='\[\033[01;32m\]'
 LIGHT_GREEN_START='\[\033[01;92m\]'
 BLUE_START='\[\033[01;34m\]'
@@ -18,7 +19,7 @@ PROMPT_WHOAMI="🪪${GREEN_START}\u${COLOR_RESET}@${LIGHT_GREEN_START}\h${COLOR_
 PROMPT_WHEREAMI="📁${BLUE_START}\w/${COLOR_RESET}"
 PROMPT_JUST_BRANCH='$(git branch --show-current >/dev/null 2>&1 && printf "🌿$(git branch --show-current) "|| printf "")'
 PROMPT_BRANCH="${MAGENTA_START}${PROMPT_JUST_BRANCH}${COLOR_RESET}"
-PROMPT_LAST_STATUS='$([ $? != 0 ] && printf "❌ " || printf "")'
+PROMPT_LAST_STATUS='$(EXIT=$?;[ $EXIT != 0 ] && printf "❌${RED_START}($EXIT)" || printf "")'
 PROMPT_START='$ '
 PS1="${PROMPT_LAST_STATUS}$PROMPT_WHOAMI: $PROMPT_WHEREAMI $PROMPT_BRANCH\n$PROMPT_START"
 
