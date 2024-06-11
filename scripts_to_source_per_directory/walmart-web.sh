@@ -37,6 +37,7 @@ function uninstrument_for_profiling() {
 }
 
 function web_start_dev() {
+	setUpNvmIfNotSetUp
 	NODE_OPTIONS="$NODE_OPTIONS --max-old-space-size=42069"\
 	NODE_TLS_REJECT_UNAUTHORIZED=0 \
 	pnpm start journey-app --inspect --port=4200 --dev=true\
@@ -44,6 +45,7 @@ function web_start_dev() {
 }
 
 function web_start_prod() {
+	setUpNvmIfNotSetUp
 	NODE_OPTIONS="$NODE_OPTIONS --max-old-space-size=42069"\
 	NODE_TLS_REJECT_UNAUTHORIZED=0 \
 	pnpm start journey-app --inspect --port=4200 --dev=false\
@@ -51,6 +53,7 @@ function web_start_prod() {
 }
 
 function web_start() {
+	setUpNvmIfNotSetUp
 	web_start_prod $@
 }
 
