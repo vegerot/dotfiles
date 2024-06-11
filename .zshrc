@@ -209,7 +209,6 @@ fi
 
 source_max_scripts
 
-
 # Compute time taken
 if type gdate > /dev/null; then
   end=$(gdate +%s.%N)
