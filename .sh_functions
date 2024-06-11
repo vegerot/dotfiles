@@ -161,18 +161,19 @@ function keepkillwd() {
   # use sudo here so that we're not prompted in the loop
   sudo echo "started successfully"
   while true; do
-	  sudo killall -9 wdavdaemon wdavdaemon_unprivileged wdavdaemon_enterprise 2>/dev/null
+	  sudo killall -9 wdavdaemon wdavdaemon_unprivileged wdavdaemon_enterprise
 	  local laststatus=$?
-	  local killed_something=false
-	  if [[ $laststatus -eq 0 ]]; then
-		  killed_something=true
+	  local killed_something=0
+	  if [[ $laststatus != 1 ]]; then
+		  killed_something=1
 	  fi
-	  sudo pkill -9 -f /Library/infp/extension/python/app/Python-3.10.6/python.exe 2>/dev/null
-	  if [[ $laststatus -eq 0 ]]; then
-		  killed_something=true
+	  sudo pkill -9 -f /Library/infp/extension/python/app/Python-3.10.6/python.exe
+	  local laststatus=$?
+	  if [[ $laststatus != 1 ]]; then
+		  killed_something=1
 	  fi
 
-	  if [[ $killed_something == true ]]; then
+	  if [[ $killed_something == 1 ]]; then
 		  nextSleep=1
 	  else
 		  nextSleep=$(($nextSleep + 1))
