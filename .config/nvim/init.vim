@@ -265,7 +265,8 @@ local quick_lint_js = {
             "typescript",
             "typescriptreact"
         },
-        cmd = {"quick-lint-js", "--lsp-server", "--snarky"}
+        cmd = {"quick-lint-js", "--lsp-server", "--snarky"},
+		flags = { debounce_text_changes = 9 }
         -- settings= {
         --   ["quick-lint-js"] = {
         --     ["tracing-directory"] = "/tmp/quick-lint-js-logs",
@@ -306,7 +307,7 @@ local gopls_config = {
 	{
 		on_attach = on_attach,
 		flags = {
-			debounce_text_changes = 150
+			debounce_text_changes = 60
 		},
 		cmd = {"gopls"}
 
@@ -318,7 +319,7 @@ local tsserver_config = {
 	{
 		on_attach = on_attach,
 		flags = {
-			debounce_text_changes = 150
+			debounce_text_changes = 300
 		},
 		cmd = {"typescript-language-server", "--stdio"}
 
