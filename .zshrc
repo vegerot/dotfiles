@@ -38,10 +38,8 @@ SAVEHIST=$HISTSIZE
 HIST_EXPIRE_DUPS_FIRST=1
 export HISTSIZE
 export SAVEHIST
-export HIST_EXPIRE_DUPS_FIRST
 
 setopt EXTENDED_HISTORY
-setopt histexpiredupsfirst
 setopt incappendhistorytime
 
 unsetopt histignorespace
