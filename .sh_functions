@@ -95,11 +95,11 @@ function vpn-up() {
 }
 
 function vpn-down() {
-	local should_use_anyconnect=$($([[ $(vpn-status) == "Connected" ]]) && echo true)
-	if [[ $should_use_anyconnect == true ]]; then
-		/opt/cisco/*/bin/vpn disconnect
-	else
+	local is_openconnect_running=$(pgrep openconnect)
+	if [[ -n $is_openconnect_running ]]; then
 		sudo /bin/kill -2 `pgrep openconnect`
+	else
+		/opt/cisco/*/bin/vpn disconnect
 	fi
 }
 
@@ -115,6 +115,7 @@ function vpn-status() {
 		| grep -E --color=never 'Connected|Disconnected'\
 		| head -n1
 }
+
 
 function wmt_sudome() {
   set -x
