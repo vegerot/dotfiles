@@ -322,13 +322,30 @@ local tsserver_config = {
 			debounce_text_changes = 300
 		},
 		cmd = {"typescript-language-server", "--stdio"}
+	}
+	}
 
+local rust_config = {
+	"rust_analyzer",
+	{
+		on_attach = on_attach,
+		flags = {
+			debounce_text_changes = 300
+		},
+		cmd = {"rust-analyzer"},
+		settings = {
+			["rust-analyzer"] = {
+				linkedProjects = {
+					"/Users/m0c0j7y/workspace/github.com/facebook/sapling.git/eden/scm/exec/hgmain/Cargo.toml"
+				},
+			}
+		}
 	}
 	}
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = {quick_lint_js, clangd_config, gopls_config, tsserver_config}
+local servers = {quick_lint_js, clangd_config, gopls_config, tsserver_config, rust_config}
 for _, lsp in ipairs(servers) do
     local name, settings = unpack(lsp)
     if settings == nil then
