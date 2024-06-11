@@ -13,6 +13,8 @@ command -nargs=* GrepNoTests grep --glob="!test/" --glob="!__tests__/" --glob "!
 set smartindent
 set tabstop=2
 
+set virtualedit=block
+
 " when going to a quickfix item, switch to an existing window that already has
 " the buffer in it and if not, open it in a vsplit
 set switchbuf=usetab,uselast
