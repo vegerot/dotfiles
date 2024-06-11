@@ -94,9 +94,6 @@ fi
 
 [[ $OSTYPE == "linux-gnu"* && $has_gnulinux_window_manager == true ]] && ! $isWSL && keymaps
 
-source ~/.aliases
-source ~/.sh_functions
-
 bindkey "^R" history-incremental-search-backward
 
 ## change cursor shape in vi mode
