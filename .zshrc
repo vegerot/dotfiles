@@ -27,8 +27,8 @@ if [[ $TERM_PROGRAM != "WarpTerminal" \
 fi
 
 # for some reason "\n" doesn't work in $PS1??
-NEWLINE="
-"
+NEWLINE='
+'
 export PS1="${NEWLINE}%m%#${NEWLINE}$ "
 
 # HISTORY
@@ -193,6 +193,7 @@ load_plugins() {
   ## from fzf.zsh plugin
   bindkey '^p' fzf-file-widget
   # FZF end
+  eval "$(mcfly init zsh)"
 
 }
 if [[ -z $ZSH_SKIP_LOADING_PLUGINS ]]; then
