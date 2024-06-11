@@ -79,8 +79,8 @@ function vpn-up() {
   else
 	  local vpn_password=$(cat ~/.vpn_password)
   fi
-  if [[ -f /opt/cisco/anyconnect/bin/vpn ]]; then
-	  printf "\n${vpn_password}\n${mfa_code}\ny" | /opt/cisco/anyconnect/bin/vpn -s connect $VPN_HOST $@
+  if [[ -x "$(command -v /opt/cisco/*/bin/vpn)" ]]; then
+	  printf "\n${vpn_password}\n${mfa_code}\ny" | /opt/cisco/*/bin/vpn -s connect $VPN_HOST $@
   else
 	  # for some reason this is the only one I've found that works with openconnect
 	  local VPN_HOST=sslvpngwgec.wal-mart.com/Walmart_Associate_MAC_Yubi
@@ -89,8 +89,8 @@ function vpn-up() {
 }
 
 function vpn-down() {
-  if [[ -f /opt/cisco/anyconnect/bin/vpn ]]; then
-	  /opt/cisco/anyconnect/bin/vpn disconnect
+	if [[ -x "$(command -v /opt/cisco/*/bin/vpn)" ]] ; then
+	  /opt/cisco/*/bin/vpn disconnect
   else
 	  sudo kill -2 `pgrep openconnect`
   fi
