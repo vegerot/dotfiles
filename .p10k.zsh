@@ -31,7 +31,7 @@
   autoload -Uz is-at-least && is-at-least 5.1 || return
 
   function prompt_my_sapling_status() {
-    [[ -n ./(../)#.sl(#qN) ]] || return
+    [[ -n ./(../)#.sl(#qN) || -n ./(../)#.git/sl(#qN) ]] || return
     local content
     content=$(_scm_prompt) || return
     p10k segment -b green -f black -i 'sl' -t "$content"
