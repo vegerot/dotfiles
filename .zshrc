@@ -193,7 +193,12 @@ load_plugins() {
   ## from fzf.zsh plugin
   bindkey '^p' fzf-file-widget
   # FZF end
+  {
   eval "$(mcfly init zsh)"
+
+export MCFLY_KEY_SCHEME=vim
+export MCFLY_FUZZY=2
+  }
 
 }
 if [[ -z $ZSH_SKIP_LOADING_PLUGINS ]]; then
