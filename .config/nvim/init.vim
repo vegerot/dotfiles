@@ -71,8 +71,8 @@ set shiftwidth=4
 set splitright " splitting a window will put the new window right of the current one
 
 set spell
-set spelllang=en,softwareterms,shell,vim,golang,html,lua,makefile,npm,python,sql,typescript,x86
-set spelloptions+=camel
+set spelllang=en,en_us,softwareterms,shell,vim,golang,html,lua,makefile,npm,python,sql,typescript,x86
+set spelloptions+=camel,noplainbuffer
 
 
 "" Appearance end
