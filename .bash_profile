@@ -24,8 +24,8 @@ PROMPT_START='$ '
 PS1="\n${PROMPT_LAST_STATUS}$PROMPT_WHOAMI: $PROMPT_WHEREAMI $PROMPT_BRANCH\n$PROMPT_START"
 
 # history
-export HISTSIZE=42069
-export HISTFILESIZE=69420
+export HISTSIZE=420690
+export HISTFILESIZE=694200
 shopt -s histappend
 shopt -s histverify
 shopt -s lithist
