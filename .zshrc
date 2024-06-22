@@ -112,6 +112,9 @@ zle -N zle-keymap-select
 setopt correct
 COMPLETION_WAITING_DOTS="true"
 
+# use # for comments in interactive mode
+setopt interactivecomments
+
 ## always source max_scripts_source_on_cd.sh in any directory I'm in when I cd
 
 source_max_scripts() {
