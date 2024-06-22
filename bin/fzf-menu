@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# forked from spikegrobstein/fzf-menu.  MIT license applies.
+
+#TODO: teach how to understand `.desktop` files in /usr/share/applications
+
+get_selection() {
+  pathDeduped=$(printf '%s\n' $PATH | tr ':' '\n' | uniq )
+  for p in $pathDeduped; do
+	find "$p" -maxdepth 1
+  done \
+    | awk '!x[$0]++' | fzf
+    # awk removes duplicates without sorting.  Thanks https://stackoverflow.com/a/11532197/6100005 \
+}
+
+if selection=$( get_selection ); then
+  exec nohup "$selection"
+fi
+
