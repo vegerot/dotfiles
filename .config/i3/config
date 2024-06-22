@@ -31,7 +31,8 @@ set $mod3 Super_L
 
 font xft:JetBrains Mono:style=Regular:pixelsize=12:antialias=true:autohint=true
 #exec_always --no-startup-id feh --bg-scale /home/max/Pictures/macOS-Catalina-Dark-Mode.jpg
-exec_always --no-startup-id systemctl --user start apodesktop
+exec_always [[ -f ~/.fehbg ]] && ~/.fehbg
+exec_always systemctl --user start apodesktop
 
 # make GNOME stuff work
 
