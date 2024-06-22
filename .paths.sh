@@ -11,6 +11,8 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 [[ "$OSTYPE" == "darwin"* ]] && export PATH="/usr/local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:$HOME/.cargo/bin:/usr/local/opt/ruby/bin:/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
 
+export PATH="$HOME/.local/bin:$PATH"
+
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
