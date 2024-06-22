@@ -36,7 +36,7 @@ get_applications() {
 launch() {
 	if [[ $1 == *'.desktop' ]]; then
 		#exec nohup zsh -c "(gio launch $1) & disown ; sleep 3"
-		setsid -f gio launch $1
+		exec nohup zsh -c "(setsid -f gio launch $1) & disown ; sleep 3"
 	else
 		setsid -f $1
 	fi
