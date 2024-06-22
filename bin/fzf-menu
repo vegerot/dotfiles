@@ -24,7 +24,7 @@ get_programs_in_path() {
 }
 
 get_applications() {
-    applicationPathsDeduped=$(printf '%s\n' ${XDG_DATA_DIRS:-/usr/share} | tr ':' '\n' | uniq )
+    local applicationPathsDeduped=$(printf '%s\n' ${XDG_DATA_DIRS:-/usr/share} | tr ':' '\n' | uniq )
     for p in $applicationPathsDeduped; do
 		for app in $(find "$p"/applications -maxdepth 1 -type f,l -name '*.desktop' 2>/dev/null); do
 			local appname=$(sed -n '0,/^Name=/{s/^Name=//p}' $app)
@@ -35,9 +35,10 @@ get_applications() {
 
 launch() {
 	if [[ $1 == *'.desktop' ]]; then
-		exec nohup gio launch $1 > /tmp/nohup.out 2>&1
+		#exec nohup zsh -c "(gio launch $1) & disown ; sleep 3"
+		setsid -f gio launch $1
 	else
-		exec nohup $1 > /tmp/nohup.out 2>&1
+		setsid -f $1
 	fi
 }
 
