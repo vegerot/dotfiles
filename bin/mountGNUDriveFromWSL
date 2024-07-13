@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -e -x -o pipefail
+
+wsl.exe --mount '\\.\PHYSICALDRIVE1' --partition 5 --type ext4
+
+MNT=${MNT:=/mnt/sdd5/}
+sudo mount /dev/sdd5 $MNT
+sudo mount --types=proc {,$MNT}/proc
+sudo mount --rbind {,$MNT}/dev
+sudo mount -o bind {,$MNT}/run
+sudo mount --rbind {,$MNT}/sys
+sudo mount -o bind {,$MNT}/tmp/.X11-unix
+sudo chroot $MNT
