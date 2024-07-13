@@ -13,6 +13,7 @@ command -nargs=* GrepNoTests grep --glob="!test/" --glob="!__tests__/" --glob "!
 set smartindent
 set tabstop=2
 
+set showmatch
 set virtualedit=block
 
 " when going to a quickfix item, switch to an existing window that already has
