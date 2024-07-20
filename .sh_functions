@@ -147,6 +147,24 @@ function vo() {
 	vim $(fd | fzf)
 }
 
+function trash() {
+	(
+	set -o errexit
+	set -o nounset
+	set -o pipefail
+	set -o xtrace
+
+	for file in $@; do
+		mv $file ~/.local/share/Trash/files/
+		cat <<EOF > ~/.local/share/Trash/info/$(basename $file).trashinfo
+[Trash Info]
+Path=$(realpath $file)
+DeletionDate=$(date +%Y-%m-%dT%H:%M:%S)
+EOF
+	done
+)
+}
+
 function keepkillwd() {
 ## Microsoft antivirus runs every time we write to the filesystem.  This makes
 # write-heavy processes a lot slower.  This function keeps the antivirus
