@@ -30,36 +30,6 @@ set $mod3 Super_L
 # font, it doesn't scale on retina/hidpi displays.
 
 font xft:JetBrains Mono:style=Regular:pixelsize=12:antialias=true:autohint=true
-#exec_always --no-startup-id feh --bg-scale /home/max/Pictures/macOS-Catalina-Dark-Mode.jpg
-exec_always [[ -f ~/.fehbg ]] && ~/.fehbg
-exec_always systemctl --user start apodesktop
-
-# make GNOME stuff work
-
-exec --no-startup-id /usr/libexec/gsd-xsettings
-exec --no-startup-id /usr/libexec/gsd-a11y-settings
-exec --no-startup-id /usr/libexec/gsd-backlight-helper
-#exe --no-startup-ids /usr/libexec/gsd-clipboard
-exec --no-startup-id /usr/libexec/gsd-color
-exec --no-startup-id /usr/libexec/gsd-datetime
-exec --no-startup-id /usr/libexec/gsd-dummy
-exec --no-startup-id /usr/libexec/gsd-housekeeping
-exec --no-startup-id /usr/libexec/gsd-keyboard
-#exe --no-startup-ids /usr/libexec/gsd-locate-pointer
-exec --no-startup-id /usr/libexec/gsd-media-keys
-#exe --no-startup-ids /usr/libexec/gsd-mouse
-exec --no-startup-id /usr/libexec/gsd-power
-exec --no-startup-id /usr/libexec/gsd-printer
-exec --no-startup-id /usr/libexec/gsd-print-notifications
-exec --no-startup-id /usr/libexec/gsd-rfkill
-exec --no-startup-id /usr/libexec/gsd-screensaver-proxy
-exec --no-startup-id /usr/libexec/gsd-sharing
-exec --no-startup-id /usr/libexec/gsd-smartcard
-exec --no-startup-id /usr/libexec/gsd-sound
-#exe --no-startup-ids /usr/libexec/gsd-test-input-helper
-exec --no-startup-id /usr/libexec/gsd-wacom
-exec --no-startup-id /usr/libexec/gsd-wacom-led-helper
-exec --no-startup-id /usr/libexec/gsd-wacom-oled-helper
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -250,6 +220,38 @@ exec_always --no-startup-id xcape -e 'Control_L=Escape'
 ##exec autocutsel -selection PRIMARY -fork
 exec xrdb -merge ~/.Xresources
 ##exec --always touchegg
+
+# set background
+#exec_always --no-startup-id feh --bg-scale /home/max/Pictures/macOS-Catalina-Dark-Mode.jpg
+exec_always [[ -f ~/.fehbg ]] && ~/.fehbg
+exec_always systemctl --user start apodesktop
+
+# make GNOME stuff work
+
+exec --no-startup-id /usr/libexec/gsd-xsettings
+exec --no-startup-id /usr/libexec/gsd-a11y-settings
+exec --no-startup-id /usr/libexec/gsd-backlight-helper
+#exe --no-startup-ids /usr/libexec/gsd-clipboard
+exec --no-startup-id /usr/libexec/gsd-color
+exec --no-startup-id /usr/libexec/gsd-datetime
+exec --no-startup-id /usr/libexec/gsd-dummy
+exec --no-startup-id /usr/libexec/gsd-housekeeping
+exec --no-startup-id /usr/libexec/gsd-keyboard
+#exe --no-startup-ids /usr/libexec/gsd-locate-pointer
+exec --no-startup-id /usr/libexec/gsd-media-keys
+#exe --no-startup-ids /usr/libexec/gsd-mouse
+exec --no-startup-id /usr/libexec/gsd-power
+exec --no-startup-id /usr/libexec/gsd-printer
+exec --no-startup-id /usr/libexec/gsd-print-notifications
+exec --no-startup-id /usr/libexec/gsd-rfkill
+exec --no-startup-id /usr/libexec/gsd-screensaver-proxy
+exec --no-startup-id /usr/libexec/gsd-sharing
+exec --no-startup-id /usr/libexec/gsd-smartcard
+exec --no-startup-id /usr/libexec/gsd-sound
+#exe --no-startup-ids /usr/libexec/gsd-test-input-helper
+exec --no-startup-id /usr/libexec/gsd-wacom
+exec --no-startup-id /usr/libexec/gsd-wacom-led-helper
+exec --no-startup-id /usr/libexec/gsd-wacom-oled-helper
 
 exec_always --no-startup-id picom -CGb
 #exec_always --no-startup-id gnome-power-manager
