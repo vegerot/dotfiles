@@ -44,6 +44,17 @@ get_description_of_manpage() {
      echo $manPageText| shuf -n 1 | sed -E 's/^.*: "(.*)"$/\1/'
   fi
 }
+
+format_message() {
+  if type cowsay > /dev/null 2>&1; then
+    cowsay -f $(cowsay -l| tail -n+2|tr " " "\n"|sort -R|head -1) "$1"
+  else
+    printf -- "\n-------------------------------\n"
+    echo "Did you know: $1"
+    printf -- '-------------------------------\n\n'
+  fi
+}
+
 main() {
 	manpagefile=$(find_random_manpage)
 	commanddescription=$(get_description_of_manpage $manpagefile)
@@ -56,7 +67,7 @@ main() {
 		# we'll never get three duds in a row, right?
 		commanddescription="randomcowcommand - a script that works sometimes 😢\n"
 	fi
-	cow=$(echo "$commanddescription" | cowsay -f $( cowsay -l| tail -n+2|tr " " "\n"|sort -R|head -1))
+	cow=$(format_message "$commanddescription")
 	if type rainbow 1>/dev/null 2>&1; then
 		echo "$cow" | rainbow
 	else
