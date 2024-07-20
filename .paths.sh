@@ -16,6 +16,10 @@ export PATH="$HOME/.local/bin:$PATH"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# zig
+ZIG="$HOME/.local/zig"
+[[ -d $ZIG ]] && export PATH="$ZIG:$PATH"
 # Walmart iOS dev stuff
 MINT_PATH=$HOME/.mint
 [[ -d $MINT_PATH ]] && export PATH=$MINT_PATH/bin:$PATH
