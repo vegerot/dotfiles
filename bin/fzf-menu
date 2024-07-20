@@ -38,7 +38,7 @@ launch() {
 		#exec nohup zsh -c "(gio launch $1) & disown ; sleep 3"
 		exec nohup zsh -c "(setsid -f gio launch $1) & disown ; sleep 3"
 	else
-		setsid -f $1
+		exec setsid -f $1 > /dev/null 2>&1
 	fi
 }
 
