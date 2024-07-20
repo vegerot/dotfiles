@@ -215,8 +215,11 @@ local on_attach = function(client, bufnr)
         ["textDocument/references"] = {{"n", "gr", ":lua vim.lsp.buf.references()<CR>"}},
         ["textDocument/publishDiagnostics"] = {
             {"n", "<leader>e", ":lua vim.lsp.diagnostic.show_line_diagnostics()<CR>"},
-            {"n", "[d", ":lua vim.diagnostic.goto_prev()<CR>"},
-            {"n", "]d", ":lua vim.diagnostic.goto_next()<CR>"},
+			-- TODO: uncomment when vim.diagnostic.jump is widely available
+            --{"n", "[d", ":lua vim.diagnostic.jump({count=-1, float=true})<CR>"},
+            --{"n", "]d", ":lua vim.diagnostic.jump({count=1, float=true})<CR>"},
+            {"n", "[d", ":lua vim.diagnostic.goto_prev({float=true})<CR>"},
+            {"n", "]d", ":lua vim.diagnostic.goto_next({float=true})<CR>"},
             {"n", "<leader>q", ":lua vim.diagnostic.setqflist({open=true})<CR>"},
             {"n", "<leader>l", ":lua vim.diagnostic.setloclist({open=true})<CR>"}
         },
