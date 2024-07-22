@@ -154,45 +154,60 @@ compinit -C
 
 # PLUGINS
 load_plugins() {
-  eval "$(jump shell zsh)"
+  if type jump > /dev/null; then
+	  eval "$(jump shell zsh)"
+  fi
 
   ## POWERLEVEL10K
   if [[ $TERM_PROGRAM == "WarpTerminal" ]]; then
 	  return
   fi
-  source ~/workspace/github.com/romkatv/powerlevel10k/powerlevel10k.zsh-theme
-  source ~/workspace/github.com/facebook/sapling/eden/scm/contrib/scm-prompt.sh
-  ## To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-  [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+  if [[ -r ~/workspace/github.com/romkatv/powerlevel10k/powerlevel10k.zsh-theme ]]; then
+	  source ~/workspace/github.com/romkatv/powerlevel10k/powerlevel10k.zsh-theme
+  fi
 
-  source ~/workspace/github.com/zdharma-continuum/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
-  source ~/workspace/github.com/zsh-users/zsh-autosuggestions/zsh-autosuggestions.zsh
-  source ~/workspace/github.com/zsh-users/zsh-history-substring-search/zsh-history-substring-search.zsh
-  ## Bind j and k for history-substring-search in normal mode
-  bindkey -M vicmd 'k' history-substring-search-up
-  bindkey -M vicmd 'j' history-substring-search-down
-  ## Bind ⬆️ and ⬇️ for history-substring-search in insert mode
-  bindkey '^[[A' history-substring-search-up
-  bindkey '^[[B' history-substring-search-down
-  bindkey "$terminfo[kcuu1]" history-substring-search-up
-  bindkey "$terminfo[kcud1]" history-substring-search-down
+  if [[ -r ~/workspace/github.com/facebook/sapling/eden/scm/contrib/scm-prompt.sh ]]; then
+	  source ~/workspace/github.com/facebook/sapling/eden/scm/contrib/scm-prompt.sh
+  fi
+  if [[ -r ~/.p10k.zsh ]]; then
+	  ## To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+	  source ~/.p10k.zsh
+  fi
 
-  # FZF
-  ## read by fzf program (see man fzf)
-  export FZF_DEFAULT_OPTS='--height=70% '
-  export FZF_DEFAULT_COMMAND='fd --no-require-git 2>/dev/null || git ls-tree -r --name-only HEAD'
+  if [[ -r ~/workspace/github.com/zdharma/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ]]; then
+	  source ~/workspace/github.com/zdharma-continuum/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+  fi
+  if [[ -r ~/workspace/github.com/zsh-users/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
+	  source ~/workspace/github.com/zsh-users/zsh-autosuggestions/zsh-autosuggestions.zsh
+  fi
+  if [[ -r ~/workspace/github.com/zsh-users/zsh-history-substring-search/zsh-history-substring-search.zsh ]]; then
+	  source ~/workspace/github.com/zsh-users/zsh-history-substring-search/zsh-history-substring-search.zsh
+	  ## Bind j and k for history-substring-search in normal mode
+	  bindkey -M vicmd 'k' history-substring-search-up
+	  bindkey -M vicmd 'j' history-substring-search-down
+	  ## Bind ⬆️ and ⬇️ for history-substring-search in insert mode
+	  bindkey '^[[A' history-substring-search-up
+	  bindkey '^[[B' history-substring-search-down
+	  bindkey "$terminfo[kcuu1]" history-substring-search-up
+	  bindkey "$terminfo[kcud1]" history-substring-search-down
+  fi
 
-  # read by fzf/shell/key-bindings.zsh
-  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-  export FZF_PREVIEW_OPTS='--preview "bat --color always {} 2>/dev/null || cat {}" --preview-window=right:60%:wrap'
-  export FZF_CTRL_T_OPTS=$FZF_PREVIEW_OPTS
+  if type fzf > /dev/null; then
+	  ## read by fzf program (see man fzf)
+	  export FZF_DEFAULT_OPTS='--height=70% '
+	  export FZF_DEFAULT_COMMAND='fd --no-require-git 2>/dev/null || git ls-tree -r --name-only HEAD'
 
-  source "${FZF_BASE:="$HOME/workspace/github.com/junegunn/fzf/"}/shell/key-bindings.zsh"
-  source "$FZF_BASE/shell/completion.zsh"
+	  # read by fzf/shell/key-bindings.zsh
+	  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+	  export FZF_PREVIEW_OPTS='--preview "bat --color always {} 2>/dev/null || cat {}" --preview-window=right:60%:wrap'
+	  export FZF_CTRL_T_OPTS=$FZF_PREVIEW_OPTS
 
-  ## from fzf.zsh plugin
-  bindkey '^p' fzf-file-widget
-  # FZF end
+	  source "${FZF_BASE:="$HOME/workspace/github.com/junegunn/fzf/"}/shell/key-bindings.zsh"
+	  source "$FZF_BASE/shell/completion.zsh"
+
+	  ## from fzf.zsh plugin
+	  bindkey '^p' fzf-file-widget
+  fi
 
 }
 if [[ -z $ZSH_SKIP_LOADING_PLUGINS ]]; then
