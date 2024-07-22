@@ -207,8 +207,6 @@ smart_gaps on
 smart_gaps inverse_outer
 smart_borders on
 
-for_window [class="Spotify"] move to workspace $ws4
-
 # Make keyboard faster
 exec xset r rate 168 35
 
