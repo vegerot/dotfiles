@@ -1,11 +1,11 @@
 # Compute how long startup takes.
 # Only GNU date supports milliseconds, and also only GNU date has `--help`
 if type gdate > /dev/null; then
-  start=$(gdate +%s.%N)
+	start=$(gdate +%s.%N)
 elif $(date --help &> /dev/null); then
-  start=`date +%s.%N`
+	start=`date +%s.%N`
 else
-  start=$(python3 -c "import time; print(time.time())")
+	start=$(python3 -c "import time; print(time.time())")
 fi
 
 # remove duplicates from PATH
@@ -21,9 +21,9 @@ else
 fi;
 
 if [[ $TERM_PROGRAM != "WarpTerminal" \
-  && -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"\
-  ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+	&& -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"\
+	]]; then
+	source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 # for some reason "\n" doesn't work in $PS1??
@@ -81,9 +81,9 @@ keymaps() {
 	xcape -e 'Control_L=Escape'
 }
 if command -v cmd.exe &>/dev/null; then
-  local isWSL=true
+	local isWSL=true
 else
-  local isWSL=false
+	local isWSL=false
 fi
 
 if [[ -n "$XDG_CURRENT_SESSION" ]]; then
@@ -98,13 +98,13 @@ bindkey "^R" history-incremental-search-backward
 
 ## change cursor shape in vi mode
 zle-keymap-select () {
-    if [[ $KEYMAP == vicmd ]]; then
-        # the command mode for vi
-        echo -ne "\e[2 q"
-    else
-        # the insert mode for vi
-        echo -ne "\e[5 q"
-    fi
+if [[ $KEYMAP == vicmd ]]; then
+	# the command mode for vi
+	echo -ne "\e[2 q"
+else
+	# the insert mode for vi
+	echo -ne "\e[5 q"
+fi
 }
 precmd_functions+=(zle-keymap-select)
 zle -N zle-keymap-select
@@ -119,23 +119,23 @@ setopt interactivecomments
 
 source_max_scripts() {
 	find-up() {
-		local current_path
-		current_path=$(pwd)
-		while [[ -n $current_path ]]; do
-			if [[ -e $current_path/$1 ]]; then
-				echo $current_path/$1
-				return
-			fi
-			current_path=${current_path%/*}
-		done
-	}
-	# search the directory tree upwards for max_scripts_source_on_cd.sh
-	local script_name="max_scripts_source_on_cd.sh"
-	local max_scripts
-	max_scripts=$(find-up $script_name)
-	if [[ -n $max_scripts ]]; then
-		source $max_scripts
-	fi
+	local current_path
+	current_path=$(pwd)
+	while [[ -n $current_path ]]; do
+		if [[ -e $current_path/$1 ]]; then
+			echo $current_path/$1
+			return
+		fi
+		current_path=${current_path%/*}
+	done
+}
+# search the directory tree upwards for max_scripts_source_on_cd.sh
+local script_name="max_scripts_source_on_cd.sh"
+local max_scripts
+max_scripts=$(find-up $script_name)
+if [[ -n $max_scripts ]]; then
+	source $max_scripts
+fi
 }
 
 chpwd_functions+=(source_max_scripts)
@@ -148,15 +148,15 @@ zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 
 ## credit: https://medium.com/@dannysmith/little-thing-2-speeding-up-zsh-f1860390f92
 autoload -Uz compinit
 for dump in ~/.zcompdump(N.mh+24); do
-  compinit
+	compinit
 done
 compinit -C
 
 # PLUGINS
 load_plugins() {
-  if type jump > /dev/null; then
-	  eval "$(jump shell zsh)"
-  fi
+	if type jump > /dev/null; then
+		eval "$(jump shell zsh)"
+	fi
 
   ## POWERLEVEL10K
   if [[ $TERM_PROGRAM == "WarpTerminal" ]]; then
@@ -217,7 +217,7 @@ load_plugins() {
 
 }
 if [[ -z $ZSH_SKIP_LOADING_PLUGINS ]]; then
-  load_plugins
+	load_plugins
 fi
 
 # j makes jumping to directories easier
@@ -231,18 +231,18 @@ source_max_scripts
 
 # Compute time taken
 if type gdate > /dev/null; then
-  end=$(gdate +%s.%N)
+end=$(gdate +%s.%N)
 elif $(date --help &> /dev/null); then
-  end=`date +%s.%N`
+end=`date +%s.%N`
 else
-  end=$(python3 -c "import time; print(time.time())")
+end=$(python3 -c "import time; print(time.time())")
 fi
 runtime=$( echo "$end - $start" | bc -l )
 
 startuptime=$(printf '%.2f seconds\n' $runtime)
 if type rainbow > /dev/null; then
-  printf "$startuptime\n" | rainbow
+	printf "$startuptime\n" | rainbow
 else
-  printf "$startuptime\n"
+	printf "$startuptime\n"
 fi
 
