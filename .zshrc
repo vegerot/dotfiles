@@ -162,12 +162,13 @@ load_plugins() {
   if [[ $TERM_PROGRAM == "WarpTerminal" ]]; then
 	  return
   fi
-  if [[ -r ~/workspace/github.com/romkatv/powerlevel10k/powerlevel10k.zsh-theme ]]; then
-	  source ~/workspace/github.com/romkatv/powerlevel10k/powerlevel10k.zsh-theme
+  local powerlevel10k_path="$HOME/workspace/github.com/romkatv/powerlevel10k/powerlevel10k.zsh-theme"
+  if [[ -r $powerlevel10k_path ]]; then
+	  source $powerlevel10k_path
   fi
-
-  if [[ -r ~/workspace/github.com/facebook/sapling/eden/scm/contrib/scm-prompt.sh ]]; then
-	  source ~/workspace/github.com/facebook/sapling/eden/scm/contrib/scm-prompt.sh
+  local sapling_prompt_path="$HOME/workspace/github.com/facebook/sapling/eden/scm/contrib/scm-prompt.sh"
+  if [[ -r $sapling_prompt_path ]]; then
+	  source $sapling_prompt_path
   fi
   if [[ -r ~/.p10k.zsh ]]; then
 	  ## To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -179,11 +180,14 @@ load_plugins() {
 	  source $zsh_syntax_highlighting_path
   fi
 
-  if [[ -r ~/workspace/github.com/zsh-users/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
-	  source ~/workspace/github.com/zsh-users/zsh-autosuggestions/zsh-autosuggestions.zsh
+  local zsh_autosuggestions_path="$HOME/workspace/github.com/zsh-users/zsh-autosuggestions/zsh-autosuggestions.zsh"
+  if [[ -r $zsh_autosuggestions_path ]]; then
+	  source $zsh_autosuggestions_path
   fi
-  if [[ -r ~/workspace/github.com/zsh-users/zsh-history-substring-search/zsh-history-substring-search.zsh ]]; then
-	  source ~/workspace/github.com/zsh-users/zsh-history-substring-search/zsh-history-substring-search.zsh
+
+  local zsh_history_substring_search_path="$HOME/workspace/github.com/zsh-users/zsh-history-substring-search/zsh-history-substring-search.zsh"
+  if [[ -r $zsh_history_substring_search_path ]]; then
+	  source $zsh_history_substring_search_path
 	  ## Bind j and k for history-substring-search in normal mode
 	  bindkey -M vicmd 'k' history-substring-search-up
 	  bindkey -M vicmd 'j' history-substring-search-down
