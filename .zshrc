@@ -174,9 +174,11 @@ load_plugins() {
 	  source ~/.p10k.zsh
   fi
 
-  if [[ -r ~/workspace/github.com/zdharma/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh ]]; then
-	  source ~/workspace/github.com/zdharma-continuum/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+  local zsh_syntax_highlighting_path="$HOME/workspace/github.com/zdharma-continuum/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
+  if [[ -r $zsh_syntax_highlighting_path ]]; then
+	  source $zsh_syntax_highlighting_path
   fi
+
   if [[ -r ~/workspace/github.com/zsh-users/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
 	  source ~/workspace/github.com/zsh-users/zsh-autosuggestions/zsh-autosuggestions.zsh
   fi
