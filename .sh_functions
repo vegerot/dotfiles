@@ -41,7 +41,7 @@ SetWebCerts() {
 #	[[ -d "$HOME/.tea" ]] && source <("$HOME/.tea/tea.xyz/v*/bin/tea" --magic)
 #}
 
-source ~/dotfiles/bin/clone
+[[ -r ~/dotfiles/bin/clone ]] && source ~/dotfiles/bin/clone
 
 function is-walmart-mac() {
   [[ -f "/Users/Shared/Start Here - Mac At Walmart.pdf" ]]

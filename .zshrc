@@ -12,7 +12,7 @@ fi
 typeset -aU path
 typeset -U PATH
 
-source ~/.profile
+[[ -r ~/.profile ]] && source ~/.profile
 
 if [[ $OSTYPE == "darwin"* ]]; then
 	~/dotfiles/bin/randomcowcommand --async

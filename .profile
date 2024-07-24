@@ -8,8 +8,8 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 #if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
 #       tmux new-session -t default \; new-window || tmux new -s default -u
 #fi
-. ~/.env
-. ~/.sh_functions
-. ~/.aliases
+[ -r ~/.env ] && . ~/.env
+[ -r ~/.sh_functions ] && . ~/.sh_functions
+[ -r ~/.aliases ] && . ~/.aliases
 
 #eval "$( /usr/local/opt/coreutils/libexec/gnubin/dircolors ~/.dir_colors)"
