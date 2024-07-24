@@ -162,17 +162,18 @@ load_plugins() {
   if [[ $TERM_PROGRAM == "WarpTerminal" ]]; then
 	  return
   fi
-  local powerlevel10k_path="$HOME/workspace/github.com/romkatv/powerlevel10k/powerlevel10k.zsh-theme"
-  if [[ -r $powerlevel10k_path ]]; then
-	  source $powerlevel10k_path
+  local powerlevel10k_library_path="$HOME/workspace/github.com/romkatv/powerlevel10k/powerlevel10k.zsh-theme"
+  local powerlevel10k_prompt_path="$HOME/.p10k.zsh"
+  if [[ -r $powerlevel10k_library_path && -r $powerlevel10k_prompt_path ]]; then
+	  source $powerlevel10k_library_path
+
+	  ## To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+	  source $powerlevel10k_prompt_path
   fi
+
   local sapling_prompt_path="$HOME/workspace/github.com/facebook/sapling/eden/scm/contrib/scm-prompt.sh"
   if [[ -r $sapling_prompt_path ]]; then
 	  source $sapling_prompt_path
-  fi
-  if [[ -r ~/.p10k.zsh ]]; then
-	  ## To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-	  source ~/.p10k.zsh
   fi
 
   local zsh_syntax_highlighting_path="$HOME/workspace/github.com/zdharma-continuum/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
