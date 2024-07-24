@@ -115,31 +115,6 @@ COMPLETION_WAITING_DOTS="true"
 # use # for comments in interactive mode
 setopt interactivecomments
 
-## always source max_scripts_source_on_cd.sh in any directory I'm in when I cd
-
-source_max_scripts() {
-	find-up() {
-	local current_path
-	current_path=$(pwd)
-	while [[ -n $current_path ]]; do
-		if [[ -e $current_path/$1 ]]; then
-			echo $current_path/$1
-			return
-		fi
-		current_path=${current_path%/*}
-	done
-}
-# search the directory tree upwards for max_scripts_source_on_cd.sh
-local script_name="max_scripts_source_on_cd.sh"
-local max_scripts
-max_scripts=$(find-up $script_name)
-if [[ -n $max_scripts ]]; then
-	source $max_scripts
-fi
-}
-
-chpwd_functions+=(source_max_scripts)
-
 ## give case-insensitive filepath completions
 ## credit: https://stackoverflow.com/a/24237590/6100005
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
@@ -227,6 +202,30 @@ if ! type j > /dev/null; then
 	export CDPATH="$CDPATH:$HOME/gecgithub01.walmart.com/m0c0j7y/:$HOME/gecgithub01.walmart.com/walmart-web/walmart-web-worktree/"
 fi
 
+## always source max_scripts_source_on_cd.sh in any directory I'm in when I cd
+
+source_max_scripts() {
+	find-up() {
+	local current_path
+	current_path=$(pwd)
+	while [[ -n $current_path ]]; do
+		if [[ -e $current_path/$1 ]]; then
+			echo $current_path/$1
+			return
+		fi
+		current_path=${current_path%/*}
+	done
+}
+# search the directory tree upwards for max_scripts_source_on_cd.sh
+local script_name="max_scripts_source_on_cd.sh"
+local max_scripts
+max_scripts=$(find-up $script_name)
+if [[ -n $max_scripts ]]; then
+	source $max_scripts
+fi
+}
+
+chpwd_functions+=(source_max_scripts)
 source_max_scripts
 
 # Compute time taken
