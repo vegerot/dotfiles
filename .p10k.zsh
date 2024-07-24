@@ -1119,7 +1119,7 @@
   typeset -g POWERLEVEL9K_NVM_PROMPT_ALWAYS_SHOW=false
   # If set to false, hide node version if it's equal to "system".
   typeset -g POWERLEVEL9K_NVM_SHOW_SYSTEM=true
-  typeset -g POWERLEVEL9K_NVM_SHOW_ON_COMMAND='node|npm|deno|yarn|npx|nvm|NvmInit' # @@@ ME
+  typeset -g POWERLEVEL9K_NVM_SHOW_ON_COMMAND='node|npm|npx|nvm|pnpm|pnpx|yarn|deno|bun|bunx|NvmInit' # @@@ ME
   # Custom icon.
   # typeset -g POWERLEVEL9K_NVM_VISUAL_IDENTIFIER_EXPANSION='⭐'
 
