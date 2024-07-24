@@ -154,10 +154,6 @@ compinit -C
 
 # PLUGINS
 load_plugins() {
-	if type jump > /dev/null; then
-		eval "$(jump shell zsh)"
-	fi
-
   ## POWERLEVEL10K
   if [[ $TERM_PROGRAM == "WarpTerminal" ]]; then
 	  return
@@ -197,6 +193,10 @@ load_plugins() {
 	  bindkey '^[[B' history-substring-search-down
 	  bindkey "$terminfo[kcuu1]" history-substring-search-up
 	  bindkey "$terminfo[kcud1]" history-substring-search-down
+  fi
+
+  if type jump > /dev/null; then
+	  eval "$(jump shell zsh)"
   fi
 
   if type fzf > /dev/null; then
