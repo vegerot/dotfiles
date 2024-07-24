@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # forked from spikegrobstein/fzf-menu.  MIT license applies.
+set -o errexit -o nounset -o pipefail
 
 GREEN_START='\033[01;32m'
 COLOR_RESET='\033[0m'
