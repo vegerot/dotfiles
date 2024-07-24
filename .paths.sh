@@ -13,18 +13,8 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 export PATH="$HOME/.local/bin:$PATH"
 
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
 
-# zig
-ZIG="$HOME/.local/zig"
-[[ -d $ZIG ]] && export PATH="$ZIG:$PATH"
-# Walmart iOS dev stuff
-MINT_PATH=$HOME/.mint
-[[ -d $MINT_PATH ]] && export PATH=$MINT_PATH/bin:$PATH
-
-
+### -----------------------------------
 ## Unimportant stuff goes at the end
 export DENO_INSTALL="$HOME/.deno"
 [[ -d $DENO_INSTALL ]] && export PATH="$PATH:$DENO_INSTALL/bin"
@@ -47,6 +37,17 @@ if [[ -d ${llvm} ]]; then
 	export PATH="$PATH:${llvm}"
 fi
 
+# zig
+ZIG="$HOME/.local/zig"
+[[ -d $ZIG ]] && export PATH="$PATH:$ZIG"
+# Walmart iOS dev stuff
+MINT_PATH=$HOME/.mint
+[[ -d $MINT_PATH ]] && export PATH="$PATH:$MINT_PATH/bin"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$PATH:$BUN_INSTALL/bin"
+
 # ADB installed by Android Studio
 export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools/"
 
@@ -54,7 +55,7 @@ export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools/"
 export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
+  *) export PATH="$PATH:$PNPM_HOME" ;;
 esac
 # pnpm end
 
@@ -69,6 +70,7 @@ esac
 # make sure this is the last thing
 export PATH="$PATH:."
 
+### -----------------------------------
 ### MAN path
 
 export MANPATH="/usr/local/share/man:$MANPATH:"
@@ -78,7 +80,7 @@ if [[ $OSTYPE == "darwin"* ]]; then
 fi
 
 ### fpath stuff for zsh on macOS
-[[ $OSTYPE == "darwin"* ]] && export FPATH="/opt/homebrew/share/zsh/site-functions:$FPATH"
+[[ $OSTYPE == "darwin"* && -d /opt/homebrew/share/zsh/site-functions && $0 == *"zsh"* ]] && export FPATH="/opt/homebrew/share/zsh/site-functions:$FPATH"
 
 #if command -v pyenv 1>/dev/null 2>&1; then
 if false; then
