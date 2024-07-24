@@ -88,10 +88,3 @@ if false; then
   eval "$(pyenv init -)"
 fi
 
-
-# bun completions
-[ -s "/Users/m0c0j7y/.bun/_bun" ] && source "/Users/m0c0j7y/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
