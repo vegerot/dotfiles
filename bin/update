@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
-set -o xtrace
 set -o errexit
+set -o nounset
+set -o pipefail
+set -o xtrace
 
 function upgrade_brew() {
 	echo "brew"
@@ -41,7 +43,7 @@ function upgrade_neovim() {
 
 	read -p 'Would you like to upgrade Neovim plugins (y/n): ' upgradeNvim
 	if [[ "$upgradeNvim" == "y" ]]; then
-		fd . --type d --max-depth 1 --full-path ~/.local/share/nvim/site/pack/*/start/ | parallel "($(declare -f pull_and_update) && pull_and_update {})"
+		fd . --type d --max-depth 1 --full-path ~/.local/share/nvim/site/pack/*/start/ --exec zsh -c "($(declare -f pull_and_update) && pull_and_update {})";
 	fi
 }
 

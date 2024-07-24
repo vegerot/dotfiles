@@ -36,6 +36,27 @@ function uninstrument_for_profiling() {
 	done
 }
 
+function web_start_dev() {
+	setUpNvmIfNotSetUp
+	NODE_OPTIONS="$NODE_OPTIONS --max-old-space-size=42069"\
+	NODE_TLS_REJECT_UNAUTHORIZED=0 \
+	pnpm start journey-app --inspect --port=4200 --dev=true\
+		--walmartReverseProxyProfile=production $@
+}
+
+function web_start_prod() {
+	setUpNvmIfNotSetUp
+	NODE_OPTIONS="$NODE_OPTIONS --max-old-space-size=42069"\
+	NODE_TLS_REJECT_UNAUTHORIZED=0 \
+	pnpm start journey-app --inspect --port=4200 --dev=false\
+		--walmartReverseProxyProfile=production $@
+}
+
+function web_start() {
+	setUpNvmIfNotSetUp
+	web_start_prod $@
+}
+
 function debug() {
 	if [[ -z $QUIET ]]; then return; fi
 	echo "$@"

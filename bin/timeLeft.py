@@ -10,7 +10,7 @@ def main():
 
     chargeInfo = subprocess.check_output('system_profiler SPPowerDataType', shell = True).decode('utf-8')
     charging = re.compile(r'AC Charger Information:.*?Connected: (?P<connected>(Yes|No))'\
-                          '(.*?Wattage \(W\): (?P<wattage>(\d+)))?\n.*?Charging: (?P<charging>(Yes|No))',
+                          r'(.*?Wattage \(W\): (?P<wattage>(\d+)))?\n.*?Charging: (?P<charging>(Yes|No))',
                           re.DOTALL)
 
     parsedInfo = charging.search(chargeInfo)

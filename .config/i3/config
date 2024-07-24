@@ -27,37 +27,9 @@ set $mod3 Super_L
 # The font above is very space-efficient, that is, it looks good, sharp and
 # clear in small sizes. However, its unicode glyph coverage is limited, the old
 # X core fonts rendering does not support right-to-left and this being a bitmap
-# font, it doesn’t scale on retina/hidpi displays.
+# font, it doesn't scale on retina/hidpi displays.
 
 font xft:JetBrains Mono:style=Regular:pixelsize=12:antialias=true:autohint=true
-exec_always --no-startup-id feh --bg-scale /home/max/Pictures/macOS-Catalina-Dark-Mode.jpg
-
-# make GNOME stuff work
-
-exec --no-startup-id /usr/libexec/gsd-xsettings
-exec --no-startup-id /usr/libexec/gsd-a11y-settings
-exec --no-startup-id /usr/libexec/gsd-backlight-helper
-#exe --no-startup-ids /usr/libexec/gsd-clipboard
-exec --no-startup-id /usr/libexec/gsd-color
-exec --no-startup-id /usr/libexec/gsd-datetime
-exec --no-startup-id /usr/libexec/gsd-dummy
-exec --no-startup-id /usr/libexec/gsd-housekeeping
-exec --no-startup-id /usr/libexec/gsd-keyboard
-#exe --no-startup-ids /usr/libexec/gsd-locate-pointer
-exec --no-startup-id /usr/libexec/gsd-media-keys
-#exe --no-startup-ids /usr/libexec/gsd-mouse
-exec --no-startup-id /usr/libexec/gsd-power
-exec --no-startup-id /usr/libexec/gsd-printer
-exec --no-startup-id /usr/libexec/gsd-print-notifications
-exec --no-startup-id /usr/libexec/gsd-rfkill
-exec --no-startup-id /usr/libexec/gsd-screensaver-proxy
-exec --no-startup-id /usr/libexec/gsd-sharing
-exec --no-startup-id /usr/libexec/gsd-smartcard
-exec --no-startup-id /usr/libexec/gsd-sound
-#exe --no-startup-ids /usr/libexec/gsd-test-input-helper
-exec --no-startup-id /usr/libexec/gsd-wacom
-exec --no-startup-id /usr/libexec/gsd-wacom-led-helper
-exec --no-startup-id /usr/libexec/gsd-wacom-oled-helper
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -68,12 +40,7 @@ bindsym $mod2+Return exec i3-sensible-terminal
 # kill focused window
 bindsym $mod+Shift+q kill
 
-# start dmenu (a program launcher)
-# There also is the (new) i3-dmenu-desktop which only displays applications
-# shipping a .desktop file. It is a wrapper around dmenu, so you need that
-# installed.
-#set $quickOpen j4-dmenu-desktop --dmenu="rofi -dmenu -i -sort -sorting-method fzf"
-set $quickOpen rxvt-unicode -name "fzf-menu" -e "fzf-menu"
+set $quickOpen rxvt-unicode -name "fzf-menu" -e "fzf-menu" -c "&>/tmp/fzf-menu.out"
 bindsym $mod+d exec --no-startup-id $quickOpen
 bindsym --release $mod3 exec --no-startup-id $quickOpen
 for_window [instance="^fzf-menu$"] floating enable
@@ -183,7 +150,7 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 #bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
 #bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
 #
-## Sreen brightness controls
+## Screen brightness controls
 #bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
 #bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
 #
@@ -240,8 +207,6 @@ smart_gaps on
 smart_gaps inverse_outer
 smart_borders on
 
-for_window [class="Spotify"] move to workspace $ws4
-
 # Make keyboard faster
 exec xset r rate 168 35
 
@@ -253,6 +218,38 @@ exec_always --no-startup-id xcape -e 'Control_L=Escape'
 ##exec autocutsel -selection PRIMARY -fork
 exec xrdb -merge ~/.Xresources
 ##exec --always touchegg
+
+# set background
+#exec_always --no-startup-id feh --bg-scale /home/max/Pictures/macOS-Catalina-Dark-Mode.jpg
+exec_always [[ -f ~/.fehbg ]] && ~/.fehbg
+exec_always systemctl --user start apodesktop
+
+# make GNOME stuff work
+
+exec --no-startup-id /usr/libexec/gsd-xsettings
+exec --no-startup-id /usr/libexec/gsd-a11y-settings
+exec --no-startup-id /usr/libexec/gsd-backlight-helper
+#exe --no-startup-ids /usr/libexec/gsd-clipboard
+exec --no-startup-id /usr/libexec/gsd-color
+exec --no-startup-id /usr/libexec/gsd-datetime
+exec --no-startup-id /usr/libexec/gsd-dummy
+exec --no-startup-id /usr/libexec/gsd-housekeeping
+exec --no-startup-id /usr/libexec/gsd-keyboard
+#exe --no-startup-ids /usr/libexec/gsd-locate-pointer
+exec --no-startup-id /usr/libexec/gsd-media-keys
+#exe --no-startup-ids /usr/libexec/gsd-mouse
+exec --no-startup-id /usr/libexec/gsd-power
+exec --no-startup-id /usr/libexec/gsd-printer
+exec --no-startup-id /usr/libexec/gsd-print-notifications
+exec --no-startup-id /usr/libexec/gsd-rfkill
+exec --no-startup-id /usr/libexec/gsd-screensaver-proxy
+exec --no-startup-id /usr/libexec/gsd-sharing
+exec --no-startup-id /usr/libexec/gsd-smartcard
+exec --no-startup-id /usr/libexec/gsd-sound
+#exe --no-startup-ids /usr/libexec/gsd-test-input-helper
+exec --no-startup-id /usr/libexec/gsd-wacom
+exec --no-startup-id /usr/libexec/gsd-wacom-led-helper
+exec --no-startup-id /usr/libexec/gsd-wacom-oled-helper
 
 exec_always --no-startup-id picom -CGb
 #exec_always --no-startup-id gnome-power-manager

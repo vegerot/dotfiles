@@ -1,0 +1,84 @@
+#!/usr/bin/env zsh
+
+export LC_ALL=C
+
+HISTFILE=${HISTFILE:-$HOME/.zsh_history}
+
+function freq() {
+	cat $HISTFILE \
+		| sed 's/.*;//' \
+		| sort \
+		| uniq -c \
+		| sort -n \
+		| tail -n50
+}
+
+function total_time() {
+	cat $HISTFILE \
+		| sed -n 's/^:.*:\([[:digit:]]*\);/\1@@@/;/^[[:digit:]]/p' \
+		| awk -F'@@@' '
+	{ t[$2] += $1 + 1}
+END {
+for (i in t) {
+	s = t[i]
+	days = int(s / 60/60/24)
+	hours = int(s / 60/60) % 24
+	minutes = int(s / 60) % 60
+	seconds = s % 60
+	printf "%02d\t%02dd:%02dh:%02dm:%02ds\t%02s\n", t[i], days, hours, minutes, seconds, i | "sort -n"
+}
+}
+'\
+	| cut -f2- \
+	| tail -n50
+}
+
+function average_time() {
+	cat $HISTFILE \
+		| sed -n 's/^:.*:\([[:digit:]]*\);/\1@@@/;/^[[:digit:]]/p' \
+		| awk -F'@@@' '
+	{
+		t[$2] += $1 + 1;
+		c[$2] += 1;
+	}
+END {
+for (i in t) {
+	total_seconds = t[i]
+	days_total = int(total_seconds / 60/60/24)
+	hours_total = int(total_seconds / 60/60) % 24
+	minutes_total = int(total_seconds / 60) % 60
+	seconds_total = total_seconds % 60
+	average_seconds = t[i] / c[i]
+	days_average = int(average_seconds / 60/60/24)
+	hours_average = int(average_seconds / 60/60) % 24
+	minutes_average = int(average_seconds / 60) % 60
+	seconds_average = average_seconds % 60
+	printf "%d\tTOTAL: %02dd:%02dh:%02dm:%02ds\t AVERAGE: %02dd:%02dh:%02dm:%02ds\t\t%02s\n", t[i], days_total, hours_total, minutes_total, seconds_total, days_average, hours_average, minutes_average, seconds_average, i | "sort -n"
+}
+}
+'\
+	| cut -f2- \
+	| tail -n50
+}
+
+function main() {
+	case $1 in
+		"freq")
+			freq
+			;;
+		"total_time")
+			total_time
+			;;
+		"time")
+			total_time
+			;;
+		"average_time")
+			average_time
+			;;
+		*)
+			echo "Usage: $0 [freq|total_time|average_time]"
+			;;
+	esac
+}
+
+main $1

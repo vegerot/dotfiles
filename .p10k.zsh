@@ -31,7 +31,7 @@
   autoload -Uz is-at-least && is-at-least 5.1 || return
 
   function prompt_my_sapling_status() {
-    [[ -n ./(../)#.sl(#qN) ]] || return
+    [[ -n ./(../)#.sl(#qN) || -n ./(../)#.git/sl(#qN) ]] || return
     local content
     content=$(_scm_prompt) || return
     p10k segment -b green -f black -i 'sl' -t "$content"
@@ -101,7 +101,7 @@
     midnight_commander      # midnight commander shell (https://midnight-commander.org/)
     nix_shell               # nix shell (https://nixos.org/nixos/nix-pills/developing-with-nix-shell.html)
     # vi_mode               # vi mode (you don't need this if you've enabled prompt_char)
-    # vpn_ip                # virtual private network indicator
+    vpn_ip                # virtual private network indicator
     # load                  # CPU load
     # disk_usage            # disk usage
     # ram                   # free RAM

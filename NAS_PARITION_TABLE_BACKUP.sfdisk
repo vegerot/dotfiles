@@ -1,0 +1,9 @@
+label: gpt
+label-id: C5714D0E-40C1-4760-AE65-81518107BDCE
+device: /dev/sda
+unit: sectors
+first-lba: 34
+last-lba: 15628053134
+sector-size: 512
+
+/dev/sda1 : start=     1048576, size= 15032385536, type=0FC63DAF-8483-4772-8E79-3D69D8477DE4, uuid=EF9914BB-FE68-4921-8825-33F593E14AA6, name="CopyOfPartitionOne"

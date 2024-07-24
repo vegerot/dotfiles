@@ -1,19 +1,25 @@
 #Path stuff
 
-if [[ "$PATH" == *$HOME/.cargo/bin* && -z $ALWAYS_SOURCE_PATHS ]]; then
-	#echo "skipping path stuff"
-	return
-fi
+#if [[ "$PATH" == *$HOME/.cargo/bin* && -z $ALWAYS_SOURCE_PATHS ]]; then
+#	#echo "skipping path stuff"
+#	return
+#fi
 
-[[ -f /etc/zprofile ]] && source /etc/zprofile
+#[[ -f /etc/zprofile ]] && source /etc/zprofile
 ## important stuff goes first
 export PATH="$HOME/.cargo/bin:$PATH"
 
-[[ "$OSTYPE" == "darwin"* ]] && export PATH="/usr/local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:$HOME/.cargo/bin:/usr/local/opt/ruby/bin:/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+[[ "$OSTYPE" == "darwin"* ]] && export PATH="/usr/local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:$HOME/.cargo/bin:/usr/local/opt/ruby/bin:/opt/homebrew/opt/coreutils/libexec/gnubin:/opt/homebrew/opt/curl/bin:$PATH"
+
+export PATH="$HOME/.local/bin:$PATH"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# zig
+ZIG="$HOME/.local/zig"
+[[ -d $ZIG ]] && export PATH="$ZIG:$PATH"
 # Walmart iOS dev stuff
 MINT_PATH=$HOME/.mint
 [[ -d $MINT_PATH ]] && export PATH=$MINT_PATH/bin:$PATH
@@ -36,7 +42,7 @@ fi
 
 ## macOS' toolchain doesn't come with tools like clang-format and clang-tidy
 ## instead, use LLVM for those tools but stick with the builtin ones otherwise
-local llvm=/opt/homebrew/opt/llvm/bin
+llvm=/opt/homebrew/opt/llvm/bin
 if [[ -d ${llvm} ]]; then
 	export PATH="$PATH:${llvm}"
 fi
@@ -66,8 +72,10 @@ export PATH="$PATH:."
 ### MAN path
 
 export MANPATH="/usr/local/share/man:$MANPATH:"
-export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
-export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
+if [[ $OSTYPE == "darwin"* ]]; then
+	export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
+	export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
+fi
 
 ### fpath stuff for zsh on macOS
 [[ $OSTYPE == "darwin"* ]] && export FPATH="/opt/homebrew/share/zsh/site-functions:$FPATH"
@@ -80,8 +88,9 @@ if false; then
   eval "$(pyenv init -)"
 fi
 
+
 # bun completions
-[ -s "/home/max/.bun/_bun" ] && [ "$SHELL" = "zsh" ] && source "/home/max/.bun/_bun"
+[ -s "/Users/m0c0j7y/.bun/_bun" ] && source "/Users/m0c0j7y/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"

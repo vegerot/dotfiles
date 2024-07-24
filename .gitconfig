@@ -1,5 +1,5 @@
 [core]
-  pager = "${_GIT_CONTRIB:-/usr/local/share/git-core/contrib}/diff-highlight/diff-highlight | $PAGER -R"
+	pager = "eval ${GITPAGER}"
 	fsmonitor = true
 	untrackedCache = true
 
@@ -26,7 +26,7 @@
   verbose = true
 
 [interactive]
-  diffFilter = "$_GIT_CONTRIB/diff-highlight/diff-highlight | $PAGER"
+  diffFilter = "eval $GITPAGER"
 
 [rebase]
   instructionFormat = (%al) %s

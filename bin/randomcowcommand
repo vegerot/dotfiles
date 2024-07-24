@@ -1,26 +1,116 @@
 #!/usr/bin/env bash
 
+set -o errexit -o nounset -o pipefail
+
 find_random_manpage() {
 	OLDIFS=$IFS
 	IFS=:
-	for dir in $(manpath -q); do
-		[[ -n $dir ]] && printf "%s\n" $dir/man1/* 2>/dev/null
-	done | shuf -n 1
+ 	for dir in $(manpath -q); do
+ 		[[ -n $dir ]] && printf "%s\n" $dir/man{1,2}/* 2>/dev/null | grep -v perl
+ 	done | shuf -n 1
 	IFS=$OLDIFS
 }
-manpagefile=$(find_random_manpage)
 get_description_of_manpage() {
-	if ! type lexgrog >/dev/null 2>&1; then
-		local manPageText="$(man $1)"
-		local formatted=$(echo "$manPageText" | col -bpx | grep NAME -A1 | tail -1)
-		if [[ -z "$formatted" ]]; then
-			echo "Something went wrong" 1>&2
-			echo "$manpagefile $manPageText" 1>&2
-		fi
-		echo $formatted
+	# source: https://stackoverflow.com/a/3352015/6100005
+	trim() {
+		local var="$*"
+		# remove leading whitespace characters
+		var="${var#"${var%%[![:space:]]*}"}"
+		# remove trailing whitespace characters
+		var="${var%"${var##*[![:space:]]}"}"
+		printf '%s' "$var"
+	}
+	if ! type lexgrog > /dev/null 2>&1; then
+	  #local manPageText="$(man -P cat $1)"
+	  ## HACK(max): If you give `man` the path to the file, it won't correctly
+	  # import `.so`s (because it `cd`s to the wrong directory for the relative
+	  # imports to work).
+	  # Workaround: do what `man FILEPATH` does, but in the right directory.
+	  cd $(dirname $1)/..
+	  local manPageText=$(zcat -f "$1" | mandoc)
+	  local formatted_with_whitespace=$(echo "$manPageText" | col -bpx | grep "^NAME$" -A1 | tail -1)
+	  formatted=$(trim "$formatted_with_whitespace")
+	  if [[ -z "$formatted" ]]; then
+		  echo "randomcowcommand: We messed up with $1" 1>&2
+	  fi
+	  echo $formatted
+  else
+	  local manPageText;
+	  manPageText=$(lexgrog -w $1)
+	  if [[ $? -ne 0 ]]; then
+		  echo "randomcowcommand: We messed up with $1" 1>&2
+		  manPageText=""
+	  fi
+     echo $manPageText| shuf -n 1 | sed -E 's/^.*: "(.*)"$/\1/'
+  fi
+}
+
+format_message() {
+  if type cowsay > /dev/null 2>&1; then
+    cowsay -f $(cowsay -l| tail -n+2|tr " " "\n"|sort -R|head -1) "$1"
+  else
+    printf -- "\n-------------------------------\n"
+    echo "Did you know: $1"
+    printf -- '-------------------------------\n\n'
+  fi
+}
+
+main() {
+	manpagefile=$(find_random_manpage)
+	commanddescription=$(get_description_of_manpage $manpagefile)
+	if [[ -z "$commanddescription" || "$commanddescription" == "builtin"*  ]]; then
+		# we'll never get two duds in a row, right?
+		manpagefile=$(find_random_manpage)
+		commanddescription=$(get_description_of_manpage $manpagefile)
+	fi
+	if [[ -z "$commanddescription" ]]; then
+		# we'll never get three duds in a row, right?
+		commanddescription="randomcowcommand - a script that works sometimes 😢\n"
+	fi
+	cow=$(format_message "$commanddescription")
+	if type rainbow 1>/dev/null 2>&1; then
+		echo "$cow" | rainbow
 	else
-		lexgrog -w $1 | shuf -n 1 | sed -E 's/^.*: "(.*)"$/\1/'
+		echo "$cow"
 	fi
 }
-commanddescription=$(get_description_of_manpage $manpagefile)
-echo "$commanddescription" | cowsay -f $(cowsay -l | tail -n+2 | tr " " "\n" | sort -R | head -1) | lolcat --truecolor --force
+# HACK(max): on my MacBook, `randomcowcommand` takes 200ms which is way too long.
+# Instead, I'll get the cow in the background and save it to disk and then
+# cat it here.
+# The trick is that I'm always showing the _previous_ invocation of the
+# cow.
+if [[ ${1:-} == "--async" ]]; then
+	cowtput=/tmp/cowtput.txt
+	[[ -f $cowtput ]] && cat $cowtput
+	# `disown` makes it not print a message when done
+	# put this line after the `cat` to avoid a race condition where cowtput.txt
+	# is empty because of the redirect
+	(main 2>/dev/null 1> $cowtput) & disown
+else
+	main
+fi
+
+
+
+# fun benchmark:
+#
+# ```sh
+# hyperfine -w 2 \
+# 	'find $(manpath -q | tr ":" " ") -type f -name "*.1" | shuf -n 1' \
+# 	'gfind $(manpath -q | tr ":" " ") -type f -name "*.1" | shuf -n 1' \
+# 	'fd \.1 $(manpath -q | tr ":" " ") --type=file | shuf -n 1' \
+# 	'OLDIFS=$IFS
+# 	IFS=:
+# 	for dir in $(manpath -q); do
+# 		[[ -n $dir ]] && printf "%s\n" $dir/man1/* | grep -i perl
+# 	done | shuf -n 1
+# 	IFS=$OLDIFS'
+# 	'
+# 	OLDIFS=$IFS
+# 	IFS=:
+# 	for dir in $(manpath -q); do
+# 		[[ -n $dir ]] && fd --exact-depth=2 . $dir/ | grep -i perl
+# 	done | shuf -n 1
+# 	IFS=$OLDIFS
+# 	'
+#```

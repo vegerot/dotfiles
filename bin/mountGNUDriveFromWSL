@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -e -x -o pipefail
+
+MNT=${MNT:=/mnt/wsl/PHYSICALDRIVE1p5}
+if [[ ! -d "$MNT/usr/" ]]; then
+    powershell.exe 'sudo.exe wsl.exe --mount "\\.\PHYSICALDRIVE1" --partition 5 --type ext4'
+fi
+
+#sudo mount /dev/sdc5 $MNT
+sudo mount --types=proc {,$MNT}/proc
+sudo mount --rbind {,$MNT}/dev
+sudo mount -o bind {,$MNT}/run
+sudo mount --rbind {,$MNT}/sys
+sudo mount -o bind {,$MNT}/tmp/.X11-unix
+sudo chroot $MNT

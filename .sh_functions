@@ -79,8 +79,14 @@ function vpn-up() {
   else
 	  local vpn_password=$(cat ~/.vpn_password)
   fi
-  if [[ -f /opt/cisco/anyconnect/bin/vpn ]]; then
-	  printf "\n${vpn_password}\n${mfa_code}\ny" | /opt/cisco/anyconnect/bin/vpn -s connect $VPN_HOST $@
+
+  local should_use_anyconnect=false
+  if [[ -x "$(command -v /opt/cisco/*/bin/vpn)" && -z $VPN_DONT_USE_ANYCONNECT ]]; then
+	  should_use_anyconnect=true
+  fi
+
+  if [[ $should_use_anyconnect == true ]]; then
+	  printf "\n${vpn_password}\n${mfa_code}\ny" | /opt/cisco/*/bin/vpn -s connect $VPN_HOST $@
   else
 	  # for some reason this is the only one I've found that works with openconnect
 	  local VPN_HOST=sslvpngwgec.wal-mart.com/Walmart_Associate_MAC_Yubi
@@ -89,25 +95,27 @@ function vpn-up() {
 }
 
 function vpn-down() {
-  if [[ -f /opt/cisco/anyconnect/bin/vpn ]]; then
-	  /opt/cisco/anyconnect/bin/vpn disconnect
-  else
-	  sudo kill -2 `pgrep openconnect`
-  fi
+	local is_openconnect_running=$(pgrep openconnect)
+	if [[ -n $is_openconnect_running ]]; then
+		sudo /bin/kill -2 `pgrep openconnect`
+	else
+		/opt/cisco/*/bin/vpn disconnect
+	fi
 }
 
 function vpn-status() {
-    local vpn=/opt/cisco/anyconnect/bin/vpn
-    if [[ ! -x $vpn ]]; then
-	echo "N/A"
-	return 1
-    fi
+	local vpn=$(echo /opt/cisco/*/bin/vpn);
+	if [[ ! -x $vpn ]]; then
+		echo "N/A"
+		return 1
+	fi
 
-    /opt/cisco/anyconnect/bin/vpn state\
-	| sed -r 's/^.*state: (Connected|Disconnected)$/\1/g'\
-	| grep -E --color=never 'Connected|Disconnected'\
-	| head -n1
+	/opt/cisco/*/bin/vpn state\
+		| sed -r 's/^.*state: (Connected|Disconnected)$/\1/g'\
+		| grep -E --color=never 'Connected|Disconnected'\
+		| head -n1
 }
+
 
 function wmt_sudome() {
   set -x
@@ -139,6 +147,24 @@ function vo() {
 	vim $(fd | fzf)
 }
 
+function trash() {
+	(
+	set -o errexit
+	set -o nounset
+	set -o pipefail
+	set -o xtrace
+
+	for file in $@; do
+		mv $file ~/.local/share/Trash/files/
+		cat <<EOF > ~/.local/share/Trash/info/$(basename $file).trashinfo
+[Trash Info]
+Path=$(realpath $file)
+DeletionDate=$(date +%Y-%m-%dT%H:%M:%S)
+EOF
+	done
+)
+}
+
 function keepkillwd() {
 ## Microsoft antivirus runs every time we write to the filesystem.  This makes
 # write-heavy processes a lot slower.  This function keeps the antivirus
@@ -154,7 +180,23 @@ function keepkillwd() {
   # use sudo here so that we're not prompted in the loop
   sudo echo "started successfully"
   while true; do
-	  sudo killall -9 wdavdaemon wdavdaemon_unprivileged wdavdaemon_enterprise 2>/dev/null && nextSleep=1 || nextSleep=$(($nextSleep + 1))
+	  sudo killall -9 wdavdaemon wdavdaemon_unprivileged wdavdaemon_enterprise
+	  local laststatus=$?
+	  local killed_something=0
+	  if [[ $laststatus != 1 ]]; then
+		  killed_something=1
+	  fi
+	  sudo pkill -9 -f /Library/infp/extension/python/app/Python-3.10.6/python.exe
+	  local laststatus=$?
+	  if [[ $laststatus != 1 ]]; then
+		  killed_something=1
+	  fi
+
+	  if [[ $killed_something == 1 ]]; then
+		  nextSleep=1
+	  else
+		  nextSleep=$(($nextSleep + 1))
+	  fi
 	  sleep $nextSleep
   done
 }

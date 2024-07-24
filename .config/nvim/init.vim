@@ -8,10 +8,13 @@ set ignorecase
 set smartcase
 set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
 
-command -nargs=* GrepNoTests grep --glob="!__tests__/" --glob "!e2e/" --glob="!*.test.*" --glob "!*.spec.*" <args>
+command -nargs=* GrepNoTests grep --glob="!test/" --glob="!__tests__/" --glob "!e2e/" --glob="!*.test.*" --glob "!*.spec.*" <args>
 
 set smartindent
 set tabstop=2
+
+set showmatch
+set virtualedit=block
 
 " when going to a quickfix item, switch to an existing window that already has
 " the buffer in it and if not, open it in a vsplit
@@ -71,8 +74,8 @@ set shiftwidth=4
 set splitright " splitting a window will put the new window right of the current one
 
 set spell
-set spelllang=en,softwareterms,shell,vim,golang,html,lua,makefile,npm,python,sql,typescript,x86
-set spelloptions+=camel
+set spelllang=en,en_us,softwareterms,shell,vim,golang,html,lua,makefile,npm,python,sql,typescript,x86
+set spelloptions+=camel,noplainbuffer
 
 
 "" Appearance end
@@ -101,7 +104,12 @@ endfunction
 
 :command RandomColor call RandomColorScheme()
 
-autocmd FileType typescript,javascript nmap <leader>gD :GrepNoTests --case-sensitive "(const\\|function) <cword>\b" <CR>
+autocmd FileType typescript,javascript,typescriptreact,javascriptreact nmap gD :GrepNoTests --case-sensitive "(const\\|function) <cword>\b" <CR>
+
+autocmd FileType man set nospell
+
+autocmd FileType c let g:c_syntax_for_h=v:true
+autocmd FileType cpp let g:c_syntax_for_h=v:false
 
 "" VANILLA end
 
@@ -207,8 +215,11 @@ local on_attach = function(client, bufnr)
         ["textDocument/references"] = {{"n", "gr", ":lua vim.lsp.buf.references()<CR>"}},
         ["textDocument/publishDiagnostics"] = {
             {"n", "<leader>e", ":lua vim.lsp.diagnostic.show_line_diagnostics()<CR>"},
-            {"n", "[d", ":lua vim.diagnostic.goto_prev()<CR>"},
-            {"n", "]d", ":lua vim.diagnostic.goto_next()<CR>"},
+			-- TODO: uncomment when vim.diagnostic.jump is widely available
+            --{"n", "[d", ":lua vim.diagnostic.jump({count=-1, float=true})<CR>"},
+            --{"n", "]d", ":lua vim.diagnostic.jump({count=1, float=true})<CR>"},
+            {"n", "[d", ":lua vim.diagnostic.goto_prev({float=true})<CR>"},
+            {"n", "]d", ":lua vim.diagnostic.goto_next({float=true})<CR>"},
             {"n", "<leader>q", ":lua vim.diagnostic.setqflist({open=true})<CR>"},
             {"n", "<leader>l", ":lua vim.diagnostic.setloclist({open=true})<CR>"}
         },
@@ -235,8 +246,8 @@ local on_attach = function(client, bufnr)
     buf_set_keymap("n", "<leader>D", ":lua vim.lsp.buf.type_definition()<CR>", opts)
     buf_set_keymap("n", "gi", ":lua vim.lsp.buf.implementation()<CR>", opts)
 	if client.supports_method("textDocument/inlayHint") then
-		-- experimental.  Might break soon
-		vim.lsp.inlay_hint.enable(0, true)
+		-- unstable API.  Might break soon
+		vim.lsp.inlay_hint.enable(true)
 	end
 end
 
@@ -258,7 +269,8 @@ local quick_lint_js = {
             "typescript",
             "typescriptreact"
         },
-        cmd = {"quick-lint-js", "--lsp-server", "--snarky"}
+        cmd = {"quick-lint-js", "--lsp-server", "--snarky"},
+		flags = { debounce_text_changes = 9 }
         -- settings= {
         --   ["quick-lint-js"] = {
         --     ["tracing-directory"] = "/tmp/quick-lint-js-logs",
@@ -294,9 +306,50 @@ local configure_clangd_for_chromium = function()
 end
 configure_clangd_for_chromium()
 
+local gopls_config = {
+	"gopls",
+	{
+		on_attach = on_attach,
+		flags = {
+			debounce_text_changes = 60
+		},
+		cmd = {"gopls"}
+
+	}
+	}
+
+local tsserver_config = {
+	"tsserver",
+	{
+		on_attach = on_attach,
+		flags = {
+			debounce_text_changes = 300
+		},
+		cmd = {"typescript-language-server", "--stdio"}
+	}
+	}
+
+local rust_config = {
+	"rust_analyzer",
+	{
+		on_attach = on_attach,
+		flags = {
+			debounce_text_changes = 300
+		},
+		cmd = {"rust-analyzer"},
+		settings = {
+			["rust-analyzer"] = {
+				linkedProjects = {
+					"/Users/m0c0j7y/workspace/github.com/facebook/sapling.git/eden/scm/exec/hgmain/Cargo.toml"
+				},
+			}
+		}
+	}
+	}
+
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = {quick_lint_js, clangd_config}
+local servers = {quick_lint_js, clangd_config, gopls_config, tsserver_config, rust_config}
 for _, lsp in ipairs(servers) do
     local name, settings = unpack(lsp)
     if settings == nil then
@@ -315,7 +368,7 @@ let g:copilot_tab_fallback = ""
 if filereadable("/opt/homebrew/bin/node")
   let g:copilot_node_command = "/opt/homebrew/bin/node"
 endif
-imap <script><expr> <C-e> copilot#Accept("\<CR>")
+imap <script><expr> <C-e> copilot#AcceptLine("\<CR>")
 imap <C-f> <Plug>(copilot-accept-word)
 
 " copilot is disabled in markdown (and other languages) by default
