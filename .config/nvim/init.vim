@@ -111,6 +111,8 @@ autocmd FileType man set nospell
 autocmd FileType c let g:c_syntax_for_h=v:true
 autocmd FileType cpp let g:c_syntax_for_h=v:false
 
+autocmd FileType *sh set makeprg=shellcheck\ -f\ gcc\ -x\ %
+
 "" VANILLA end
 
 
