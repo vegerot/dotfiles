@@ -208,8 +208,7 @@ load_plugins() {
 	  export FZF_PREVIEW_OPTS='--preview "bat --color always {} 2>/dev/null || cat {}" --preview-window=right:60%:wrap'
 	  export FZF_CTRL_T_OPTS=$FZF_PREVIEW_OPTS
 
-	  source "${FZF_BASE:="$HOME/workspace/github.com/junegunn/fzf/"}/shell/key-bindings.zsh"
-	  source "$FZF_BASE/shell/completion.zsh"
+	  source <(fzf --zsh)
 
 	  ## from fzf.zsh plugin
 	  bindkey '^p' fzf-file-widget
