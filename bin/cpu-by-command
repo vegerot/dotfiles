@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+
+# get the total CPU used per command on GNU+Linux
+
+import os
+import sys
+import subprocess
+
+
+def get_cpu_by_command():
+    # get the total CPU used per command
+    cmd = "ps -eo %cpu,command --sort=-%cpu"
+    p = subprocess.Popen(
+        cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
+    out, err = p.communicate()
+    # print(f"{out=}, {err=}, {p.returncode=}")
+    if p.returncode != 0:
+        # print(err.decode('utf-8'))
+        sys.exit(p.returncode)
+    lines = out.decode("utf-8").split("\n")
+    cmd_cpu = {}
+    for line in lines[1:]:
+        if not line:
+            continue
+        cpu, command = line.strip().split(" ", 1)
+        command = command.strip().split(" ")[0]
+        # print(f"{line=}, {cpu=}, {command=}")
+        cmd_cpu[command] = cmd_cpu.get(command, 0) + float(cpu)
+
+    for command, cpu in sorted(cmd_cpu.items(), key=lambda x: x[1], reverse=True):
+        print(f"{command:60} {cpu:.2f}%")
+
+
+def main():
+    try:
+        get_cpu_by_command()
+        # flush output here to force SIGPIPE to be triggered
+        # while inside this try block.
+        sys.stdout.flush()
+    except BrokenPipeError:
+        # when piping output to 'head', this normally causes this command to
+        # crash. This gives a chance to exit gracefully.
+        # Python flushes standard streams on exit; redirect remaining output
+        # to devnull to avoid another BrokenPipeError at shutdown
+        devnull = os.open(os.devnull, os.O_WRONLY)
+        os.dup2(devnull, sys.stdout.fileno())
+
+    return 0
+
+
+if __name__ == "__main__":
+    main()
