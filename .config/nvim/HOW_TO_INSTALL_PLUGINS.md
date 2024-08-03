@@ -33,3 +33,5 @@ Make sure everything you're cloning has a `plugins/` directory in it
 |                    	|                                                           	| sl clone git@github.com:ms-jpq/coq.artifacts.git                       	|
 | copilot            	|                                                           	| sl clone git@github.com:github/copilot.vim.git                         	|
 | nvim-lspconfig     	|                                                           	| sl clone git@github.com:neovim/nvim-lspconfig.git                      	|
+| go.nvim            	|                                                           	| git clone git@github.com:ray-x/go.nvim                                 	|
+| guihua.lua         	|                                                           	| git clone git@github.com:ray-x/guihua.lua                              	|
