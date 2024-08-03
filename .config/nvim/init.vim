@@ -309,6 +309,7 @@ configure_clangd_for_chromium()
 local godotnvim = function()
 	-- go.nvim will handle calling lspconfig_plugin["gopls"].setup
 	require("go").setup({
+		lsp_on_attach = on_attach,
 		lsp_cfg = {
 			flags = {
 				debounce_text_changes = 60,
