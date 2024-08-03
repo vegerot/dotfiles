@@ -71,6 +71,7 @@ set listchars=tab:→\ ,nbsp:␣,trail:•,extends:⟩,precedes:⟨
 
 set tabstop=4
 set shiftwidth=4
+set shiftround
 set splitright " splitting a window will put the new window right of the current one
 
 set spell
