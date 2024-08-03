@@ -258,6 +258,9 @@ local godotnvim = function()
 	-- go.nvim will handle calling lspconfig_plugin["gopls"].setup
 	require("go").setup({
 		lsp_on_attach = on_attach,
+		lsp_inlay_hints = {
+			enable = false,
+		},
 		lsp_cfg = {
 			flags = {
 				debounce_text_changes = 60,
