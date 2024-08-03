@@ -330,6 +330,11 @@ local gopls_config = {
 			debounce_text_changes = 60
 		},
 		cmd = {"gopls"},
+		settings = {
+			gopls = {
+				gofumpt = true,
+			}
+		}
 
 	}
 	}
