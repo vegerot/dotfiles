@@ -145,109 +145,109 @@ endif
 " note: MUST be before `require("coq")`!
 lua <<LUAEND
 vim.g.coq_settings = {
-    ["clients.tabnine"] = {
-        enabled = true,
-        weight_adjust = -0.4
-    },
-    auto_start = "shut-up",
-    -- conflicts with Tmux
-    ["keymap.jump_to_mark"] = ""
+	["clients.tabnine"] = {
+		enabled = true,
+		weight_adjust = -0.4,
+	},
+	auto_start = "shut-up",
+	-- conflicts with Tmux
+	["keymap.jump_to_mark"] = "",
 }
 local status, coq_3p = pcall(require, "coq_3p")
 if not status then
-    --print("didn't load coq_3p.  Skipping loading coq")
-    return false
+	--print("didn't load coq_3p.  Skipping loading coq")
+	return false
 end
 
-coq_3p {
-    {src = "copilot", short_name = "✈", accept_key = "<c-f>"}
-}
+coq_3p({
+	{ src = "copilot", short_name = "✈", accept_key = "<c-f>" },
+})
 LUAEND
 
 "" LSP start
 lua << LUAEND
 local status, lspconfig_plugin = pcall(require, "lspconfig")
 if not status then
-    --print("lspconfig" .. " plugin not loaded.  Not loading lsp stuff")
-    return false
+	--print("lspconfig" .. " plugin not loaded.  Not loading lsp stuff")
+	return false
 end
 
 local status, coq = pcall(require, "coq")
 if not status then
-    --print("coq" .. " plugin not loaded.  Not loading coq")
-    return false
+	--print("coq" .. " plugin not loaded.  Not loading coq")
+	return false
 end
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
-    local function buf_set_keymap(...)
-        vim.api.nvim_buf_set_keymap(bufnr, ...)
-    end
-    local function buf_set_option(...)
-        vim.api.nvim_buf_set_option(bufnr, ...)
-    end
+	local function buf_set_keymap(...)
+		vim.api.nvim_buf_set_keymap(bufnr, ...)
+	end
+	local function buf_set_option(...)
+		vim.api.nvim_buf_set_option(bufnr, ...)
+	end
 
-    -- Enable completion triggered by <c-x><c-o>
-    buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
+	-- Enable completion triggered by <c-x><c-o>
+	buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 
-    -- Mappings.
-    local opts = {noremap = true, silent = false}
+	-- Mappings.
+	local opts = { noremap = true, silent = false }
 
-    -- <cmd> `map-cmd`s are never echoed, making `silent` unneeded,
-    -- but I personally like seeing what each mapping does, so I use `:` instead,
-    -- besides for insert-mode mappings, since <cmd> can improve performance
+	-- <cmd> `map-cmd`s are never echoed, making `silent` unneeded,
+	-- but I personally like seeing what each mapping does, so I use `:` instead,
+	-- besides for insert-mode mappings, since <cmd> can improve performance
 
-    -- See `:help vim.lsp.*` for documentation on any of the below functions
-    local methodsAndKeymaps = {
-        ["textDocument/declaration"] = {{"n", "gD", ":lua vim.lsp.buf.declaration()<CR>"}},
-        ["textDocument/definition"] = {{"n", "gd", ":lua vim.lsp.buf.definition()<CR>"}},
-        ["textDocument/hover"] = {{"n", "K", ":lua vim.lsp.buf.hover()<CR>"}},
-        ["textDocument/signatureHelp"] = {{"n", "<leader>k", ":lua vim.lsp.buf.signature_help()<CR>"}},
-        ["textDocument/workspaceFolders"] = {
-            {"n", "<leader>da", ":lua vim.lsp.buf.add_workspace_folder()<CR>"},
-            {"n", "<leader>dr", ":lua vim.lsp.buf.remove_workspace_folder()<CR>"},
-            {"n", "<leader>dl", ":lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>"}
-        },
-        ["textDocument/rename"] = {{"n", "<leader>rn", ":lua vim.lsp.buf.rename()<CR>"}},
-        ["textDocument/codeAction"] = {
-            {"n", "<leader>ca", ":lua vim.lsp.buf.code_action()<CR>"},
-            -- same as previous, but if there's only one possible action, just apply it
-            {"n", "<leader>qf", ":lua vim.lsp.buf.code_action({apply=1})<CR>"}
-        },
-        ["textDocument/completion"] = {{"i", "<C-<Space>>", "<cmd>lua vim.lsp.buf.completion()<CR>"}},
-        ["textDocument/references"] = {{"n", "gr", ":lua vim.lsp.buf.references()<CR>"}},
-        ["textDocument/publishDiagnostics"] = {
-            {"n", "<leader>e", ":lua vim.lsp.diagnostic.show_line_diagnostics()<CR>"},
+	-- See `:help vim.lsp.*` for documentation on any of the below functions
+	local methodsAndKeymaps = {
+		["textDocument/declaration"] = { { "n", "gD", ":lua vim.lsp.buf.declaration()<CR>" } },
+		["textDocument/definition"] = { { "n", "gd", ":lua vim.lsp.buf.definition()<CR>" } },
+		["textDocument/hover"] = { { "n", "K", ":lua vim.lsp.buf.hover()<CR>" } },
+		["textDocument/signatureHelp"] = { { "n", "<leader>k", ":lua vim.lsp.buf.signature_help()<CR>" } },
+		["textDocument/workspaceFolders"] = {
+			{ "n", "<leader>da", ":lua vim.lsp.buf.add_workspace_folder()<CR>" },
+			{ "n", "<leader>dr", ":lua vim.lsp.buf.remove_workspace_folder()<CR>" },
+			{ "n", "<leader>dl", ":lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>" },
+		},
+		["textDocument/rename"] = { { "n", "<leader>rn", ":lua vim.lsp.buf.rename()<CR>" } },
+		["textDocument/codeAction"] = {
+			{ "n", "<leader>ca", ":lua vim.lsp.buf.code_action()<CR>" },
+			-- same as previous, but if there's only one possible action, just apply it
+			{ "n", "<leader>qf", ":lua vim.lsp.buf.code_action({apply=1})<CR>" },
+		},
+		["textDocument/completion"] = { { "i", "<C-<Space>>", "<cmd>lua vim.lsp.buf.completion()<CR>" } },
+		["textDocument/references"] = { { "n", "gr", ":lua vim.lsp.buf.references()<CR>" } },
+		["textDocument/publishDiagnostics"] = {
+			{ "n", "<leader>e", ":lua vim.lsp.diagnostic.show_line_diagnostics()<CR>" },
 			-- TODO: uncomment when vim.diagnostic.jump is widely available
-            --{"n", "[d", ":lua vim.diagnostic.jump({count=-1, float=true})<CR>"},
-            --{"n", "]d", ":lua vim.diagnostic.jump({count=1, float=true})<CR>"},
-            {"n", "[d", ":lua vim.diagnostic.goto_prev({float=true})<CR>"},
-            {"n", "]d", ":lua vim.diagnostic.goto_next({float=true})<CR>"},
-            {"n", "<leader>q", ":lua vim.diagnostic.setqflist({open=true})<CR>"},
-            {"n", "<leader>l", ":lua vim.diagnostic.setloclist({open=true})<CR>"}
-        },
-        ["textDocument/formatting"] = {{"n", "<leader>f", ":lua vim.lsp.buf.format()<CR>"}}
-    }
+			--{"n", "[d", ":lua vim.diagnostic.jump({count=-1, float=true})<CR>"},
+			--{"n", "]d", ":lua vim.diagnostic.jump({count=1, float=true})<CR>"},
+			{ "n", "[d", ":lua vim.diagnostic.goto_prev({float=true})<CR>" },
+			{ "n", "]d", ":lua vim.diagnostic.goto_next({float=true})<CR>" },
+			{ "n", "<leader>q", ":lua vim.diagnostic.setqflist({open=true})<CR>" },
+			{ "n", "<leader>l", ":lua vim.diagnostic.setloclist({open=true})<CR>" },
+		},
+		["textDocument/formatting"] = { { "n", "<leader>f", ":lua vim.lsp.buf.format()<CR>" } },
+	}
 	local telescope_installed, telescope_builtin = pcall(require, "telescope.builtin")
 	if telescope_installed then
 		methodsAndKeymaps["textDocument/definition"] = {
-			{"n", "gd", ":lua require('telescope.builtin').lsp_definitions()<CR>"}
+			{ "n", "gd", ":lua require('telescope.builtin').lsp_definitions()<CR>" },
 		}
 		methodsAndKeymaps["textDocument/references"] = {
-			{"n", "gr", ":lua require('telescope.builtin').lsp_references()<CR>"}
+			{ "n", "gr", ":lua require('telescope.builtin').lsp_references()<CR>" },
 		}
 	end
-    for method, keymaps in pairs(methodsAndKeymaps) do
-        if client.supports_method(method) then
-            for _, keymap in ipairs(keymaps) do
-                local mode, map, cmd = unpack(keymap)
-                buf_set_keymap(mode, map, cmd, opts)
-            end
-        end
-    end
-    -- * thingies
-    buf_set_keymap("n", "<leader>D", ":lua vim.lsp.buf.type_definition()<CR>", opts)
-    buf_set_keymap("n", "gi", ":lua vim.lsp.buf.implementation()<CR>", opts)
+	for method, keymaps in pairs(methodsAndKeymaps) do
+		if client.supports_method(method) then
+			for _, keymap in ipairs(keymaps) do
+				local mode, map, cmd = unpack(keymap)
+				buf_set_keymap(mode, map, cmd, opts)
+			end
+		end
+	end
+	-- * thingies
+	buf_set_keymap("n", "<leader>D", ":lua vim.lsp.buf.type_definition()<CR>", opts)
+	buf_set_keymap("n", "gi", ":lua vim.lsp.buf.implementation()<CR>", opts)
 	if client.supports_method("textDocument/inlayHint") then
 		-- unstable API.  Might break soon
 		vim.lsp.inlay_hint.enable(true)
@@ -255,57 +255,54 @@ local on_attach = function(client, bufnr)
 end
 
 local quick_lint_js = {
-    "quick_lint_js",
-    {
-        on_attach = on_attach,
-        handlers = {
-            ["textDocument/publishDiagnostics"] = vim.lsp.with(
-                vim.lsp.diagnostic.on_publish_diagnostics,
-                {
-                    update_in_insert = true
-                }
-            )
-        },
-        filetypes = {
-            "javascript",
-            "javascriptreact",
-            "typescript",
-            "typescriptreact"
-        },
-        cmd = {"quick-lint-js", "--lsp-server", "--snarky"},
-		flags = { debounce_text_changes = 9 }
-        -- settings= {
-        --   ["quick-lint-js"] = {
-        --     ["tracing-directory"] = "/tmp/quick-lint-js-logs",
-        --   }
-        -- }
-    }
+	"quick_lint_js",
+	{
+		on_attach = on_attach,
+		handlers = {
+			["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+				update_in_insert = true,
+			}),
+		},
+		filetypes = {
+			"javascript",
+			"javascriptreact",
+			"typescript",
+			"typescriptreact",
+		},
+		cmd = { "quick-lint-js", "--lsp-server", "--snarky" },
+		flags = { debounce_text_changes = 9 },
+		-- settings= {
+		--   ["quick-lint-js"] = {
+		--     ["tracing-directory"] = "/tmp/quick-lint-js-logs",
+		--   }
+		-- }
+	},
 }
 
 local clangd_config = {
-    "clangd",
-    {
-        on_attach = on_attach,
-        flags = {
-            debounce_text_changes = 150
-        },
-        cmd = {"clangd", "--offset-encoding=utf-16"}
-    }
+	"clangd",
+	{
+		on_attach = on_attach,
+		flags = {
+			debounce_text_changes = 150,
+		},
+		cmd = { "clangd", "--offset-encoding=utf-16" },
+	},
 }
 local configure_clangd_for_chromium = function()
-    -- TODO: just check if "chrom" is _anywhere_ in the path
-    local chromium_src = "/home/max/workspace/chromium.org/chromium/chromium/src"
-    local chromium_src_len = string.len(chromium_src)
-    local path = vim.fn.expand("%:p:h")
-    local in_chromium = string.sub(path, 1, chromium_src_len) == chromium_src
-    if in_chromium then
-        clangd_config[2].cmd = {
-            "clangd",
-            "--offset-encoding=utf-16",
-            "--project-root=" .. chromium_src,
-            "--remote-index-address=linux.clangd-index.chromium.org:5900"
-        }
-    end
+	-- TODO: just check if "chrom" is _anywhere_ in the path
+	local chromium_src = "/home/max/workspace/chromium.org/chromium/chromium/src"
+	local chromium_src_len = string.len(chromium_src)
+	local path = vim.fn.expand("%:p:h")
+	local in_chromium = string.sub(path, 1, chromium_src_len) == chromium_src
+	if in_chromium then
+		clangd_config[2].cmd = {
+			"clangd",
+			"--offset-encoding=utf-16",
+			"--project-root=" .. chromium_src,
+			"--remote-index-address=linux.clangd-index.chromium.org:5900",
+		}
+	end
 end
 configure_clangd_for_chromium()
 
@@ -314,23 +311,22 @@ local godotnvim = function()
 	require("go").setup({
 		lsp_cfg = {
 			flags = {
-				debounce_text_changes = 60
+				debounce_text_changes = 60,
 			},
-			cmd = {"gopls"},
+			cmd = { "gopls" },
 			settings = {
 				gopls = {
 					gofumpt = true,
-				}
-				}
-			}
-
+				},
+			},
+		},
 	})
 	-- Run gofmt + goimports on save
 	local format_sync_grp = vim.api.nvim_create_augroup("goimports", {})
 	vim.api.nvim_create_autocmd("BufWritePre", {
 		pattern = "*.go",
 		callback = function()
-		require('go.format').goimports()
+			require("go.format").goimports()
 		end,
 		group = format_sync_grp,
 	})
@@ -345,39 +341,39 @@ local tsserver_config = {
 	{
 		on_attach = on_attach,
 		flags = {
-			debounce_text_changes = 300
+			debounce_text_changes = 300,
 		},
-		cmd = {"typescript-language-server", "--stdio"}
-	}
-	}
+		cmd = { "typescript-language-server", "--stdio" },
+	},
+}
 
 local rust_config = {
 	"rust_analyzer",
 	{
 		on_attach = on_attach,
 		flags = {
-			debounce_text_changes = 300
+			debounce_text_changes = 300,
 		},
-		cmd = {"rust-analyzer"},
+		cmd = { "rust-analyzer" },
 		settings = {
 			["rust-analyzer"] = {
 				linkedProjects = {
-					"/Users/m0c0j7y/workspace/github.com/facebook/sapling.git/eden/scm/exec/hgmain/Cargo.toml"
+					"/Users/m0c0j7y/workspace/github.com/facebook/sapling.git/eden/scm/exec/hgmain/Cargo.toml",
 				},
-			}
-		}
-	}
-	}
+			},
+		},
+	},
+}
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = {quick_lint_js, clangd_config, tsserver_config, rust_config}
+local servers = { quick_lint_js, clangd_config, tsserver_config, rust_config }
 for _, lsp in ipairs(servers) do
-    local name, settings = unpack(lsp)
-    if settings == nil then
-        settings = defaultConfig
-    end
-    lspconfig_plugin[name].setup(coq.lsp_ensure_capabilities(settings))
+	local name, settings = unpack(lsp)
+	if settings == nil then
+		settings = defaultConfig
+	end
+	lspconfig_plugin[name].setup(coq.lsp_ensure_capabilities(settings))
 end
 
 LUAEND
@@ -460,45 +456,45 @@ lua << LUAEND
 local configs_plugin_name = "nvim-treesitter.configs"
 local status, configs_plugin = pcall(require, configs_plugin_name)
 if not status then
-    print(configs_plugin_name .. " plugin not loaded.  Not loading treesitter")
-    return false
+	print(configs_plugin_name .. " plugin not loaded.  Not loading treesitter")
+	return false
 end
 
 local install_plugin_name = "nvim-treesitter.install"
 local status, install_plugin = pcall(require, install_plugin_name)
 if not status then
-    print(install_plugin .. " plugin not loaded.  Not loading treesitter")
-    return false
+	print(install_plugin .. " plugin not loaded.  Not loading treesitter")
+	return false
 end
 
-configs_plugin.setup {
-    ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-    highlight = {
-        enable = true, -- false will disable the whole extension
-        -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-        -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-        -- Using this option may slow down your editor, and you may see some duplicate highlights.
-        -- Instead of true it can also be a list of languages
-        additional_vim_regex_highlighting = false
-    },
-    incremental_selection = {
-        enable = true,
-        keymaps = {
-            init_selection = "gnn",
-            node_incremental = "grn",
-            scope_incremental = "grc",
-            node_decremental = "grm"
-        }
-    },
-	textobjects = {enable = true},
-    indent = {
-        enable = true,
-        disable = {"go"}
-    }
-}
+configs_plugin.setup({
+	ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+	highlight = {
+		enable = true, -- false will disable the whole extension
+		-- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+		-- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+		-- Using this option may slow down your editor, and you may see some duplicate highlights.
+		-- Instead of true it can also be a list of languages
+		additional_vim_regex_highlighting = false,
+	},
+	incremental_selection = {
+		enable = true,
+		keymaps = {
+			init_selection = "gnn",
+			node_incremental = "grn",
+			scope_incremental = "grc",
+			node_decremental = "grm",
+		},
+	},
+	textobjects = { enable = true },
+	indent = {
+		enable = true,
+		disable = { "go" },
+	},
+})
 install_plugin.prefer_git = true
 vim.keymap.set("n", "[c", function()
-  require("treesitter-context").go_to_context(vim.v.count1)
+	require("treesitter-context").go_to_context(vim.v.count1)
 end)
 LUAEND
 
@@ -506,9 +502,9 @@ lua << LUAEND
 
 local status, devicons_plugin = pcall(require, "nvim-web-devicons")
 if status then
-	devicons_plugin.setup {
-		default=true
-	}
+	devicons_plugin.setup({
+		default = true,
+	})
 end
 
 LUAEND
