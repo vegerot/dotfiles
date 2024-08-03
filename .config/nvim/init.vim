@@ -309,35 +309,36 @@ local configure_clangd_for_chromium = function()
 end
 configure_clangd_for_chromium()
 
-local gopls_config = {
-	"gopls",
-	{
-		on_attach = function(client, bufnr)
-			on_attach(client, bufnr)
-			-- Run gofmt + goimports on save
-
-			require('go').setup()
-			local format_sync_grp = vim.api.nvim_create_augroup("goimports", {})
-			vim.api.nvim_create_autocmd("BufWritePre", {
-				pattern = "*.go",
-				callback = function()
-				require('go.format').goimports()
-				end,
-				group = format_sync_grp,
-			})
-		end,
-		flags = {
-			debounce_text_changes = 60
-		},
-		cmd = {"gopls"},
-		settings = {
-			gopls = {
-				gofumpt = true,
+local godotnvim = function()
+	-- go.nvim will handle calling lspconfig_plugin["gopls"].setup
+	require("go").setup({
+		lsp_cfg = {
+			flags = {
+				debounce_text_changes = 60
+			},
+			cmd = {"gopls"},
+			settings = {
+				gopls = {
+					gofumpt = true,
+				}
+				}
 			}
-		}
 
-	}
-	}
+	})
+	-- Run gofmt + goimports on save
+	local format_sync_grp = vim.api.nvim_create_augroup("goimports", {})
+	vim.api.nvim_create_autocmd("BufWritePre", {
+		pattern = "*.go",
+		callback = function()
+		require('go.format').goimports()
+		end,
+		group = format_sync_grp,
+	})
+end
+
+if vim.fn.executable("gopls") then
+	godotnvim()
+end
 
 local tsserver_config = {
 	"tsserver",
@@ -370,7 +371,7 @@ local rust_config = {
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = {quick_lint_js, clangd_config, gopls_config, tsserver_config, rust_config}
+local servers = {quick_lint_js, clangd_config, tsserver_config, rust_config}
 for _, lsp in ipairs(servers) do
     local name, settings = unpack(lsp)
     if settings == nil then
