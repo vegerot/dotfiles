@@ -37,7 +37,7 @@ function upgrade_neovim() {
 		if [[ -d "$dir/.git" ]]; then
 			(cd "$dir" && git pull)
 		elif [[ -d "$dir/.sl" ]]; then
-			(cd "$dir" && sl pull && sl go top)
+			(cd "$dir" && sl pull && sl top --newest)
 		fi
 	}
 
