@@ -2226,7 +2226,7 @@
 				<real>0.73333334922790527</real>
 			</dict>
 			<key>Guid</key>
-			<string>2A854B94-FD18-4980-8536-E9C6AC70BBDE</string>
+			<string>716B0293-5544-49A3-99D5-D1EFD328D9B5</string>
 			<key>Horizontal Spacing</key>
 			<real>1</real>
 			<key>Icon</key>
@@ -2606,8 +2606,10 @@
 			<key>Name</key>
 			<string>m-qghf3g3nh7</string>
 			<key>Non Ascii Font</key>
-			<string>SFMonoNerdFontComplete-Regular 7</string>
+			<string>SFMonoNerdFontComplete-Regular 12</string>
 			<key>Non-ASCII Anti Aliased</key>
+			<true/>
+			<key>Non-ASCII Ligatures</key>
 			<false/>
 			<key>Normal Font</key>
 			<string>SFMonoNerdFontComplete-Regular 18</string>
@@ -2704,6 +2706,8 @@
 			<false/>
 			<key>Smart Cursor Color (Light)</key>
 			<false/>
+			<key>Special Font Config</key>
+			<string>{"version":1,"entries":[{"count":4,"fontName":"UnicodeIECsymbol","start":9211},{"fontName":"Octicons","start":9829,"count":1},{"count":1,"fontName":"Octicons","start":9889},{"start":11096,"count":1,"fontName":"UnicodeIECsymbol"},{"count":11,"start":57344,"fontName":"Pomicons"},{"count":3,"start":57504,"fontName":"PowerlineSymbols"},{"start":57507,"count":1,"fontName":"PowerlineExtraSymbols"},{"fontName":"PowerlineSymbols","count":4,"start":57520},{"count":21,"fontName":"PowerlineExtraSymbols","start":57524},{"count":1,"fontName":"PowerlineExtraSymbols","start":57546},{"start":57548,"count":8,"fontName":"PowerlineExtraSymbols"},{"start":57344,"fontName":"font-awesome-extension","count":170,"destination":57856},{"fontName":"Weather Icons Regular","start":61440,"destination":58112,"count":236},{"start":58618,"fontName":"Nerd Font File Types Regular","destination":58874,"count":177},{"fontName":"icomoon","destination":59136,"count":198,"start":58880},{"fontName":"codicon","count":396,"start":60000},{"fontName":"FontAwesome","count":736,"start":61440},{"count":48,"fontName":"font-logos","start":62208},{"start":61440,"fontName":"Octicons","count":168,"destination":62464},{"start":62076,"count":1,"fontName":"Octicons","destination":62633},{"fontName":"Octicons","destination":62634,"start":61609,"count":86},{"count":2118,"fontName":"Material Design Icons","start":61441,"destination":62720},{"count":6896,"fontName":"Material Design Icons Desktop","start":983041}]}</string>
 			<key>Status Bar Layout</key>
 			<dict>
 				<key>advanced configuration</key>
