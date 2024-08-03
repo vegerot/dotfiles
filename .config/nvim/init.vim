@@ -254,6 +254,37 @@ local on_attach = function(client, bufnr)
 	end
 end
 
+local godotnvim = function()
+	-- go.nvim will handle calling lspconfig_plugin["gopls"].setup
+	require("go").setup({
+		lsp_on_attach = on_attach,
+		lsp_cfg = {
+			flags = {
+				debounce_text_changes = 60,
+			},
+			cmd = { "gopls" },
+			settings = {
+				gopls = {
+					gofumpt = true,
+				},
+			},
+		},
+	})
+	-- Run gofmt + goimports on save
+	local format_sync_grp = vim.api.nvim_create_augroup("goimports", {})
+	vim.api.nvim_create_autocmd("BufWritePre", {
+		pattern = "*.go",
+		callback = function()
+			require("go.format").goimports()
+		end,
+		group = format_sync_grp,
+	})
+end
+
+if vim.fn.executable("gopls") then
+	godotnvim()
+end
+
 local quick_lint_js = {
 	"quick_lint_js",
 	{
@@ -305,37 +336,6 @@ local configure_clangd_for_chromium = function()
 	end
 end
 configure_clangd_for_chromium()
-
-local godotnvim = function()
-	-- go.nvim will handle calling lspconfig_plugin["gopls"].setup
-	require("go").setup({
-		lsp_on_attach = on_attach,
-		lsp_cfg = {
-			flags = {
-				debounce_text_changes = 60,
-			},
-			cmd = { "gopls" },
-			settings = {
-				gopls = {
-					gofumpt = true,
-				},
-			},
-		},
-	})
-	-- Run gofmt + goimports on save
-	local format_sync_grp = vim.api.nvim_create_augroup("goimports", {})
-	vim.api.nvim_create_autocmd("BufWritePre", {
-		pattern = "*.go",
-		callback = function()
-			require("go.format").goimports()
-		end,
-		group = format_sync_grp,
-	})
-end
-
-if vim.fn.executable("gopls") then
-	godotnvim()
-end
 
 local tsserver_config = {
 	"tsserver",
