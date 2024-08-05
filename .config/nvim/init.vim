@@ -264,7 +264,18 @@ local godotnvim = function()
 	end
 	-- go.nvim will handle calling lspconfig_plugin["gopls"].setup
 	go.setup({
-		lsp_on_attach = on_attach,
+		lsp_on_attach = function(client, bufnr)
+			on_attach(client, bufnr)
+			-- Run gofmt + goimports on save
+			local format_sync_grp = vim.api.nvim_create_augroup("goimports", {})
+			vim.api.nvim_create_autocmd("BufWritePre", {
+				pattern = "*.go",
+				callback = function()
+					require("go.format").goimports()
+				end,
+				group = format_sync_grp,
+			})
+		end,
 		lsp_inlay_hints = {
 			enable = false,
 		},
@@ -279,15 +290,6 @@ local godotnvim = function()
 				},
 			},
 		},
-	})
-	-- Run gofmt + goimports on save
-	local format_sync_grp = vim.api.nvim_create_augroup("goimports", {})
-	vim.api.nvim_create_autocmd("BufWritePre", {
-		pattern = "*.go",
-		callback = function()
-			require("go.format").goimports()
-		end,
-		group = format_sync_grp,
 	})
 end
 godotnvim()
