@@ -255,8 +255,15 @@ local on_attach = function(client, bufnr)
 end
 
 local godotnvim = function()
+	if vim.fn.executable("gopls") then
+		return false
+	end
+	local status, go = pcall(require, "go")
+	if not status then
+		return false
+	end
 	-- go.nvim will handle calling lspconfig_plugin["gopls"].setup
-	require("go").setup({
+	go.setup({
 		lsp_on_attach = on_attach,
 		lsp_inlay_hints = {
 			enable = false,
@@ -283,10 +290,7 @@ local godotnvim = function()
 		group = format_sync_grp,
 	})
 end
-
-if vim.fn.executable("gopls") then
-	godotnvim()
-end
+godotnvim()
 
 local quick_lint_js = {
 	"quick_lint_js",
