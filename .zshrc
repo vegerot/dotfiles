@@ -12,9 +12,22 @@ fi
 typeset -aU path
 typeset -U PATH
 
+if command -v cmd.exe &>/dev/null; then
+	local isWSL=true
+else
+	local isWSL=false
+fi
+
+if [[ -n "$XDG_CURRENT_SESSION" ]]; then
+	local has_gnulinux_window_manager=true
+else
+	local has_gnulinux_window_manager=false
+fi
+
 [[ -r ~/.profile ]] && source ~/.profile
 
-if [[ $OSTYPE == "darwin"* ]]; then
+if [[ $OSTYPE == "darwin"* || $isWSL == true ]]; then
+	echo async
 	~/dotfiles/bin/randomcowcommand --async
 else
 	~/dotfiles/bin/randomcowcommand
@@ -80,17 +93,6 @@ keymaps() {
 	setxkbmap -option ctrl:nocaps
 	xcape -e 'Control_L=Escape'
 }
-if command -v cmd.exe &>/dev/null; then
-	local isWSL=true
-else
-	local isWSL=false
-fi
-
-if [[ -n "$XDG_CURRENT_SESSION" ]]; then
-	local has_gnulinux_window_manager=true
-else
-	local has_gnulinux_window_manager=false
-fi
 
 [[ $OSTYPE == "linux-gnu"* && $has_gnulinux_window_manager == true ]] && ! $isWSL && keymaps
 
