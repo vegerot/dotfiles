@@ -255,11 +255,12 @@ local on_attach = function(client, bufnr)
 end
 
 local godotnvim = function()
-	if vim.fn.executable("gopls") == 0 then
-		return false
-	end
 	local status, go = pcall(require, "go")
 	if not status then
+		return false
+	end
+	if vim.fn.executable("gopls") == 0 then
+		print("go.nvim installed but gopls not found.  Not loading go.nvim")
 		return false
 	end
 	-- go.nvim will handle calling lspconfig_plugin["gopls"].setup
