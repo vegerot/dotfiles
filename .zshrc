@@ -27,7 +27,6 @@ fi
 [[ -r ~/.profile ]] && source ~/.profile
 
 if [[ $OSTYPE == "darwin"* || $isWSL == true ]]; then
-	echo async
 	~/dotfiles/bin/randomcowcommand --async
 else
 	~/dotfiles/bin/randomcowcommand
