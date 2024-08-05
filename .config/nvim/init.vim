@@ -255,7 +255,7 @@ local on_attach = function(client, bufnr)
 end
 
 local godotnvim = function()
-	if vim.fn.executable("gopls") then
+	if vim.fn.executable("gopls") == 0 then
 		return false
 	end
 	local status, go = pcall(require, "go")
