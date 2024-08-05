@@ -287,6 +287,9 @@ local godotnvim = function()
 			cmd = { "gopls" },
 			settings = {
 				gopls = {
+					analyses = {
+						ST1003 = false,
+					},
 					gofumpt = true,
 				},
 			},
