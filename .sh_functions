@@ -47,6 +47,17 @@ function is-walmart-mac() {
   [[ -f "/Users/Shared/Start Here - Mac At Walmart.pdf" ]]
 }
 
+function vpn() {
+	echo "toggling vpn..."
+	local vpn_status=$(vpn-status)
+	if [[ $vpn_status == "Disconnected" ]]; then
+		echo "connecting vpn..."
+		vpn-up
+	else
+		echo "disconnecting vpn..."
+		vpn-down
+	fi
+}
 function vpn-up() {
   # STEPS TO MAKE THIS WORK
   # 1. Install [2fa](https://github.com/rsc/2fa)
@@ -104,16 +115,25 @@ function vpn-down() {
 }
 
 function vpn-status() {
-	local vpn=$(echo /opt/cisco/*/bin/vpn);
-	if [[ ! -x $vpn ]]; then
+	local openconnect_running=$(pgrep openconnect)
+	if [[ -n $openconnect_running ]]; then
+		echo "Connected"
+		return 0
+	fi
+	local anyconnect=$(echo /opt/cisco/*/bin/vpn);
+	if [[ ! -x $anyconnect ]]; then
 		echo "N/A"
 		return 1
 	fi
 
-	/opt/cisco/*/bin/vpn state\
+	$anyconnect state\
 		| sed -r 's/^.*state: (Connected|Disconnected)$/\1/g'\
-		| grep -E --color=never 'Connected|Disconnected'\
-		| head -n1
+		| grep -q -E --color=never 'Connected'
+	if [[ $? == 0 ]]; then
+		echo "Connected"
+	else
+		echo "Disconnected"
+	fi
 }
 
 
