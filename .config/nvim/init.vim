@@ -440,15 +440,15 @@ endif
 "" TELESCOPE start
 packadd telescope.nvim
 if exists(":Telescope")
-	nmap <leader>fr <cmd>Telescope resume<Cr>
-	nmap <leader>ff :lua require('telescope.builtin').find_files({hidden=true})<Cr>
-	nmap <leader>fg <cmd>Telescope live_grep<Cr>
-	nmap <leader>fb <cmd>Telescope buffers<Cr>
-	nmap <leader>fo <cmd>Telescope oldfiles<Cr>
-	nmap <leader>fh <cmd>Telescope help_tags<Cr>
-	nmap <leader>fm <cmd>Telescope man_pages<Cr>
-	nmap <leader>fd <cmd>Telescope diagnostics<Cr>
-	nmap <leader>fq <cmd>Telescope quickfix<Cr>
+	nmap <leader>tr <cmd>Telescope resume<Cr>
+	nmap <leader>tf :lua require('telescope.builtin').find_files({hidden=true})<Cr>
+	nmap <leader>tg <cmd>Telescope live_grep<Cr>
+	nmap <leader>tb <cmd>Telescope buffers<Cr>
+	nmap <leader>to <cmd>Telescope oldfiles<Cr>
+	nmap <leader>th <cmd>Telescope help_tags<Cr>
+	nmap <leader>tm <cmd>Telescope man_pages<Cr>
+	nmap <leader>td <cmd>Telescope diagnostics<Cr>
+	nmap <leader>tq <cmd>Telescope quickfix<Cr>
 endif
 
 lua <<LUAEND
