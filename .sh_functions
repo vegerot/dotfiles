@@ -103,6 +103,7 @@ function vpn-up() {
 	  local VPN_HOST=sslvpngwgec.wal-mart.com/Walmart_Associate_MAC_Yubi
 	  echo "${vpn_password}\n${mfa_code}\n" | sudo openconnect --passwd-on-stdin --background -u $VPN_USER $VPN_HOST $@
   fi
+  echo "Connected" > /tmp/vpn-status
 }
 
 function vpn-down() {
@@ -112,9 +113,15 @@ function vpn-down() {
 	else
 		/opt/cisco/*/bin/vpn disconnect
 	fi
+	echo "Disconnected" > /tmp/vpn-status
 }
 
 function vpn-status() {
+	if [[ -f /tmp/vpn-status ]]; then
+		cat /tmp/vpn-status
+		return 0
+	fi
+
 	local openconnect_running=$(pgrep openconnect)
 	if [[ -n $openconnect_running ]]; then
 		echo "Connected"
