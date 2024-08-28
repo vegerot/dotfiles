@@ -203,6 +203,21 @@ if [[ -z $ZSH_SKIP_LOADING_PLUGINS ]]; then
 	load_plugins
 fi
 
+update_plugins() {
+	function pull_and_update() {
+		set -o errexit
+		set -o nounset
+		set -o pipefail
+		dir=$1
+		if [[ -d "$dir/.git" ]]; then
+			(cd "$dir" && git pull)
+		elif [[ -d "$dir/.sl" ]]; then
+			(cd "$dir" && sl pull && sl top --newest)
+		fi
+	}
+	parallel -i -j3 zsh -c "$(declare -f pull_and_update) && pull_and_update {}" -- ${plugin_paths[@]}
+}
+
 # j makes jumping to directories easier
 # if j isn't installed, then do the poverty method of adding common directories
 # to CDPATH
