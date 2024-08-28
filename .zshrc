@@ -26,9 +26,9 @@ fi
 
 [[ -r ~/.profile ]] && source ~/.profile
 
-if [[ $OSTYPE == "darwin"* || $isWSL == true ]]; then
+if [[ -z $ZSH_SKIP_LOADING_PLUGINS && $OSTYPE == "darwin"* || $isWSL == true ]]; then
 	~/dotfiles/bin/randomcowcommand --async
-else
+elif [[ -z $ZSH_SKIP_LOADING_PLUGINS ]]; then
 	~/dotfiles/bin/randomcowcommand
 fi;
 

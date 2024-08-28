@@ -29,10 +29,27 @@ function upgrade_apt() {
 	fi
 }
 
+function upgrade_zsh() {
+	echo "zsh plugins"
+	read -p 'Would you like to upgrade zsh plugins (y/n): ' upgradeZsh
+	if [[ "$upgradeZsh" == "y" ]] && type zsh 2>/dev/null ; then
+		ZSH_SKIP_LOADING_PLUGINS=1 zsh -lic "
+		set -o errexit
+		set -o nounset
+		set -o pipefail
+		set -o xtrace
+		type update_plugins && (echo @@@ && update_plugins)
+		set +x"
+	fi
+}
+
 function upgrade_neovim() {
 	echo "neovim"
 
 	function pull_and_update() {
+		set -o errexit
+		set -o nounset
+		set -o pipefail
 		dir=$1
 		if [[ -d "$dir/.git" ]]; then
 			(cd "$dir" && git pull)
@@ -90,6 +107,7 @@ if [[ $OSTYPE == "darwin"* ]]; then
 else
 	upgrade_apt
 fi
+upgrade_zsh
 upgrade_neovim
 upgrade_npm
 if [[ $OSTYPE == "darwin"* ]]; then
