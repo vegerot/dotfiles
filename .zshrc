@@ -129,12 +129,19 @@ done
 compinit -C
 
 # PLUGINS
+typeset -A plugin_paths=(
+	[powerlevel10k]="$HOME/workspace/github.com/romkatv/powerlevel10k"
+	[sapling]="$HOME/workspace/github.com/facebook/sapling"
+	[zsh-syntax-highlighting]="$HOME/workspace/github.com/zdharma-continuum/fast-syntax-highlighting"
+	[zsh-autosuggestions]="$HOME/workspace/github.com/zsh-users/zsh-autosuggestions"
+	[zsh-history-substring-search]="$HOME/workspace/github.com/zsh-users/zsh-history-substring-search"
+)
 load_plugins() {
   ## POWERLEVEL10K
   if [[ $TERM_PROGRAM == "WarpTerminal" ]]; then
 	  return
   fi
-  local powerlevel10k_library_path="$HOME/workspace/github.com/romkatv/powerlevel10k/powerlevel10k.zsh-theme"
+  local powerlevel10k_library_path=${plugin_paths[powerlevel10k]}/powerlevel10k.zsh-theme
   local powerlevel10k_prompt_path="$HOME/.p10k.zsh"
   if [[ -r $powerlevel10k_library_path && -r $powerlevel10k_prompt_path ]]; then
 	  source $powerlevel10k_library_path
@@ -143,22 +150,22 @@ load_plugins() {
 	  source $powerlevel10k_prompt_path
   fi
 
-  local sapling_prompt_path="$HOME/workspace/github.com/facebook/sapling/eden/scm/contrib/scm-prompt.sh"
+  local sapling_prompt_path=${plugin_paths[sapling]}/eden/scm/contrib/scm-prompt.sh
   if [[ -r $sapling_prompt_path ]]; then
 	  source $sapling_prompt_path
   fi
 
-  local zsh_syntax_highlighting_path="$HOME/workspace/github.com/zdharma-continuum/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh"
+  local zsh_syntax_highlighting_path=${plugin_paths[zsh-syntax-highlighting]}/fast-syntax-highlighting.plugin.zsh
   if [[ -r $zsh_syntax_highlighting_path ]]; then
 	  source $zsh_syntax_highlighting_path
   fi
 
-  local zsh_autosuggestions_path="$HOME/workspace/github.com/zsh-users/zsh-autosuggestions/zsh-autosuggestions.zsh"
+  local zsh_autosuggestions_path=${plugin_paths[zsh-autosuggestions]}/zsh-autosuggestions.zsh
   if [[ -r $zsh_autosuggestions_path ]]; then
 	  source $zsh_autosuggestions_path
   fi
 
-  local zsh_history_substring_search_path="$HOME/workspace/github.com/zsh-users/zsh-history-substring-search/zsh-history-substring-search.zsh"
+  local zsh_history_substring_search_path=${plugin_paths[zsh-history-substring-search]}/zsh-history-substring-search.zsh
   if [[ -r $zsh_history_substring_search_path ]]; then
 	  source $zsh_history_substring_search_path
 	  ## Bind j and k for history-substring-search in normal mode
