@@ -153,15 +153,6 @@ vim.g.coq_settings = {
 	-- conflicts with Tmux
 	["keymap.jump_to_mark"] = "",
 }
-local status, coq_3p = pcall(require, "coq_3p")
-if not status then
-	--print("didn't load coq_3p.  Skipping loading coq")
-	return false
-end
-
-coq_3p({
-	{ src = "copilot", short_name = "✈", accept_key = "<c-f>" },
-})
 LUAEND
 
 "" LSP start
