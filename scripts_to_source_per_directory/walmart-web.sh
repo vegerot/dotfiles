@@ -58,7 +58,7 @@ function web_start() {
 }
 
 function debug() {
-	if [[ -z $QUIET ]]; then return; fi
+	if [[ -z $VERBOSE ]]; then return; fi
 	echo "$@"
 }
 
