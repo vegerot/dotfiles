@@ -141,9 +141,10 @@ if exists('g:vscode')
 	finish
 endif
 
-" autocomplete with COQ
-" note: MUST be before `require("coq")`!
-lua <<LUAEND
+"" LSP+autocomplete start
+lua << LUAEND
+-- autocomplete with COQ
+-- note: MUST be before `require("coq")`!
 vim.g.coq_settings = {
 	["clients.tabnine"] = {
 		enabled = true,
@@ -153,10 +154,7 @@ vim.g.coq_settings = {
 	-- conflicts with Tmux
 	["keymap.jump_to_mark"] = "",
 }
-LUAEND
 
-"" LSP start
-lua << LUAEND
 local status, lspconfig_plugin = pcall(require, "lspconfig")
 if not status then
 	--print("lspconfig" .. " plugin not loaded.  Not loading lsp stuff")
