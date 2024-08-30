@@ -158,6 +158,10 @@ function pnpm() {
 	node_nvm_wrapper $0 $*
 }
 
+function yarn() {
+	node_nvm_wrapper $0 $*
+}
+
 function pnpx() {
 	node_nvm_wrapper $0 $*
 }
