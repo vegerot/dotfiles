@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 time sudo /root/.local/bin/duplicity backup / file:///mnt/nas/ubuntu-22.04/duplicity\
-  --volsize=2048\
+  --volsize=1024\
   --verbosity=5\
   --include=/root \
   --exclude=/sys --exclude=/run --exclude=/proc --exclude=/dev --exclude=/var/tmp --exclude=/tmp --exclude-regexp='^node_modules$' --exclude-regexp='^out$' --exclude-regexp='^build$' --exclude-regexp="cache$" \
