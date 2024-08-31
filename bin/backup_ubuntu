@@ -9,3 +9,6 @@ time sudo /root/.local/bin/duplicity backup / file:///mnt/nas/ubuntu-22.04/dupli
   --exclude-other-filesystems\
   --exclude-device-files\
   --exclude-if-present=.nobackup
+
+# restore with `/root/.local/bin/duplicity restore --restore-time 1M --path-to-restore home/max/dotfiles/.zshrc file:///mnt/nas/ubuntu-22.04/duplicity/ /tmp/restoredzshrc2`
+
