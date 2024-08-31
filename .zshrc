@@ -215,7 +215,7 @@ update_plugins() {
 			(cd "$dir" && sl pull && sl top --newest)
 		fi
 	}
-	parallel -i -j3 zsh -c "$(declare -f pull_and_update) && pull_and_update {}" -- ${plugin_paths[@]}
+	ZSH_SKIP_LOADING_PLUGINS=1 parallel zsh -c "$(declare -f pull_and_update) && pull_and_update {}" ::: "${plugin_paths[@]}"
 }
 
 # j makes jumping to directories easier

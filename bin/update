@@ -38,7 +38,7 @@ function upgrade_zsh() {
 		set -o nounset
 		set -o pipefail
 		set -o xtrace
-		type update_plugins && (echo @@@ && update_plugins)
+		type update_plugins >/dev/null 2>&1 && update_plugins
 		set +x"
 	fi
 }
