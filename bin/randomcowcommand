@@ -26,28 +26,28 @@ get_description_of_manpage() {
 	  # import `.so`s (because it `cd`s to the wrong directory for the relative
 	  # imports to work).
 	  # Workaround: do what `man FILEPATH` does, but in the right directory.
-	  cd $(dirname $1)/..
+	  cd "$(dirname $1)"/..
 	  local manPageText=$(zcat -f "$1" | mandoc)
 	  local formatted_with_whitespace=$(echo "$manPageText" | col -bpx | grep "^NAME$" -A1 | tail -1)
-	  formatted=$(trim "$formatted_with_whitespace")
+	  local formatted=$(trim "$formatted_with_whitespace")
 	  if [[ -z "$formatted" ]]; then
 		  echo "randomcowcommand: We messed up with $1" 1>&2
 	  fi
-	  echo $formatted
+	  echo "$formatted"
   else
 	  local manPageText;
-	  manPageText=$(lexgrog -w $1)
+	  manPageText=$(lexgrog -w "$1")
 	  if [[ $? -ne 0 ]]; then
 		  echo "randomcowcommand: We messed up with $1" 1>&2
 		  manPageText=""
 	  fi
-     echo $manPageText| shuf -n 1 | sed -E 's/^.*: "(.*)"$/\1/'
+     echo "$manPageText"| shuf -n 1 | sed -E 's/^.*: "(.*)"$/\1/'
   fi
 }
 
 format_message() {
   if type cowsay > /dev/null 2>&1; then
-    cowsay -f $(cowsay -l| tail -n+2|tr " " "\n"|sort -R|head -1) "$1"
+    cowsay -f "$(cowsay -l| tail -n+2|tr " " "\n"|sort -R|head -1)" "$1"
   else
     printf -- "\n-------------------------------\n"
     echo "Did you know: $1"
@@ -57,11 +57,11 @@ format_message() {
 
 main() {
 	manpagefile=$(find_random_manpage)
-	commanddescription=$(get_description_of_manpage $manpagefile)
+	commanddescription=$(get_description_of_manpage "$manpagefile")
 	if [[ -z "$commanddescription" || "$commanddescription" == "builtin"*  ]]; then
 		# we'll never get two duds in a row, right?
 		manpagefile=$(find_random_manpage)
-		commanddescription=$(get_description_of_manpage $manpagefile)
+		commanddescription=$(get_description_of_manpage "$manpagefile")
 	fi
 	if [[ -z "$commanddescription" ]]; then
 		# we'll never get three duds in a row, right?
