@@ -302,7 +302,7 @@ local quick_lint_js = {
 			"typescript",
 			"typescriptreact",
 		},
-		cmd = { "quick-lint-js", "--lsp-server", "--snarky" },
+		cmd = { "quick-lint-js", "--lsp-server" },
 		flags = { debounce_text_changes = 9 },
 		-- settings= {
 		--   ["quick-lint-js"] = {
