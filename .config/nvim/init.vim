@@ -340,7 +340,7 @@ end
 configure_clangd_for_chromium()
 
 local tsserver_config = {
-	"tsserver",
+	"ts_ls",
 	{
 		on_attach = on_attach,
 		flags = {
