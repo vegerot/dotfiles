@@ -18,7 +18,7 @@ else
 	local isWSL=false
 fi
 
-if [[ -n "$XDG_CURRENT_SESSION" ]]; then
+if [[ -n "$XDG_CURRENT_SESSION" || -n "$XDG_CURRENT_DESKTOP" ]]; then
 	local has_gnulinux_window_manager=true
 else
 	local has_gnulinux_window_manager=false
@@ -76,24 +76,8 @@ bindkey -M vicmd "" edit-command-line
 # User configuration
 
 # set up keymap stuff here because it's not working other places
-keymaps() {
-	if [[ -z $DISPLAY && -z $ALWAYS_SET_CAPS ]]; then
-		return
-	fi
-	local is_caps_already_mapped=$(xmodmap -pke | rg --count-matches "keycode\s+66\s*=\s*Control_L")
-	if [[ $is_caps_already_mapped -gt 0 && -z $ALWAYS_SET_CAPS ]]; then
-		return
-	fi
-	echo $is_caps_already_mapped
-	echo "Caps is not mapped to Control_L, mapping it now"
-	echo "caps is currently mapped to: $(xmodmap -pke | rg "keycode\s+66\s*= ")"
-	xmodmap ~/.Xmodmap
-	xcape
-	setxkbmap -option ctrl:nocaps
-	xcape -e 'Control_L=Escape'
-}
 
-[[ $OSTYPE == "linux-gnu"* && $has_gnulinux_window_manager == true ]] && ! $isWSL && keymaps
+[[ $OSTYPE == "linux-gnu"* && $has_gnulinux_window_manager == true ]] && ! $isWSL && $HOME/bin/.mapCapslock
 
 bindkey "^R" history-incremental-search-backward
 
