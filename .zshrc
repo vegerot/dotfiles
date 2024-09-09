@@ -162,8 +162,9 @@ load_plugins() {
 	  bindkey "$terminfo[kcud1]" history-substring-search-down
   fi
 
+  # install from https://github.com/gsamokovarov/jump
   if type jump > /dev/null; then
-	  eval "$(jump shell zsh)"
+	  eval "$(jump shell)"
   fi
 
   if type fzf > /dev/null; then
