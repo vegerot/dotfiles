@@ -97,9 +97,10 @@ colorscheme retrobox
 " inspiration https://gist.github.com/ryanflorence/1381526
 function RandomColorScheme()
   let mycolors = split(globpath(&rtp,"**/colors/*.vim"),"\n")
-  let randomcolor = mycolors[localtime() % len(mycolors)]
-  echo randomcolor
-  exe 'so ' . randomcolor
+  let randomcolorpath = mycolors[localtime() % len(mycolors)]
+  let randomcolor = fnamemodify(randomcolorpath, ":t:r")
+  echo ':colorscheme ' . randomcolor
+  exe 'colorscheme ' . randomcolor
   unlet mycolors randomcolor
 endfunction
 
