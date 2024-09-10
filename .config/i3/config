@@ -223,6 +223,8 @@ exec_always systemctl --user start apodesktop
 
 # make GNOME stuff work
 
+exec sh -c "gsettings set org.gnome.gnome-flashback desktop false && gsettings set org.gnome.gnome-flashback root-background true"
+
 exec --no-startup-id /usr/libexec/gsd-xsettings
 exec --no-startup-id /usr/libexec/gsd-a11y-settings
 exec --no-startup-id /usr/libexec/gsd-backlight-helper
