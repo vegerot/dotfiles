@@ -13,6 +13,7 @@ function vpn() {
 		vpn-down
 	fi
 }
+
 function vpn-up() {
   # STEPS TO MAKE THIS WORK
   # 1. Install [2fa](https://github.com/rsc/2fa)
