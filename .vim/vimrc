@@ -1,61 +1,6 @@
-"""various defaults from builtin defaults.vim.  These defaults are loaded when
-" there is no vimrc, but if there is a vimrc these reasoable defaults are
-" skipped.  These are the ones I used
-
-" Allow backspacing over everything in insert mode.
-set backspace=indent,eol,start
-set history=6942
-set showcmd		" display incomplete commands
-set wildmenu		" display completion matches in a status line
-
-" Show a few lines of context around the cursor.  Note that this makes the
-" text scroll if you mouse-click near the start or end of the window.
-set scrolloff=5
-
-set incsearch
-
-" Enable file type detection.
-" Use the default filetype settings, so that mail gets 'tw' set to 72,
-" 'cindent' is on in C files, etc.
-" Also load indent files, to automatically do language-dependent indenting.
-" Revert with ":filetype off".
-filetype plugin indent on
-
-" When editing a file, always jump to the last known cursor position.
-" Don't do it when the position is invalid, when inside an event handler
-" (happens when dropping a file on gvim), for a commit or rebase message
-" (likely a different one than last time), and when using xxd(1) to filter
-" and edit binary files (it transforms input files back and forth, causing
-" them to have dual nature, so to speak)
-if has('autocmd') && has('eval')
-	autocmd BufReadPost *
-		\ let line = line("'\"")
-		\ | if line >= 1 && line <= line("$") && &filetype !~# 'commit'
-		\      && index(['xxd', 'gitrebase'], &filetype) == -1
-		\ |   execute "normal! g`\""
-		\ | endif
+if filereadable(globpath($VIMRUNTIME, "defaults.vim"))
+  source $VIMRUNTIME/defaults.vim
 endif
-
-if has('syntax')
-  syntax on
-
-  " I like highlighting strings inside C comments.
-  " Revert with ":unlet c_comment_strings".
-  if has('eval')
-    let c_comment_strings=1
-  endif
-endif
-
-" Convencommand to see the difference between the current buffer and the
-" file it was loaded from, thus the changes you made.
-" Only define it when not defined already.
-" Revert with: ":delcommand DiffOrig".
-if !exists(":DiffOrig")
-command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
-\ | wincmd p | diffthis
-endif
-
-""" END defaults.vim
 
 set clipboard=unnamed
 
