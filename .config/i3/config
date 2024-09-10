@@ -210,10 +210,6 @@ smart_borders on
 # Make keyboard faster
 exec xset r rate 168 35
 
-exec_always --no-startup-id xmodmap ~/.Xmodmap
-exec_always --no-startup-id xcape
-exec_always --no-startup-id setxkbmap -option ctrl:nocaps
-exec_always --no-startup-id xcape -e 'Control_L=Escape'
 exec_always /home/max/bin/.mapCapslock
 ##exec autocutsel -selection CLIPBOARD -fork
 ##exec autocutsel -selection PRIMARY -fork
