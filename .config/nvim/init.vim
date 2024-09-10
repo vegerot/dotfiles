@@ -105,7 +105,6 @@ function RandomColorScheme()
 endfunction
 
 :command RandomColor call RandomColorScheme()
-RandomColor
 
 autocmd FileType typescript,javascript,typescriptreact,javascriptreact nmap gD :GrepNoTests --case-sensitive "(const\\|function) <cword>\b" <CR>
 
