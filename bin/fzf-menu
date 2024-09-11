@@ -21,8 +21,8 @@ get_programs_in_path() {
 	# my benchmarks show that GNU find > fd > BSD find
 	if [[ -n "${FIND_PROG:-}" ]]; then
 		find_prog=$FIND_PROG
-		find_args=$FIND_ARGS
-	elif $(find / -maxdepth 0 -executable &>/dev/null) || command -v gfind &>/dev/null; then
+		find_args=${FIND_ARGS:-}
+	elif find / -maxdepth 0 -executable &>/dev/null || command -v gfind &>/dev/null; then
 		# GNU find
 		find_prog="$(command -v gfind || echo find) -L"
 		find_args="-maxdepth 1 -executable -type f,l -printf %f\n"
@@ -31,7 +31,7 @@ get_programs_in_path() {
 		find_args="--hidden --max-depth=1 --type=executable --follow --format {/}"
 	else
 		# BSD find
-		find_prog=find
+		find_prog="find"
 		find_args="-maxdepth 1 -perm +111 -type f,l -exec basename {} ;"
 	fi
 
@@ -40,7 +40,7 @@ get_programs_in_path() {
 		$find_prog $p $find_args 2>/dev/null || true
 	done \
 		| awk '!x[$0]++'
-			# awk removes duplicates without sorting.  Thanks https://stackoverflow.com/a/11532197/6100005 \
+		# awk removes duplicates without sorting.  Thanks https://stackoverflow.com/a/11532197/6100005 \
 }
 
 get_applications() {
