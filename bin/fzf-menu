@@ -25,10 +25,10 @@ get_programs_in_path() {
   elif $(find / -maxdepth 0 -executable &>/dev/null) || command -v gfind &>/dev/null; then
     # GNU find
     find_prog="$(command -v gfind || echo find) -L"
-    find_args="-maxdepth 1 -executable -type f -printf %f\n"
+    find_args="-maxdepth 1 -executable -type f,l -printf %f\n"
   elif command -v fd > /dev/null; then
 	  find_prog="fd ."
-	  find_args="--max-depth=1 --type=executable --exec basename {} ;"
+	  find_args="--hidden --max-depth=1 --type=executable --follow --format {/}"
   else
     # BSD find
     find_prog=find
