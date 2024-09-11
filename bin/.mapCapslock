@@ -12,7 +12,6 @@ keymaps() {
   echo "Caps is not mapped to Control_L, mapping it now"
   echo "caps is currently mapped to: $(xmodmap -pke | rg "keycode\s+66\s*= ")"
   xmodmap ~/.Xmodmap
-  xcape
   setxkbmap -option ctrl:nocaps
   xcape -e 'Control_L=Escape'
 }
