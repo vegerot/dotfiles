@@ -24,8 +24,8 @@ get_programs_in_path() {
 	  find_args=$FIND_ARGS
   elif $(find / -maxdepth 0 -executable &>/dev/null) || command -v gfind &>/dev/null; then
     # GNU find
-    find_prog=$(command -v gfind || echo find)
-    find_args="-maxdepth 1 -executable -printf %f\n"
+    find_prog="$(command -v gfind || echo find) -L"
+    find_args="-maxdepth 1 -executable -type f -printf %f\n"
   elif command -v fd > /dev/null; then
 	  find_prog="fd ."
 	  find_args="--max-depth=1 --type=executable --exec basename {} ;"
