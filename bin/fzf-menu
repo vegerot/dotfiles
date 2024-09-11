@@ -18,10 +18,17 @@ get_selection() {
 get_programs_in_path() {
   local find_prog
   local find_args
-  if $(find / -maxdepth 0 -executable 2>/dev/null); then
+  # my benchmarks show that GNU find > fd > BSD find
+  if [[ -n "${FIND_PROG:-}" ]]; then
+	  find_prog=$FIND_PROG
+	  find_args=$FIND_ARGS
+  elif $(find / -maxdepth 0 -executable &>/dev/null) || command -v gfind &>/dev/null; then
     # GNU find
     find_prog=find
-    find_args="-maxdepth 1 -executable -printf '%f\n'"
+    find_args="-maxdepth 1 -executable -printf %f\n"
+  elif command -v fd > /dev/null; then
+	  find_prog="fd ."
+	  find_args="--max-depth=1 --type=executable --exec basename {} ;"
   else
     # BSD find
     find_prog=find
@@ -39,6 +46,7 @@ get_programs_in_path() {
 get_applications() {
     local applicationPathsDeduped=$(printf '%s\n' ${XDG_DATA_DIRS:-/usr/share} | tr ':' '\n' | uniq )
     for p in $applicationPathsDeduped; do
+		# TODO: support fd
 		for app in $(find "$p"/applications -maxdepth 1 -type f,l -name '*.desktop' 2>/dev/null); do
 			local appname=$(sed -n '0,/^Name=/{s/^Name=//p}' $app)
 			printf "${GREEN_START}$appname${COLOR_RESET} : $app\n"
