@@ -16,42 +16,42 @@ get_selection() {
 }
 
 get_programs_in_path() {
-  local find_prog
-  local find_args
-  # my benchmarks show that GNU find > fd > BSD find
-  if [[ -n "${FIND_PROG:-}" ]]; then
-	  find_prog=$FIND_PROG
-	  find_args=$FIND_ARGS
-  elif $(find / -maxdepth 0 -executable &>/dev/null) || command -v gfind &>/dev/null; then
-    # GNU find
-    find_prog="$(command -v gfind || echo find) -L"
-    find_args="-maxdepth 1 -executable -type f,l -printf %f\n"
-  elif command -v fd > /dev/null; then
-	  find_prog="fd ."
-	  find_args="--hidden --max-depth=1 --type=executable --follow --format {/}"
-  else
-    # BSD find
-    find_prog=find
-    find_args="-maxdepth 1 -perm +111 -type f,l -exec basename {} ;"
-  fi
+	local find_prog
+	local find_args
+	# my benchmarks show that GNU find > fd > BSD find
+	if [[ -n "${FIND_PROG:-}" ]]; then
+		find_prog=$FIND_PROG
+		find_args=$FIND_ARGS
+	elif $(find / -maxdepth 0 -executable &>/dev/null) || command -v gfind &>/dev/null; then
+		# GNU find
+		find_prog="$(command -v gfind || echo find) -L"
+		find_args="-maxdepth 1 -executable -type f,l -printf %f\n"
+	elif command -v fd > /dev/null; then
+		find_prog="fd ."
+		find_args="--hidden --max-depth=1 --type=executable --follow --format {/}"
+	else
+		# BSD find
+		find_prog=find
+		find_args="-maxdepth 1 -perm +111 -type f,l -exec basename {} ;"
+	fi
 
-  local pathDeduped=$(printf '%s\n' $PATH | tr ':' '\n' | uniq )
-  for p in $pathDeduped; do
-    $find_prog $p $find_args 2>/dev/null || true
-  done \
-    | awk '!x[$0]++'
-    # awk removes duplicates without sorting.  Thanks https://stackoverflow.com/a/11532197/6100005 \
+	local pathDeduped=$(printf '%s\n' $PATH | tr ':' '\n' | uniq )
+	for p in $pathDeduped; do
+		$find_prog $p $find_args 2>/dev/null || true
+	done \
+		| awk '!x[$0]++'
+			# awk removes duplicates without sorting.  Thanks https://stackoverflow.com/a/11532197/6100005 \
 }
 
 get_applications() {
-    local applicationPathsDeduped=$(printf '%s\n' ${XDG_DATA_DIRS:-/usr/share} | tr ':' '\n' | uniq )
-    for p in $applicationPathsDeduped; do
+	local applicationPathsDeduped=$(printf '%s\n' ${XDG_DATA_DIRS:-/usr/share} | tr ':' '\n' | uniq )
+	for p in $applicationPathsDeduped; do
 		# TODO: support fd
 		for app in $(find "$p"/applications -maxdepth 1 -type f,l -name '*.desktop' 2>/dev/null); do
 			local appname=$(sed -n '0,/^Name=/{s/^Name=//p}' $app)
 			printf "${GREEN_START}$appname${COLOR_RESET} : $app\n"
 		done
-    done
+	done
 }
 
 launch() {
