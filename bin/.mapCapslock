@@ -11,7 +11,7 @@ keymaps() {
   echo $is_caps_already_mapped
   echo "Caps is not mapped to Control_L, mapping it now"
   echo "caps is currently mapped to: $(xmodmap -pke | rg "keycode\s+66\s*= ")"
-  xmodmap ~/.Xmodmap
+  xmodmap -e 'clear Lock; keycode 0x42 = Control_L; keycode 169 = Delete'
   setxkbmap -option ctrl:nocaps
   xcape -e 'Control_L=Escape'
 }
