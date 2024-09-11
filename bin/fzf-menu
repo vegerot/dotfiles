@@ -9,16 +9,28 @@ get_selection() {
 	{ get_applications; get_programs_in_path; } \
 		| fzf \
 		--ansi \
-		--preview="[[ {} == *'.desktop' ]] && cat \$(echo {} | awk '{print \$NF}') || echo \$(whatis {})" \
+		--preview="[[ {} == *'.desktop' ]] && cat \$(echo {} | awk '{print \$NF}') || echo \$(PAGER=cat whatis {})" \
 		--preview-window=right:60%:wrap \
 		--bind=ctrl-space:toggle-preview \
 		--header="Select a program to launch"
 }
 
 get_programs_in_path() {
+  local find_prog
+  local find_args
+  if $(find / -maxdepth 0 -executable 2>/dev/null); then
+    # GNU find
+    find_prog=find
+    find_args="-maxdepth 1 -executable -printf '%f\n'"
+  else
+    # BSD find
+    find_prog=find
+    find_args="-maxdepth 1 -perm +111 -type f,l -exec basename {} ;"
+  fi
+
   local pathDeduped=$(printf '%s\n' $PATH | tr ':' '\n' | uniq )
   for p in $pathDeduped; do
-    find "$p"/ -maxdepth 1 -type f,l -executable -printf '%f\n' 2>/dev/null
+    $find_prog $p $find_args 2>/dev/null || true
   done \
     | awk '!x[$0]++'
     # awk removes duplicates without sorting.  Thanks https://stackoverflow.com/a/11532197/6100005 \
@@ -39,7 +51,10 @@ launch() {
 		#exec nohup zsh -c "(gio launch $1) & disown ; sleep 3"
 		exec nohup zsh -c "(setsid -f gio launch $1) & disown ; sleep 3"
 	else
-		exec setsid -f $1 > /dev/null 2>&1
+		if command -v setsid > /dev/null; then
+			exec setsid -f $1 > /dev/null 2>&1
+		fi
+		exec $1
 	fi
 }
 
