@@ -66,6 +66,11 @@ launch() {
 	fi
 }
 
+if [[ ${1:-} == "--list-programs" ]]; then
+	get_programs_in_path
+	exit 0
+fi
+
 if selection=$( get_selection ); then
 	launch "$(echo $selection | awk '{print $NF}')"
 fi
