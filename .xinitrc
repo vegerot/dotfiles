@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
-if type xmodmap &>/dev/null && [[ -f ~/.Xmodmap ]] && type xcape &>/dev/null &&
+if [[ -f ~/bin/.mapCapslock ]]; then
+	~/bin/.mapCapslock
+elif type xmodmap &>/dev/null && type xcape &>/dev/null &&
 	type setxkbmap &>/dev/null && type xrdb &>/dev/null &&
 	[[ -f ~/.Xresources ]] && [[ -f /etc/X11/xinit/xinitrc ]]; then
-	xmodmap ~/.Xmodmap
-	xcape
+	xmodmap -e 'clear Lock; keycode 0x42 = Control_L; keycode 169 = Delete'
 	setxkbmap -option ctrl:nocaps
 	xcape -e 'Control_L=Escape'
 	xrdb -merge ~/.Xresources
