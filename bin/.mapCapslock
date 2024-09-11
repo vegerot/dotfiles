@@ -8,7 +8,6 @@ keymaps() {
   if [[ $is_caps_already_mapped -gt 0 && -z $ALWAYS_SET_CAPS ]]; then
     return
   fi
-  echo $is_caps_already_mapped
   echo "Caps is not mapped to Control_L, mapping it now"
   echo "caps is currently mapped to: $(xmodmap -pke | rg "keycode\s+66\s*= ")"
   xmodmap -e 'clear Lock'
