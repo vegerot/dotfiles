@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
 keymaps() {
+	if ! type xmodmap &>/dev/null || ! type xcape &>/dev/null || ! type setxkbmap &>/dev/null; then
+		echo "xmodmap, xcape, or setxkbmap not found, skipping"
+		return 1
+	fi
 	if [[ -z $DISPLAY && -z $ALWAYS_SET_CAPS ]]; then
 		return
 	fi
