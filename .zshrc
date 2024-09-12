@@ -238,11 +238,11 @@ source_max_scripts
 
 # Compute time taken
 if type gdate > /dev/null; then
-end=$(gdate +%s.%N)
+	end=$(gdate +%s.%N)
 elif $(date --help &> /dev/null); then
-end=`date +%s.%N`
+	end=`date +%s.%N`
 else
-end=$(python3 -c "import time; print(time.time())")
+	end=$(python3 -c "import time; print(time.time())")
 fi
 runtime=$( echo "$end - $start" | bc -l )
 
