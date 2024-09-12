@@ -2,7 +2,7 @@
 set -e -x -o pipefail
 
 MNT=${MNT:=/mnt/wsl/PHYSICALDRIVE1p5}
-if [[ ! -d "$MNT/usr/" ]]; then
+if [[ ! -d "$MNT/usr/" ]] && type powershell.exe &>/dev/null ; then
     powershell.exe 'sudo.exe wsl.exe --mount "\\.\PHYSICALDRIVE1" --partition 5 --type ext4'
 fi
 
