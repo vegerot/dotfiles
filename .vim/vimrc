@@ -1,4 +1,5 @@
 if filereadable(globpath($VIMRUNTIME, "defaults.vim"))
+  unlet! skip_defaults_vim
   source $VIMRUNTIME/defaults.vim
 endif
 
