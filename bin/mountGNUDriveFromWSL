@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 set -e -x -o pipefail
 
-MNT=${MNT:=/mnt/wsl/PHYSICALDRIVE1p5}
+DRIVE=PHYSICALDRIVE2
+PARTITION=2
+DRIVEPATH="\\\\.\\${DRIVE}"
+echo $DRIVEPATH
+MNT=${MNT:=/mnt/wsl/${DRIVE}p${PARTITION}}
 if [[ ! -d "$MNT/usr/" ]] && type powershell.exe &>/dev/null ; then
-    powershell.exe 'sudo.exe wsl.exe --mount "\\.\PHYSICALDRIVE1" --partition 5 --type ext4'
+    powershell.exe "sudo.exe wsl.exe --mount '${DRIVEPATH}' --partition ${PARTITION} --type ext4"
 fi
 
 #sudo mount /dev/sdc5 $MNT
