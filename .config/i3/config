@@ -39,7 +39,9 @@ bindsym $mod2+Return exec i3-sensible-terminal
 # kill focused window
 bindsym $mod+Shift+q kill
 
-set $quickOpen rxvt-unicode -name "fzf-menu" -e fzf-menu
+set $quickOpen \
+	bash -c 'xkill -id `xwininfo -name fzf-menu | head -2 | tail -1 | awk "{print \\\$4}"` || true' \
+	&& rxvt-unicode -name "fzf-menu" -e fzf-menu
 bindsym $mod+d exec --no-startup-id $quickOpen
 bindsym --release $mod3 exec --no-startup-id $quickOpen
 for_window [instance="^fzf-menu$"] floating enable
