@@ -205,15 +205,6 @@ smart_gaps on
 smart_gaps inverse_outer
 smart_borders on
 
-# Make keyboard faster
-exec xset r rate 168 35
-
-exec_always /home/max/bin/.mapCapslock
-##exec autocutsel -selection CLIPBOARD -fork
-##exec autocutsel -selection PRIMARY -fork
-exec xrdb -merge ~/.Xresources
-##exec --always touchegg
-
 # set background
 #exec_always --no-startup-id feh --bg-scale /home/max/Pictures/macOS-Catalina-Dark-Mode.jpg
 exec_always [[ -f ~/.fehbg ]] && ~/.fehbg
@@ -222,6 +213,15 @@ exec_always systemctl --user start apodesktop
 # make GNOME stuff work
 
 exec sh -c "gsettings set org.gnome.gnome-flashback desktop false && gsettings set org.gnome.gnome-flashback root-background false"
+
+# Make keyboard faster
+exec xset r rate 168 35
+
+exec_always /home/max/bin/.mapCapslock
+##exec autocutsel -selection CLIPBOARD -fork
+##exec autocutsel -selection PRIMARY -fork
+exec xrdb -merge ~/.Xresources
+##exec --always touchegg
 
 exec --no-startup-id /usr/libexec/gsd-xsettings
 exec --no-startup-id /usr/libexec/gsd-a11y-settings
