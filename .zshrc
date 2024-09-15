@@ -189,6 +189,7 @@ if [[ -z $ZSH_SKIP_LOADING_PLUGINS ]]; then
 fi
 
 update_plugins() {
+	# TODO: install plugins if not installed
 	function pull_and_update() {
 		set -o errexit
 		set -o nounset
