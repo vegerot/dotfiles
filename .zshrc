@@ -46,7 +46,7 @@ else
 			_scm_prompt
 		fi
 	}
-	function precmd() {
+	function prompt_precmd() {
 		NEWLINE=$'\n'
 		local EXIT=$?
 		PROMPT_DIRTRIM=3
@@ -71,6 +71,8 @@ else
 		PROMPT_START='$ '
 		PROMPT="${NEWLINE}${BOLD_START}${PROMPT_LAST_STATUS}${PROMPT_WHOAMI}: ${PROMPT_WHEREAMI}${BOLD_END} ${PROMPT_BRANCH}${NEWLINE}${PROMPT_START}"
 	}
+
+	precmd_functions+=(prompt_precmd)
 
 fi
 
@@ -104,8 +106,6 @@ bindkey '^x^e' edit-command-line
 ## 10ms for key sequences.  Makes going to normal mode fast
 KEYTIMEOUT=1
 bindkey -M vicmd "" edit-command-line
-
-# User configuration
 
 # set up keymap stuff here because it's not working other places
 
