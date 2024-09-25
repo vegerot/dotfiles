@@ -34,6 +34,7 @@ fi;
 
 if [[ $TERM_PROGRAM != "WarpTerminal" \
 	&& -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"\
+	&& -z $ZSH_SKIP_LOADING_PLUGINS \
 	]]; then
 	source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
@@ -121,10 +122,11 @@ typeset -A plugin_paths=(
 	[zsh-history-substring-search]="$HOME/workspace/github.com/zsh-users/zsh-history-substring-search"
 )
 load_plugins() {
-  ## POWERLEVEL10K
   if [[ $TERM_PROGRAM == "WarpTerminal" ]]; then
 	  return
   fi
+
+  ## POWERLEVEL10K
   local powerlevel10k_library_path=${plugin_paths[powerlevel10k]}/powerlevel10k.zsh-theme
   local powerlevel10k_prompt_path="$HOME/.p10k.zsh"
   if [[ -r $powerlevel10k_library_path && -r $powerlevel10k_prompt_path ]]; then
