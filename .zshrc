@@ -37,12 +37,43 @@ if [[ $TERM_PROGRAM != "WarpTerminal" \
 	&& -z $ZSH_SKIP_LOADING_PLUGINS \
 	]]; then
 	source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+else
+	if [[ -f ~/workspace/github.com/facebook/sapling/eden/scm/contrib/scm-prompt.sh ]]; then
+		source ~/workspace/github.com/facebook/sapling/eden/scm/contrib/scm-prompt.sh
+	fi
+	maybe_scm_prompt() {
+		if type _scm_prompt >/dev/null 2>&1; then
+			_scm_prompt
+		fi
+	}
+	function precmd() {
+		NEWLINE=$'\n'
+		local EXIT=$?
+		PROMPT_DIRTRIM=3
+
+		BOLD_START="%B"
+		BOLD_END="%b"
+
+		RED_START='%F{red}'
+		GREEN_START='%F{green}'
+		LIGHT_GREEN_START='%F{green}'
+		BLUE_START='%F{blue}'
+		MAGENTA_START='%F{magenta}'
+
+		COLOR_RESET='%f'
+
+		PROMPT_LAST_STATUS="$([ $EXIT != 0 ] && echo ❌${RED_START}\($EXIT\)%f || printf '')"
+		PROMPT_WHOAMI="🪪${GREEN_START}%n${COLOR_RESET}@${LIGHT_GREEN_START}%m${COLOR_RESET}"
+		PROMPT_WHEREAMI="📁${BLUE_START}~/${COLOR_RESET}"
+		PROMPT_JUST_BRANCH="$(git branch --show-current >/dev/null 2>&1 && printf "🌿$(git branch --show-current) "|| printf "")"
+		PROMPT_SAPLING="$(maybe_scm_prompt)"
+		PROMPT_BRANCH="${MAGENTA_START}${PROMPT_JUST_BRANCH}${PROMPT_SAPLING}${COLOR_RESET}"
+		PROMPT_START='$ '
+		PROMPT="${NEWLINE}${BOLD_START}${PROMPT_LAST_STATUS}${PROMPT_WHOAMI}: ${PROMPT_WHEREAMI}${BOLD_END} ${PROMPT_BRANCH}${NEWLINE}${PROMPT_START}"
+	}
+
 fi
 
-# for some reason "\n" doesn't work in $PS1??
-NEWLINE='
-'
-export PS1="${NEWLINE}%m%#${NEWLINE}$ "
 
 # HISTORY
 HISTFILE="${HISTFILE:-$HOME/.zsh_history}"
