@@ -153,6 +153,11 @@ typeset -A plugin_paths=(
 	[zsh-history-substring-search]="$HOME/workspace/github.com/zsh-users/zsh-history-substring-search"
 )
 load_plugins() {
+  # install from https://github.com/gsamokovarov/jump
+  if type jump > /dev/null; then
+	  eval "$(jump shell)"
+  fi
+
   if [[ $TERM_PROGRAM == "WarpTerminal" ]]; then
 	  return
   fi
@@ -195,11 +200,6 @@ load_plugins() {
 	  bindkey "$terminfo[kcud1]" history-substring-search-down
   fi
 
-  # install from https://github.com/gsamokovarov/jump
-  if type jump > /dev/null; then
-	  eval "$(jump shell)"
-  fi
-
   if type fzf > /dev/null; then
 	  ## read by fzf program (see man fzf)
 	  export FZF_DEFAULT_OPTS='--height=70% '
@@ -215,7 +215,6 @@ load_plugins() {
 	  ## from fzf.zsh plugin
 	  bindkey '^p' fzf-file-widget
   fi
-
 }
 if [[ -z $ZSH_SKIP_LOADING_PLUGINS ]]; then
 	load_plugins
