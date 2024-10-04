@@ -215,6 +215,10 @@ load_plugins() {
 	  ## from fzf.zsh plugin
 	  bindkey '^p' fzf-file-widget
   fi
+
+  if type gh > /dev/null; then
+	source <(TCELL_MINIMIZE=1 gh completion -s zsh)
+  fi
 }
 if [[ -z $ZSH_SKIP_LOADING_PLUGINS ]]; then
 	load_plugins
