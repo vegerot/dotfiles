@@ -5,7 +5,6 @@ time sudo /root/.local/bin/duplicity backup / file:///mnt/sda1/shared/pi_nas/dup
   --verbosity=5\
   --include=/root --include=/home/pi\
   --exclude=/sys --exclude=/run --exclude=/proc --exclude=/dev --exclude=/var/tmp --exclude=/tmp --exclude-regexp='^node_modules$' --exclude-regexp='^out$' --exclude-regexp='^build$' --exclude-regexp="cache$"\
-  --include="/root/.cache/duplicity/" \
   --exclude-other-filesystems\
   --exclude-device-files\
   --exclude-if-present=.nobackup
