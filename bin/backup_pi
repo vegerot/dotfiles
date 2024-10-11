@@ -3,8 +3,10 @@
 time sudo /root/.local/bin/duplicity backup / file:///mnt/sda1/shared/pi_nas/duplicity/\
   --volsize=500\
   --verbosity=5\
-  --include=/root --include=/home/pi\
+  --include=/root --include=/home/\
   --exclude=/sys --exclude=/run --exclude=/proc --exclude=/dev --exclude=/var/tmp --exclude=/tmp --exclude-regexp='^node_modules$' --exclude-regexp='^out$' --exclude-regexp='^build$' --exclude-regexp="cache$"\
   --exclude-other-filesystems\
   --exclude-device-files\
   --exclude-if-present=.nobackup
+ 
+# restore with `/root/.local/bin/duplicity restore --restore-time 1M --path-to-restore home/max/dotfiles/.zshrc file:///mnt/nas/pi_nas/duplicity/ /tmp/restoredzshrc2`
