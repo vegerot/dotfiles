@@ -2,7 +2,12 @@
 
 # basics
 
-alias ls="ls --color"
+# BSD doesn't have --color
+if $(ls --color >/dev/null 2>&1); then
+  alias ls="ls --color"
+else
+  export CLICOLOR=1
+fi
 
 # vim
 #alias vi=nvim
@@ -18,52 +23,60 @@ alias ln="ln -v"
 alias mkdir="mkdir -pv"
 
 #git
-alias g.="git add -p ."
-alias ga="git add"
-alias gc="git commit"
-alias gcw="git cw"
-alias gfr="git fr"
-alias gfru="git fru"
-alias glo="git log --graph --decorate=full --oneline"
-alias glog="git log --graph --decorate=full"
-alias gp="git push"
-alias gr="git rebase"
-alias gres="git restore"
-alias gs="git s"
-alias gsf="git sf"
-alias gst="git status"
-alias gstu="git status -uno"
-alias gsw="git switch"
-gsfz() {
-	git switch $(git for-each-ref --sort=-committerdate --format='%(refname:short)' refs/ | fzf --height=70% --preview-window=right:60%:wrap --preview='git log --color=always --oneline --decorate {}')
-}
+if type git > /dev/null; then
+  alias g.="git add -p ."
+  alias ga="git add"
+  alias gc="git commit"
+  alias gcw="git cw"
+  alias gfr="git fr"
+  alias gfru="git fru"
+  alias glo="git log --graph --decorate=full --oneline"
+  alias glog="git log --graph --decorate=full"
+  alias gp="git push"
+  alias gr="git rebase"
+  alias gres="git restore"
+  alias gs="git s"
+  alias gsf="git sf"
+  alias gst="git status"
+  alias gstu="git status -uno"
+  alias gsw="git switch"
+  gsfz() {
+    git switch $(git for-each-ref --sort=-committerdate --format='%(refname:short)' refs/ | fzf --height=70% --preview-window=right:60%:wrap --preview='git log --color=always --oneline --decorate {}')
+  }
+fi
 
 #sapling
 
-alias sst="sl status && sl ssl"
+if type sl > /dev/null; then
+  alias sst="sl status && sl ssl"
 
-alias slc="sl commit --verbose"
-alias slci="slc --interactive"
-alias sla="sl amend"
-alias slai="sl amend --interactive"
+  alias slc="sl commit --verbose"
+  alias slci="slc --interactive"
+  alias sla="sl amend"
+  alias slai="sl amend --interactive"
 
-alias slr="sl rebase"
+  alias slr="sl rebase"
+fi
 
 #vscode
 alias code="code-insiders"
 
 # k8s
-alias k="kubectl"
-alias kns="kubens ce-smartlists-gql"
-alias kn="kubens"
-#alias sl="sledge"
-#alias slc="sledge connect"
-alias slprod_w="sledge connect wus-prod-a31 && kns"
-alias slprod_s="sledge connect scus-prod-a29 && kns"
-alias slprod_e="sledge connect eus2-prod-a18 && kns"
-alias kpods="k get pods -o wide --sort-by=.metadata.creationTimestamp"
-alias kwpod="k get pod -w -o wide --sort-by=.metadata.creationTimestamp"
-alias kevents="k get events -w --sort-by=.metadata.creationTimestamp"
-alias khpa="k get hpa"
-alias kdp="k describe pod"
-alias kdhpa="k describe hpa"
+if type kubectl > /dev/null; then
+  alias k="kubectl"
+  alias kns="kubens ce-smartlists-gql"
+  alias kn="kubens"
+  alias kpods="k get pods -o wide --sort-by=.metadata.creationTimestamp"
+  alias kwpod="k get pod -w -o wide --sort-by=.metadata.creationTimestamp"
+  alias kevents="k get events -w --sort-by=.metadata.creationTimestamp"
+  alias khpa="k get hpa"
+  alias kdp="k describe pod"
+  alias kdhpa="k describe hpa"
+  if type sledge > /dev/null; then
+    #alias sl="sledge"
+    #alias slc="sledge connect"
+    alias slprod_w="sledge connect wus-prod-a31 && kns"
+    alias slprod_s="sledge connect scus-prod-a29 && kns"
+    alias slprod_e="sledge connect eus2-prod-a18 && kns"
+  fi
+fi
