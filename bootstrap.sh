@@ -23,14 +23,14 @@ function dry_run() {
 }
 
 function force() {
-        find . -type f -not -path "*/.git/*" -not -path "*/.sl/*" -not -path "./.DS_Store" -not -path "./.osx" -not -path "./bootstrap.sh" -not -path "./README.md" -not -path "./LICENSE-MIT.txt" | xargs -I{} bash -xc 'cd $HOME; mkdir -pv $(dirname {}) ; ln --symbolic --verbose --force ~/dotfiles/{} ~/{};'
+        find . -type f -not -path "*/.git/*" -not -path "*/.sl/*" -not -path "./.DS_Store" -not -path "./.osx" -not -path "./bootstrap.sh" -not -path "./README.md" -not -path "./LICENSE-MIT.txt" | xargs -I{} bash -xc 'cd $HOME; mkdir -pv $(dirname {}) ; ln -svf ~/dotfiles/{} ~/{};'
 }
 
 function normal() {
         find . -type f -not -path "*/.git/*" -not -path "*/.sl/*" -not -path "./.DS_Store" -not -path "./.osx" -not -path "./bootstrap.sh" -not -path "./README.md" -not -path "./LICENSE-MIT.txt" | xargs -I{} bash -xc 'cd $HOME; mkdir -pv $(dirname {}) ; ln --symbolic --verbose ~/dotfiles/{} ~/{};'
 }
 
-force = ${1:-""}
+force=${1:-""}
 if [[ $force == "--force" ]]; then
 		doIt $force;
 else
