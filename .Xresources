@@ -60,15 +60,18 @@ URxvt.keysys.M-v: perl:clipboard:paste
 
 URxvt.colorUL:             #7780a1
 URxvt.depth:32
+! transparent setting not in i3 because we use picom (compton) for transparency
+! However, on GNOME we need to set it.  I am not smart enough to figure out how to
+! detect the window manager, so I just set it here.
 URxvt.transparent:  true
 URxvt*highlightSelection: true
-URxvt*background: [75]#232C31
+URxvt*background: rgba:0c00/0b00/0a00/cccc
 URxvt*geometry: 100x30
 URxvt*shading: 50
-URxvt*tintColor: #666666
+URxvt*tintColor: #232C31
 URxvt*blurRadius: 5
 
-!URxvt*background: rgba:2300/2c00/3100/8888
+!URxvt*background: [00]#232C31
 
 !URxvt*shading: 20
 !Dracula Xresources palette
