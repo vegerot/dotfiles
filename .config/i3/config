@@ -195,8 +195,14 @@ bindsym $mod+r mode "resize"
 bar {
 
         position top
+
         font pango:MesloLGS NF 12
+		colors {
+			background #00000069
+		}
+
         status_command SCRIPT_DIR=~/.config/i3/scripts i3blocks -c ~/.config/i3/i3blocks.conf
+		i3bar_command i3bar --transparency
 }
 
 #GAPS-specific config
