@@ -225,7 +225,7 @@ exec sh -c "gsettings set org.gnome.gnome-flashback desktop false && gsettings s
 # Make keyboard faster
 exec xset r rate 168 35
 
-exec_always /home/max/bin/.mapCapslock
+exec_always sh -c "sleep 3 && /home/max/bin/.mapCapslock"
 ##exec autocutsel -selection CLIPBOARD -fork
 ##exec autocutsel -selection PRIMARY -fork
 exec xrdb -merge ~/.Xresources
