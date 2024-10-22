@@ -207,7 +207,7 @@ local on_attach = function(client, bufnr)
 		["textDocument/completion"] = { { "i", "<C-<Space>>", "<cmd>lua vim.lsp.buf.completion()<CR>" } },
 		["textDocument/references"] = { { "n", "gr", ":lua vim.lsp.buf.references()<CR>" } },
 		["textDocument/publishDiagnostics"] = {
-			{ "n", "<leader>e", ":lua vim.lsp.diagnostic.show_line_diagnostics()<CR>" },
+			{ "n", "<leader>d", ":lua vim.lsp.diagnostic.show_line_diagnostics()<CR>" },
 			-- TODO: uncomment when vim.diagnostic.jump is widely available
 			--{"n", "[d", ":lua vim.diagnostic.jump({count=-1, float=true})<CR>"},
 			--{"n", "]d", ":lua vim.diagnostic.jump({count=1, float=true})<CR>"},
