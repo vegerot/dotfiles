@@ -250,6 +250,6 @@ exec --no-startup-id /usr/libexec/gsd-wacom
 exec --no-startup-id /usr/libexec/gsd-wacom-led-helper
 exec --no-startup-id /usr/libexec/gsd-wacom-oled-helper
 
-exec_always --no-startup-id picom -CGb
+exec_always --no-startup-id picom --daemon
 #exec_always --no-startup-id gnome-power-manager
 exec gnome-flashback
