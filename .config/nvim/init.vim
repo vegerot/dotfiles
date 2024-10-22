@@ -359,15 +359,27 @@ local rust_config = {
 			debounce_text_changes = 300,
 		},
 		cmd = { "rust-analyzer" },
-		settings = {
-			["rust-analyzer"] = {
-				linkedProjects = {
-					"/Users/m0c0j7y/workspace/github.com/facebook/sapling.git/eden/scm/exec/hgmain/Cargo.toml",
-				},
-			},
-		},
 	},
 }
+local configure_rust_for_sapling = function()
+	local path = vim.fn.expand("%:p:h")
+	local in_sapling = string.find(path, "sapling") ~= nil
+	if in_sapling then
+		rust_config[2].settings = {
+			["rust-analyzer"] = {
+				server = {
+					extraEnv = {
+						["PYTHON_SYS_EXECUTABLE"] = "/usr/bin/python3.11",
+					}
+				},
+				linkedProjects = {
+					"/home/max/workspace/github.com/facebook/sapling/eden/scm/exec/hgmain/Cargo.toml",
+				},
+			},
+		}
+	end
+end
+configure_rust_for_sapling()
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
