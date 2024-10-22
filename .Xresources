@@ -60,10 +60,8 @@ URxvt.keysys.M-v: perl:clipboard:paste
 
 URxvt.colorUL:             #7780a1
 URxvt.depth:32
-! transparent setting not in i3 because we use picom (compton) for transparency
-! However, on GNOME we need to set it.  I am not smart enough to figure out how to
-! detect the window manager, so I just set it here.
-URxvt.transparent:  true
+! transparent setting not needed because we use picom (compton) for transparency
+URxvt.transparent:  false
 URxvt*highlightSelection: true
 URxvt*background: rgba:0c00/0b00/0a00/cccc
 URxvt*geometry: 100x30
