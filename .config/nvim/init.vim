@@ -440,7 +440,7 @@ endif
 "" FZF end
 
 "" TELESCOPE start
-packadd telescope.nvim
+silent! packadd telescope.nvim
 if exists(":Telescope")
 	nmap <leader>tr <cmd>Telescope resume<Cr>
 	nmap <leader>tf :lua require('telescope.builtin').find_files({hidden=true})<Cr>
