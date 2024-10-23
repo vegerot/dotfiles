@@ -43,8 +43,8 @@ function upgrade_zsh() {
 	fi
 }
 
-function upgrade_neovim() {
-	echo "neovim"
+function upgrade_neovim_plugins() {
+	echo "neovim plugins"
 
 	function pull_and_update() {
 		set -o errexit
@@ -108,7 +108,7 @@ else
 	upgrade_apt
 fi
 upgrade_zsh
-upgrade_neovim
+upgrade_neovim_plugins
 upgrade_npm
 if [[ $OSTYPE == "darwin"* ]]; then
 	upgrade_app_store
