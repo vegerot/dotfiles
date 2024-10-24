@@ -250,7 +250,12 @@ local godotnvim = function()
 		return false
 	end
 	if vim.fn.executable("gopls") == 0 then
-		print("go.nvim installed but gopls not found.  Not loading go.nvim")
+		-- Only print this message if we're in a go file
+		-- we cannot check the filetype with `vim.bo.filetype` because the
+		-- filetype is not detected until after the plugins are loaded
+		if vim.fn.expand("%:e") == "go" then
+			print("go.nvim installed but gopls not found.  Not loading go.nvim")
+		end
 		return false
 	end
 	-- go.nvim will handle calling lspconfig_plugin["gopls"].setup
