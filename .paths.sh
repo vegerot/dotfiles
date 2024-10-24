@@ -33,8 +33,11 @@ fi
 ## macOS' toolchain doesn't come with tools like clang-format and clang-tidy
 ## instead, use LLVM for those tools but stick with the builtin ones otherwise
 llvm=/opt/homebrew/opt/llvm/bin
+llvm2=/usr/local/opt/llvm/bin
 if [[ -d ${llvm} ]]; then
 	export PATH="$PATH:${llvm}"
+elif [[ -d ${llvm2} ]]; then
+	export PATH="$PATH:${llvm2}"
 fi
 
 # zig
