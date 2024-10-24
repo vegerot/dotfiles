@@ -117,7 +117,6 @@ autocmd FileType *sh set makeprg=shellcheck\ -f\ gcc\ -x\ %
 
 "" VANILLA end
 
-
 " Open remote
 nmap <leader>op :OpenFile<CR>
 vmap <leader>op :OpenFile<CR>
