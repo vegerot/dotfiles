@@ -81,7 +81,7 @@ main() {
 # cow.
 if [[ ${1:-} == "--async" ]]; then
 	cowtput=/tmp/cowtput.txt
-	[[ -f $cowtput ]] && cat $cowtput
+	[[ -f $cowtput ]] && cat $cowtput || main
 	# `disown` makes it not print a message when done
 	# put this line after the `cat` to avoid a race condition where cowtput.txt
 	# is empty because of the redirect
