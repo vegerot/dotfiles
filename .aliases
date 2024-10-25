@@ -47,7 +47,7 @@ fi
 
 #sapling
 
-if type sl > /dev/null; then
+if type sl >/dev/null 2>&1; then
   alias sst="sl status && sl ssl"
 
   alias slc="sl commit --verbose"
@@ -62,7 +62,7 @@ fi
 alias code="code-insiders"
 
 # k8s
-if type kubectl > /dev/null; then
+if type kubectl >/dev/null 2>&1; then
   alias k="kubectl"
   alias kns="kubens ce-smartlists-gql"
   alias kn="kubens"
