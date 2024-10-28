@@ -5,6 +5,10 @@ set -o nounset
 set -o pipefail
 
 keymaps() {
+	if ! type rg &>/dev/null; then
+		echo "ripgrep not found, skipping"
+		return 1
+	fi
 	if ! type xmodmap &>/dev/null || ! type xcape &>/dev/null || ! type setxkbmap &>/dev/null; then
 		echo "xmodmap, xcape, or setxkbmap not found, skipping"
 		return 1
