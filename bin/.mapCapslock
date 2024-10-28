@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
 
+set -o errexit
+set -o nounset
+set -o pipefail
+
 keymaps() {
 	if ! type xmodmap &>/dev/null || ! type xcape &>/dev/null || ! type setxkbmap &>/dev/null; then
 		echo "xmodmap, xcape, or setxkbmap not found, skipping"
 		return 1
 	fi
-	if [[ -z $DISPLAY && -z $ALWAYS_SET_CAPS ]]; then
+	if [[ -z ${DISPLAY:-} && -z ${ALWAYS_SET_CAPS:-} ]]; then
 		return
 	fi
 	local is_caps_already_mapped_to_control=$(xmodmap -pke | rg --count-matches "keycode\s+66\s*=\s*Control_L")
