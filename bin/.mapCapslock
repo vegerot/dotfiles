@@ -8,8 +8,10 @@ keymaps() {
 	if [[ -z $DISPLAY && -z $ALWAYS_SET_CAPS ]]; then
 		return
 	fi
-	local is_caps_already_mapped=$(xmodmap -pke | rg --count-matches "keycode\s+66\s*=\s*Control_L")
-	if [[ $is_caps_already_mapped -gt 0 && -z $ALWAYS_SET_CAPS ]]; then
+	local is_caps_already_mapped_to_control=$(xmodmap -pke | rg --count-matches "keycode\s+66\s*=\s*Control_L")
+	local is_caps_already_mapped_to_escape=$(ps aux | rg --count-matches "xcape")
+	if [[ $is_caps_already_mapped_to_control -gt 0 &&
+		$is_caps_already_mapped_to_escape -gt 1 && -z ${ALWAYS_SET_CAPS:-} ]]; then
 		return
 	fi
 	echo "Caps is not mapped to Control_L, mapping it now"
