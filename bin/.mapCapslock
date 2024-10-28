@@ -24,4 +24,9 @@ keymaps() {
 	xcape -e 'Control_L=Escape'
 }
 
-keymaps
+if type notify-send &>/dev/null; then
+	msg="$(keymaps 2>&1)"
+	[[ -n $msg ]] && notify-send -a "mapCapslock" "$msg" || true
+else
+	(keymaps)
+fi
