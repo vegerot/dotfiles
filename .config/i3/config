@@ -47,7 +47,7 @@ bindsym --release $mod3 exec --no-startup-id $quickOpen
 for_window [instance="^fzf-menu$"] floating enable
 
 # remap capslock to escape
-bindsym F2 exec /home/max/bin/.mapCapslock
+bindsym F2 exec /home/max/bin/remapCapslock
 # change focus
 bindsym $mod2+h focus left
 bindsym $mod2+j focus down
@@ -229,7 +229,7 @@ exec sh -c "gsettings set org.gnome.gnome-flashback desktop false && gsettings s
 # Make keyboard faster
 exec xset r rate 168 35
 
-exec_always sh -c "sleep 3 && /home/max/bin/.mapCapslock"
+exec_always sh -c "sleep 3 && /home/max/bin/remapCapslock"
 ##exec autocutsel -selection CLIPBOARD -fork
 ##exec autocutsel -selection PRIMARY -fork
 exec xrdb -merge ~/.Xresources

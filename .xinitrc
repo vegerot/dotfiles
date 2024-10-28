@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-if [[ -e ~/bin/.mapCapslock ]]; then
-	~/bin/.mapCapslock
+if [[ -e ~/bin/remapCapslock ]]; then
+	~/bin/remapCapslock
 elif type xmodmap &>/dev/null && type xcape &>/dev/null && type setxkbmap &>/dev/null; then
 	xmodmap -e 'clear Lock'
 	xmodmap -e 'keycode 0x42 = Control_L'

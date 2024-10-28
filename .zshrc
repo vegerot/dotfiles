@@ -109,7 +109,7 @@ bindkey -M vicmd "" edit-command-line
 
 # set up keymap stuff here because it's not working other places
 
-[[ $OSTYPE == "linux-gnu"* && $has_gnulinux_window_manager == true ]] && ! $isWSL && $HOME/bin/.mapCapslock
+[[ $OSTYPE == "linux-gnu"* && $has_gnulinux_window_manager == true ]] && ! $isWSL && $HOME/bin/remapCapslock
 
 bindkey "^R" history-incremental-search-backward
 
