@@ -4,22 +4,24 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-keymaps() {
+should_map_caps_to_control() {
 	if ! type xmodmap &>/dev/null || ! type xcape &>/dev/null || ! type setxkbmap &>/dev/null; then
 		echo "xmodmap, xcape, or setxkbmap not found, skipping"
 		return 1
 	fi
 	if [[ -z ${DISPLAY:-} && -z ${ALWAYS_SET_CAPS:-} ]]; then
-		return
+		return 2
 	fi
 	local is_caps_already_mapped_to_control=$(xmodmap -pke | grep -c -E "keycode\s+66\s*=\s*Control_L")
 	local is_caps_already_mapped_to_escape=$(ps aux | grep -c "xcape")
 	if [[ $is_caps_already_mapped_to_control -gt 0 &&
 		$is_caps_already_mapped_to_escape -gt 1 && -z ${ALWAYS_SET_CAPS:-} ]]; then
-		return
+		return 2
 	fi
 	echo "Caps is not mapped to Control_L, mapping it now"
-	echo "caps is currently mapped to: $(xmodmap -pke | grep -c -E "keycode\s+66\s*= ")"
+}
+
+map_capslock() {
 	xmodmap -e 'clear Lock' \
 		-e 'keycode 0x42 = Control_L' \
 		-e 'keycode 169 = Delete';
@@ -28,9 +30,19 @@ keymaps() {
 	xcape -e 'Control_L=Escape'
 }
 
+main() {
+	should_map_caps_to_control
+	if [[ $? != 0 ]]; then
+		return $?;
+	fi
+	map_capslock
+}
+
 if type notify-send &>/dev/null; then
-	msg="$(keymaps 2>&1)"
+	should_map_caps_to_control
+	msg=$(main 2>&1)
 	[[ -n $msg ]] && notify-send -a "mapCapslock" "$msg" || true
 else
-	(keymaps)
+	should_map_caps_to_control
+	main
 fi
