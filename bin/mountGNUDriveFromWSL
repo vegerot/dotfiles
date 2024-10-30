@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e -x -o pipefail
 
-DRIVE=PHYSICALDRIVE2
+DRIVE=PHYSICALDRIVE1
 PARTITION=2
 DRIVEPATH="\\\\.\\${DRIVE}"
 echo $DRIVEPATH
