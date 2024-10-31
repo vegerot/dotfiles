@@ -43,6 +43,5 @@ if type notify-send &>/dev/null; then
 	msg=$(main 2>&1)
 	[[ -n $msg ]] && notify-send -a "remapCapslock" "$msg" || true
 else
-	should_map_caps_to_control
-	main
+	return main
 fi
