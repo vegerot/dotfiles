@@ -1,3 +1,5 @@
+<!- vim:nowrap
+->
 1. `mkcd ~/.local/share/nvim/site/pack/`
 2. make directories for _categories_ of plugins, e.g. `mkcd tpope/start`
 3. `sl clone git@github.com:tpope/vim-surround.git`, `git clone https://tpope.io/vim/commentary.git`
