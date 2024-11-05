@@ -64,7 +64,7 @@ else
 
 		PROMPT_LAST_STATUS="$([ $EXIT != 0 ] && echo ❌${RED_START}\($EXIT\)%f || printf '')"
 		PROMPT_WHOAMI="🪪${GREEN_START}%n${COLOR_RESET}@${LIGHT_GREEN_START}%m${COLOR_RESET}"
-		PROMPT_WHEREAMI="📁${BLUE_START}%~/${COLOR_RESET}"
+		PROMPT_WHEREAMI="📁${BLUE_START}%${PROMPT_DIRTRIM}~/${COLOR_RESET}"
 		PROMPT_JUST_BRANCH="$(git branch --show-current >/dev/null 2>&1 && printf "🌿$(git branch --show-current) "|| printf "")"
 		PROMPT_SAPLING="$(maybe_scm_prompt)"
 		PROMPT_BRANCH="${MAGENTA_START}${PROMPT_JUST_BRANCH}${PROMPT_SAPLING}${COLOR_RESET}"
