@@ -23,7 +23,7 @@ MAGENTA_START='\033[01;35m'
 
 COLOR_RESET='\033[0m'
 
-PROMPT_WHOAMI="🪪${GREEN_START}\u${COLOR_RESET}@${LIGHT_GREEN_START}\h${COLOR_RESET}"
+PROMPT_WHOAMI="🪪${GREEN_START}\u${COLOR_RESET}💻${LIGHT_GREEN_START}\h${COLOR_RESET}"
 PROMPT_WHEREAMI="📁${BLUE_START}\w/${COLOR_RESET}"
 PROMPT_JUST_BRANCH='$(git branch --show-current >/dev/null 2>&1 && printf "🌿$(git branch --show-current) "|| printf "")'
 PROMPT_SAPLING='$(maybe_scm_prompt)'
