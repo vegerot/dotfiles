@@ -68,6 +68,7 @@ main() {
 		commanddescription="randomcowcommand - a script that works sometimes 😢\n"
 	fi
 	cow=$(format_message "$commanddescription")
+	# download from github.com/arsham/rainbow
 	if type rainbow 1>/dev/null 2>&1; then
 		echo "$cow" | rainbow
 	else
