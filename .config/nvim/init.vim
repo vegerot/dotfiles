@@ -160,12 +160,6 @@ if not status then
 	--print("lspconfig" .. " plugin not loaded.  Not loading lsp stuff")
 	return false
 end
-
-local status, coq = pcall(require, "coq")
-if not status then
-	--print("coq" .. " plugin not loaded.  Not loading coq")
-	return false
-end
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
@@ -385,6 +379,8 @@ local configure_rust_for_sapling = function()
 end
 configure_rust_for_sapling()
 
+local is_coq_running, coq = pcall(require, "coq")
+
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 local servers = { quick_lint_js, clangd_config, tsserver_config, rust_config }
@@ -393,7 +389,10 @@ for _, lsp in ipairs(servers) do
 	if settings == nil then
 		settings = defaultConfig
 	end
-	lspconfig_plugin[name].setup(coq.lsp_ensure_capabilities(settings))
+	if (is_coq_running) then
+		settings = coq.lsp_ensure_capabilities(settings)
+	end
+	lspconfig_plugin[name].setup(settings)
 end
 
 LUAEND
