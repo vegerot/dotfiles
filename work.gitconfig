@@ -1,4 +1,7 @@
 [user]
-  email = Max.Coplan@Walmart.com
+  email = Max.Coplan@TikTok.com
 [commit]
   gpgSign
+
+[url "ssh://git@code.byted.org/"]
+        insteadOf = https://code.byted.org/

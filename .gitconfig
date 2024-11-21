@@ -52,7 +52,7 @@
 [rerere]
   enabled = true
 
-[includeIf "gitdir:~/gecgithub01.walmart.com/**/"]
+[includeIf "gitdir:~/workspace/code.byted.org/**/"]
 	path = ~/dotfiles/work.gitconfig
 
 [maintenance]
