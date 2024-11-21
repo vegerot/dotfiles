@@ -52,7 +52,9 @@
 [rerere]
   enabled = true
 
-[includeIf "gitdir:~/gecgithub01.walmart.com/**/"]
+[include]
+  path = ~/dotfiles/bytedance_private.gitconfig
+[includeIf "gitdir:~/workspace/code.*.org/**/"]
 	path = ~/dotfiles/work.gitconfig
 
 [maintenance]
