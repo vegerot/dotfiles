@@ -266,6 +266,7 @@ local script_name="max_scripts_source_on_cd.sh"
 local max_scripts
 max_scripts=$(find-up $script_name)
 if [[ -n $max_scripts ]]; then
+	echo "Sourcing $max_scripts"
 	source $max_scripts
 fi
 }
