@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 # basics
+alias python=python3
+alias pip=pip3
 
 # BSD doesn't have --color
 if $(ls --color >/dev/null 2>&1); then
