@@ -1209,6 +1209,8 @@
 			<array/>
 			<key>Triggers Use Interpolated Strings</key>
 			<true/>
+			<key>Unicode Version</key>
+			<integer>9</integer>
 			<key>Unlimited Scrollback</key>
 			<true/>
 			<key>Use Bold Font</key>
@@ -1312,6 +1314,8 @@
 	<false/>
 	<key>TabStyleWithAutomaticOption</key>
 	<integer>5</integer>
+	<key>TmuxSyncClipboard</key>
+	<true/>
 	<key>TmuxUnpauseAutomatically</key>
 	<true/>
 	<key>ToolbeltTools</key>
