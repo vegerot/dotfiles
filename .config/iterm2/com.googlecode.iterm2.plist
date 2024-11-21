@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>ActiveUpdateCadence</key>
-	<real>120</real>
+	<real>240</real>
 	<key>AiMaxTokens</key>
 	<integer>16384</integer>
 	<key>AiModel</key>
