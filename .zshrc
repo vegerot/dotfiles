@@ -248,19 +248,18 @@ if ! type j > /dev/null; then
 fi
 
 ## always source max_scripts_source_on_cd.sh in any directory I'm in when I cd
-
 source_max_scripts() {
 	find-up() {
-	local current_path
-	current_path=$(pwd)
-	while [[ -n $current_path ]]; do
-		if [[ -e $current_path/$1 ]]; then
-			echo $current_path/$1
-			return
-		fi
-		current_path=${current_path%/*}
-	done
-}
+		local current_path
+		current_path=$(pwd)
+		while [[ -n $current_path ]]; do
+			if [[ -e $current_path/$1 ]]; then
+				echo $current_path/$1
+				return
+			fi
+			current_path=${current_path%/*}
+		done
+	}
 # search the directory tree upwards for max_scripts_source_on_cd.sh
 local script_name="max_scripts_source_on_cd.sh"
 local max_scripts
