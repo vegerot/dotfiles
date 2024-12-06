@@ -47,6 +47,7 @@
 # force ssh
 #[url "git@github.com:"]
 #  insteadOf = "https://github.com/"
+
 [http]
 	cookiefile = ~/.gitcookies
 [rerere]
@@ -58,7 +59,8 @@
 	path = ~/dotfiles/work.gitconfig
 
 [maintenance]
-  repo = ~/gecgithub01.walmart.com/walmart-web/walmart-web-worktree/main
+	repo = /Users/bytedance/workspace/github.com/vegerot/APODesktop
+
 [gpg]
   format = ssh
 
@@ -66,11 +68,17 @@
     # Switch fast
     s = "!{ git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/ refs/remotes/$(git remote || printf origin)|sed -e 's-refs/heads/--'| sed -e \"s-refs/remotes/$(git remote || printf origin)/--\" & printf 'develop\nmain\nmaster\n'; } | uniq | grep -i -m1 --color=never $1 | xargs -I {} sh -c \" echo {}; git switch {}\""
 
-    # Switch fuzzy
-    sf = !git switch $(git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/ refs/remotes/$(git remote || printf origin)/|sed -e 's-refs/heads/--'| sed -e \"s-refs/remotes/$(git remote || printf origin)/--\" | uniq | fzf) $@
-
   fr = !git fetch $(git remote | head) && git rebase
   frm = !git fetch $(git remote | head) && git rebase $(git remote | head)/main
   fru = !git fetch upstream && git rebase upstream/main
   cw = commit --fixup=wip
 
+    # Switch fuzzy
+    sf = !git switch $(git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/ refs/remotes/$(git remote || printf origin)/|sed -e 's-refs/heads/--'| sed -e \"s-refs/remotes/$(git remote || printf origin)/--\" | uniq | fzf) $@
+
+[credential "https://github.com"]
+	helper =
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper =
+	helper = !/opt/homebrew/bin/gh auth git-credential
