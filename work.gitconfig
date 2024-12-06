@@ -3,5 +3,9 @@
 [commit]
   gpgSign
 
-[url "ssh://git@code.byted.org/"]
-        insteadOf = https://code.byted.org/
+[url "gitr"]
+    insteadOf = git@git.byted.org
+[url "ssh://git@code.byted.org:"]
+     insteadOf = https://code.byted.org/
+[url "ssh://max.coplan@git.byted.org:29418"]
+     insteadOf = https://git.byted.org
