@@ -46,7 +46,8 @@ function fast_nvm_use() {
 	local nvm_versions_dir="$NVM_DIR/versions/node/"
 	# TODO: search upwards for `.nvmrc`
 	local node_version="$(<$nvmrc)"
-	local node_path=$(eval echo "$nvm_versions_dir/?$node_version*")
+	local node_paths=($(eval echo "$nvm_versions_dir/?$node_version*" | tr ' ' '\n' | sort --version-sort --reverse))
+	local node_path="${node_paths[1]}"
 
 	if [[ ! -d $node_path ]]; then
 		debug "not setting up fast nvm because can't find the requested node version"
