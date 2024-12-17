@@ -7,7 +7,6 @@
 
 #[[ -f /etc/zprofile ]] && source /etc/zprofile
 ## important stuff goes first
-export PATH="$HOME/.cargo/bin:$PATH"
 
 [[ "$OSTYPE" == "darwin"* ]] && export PATH="/usr/local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:$HOME/.cargo/bin:/usr/local/opt/ruby/bin:/opt/homebrew/opt/coreutils/libexec/gnubin:/opt/homebrew/opt/curl/bin:$PATH"
 
@@ -16,6 +15,9 @@ export PATH="$HOME/.local/bin:/sbin:$PATH"
 
 ### -----------------------------------
 ## Unimportant stuff goes at the end
+[[ -d $HOME/.cargo/bin ]] && export PATH="$PATH:$HOME/.cargo/bin"
+[[ -d /opt/homebrew/opt/rustup ]] && export PATH="$PATH:/opt/homebrew/opt/rustup"
+
 export DENO_INSTALL="$HOME/.deno"
 [[ -d $DENO_INSTALL ]] && export PATH="$PATH:$DENO_INSTALL/bin"
 
