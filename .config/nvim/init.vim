@@ -397,29 +397,41 @@ end
 
 LUAEND
 
+" MarsCode start
 
-" Copilot
-let g:copilot_no_tab_map = v:true
-let g:copilot_assume_mapped = v:true
-let g:copilot_tab_fallback = ""
-if filereadable("/opt/homebrew/bin/node")
-  let g:copilot_node_command = "/opt/homebrew/bin/node"
-endif
-imap <script><expr> <C-e> copilot#AcceptLine("\<CR>")
-imap <C-f> <Plug>(copilot-accept-word)
-
-" copilot is disabled in markdown (and other languages) by default
-" copilot appends g:copilot_filetypes to s:filetype_defaults (in copilot.vim)
-" so we can override the defaults by putting them all to true
-let g:copilot_filetypes = {
+let g:codeverse_filetypes = {
 			\ '*': v:true,
-			\ 'c': v:false,
-			\ 'cpp': v:true,
 			\}
-" Copilot end
-
+" MarsCode end
 
 "" PLUGINS start
+
+" Copilot
+if !exists("Codeverse")
+	let g:copilot_no_tab_map = v:true
+	let g:copilot_assume_mapped = v:true
+	let g:copilot_tab_fallback = ""
+	if filereadable("/opt/homebrew/bin/node")
+		let g:copilot_node_command = "/opt/homebrew/bin/node"
+	endif
+	imap <script><expr> <C-e> copilot#AcceptLine("\<CR>")
+	imap <C-f> <Plug>(copilot-accept-word)
+
+	" copilot is disabled in markdown (and other languages) by default
+	" copilot appends g:copilot_filetypes to s:filetype_defaults (in copilot.vim)
+	" so we can override the defaults by putting them all to true
+	let g:copilot_filetypes = {
+				\ '*': v:true,
+				\ 'c': v:false,
+				\ 'cpp': v:true,
+				\}
+else
+	let g:copilot_filetypes = {
+				\ '*': v:false,
+				\}
+endif
+" Copilot end
+
 
 command! -nargs=* FindFile tabnew | execute "0read !fd <args> | sort" | set nomodified | 0
 
@@ -527,3 +539,4 @@ if status then
 end
 
 LUAEND
+
