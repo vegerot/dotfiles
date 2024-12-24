@@ -151,6 +151,7 @@ typeset -A plugin_paths=(
 	[zsh-syntax-highlighting]="$HOME/workspace/github.com/zdharma-continuum/fast-syntax-highlighting"
 	[zsh-autosuggestions]="$HOME/workspace/github.com/zsh-users/zsh-autosuggestions"
 	[zsh-history-substring-search]="$HOME/workspace/github.com/zsh-users/zsh-history-substring-search"
+	[zig-shell-complete]="$HOME/workspace/github.com/ziglang/shell-completions"
 )
 load_plugins() {
   # install from https://github.com/gsamokovarov/jump
@@ -198,6 +199,11 @@ load_plugins() {
 	  bindkey '^[[B' history-substring-search-down
 	  bindkey "$terminfo[kcuu1]" history-substring-search-up
 	  bindkey "$terminfo[kcud1]" history-substring-search-down
+  fi
+
+  local zig_shell_complete_path=${plugin_paths[zig-shell-complete]}/zig-shell-completions.plugin.zsh
+  if [[ -r $zig_shell_complete_path ]]; then
+	  source $zig_shell_complete_path
   fi
 
   if type fzf > /dev/null; then
