@@ -61,7 +61,9 @@ if type sl >/dev/null 2>&1; then
 fi
 
 #vscode
-alias code="code-insiders"
+if type code-insiders >/dev/null 2>&1; then
+  alias code="code-insiders"
+fi
 
 # k8s
 if type kubectl >/dev/null 2>&1; then
