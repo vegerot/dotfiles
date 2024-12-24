@@ -379,11 +379,43 @@ local configure_rust_for_sapling = function()
 end
 configure_rust_for_sapling()
 
+local configure_zig = function()
+	-- don't show parse errors in a separate window
+	vim.g.zig_fmt_parse_errors = 0
+	-- disable format-on-save from `ziglang/zig.vim`
+	vim.g.zig_fmt_autosave = 0
+	-- enable  format-on-save from nvim-lspconfig + ZLS
+	--
+	-- Formatting with ZLS matches `zig fmt`.
+	-- The Zig FAQ answers some questions about `zig fmt`:
+	-- https://github.com/ziglang/zig/wiki/FAQ
+	vim.api.nvim_create_autocmd('BufWritePre',{
+		pattern = {"*.zig", "*.zon"},
+		callback = function(ev)
+			vim.lsp.buf.format()
+		end
+	})
+	return {
+		"zls",
+		{
+			on_attach = on_attach,
+			settings = {
+				zls = {
+					enable_build_on_save = true,
+				}
+			}
+		}
+	}
+
+end
+
+local zig_config = configure_zig()
+
 local is_coq_running, coq = pcall(require, "coq")
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { quick_lint_js, clangd_config, tsserver_config, rust_config }
+local servers = { quick_lint_js, clangd_config, tsserver_config, rust_config, zig_config }
 for _, lsp in ipairs(servers) do
 	local name, settings = unpack(lsp)
 	if settings == nil then

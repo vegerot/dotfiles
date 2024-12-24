@@ -38,5 +38,6 @@ Make sure everything you're cloning has a `plugins/` directory in it
 | nvim-lspconfig     	|                                                           	| sl clone git@github.com:neovim/nvim-lspconfig.git                      	|
 | go.nvim            	|                                                           	| git clone git@github.com:ray-x/go.nvim                                 	|
 | guihua.lua         	|                                                           	| git clone git@github.com:ray-x/guihua.lua                              	|
+| zig.vim            	|                                                           	| git clone git@github.com:ziglang/zig.vim                               	|
 | MarsCode           	| ~/.local/share/nvim/site/pack/byted/start/                	| git clone git@code.???.org:chenjiaqi.cposture/codeverse.vim.git      	|
 
