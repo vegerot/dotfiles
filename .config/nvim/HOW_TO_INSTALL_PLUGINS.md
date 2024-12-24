@@ -17,6 +17,7 @@ Make sure everything you're cloning has a `plugins/` directory in it
 | repeat             	|                                                           	| sl clone https://tpope.io/vim/repeat.git                               	|
 | vinegar            	|                                                           	| sl clone https://github.com/tpope/vim-vinegar.git                      	|
 | unimpaired         	|                                                           	| sl clone https://tpope.io/vim/unimpaired.git                           	|
+| sleuth             	|                                                           	| git clone https://tpope.io/vim/sleuth.git                              	|
 | open-remote        	| ~/.local/share/nvim/site/pack/simple-plugins/start/       	| sl clone git@github.com:vegerot/open-remote.git                        	|
 | CamelCaseMotion    	|                                                           	| sl clone git@github.com:bkad/CamelCaseMotion.git                       	|
 | vim-fetch          	|                                                           	| git clone git@github.com:wsdjeg/vim-fetch.git                          	|
