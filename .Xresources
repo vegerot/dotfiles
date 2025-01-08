@@ -53,9 +53,12 @@ URxvt.url-launcher:        /usr/bin/xdg-open
 URxvt.matcher.button:      1
 URxvt.keysym.M-Delete:     perl:matcher:list
 
+URxvt.iso14755: false
 URxvt.clipboard.autocopy: true
 URxvt.keysys.M-c: perl:clipboard:copy
 URxvt.keysys.M-v: perl:clipboard:paste
+URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
+URxvt.keysym.Shift-Control-V: eval:paste_clipboard
 
 
 URxvt.colorUL:             #7780a1
