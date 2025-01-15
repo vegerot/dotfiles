@@ -85,7 +85,9 @@ if [[ $OSTYPE == "darwin"* ]]; then
 fi
 
 ### fpath stuff for zsh on macOS
-[[ $OSTYPE == "darwin"* && -d /opt/homebrew/share/zsh/site-functions && $0 == *"zsh"* ]] && export FPATH="/opt/homebrew/share/zsh/site-functions:$FPATH"
+if [[ $SHELL == *"zsh"* && $OSTYPE == "darwin"* && -d /opt/homebrew/share/zsh/site-functions ]]; then
+	fpath=(/opt/homebrew/share/zsh/site-functions $fpath)
+fi
 
 #if command -v pyenv 1>/dev/null 2>&1; then
 if false; then
