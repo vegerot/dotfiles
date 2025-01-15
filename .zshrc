@@ -206,6 +206,18 @@ load_plugins() {
 	  source $zig_shell_complete_path
   fi
 
+  if type gh > /dev/null; then
+	source <(TCELL_MINIMIZE=1 gh completion -s zsh)
+  fi
+
+  if type fd > /dev/null; then
+	  source <(fd --gen-completions)
+  fi
+
+  if type rg > /dev/null; then
+	  source <(rg --generate=complete-zsh)
+  fi
+
   if type fzf > /dev/null; then
 	  ## read by fzf program (see man fzf)
 	  export FZF_DEFAULT_OPTS='--height=70% '
@@ -220,10 +232,6 @@ load_plugins() {
 
 	  ## from fzf.zsh plugin
 	  bindkey '^p' fzf-file-widget
-  fi
-
-  if type gh > /dev/null; then
-	source <(TCELL_MINIMIZE=1 gh completion -s zsh)
   fi
 }
 if [[ -z $ZSH_SKIP_LOADING_PLUGINS ]]; then
