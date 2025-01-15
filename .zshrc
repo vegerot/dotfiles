@@ -215,7 +215,7 @@ load_plugins() {
   fi
 
   if type rg > /dev/null; then
-	  source <(rg --generate=complete-zsh)
+	  #source <(rg --generate=complete-zsh)
   fi
 
   if type fzf > /dev/null; then
