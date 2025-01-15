@@ -1,24 +1,14 @@
 // put in "$HOME/Library/Application Support/Code/User/settings.json" on macOS
 {
   "[javascript, typescript, Vue, javascriptreact]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
     "editor.formatOnSave": true
     // "editor.formatOnType": true
-  },
-  "[scss]": {
-    "editor.defaultFormatter": "stylelint.vscode-stylelint"
-  },
-  "[css]": {
-    "editor.defaultFormatter": "stylelint.vscode-stylelint"
   },
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"
   },
   "[typescript]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
-  },
-  "[html, Vue]": {
-    "editor.renameOnType": true
   },
   "auto-close-tag.activationOnLanguage": [
     "html",
@@ -29,7 +19,6 @@
     "vue"
   ],
   "breadcrumbs.enabled": true,
-  "clangd.path": "/Users/maxcoplan/Library/Application Support/Code - Insiders/User/globalStorage/llvm-vs-code-extensions.vscode-clangd/install/10.0.0/clangd_10.0.0/bin/clangd",
   "cSpell.userWords": [
     "accesscontrol",
     "aircrafts",
@@ -51,6 +40,9 @@
     "combobox",
     "Comlink",
     "commitlint",
+    "comptime",
+    "DARKGRAY",
+    "DARKGREEN",
     "Datepicker",
     "Deno",
     "devs",
@@ -66,8 +58,10 @@
     "fnamemodify",
     "frameguard",
     "frontends",
+    "GAMEPLAY",
     "gapi",
     "geocode",
+    "gettime",
     "gitmoji",
     "gmail",
     "greenishkeeper",
@@ -80,6 +74,7 @@
     "Kitt",
     "krid",
     "libphonenumber",
+    "LIGHTGRAY",
     "linebreak",
     "listapp",
     "LRCWE",
@@ -93,6 +88,7 @@
     "neovim",
     "nestjs",
     "npmjs",
+    "nsec",
     "nvim",
     "OAUTH",
     "orchestrainfo",
@@ -106,6 +102,8 @@
     "prepend",
     "pubx",
     "RATELIMIT",
+    "raylib",
+    "RAYWHITE",
     "readonly",
     "Recents",
     "Referer",
@@ -124,6 +122,7 @@
     "stylelintrc",
     "substr",
     "swapi",
+    "timespec",
     "timestamptz",
     "trippin",
     "tslib",
@@ -155,9 +154,6 @@
   },
   "editor.snippetSuggestions": "bottom",
   "editor.tabCompletion": "on",
-  "editor.tokenColorCustomizations": {
-    "enabled": true
-  },
   "editor.wordWrap": "on",
   "editor.wrappingIndent": "deepIndent",
   "emmet.showSuggestionsAsSnippets": true,
@@ -173,21 +169,14 @@
   "gitlab.instanceUrl": "https://git.aoc-pathfinder.cloud/",
   "gitlab.enableExperimentalFeatures": true,
   "git.enableCommitSigning": true,
-  "java.home": "/Library/Java/JavaVirtualMachines/openjdk-13.jdk/Contents/Home",
   "javascript.format.enable": true,
   "python.jediEnabled": false,
   "sync.gist": "d9e484f74d30f59cafcc267cd9dfb581",
-  "terminal.integrated.env.osx": {
-    "TMUX": ""
-  },
   "terminal.integrated.experimentalUseTitleEvent": true,
   "terminal.integrated.macOptionClickForcesSelection": true,
-  "terminal.integrated.scrollback": 100000,
+  "terminal.integrated.scrollback": 1000000,
   "terminal.integrated.enableShellIntegration": true,
   "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
-  "vetur.completion.useScaffoldSnippets": false,
-  "vetur.experimental.templateInterpolationService": true,
-  "vetur.format.defaultFormatter.ts": "vscode-typescript",
   "vim.surround": true,
   "vim.history": 50000,
   "vim.visualstar": true,
@@ -373,7 +362,6 @@
   "refreshBrowser.browser": "Safari Technology Preview", // the browser to refresh
   "refreshBrowser.runBuildTask": true,
   "debug.javascript.usePreview": true,
-  "debug.inlineValues": true,
   "debug.showBreakpointsInOverviewRuler": true,
   "debug.toolBarLocation": "docked",
   "typescript.implementationsCodeLens.enabled": true,
@@ -410,14 +398,10 @@
     "**/.metals": true,
     "**/.ammonite": true
   },
-  "C_Cpp.updateChannel": "Insiders",
   "liveshare.allowInvites": "all",
   // "liveshare.featureSet": "insiders",
   "liveshare.showInStatusBar": "whileCollaborating",
   "editor.suggest.showStatusBar": true,
-  "cSpell.enableFiletypes": [
-    "vue"
-  ],
   "gitlens.codeLens.scopes": [
     "document",
     "containers",
@@ -547,17 +531,18 @@
   "typescript.experimental.tsserver.web.typeAcquisition.enabled": true,
   "quick-lint-js.snarky": true,
   "marscode.internal.experiments.marscode++": true,
-  "cSpell.enabled": false,
   "editor.minimap.showSlider": "always",
   "workbench.editor.highlightModifiedTabs": true,
   "terminal.integrated.enableImages": true,
   "terminal.integrated.fontLigatures": true,
-  "terminal.integrated.persistentSessionScrollback": 1000,
-  "terminal.integrated.suggest.enabled": true,
+  "terminal.integrated.persistentSessionScrollback": 10000,
   "terminal.integrated.suggest.enableExtensionCompletions": true,
   "git.terminalGitEditor": true,
   "python.terminal.shellIntegration.enabled": true,
-  "terminal.integrated.suggest.runOnEnter": "exactMatch",
   "files.autoSaveWhenNoErrors": true,
   "window.autoDetectColorScheme": true,
+  "C_Cpp.intelliSenseEngine": "disabled",
+  "zig.zls.enabled": "on",
+  "zig.zls.enableBuildOnSave": true,
+  "terminal.integrated.suggest.enabled": true,
 }
