@@ -6,15 +6,16 @@ set -o xtrace
 
 function upgrade_brew() {
 	echo "brew"
-	brew outdated||\
-		brew update&&\
-		# TODO: don't ask to `brew upgrade` if there are no outdated packages
-			read -p 'Would you like to upgrade Brew (y/n): ' upgradeBrew
-			if [[ "$upgradeBrew" == "y" ]]; then
-				brew upgrade
-				echo "brew upgrade --cask"
-				brew upgrade --cask
-			fi
+	local outdated
+	outdated=$(brew outdated --quiet)
+	if [[ -n "$outdated" ]]; then
+		read -p 'Would you like to upgrade Brew (y/n): ' upgradeBrew
+		if [[ "$upgradeBrew" == "y" ]]; then
+			brew upgrade
+			echo "brew upgrade --cask"
+			brew upgrade --cask
+		fi
+	fi
 }
 
 function upgrade_apt() {
