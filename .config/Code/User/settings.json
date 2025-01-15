@@ -443,7 +443,6 @@
   "metals.superMethodLensesEnabled": true,
   "metals.javaHome": "/Users/maxcoplan/.jabba/jdk/adopt@1.11.0-9/Contents/Home",
   "githubPullRequests.remotes": [
-    "walmart",
     "origin",
     "upstream",
     "github"
@@ -493,12 +492,6 @@
     "plaintext": false,
     "markdown": true
   },
-  "gitweblinks.gitHubEnterprise": [
-    {
-      "http": "https://gecgithub01.walmart.com",
-      "ssh": "git@gecgithub01.walmart.com"
-    }
-  ],
   "debug.javascript.terminalOptions": {
     "env": {
       "TMUX": "false"
@@ -507,7 +500,6 @@
   "editor.foldingImportsByDefault": true,
   "editor.bracketPairColorization.enabled": true,
   "workbench.editor.limit.enabled": true,
-  "github-enterprise.uri": "https://gecgithub01.walmart.com/",
   "diffEditor.ignoreTrimWhitespace": false,
   "git.autofetch": true,
   "editor.guides.bracketPairs": true,
