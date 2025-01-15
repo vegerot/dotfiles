@@ -56,13 +56,13 @@
 [rerere]
   enabled = true
 
+[include]
+  path = ~/dotfiles/bytedance_private.gitconfig
 [includeIf "gitdir:~/workspace/code.byted.org/**/"]
-	path = ~/dotfiles/work.gitconfig
+  path = ~/dotfiles/work.gitconfig
+
 
 [maintenance]
-	repo = /Users/bytedance/workspace/code.byted.org/i18n_ecom_fe/i18n_ecom_shop
-	repo = /Users/bytedance/workspace/code.byted.org/i18n_ecom_fe/i18n_ecom_shop_workbench
-	repo = /Users/bytedance/workspace/code.byted.org/i18n_ecom_fe/workbench_components
 	repo = /Users/bytedance/workspace/github.com/vegerot/APODesktop
 
 [gpg]
