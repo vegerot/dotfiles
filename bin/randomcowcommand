@@ -20,7 +20,15 @@ get_description_of_manpage() {
 		var="${var%"${var##*[![:space:]]}"}"
 		printf '%s' "$var"
 	}
-	if ! type lexgrog > /dev/null 2>&1; then
+	if type lexgrog > /dev/null 2>&1; then
+	  local manPageText;
+	  manPageText=$(lexgrog -w "$1")
+	  if [[ $? -ne 0 ]]; then
+		  echo "randomcowcommand: We messed up with $1" 1>&2
+		  manPageText=""
+	  fi
+	  echo "$manPageText"| shuf -n 1 | sed -E 's/^.*: "(.*)"$/\1/'
+  else
 	  #local manPageText="$(man -P cat $1)"
 	  ## HACK(max): If you give `man` the path to the file, it won't correctly
 	  # import `.so`s (because it `cd`s to the wrong directory for the relative
@@ -34,14 +42,6 @@ get_description_of_manpage() {
 		  echo "randomcowcommand: We messed up with $1" 1>&2
 	  fi
 	  echo "$formatted"
-  else
-	  local manPageText;
-	  manPageText=$(lexgrog -w "$1")
-	  if [[ $? -ne 0 ]]; then
-		  echo "randomcowcommand: We messed up with $1" 1>&2
-		  manPageText=""
-	  fi
-     echo "$manPageText"| shuf -n 1 | sed -E 's/^.*: "(.*)"$/\1/'
   fi
 }
 
@@ -75,6 +75,7 @@ main() {
 		echo "$cow"
 	fi
 }
+
 # HACK(max): on my MacBook, `randomcowcommand` takes 200ms which is way too long.
 # Instead, I'll get the cow in the background and save it to disk and then
 # cat it here.
