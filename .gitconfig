@@ -82,3 +82,5 @@
 [credential "https://gist.github.com"]
 	helper =
 	helper = !/opt/homebrew/bin/gh auth git-credential
+[gpg "ssh"]
+	allowedSignersFile = ~/.ssh/allowed_signers
