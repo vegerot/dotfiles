@@ -6,7 +6,15 @@ set -o pipefail
 
 # find-manpage with fzf
 
-main() {
+find-manpage-file() {
+	fd --type=file --type=symlink --color=always . $(manpath -q | tr ':' ' ') \
+		| fzf --ansi \
+		--preview="man -P bat {}"\
+		--bind='enter:execute(man {})'
+
+}
+
+find-manpage-contents() {
 	local query=$1
 	PAGER=cat apropos $query \
 		| sed -e 's/^\([^(]*\)(\([^)]*\))/\1:\2:/' \
@@ -15,6 +23,15 @@ main() {
 			--with-nth=..-2 \
 			--preview="MANPAGER=cat man {2} {1}" \
 			--bind='enter:execute(man {2} {1})'
+
+}
+
+main() {
+	if [[ $# -eq 0 ]]; then
+		find-manpage-file "$@"
+	else
+		find-manpage-contents "$@"
+	fi
 }
 
 main "$@"
