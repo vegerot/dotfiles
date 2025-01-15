@@ -431,7 +431,7 @@ LUAEND
 
 " MarsCode start
 
-silent! packadd marscode.vim
+silent! packadd codeverse.vim
 if exists(":Marscode")
 	let g:marscode_filetypes = {
 				\ '*': v:true,
