@@ -431,19 +431,19 @@ LUAEND
 
 " MarsCode start
 
-silent! packadd codeverse.vim
-if exists(":Codeverse")
-	let g:codeverse_filetypes = {
+silent! packadd marscode.vim
+if exists(":Marscode")
+	let g:marscode_filetypes = {
 				\ '*': v:true,
 				\}
-	imap <C-e> <Plug>(codeverse-accept-word)
+	imap <C-e> <Plug>(marscode-accept-word)
 endif
 " MarsCode end
 
 "" PLUGINS start
 
 " Copilot
-if !exists(":Codeverse")
+if !exists(":Marscode")
 	let g:copilot_no_tab_map = v:true
 	let g:copilot_assume_mapped = v:true
 	let g:copilot_tab_fallback = ""
