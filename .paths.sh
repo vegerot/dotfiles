@@ -96,4 +96,5 @@ if false; then
   eval "$(pyenv init --path)"
   eval "$(pyenv init -)"
 fi
+export PYTHONPATH="$PYTHONPATH:."
 
