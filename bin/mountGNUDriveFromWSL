@@ -14,6 +14,7 @@ fi
 sudo mount --types=proc {,$MNT}/proc
 sudo mount --rbind {,$MNT}/dev
 sudo mount -o bind {,$MNT}/run
+sudo mount -o bind {,$MNT}/mnt
 sudo mount --rbind {,$MNT}/sys
 sudo mount -o bind {,$MNT}/tmp/.X11-unix
 sudo chroot $MNT
