@@ -88,6 +88,10 @@ if [[ ${1:-} == "--async" ]]; then
 	# put this line after the `cat` to avoid a race condition where cowtput.txt
 	# is empty because of the redirect
 	(main 2>/dev/null 1> $cowtput) & disown
+	# bug: if you run this command with --async many times in a row
+	# (e.g. benchmarking with hyperfine) the outputs will overwrite each
+	# other and be bad.  I don't care enough to fix this, because it'll
+	# never realistically happen outside of benchmarks
 else
 	main
 fi
