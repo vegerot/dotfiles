@@ -76,6 +76,6 @@ Test() {
     fi
 }
 
-if [[ $1 == "test" ]]; then
+if [[ ${1:-} == "test" ]]; then
   Test
 fi

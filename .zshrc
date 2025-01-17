@@ -1,3 +1,6 @@
+set -o nounset
+set -o pipefail
+
 # Compute how long startup takes.
 # Only GNU date supports milliseconds, and also only GNU date has `--help`
 if type gdate > /dev/null; then
@@ -18,7 +21,7 @@ else
 	local isWSL=false
 fi
 
-if [[ -n "$XDG_CURRENT_SESSION" || -n "$XDG_CURRENT_DESKTOP" ]]; then
+if [[ -n "${XDG_CURRENT_SESSION:-}" || -n "${XDG_CURRENT_DESKTOP:-}" ]]; then
 	local has_gnulinux_window_manager=true
 else
 	local has_gnulinux_window_manager=false
@@ -26,14 +29,14 @@ fi
 
 [[ -r ~/.profile ]] && source ~/.profile
 
-if [[ -z $ZSH_SKIP_LOADING_PLUGINS && $OSTYPE == "darwin"* || $isWSL == true ]]; then
+if [[ -z ${ZSH_SKIP_LOADING_PLUGINS:-} && $OSTYPE == "darwin"* || $isWSL == true ]]; then
 	~/dotfiles/bin/randomcowcommand --async
-elif [[ -z $ZSH_SKIP_LOADING_PLUGINS ]]; then
+elif [[ -z ${ZSH_SKIP_LOADING_PLUGINS:-} ]]; then
 	~/dotfiles/bin/randomcowcommand
 fi;
 
 local use_fancy_prompt
-if [[ $TERM_PROGRAM != "WarpTerminal" && $TERMINAL_EMULATOR != "JetBrains-JediTerm" ]]; then
+if [[ $TERM_PROGRAM != "WarpTerminal" && ${TERMINAL_EMULATOR:-} != "JetBrains-JediTerm" ]]; then
 	use_fancy_prompt="true"
 else
 	use_fancy_prompt="false"
@@ -41,7 +44,7 @@ fi
 
 if [[ $use_fancy_prompt == "true" \
 	&& -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"\
-	&& -z $ZSH_SKIP_LOADING_PLUGINS \
+	&& -z ${ZSH_SKIP_LOADING_PLUGINS:-} \
 	]]; then
 	source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 else
@@ -241,7 +244,7 @@ load_plugins() {
 	  bindkey '^p' fzf-file-widget
   fi
 }
-if [[ -z $ZSH_SKIP_LOADING_PLUGINS ]]; then
+if [[ -z ${ZSH_SKIP_LOADING_PLUGINS:-} ]]; then
 	load_plugins
 fi
 
@@ -310,4 +313,7 @@ if type rainbow > /dev/null; then
 else
 	printf "$startuptime\n"
 fi
+
+set +o nounset
+set +o pipefail
 
