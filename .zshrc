@@ -32,7 +32,14 @@ elif [[ -z $ZSH_SKIP_LOADING_PLUGINS ]]; then
 	~/dotfiles/bin/randomcowcommand
 fi;
 
-if [[ $TERM_PROGRAM != "WarpTerminal" \
+local use_fancy_prompt
+if [[ $TERM_PROGRAM != "WarpTerminal" && $TERMINAL_EMULATOR != "JetBrains-JediTerm" ]]; then
+	use_fancy_prompt="true"
+else
+	use_fancy_prompt="false"
+fi
+
+if [[ $use_fancy_prompt == "true" \
 	&& -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"\
 	&& -z $ZSH_SKIP_LOADING_PLUGINS \
 	]]; then
@@ -159,7 +166,7 @@ load_plugins() {
 	  eval "$(jump shell)"
   fi
 
-  if [[ $TERM_PROGRAM == "WarpTerminal" ]]; then
+  if [[ $use_fancy_prompt == "false" ]]; then
 	  return
   fi
 
