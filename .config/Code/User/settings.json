@@ -555,4 +555,7 @@
   "settingsSync.ignoredExtensions": [
     "byted-ide.gallery"
   ],
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+  },
 }
