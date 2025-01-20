@@ -8,7 +8,11 @@
 #[[ -f /etc/zprofile ]] && source /etc/zprofile
 ## important stuff goes first
 
-[[ "$OSTYPE" == "darwin"* ]] && export PATH="/usr/local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:$HOME/.cargo/bin:/usr/local/opt/ruby/bin:/opt/homebrew/opt/coreutils/libexec/gnubin:/opt/homebrew/opt/curl/bin:$PATH"
+[[ "$OSTYPE" == "darwin"* ]] && export PATH="/usr/local/bin$HOME/.cargo/bin:/usr/local/opt/ruby/bin:$PATH"
+
+if [[ -d /opt/homebrew ]]; then
+	export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/opt/homebrew/opt/coreutils/libexec/gnubin:/opt/homebrew/opt/curl/bin:$PATH"
+fi
 
 export PATH="$HOME/bin:$HOME/.local/bin:/sbin:$PATH"
 
@@ -31,6 +35,12 @@ export FZF_BASE="$HOME/workspace/github.com/junegunn/fzf/"
 if [[ ! "$PATH" == *$FZF_BASE/bin* ]]; then
 	PATH="${PATH:+${PATH}:}$FZF_BASE/bin"
 fi
+
+ZIGTOOLS="$HOME/workspace/github.com/zigtools"
+if [[ -f $ZIGTOOLS/zls/zig-out/bin/zls ]]; then
+	export PATH="$PATH:$ZIGTOOLS/zls/zig-out/bin"
+fi
+
 
 ## macOS' toolchain doesn't come with tools like clang-format and clang-tidy
 ## instead, use LLVM for those tools but stick with the builtin ones otherwise
