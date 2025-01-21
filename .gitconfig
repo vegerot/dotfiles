@@ -59,7 +59,7 @@
 	path = ~/dotfiles/work.gitconfig
 
 [maintenance]
-	repo = /Users/bytedance/workspace/github.com/vegerot/APODesktop
+	repo = ~/workspace/github.com/vegerot/APODesktop
 
 [gpg]
   format = ssh
