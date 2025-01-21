@@ -60,6 +60,7 @@
 
 [maintenance]
 	repo = ~/workspace/github.com/vegerot/APODesktop
+	repo = ~/workspace/github.com/vegerot/dotfiles
 
 [gpg]
   format = ssh
