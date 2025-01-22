@@ -1,7 +1,7 @@
 [core]
-	pager = "eval ${GITPAGER}"
-	fsmonitor = true
-	untrackedCache = true
+  pager = "eval ${GITPAGER}"
+  fsmonitor = true
+  untrackedCache = true
 
 [color "branch"]
   current = yellow reverse
@@ -55,7 +55,7 @@
 #  insteadOf = "https://github.com/"
 
 [http]
-	cookiefile = ~/.gitcookies
+  cookiefile = ~/.gitcookies
 [rerere]
   enabled = true
 
@@ -65,8 +65,8 @@
 	path = ~/dotfiles/work.gitconfig
 
 [maintenance]
-	repo = ~/workspace/github.com/vegerot/APODesktop
-	repo = ~/workspace/github.com/vegerot/dotfiles
+  repo = ~/workspace/github.com/vegerot/APODesktop
+  repo = ~/workspace/github.com/vegerot/dotfiles
 
 [gpg]
   format = ssh
