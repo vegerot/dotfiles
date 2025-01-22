@@ -78,7 +78,6 @@ set spell
 set spelllang=en,en_us,softwareterms,shell,vim,golang,html,lua,makefile,npm,python,sql,typescript,x86
 set spelloptions+=camel,noplainbuffer
 
-
 "" Appearance end
 
 "NetRW (should netrw config go in vanilla or plugin section?? 🤔)
@@ -114,6 +113,12 @@ autocmd FileType c let g:c_syntax_for_h=v:true
 autocmd FileType cpp let g:c_syntax_for_h=v:false
 
 autocmd FileType *sh set makeprg=shellcheck\ -f\ gcc\ -x\ %
+
+" don't continue comments on new lines
+set formatoptions-=ro
+" many plugins overwrite this, so overoverwrite it
+autocmd BufWinEnter,BufNewFile,BufRead * setlocal formatoptions-=ro
+
 
 "" VANILLA end
 
