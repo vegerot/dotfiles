@@ -20,6 +20,12 @@
   untracked = cyan
   branch = yellow bold ul
 
+# These are ignored if you aren't running VSCode
+[difftool "vscode"]
+  cmd =  code --wait --diff $LOCAL $REMOTE
+[mergetool "vscode"]
+  cmd = code --wait --merge $REMOTE $LOCAL $BASE $MERGED
+
 [commit]
   # https://help.github.com/articles/signing-commits-using-gpg/
   gpgSign = true
