@@ -30,6 +30,12 @@ map_capslock() {
 	xcape -e 'Control_L=Escape'
 }
 
+reset() {
+	xmodmap -e 'keycode 0x42 = Caps_Lock' \
+		-e 'keycode 169 = Delete';
+	setxkbmap -option
+}
+
 main() {
 	should_map_caps_to_control
 	if [[ $? != 0 ]]; then
