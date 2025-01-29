@@ -12,4 +12,7 @@
 export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=YES
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-#eval "$( /usr/local/opt/coreutils/libexec/gnubin/dircolors ~/.dir_colors)"
+if type dircolors > /dev/null 2>&1; then
+	eval "$(dircolors ~/.dir_colors)"
+fi
+
