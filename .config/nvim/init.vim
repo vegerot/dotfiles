@@ -137,7 +137,6 @@ if exists('g:vscode')
 	nnoremap <c-d> <c-d>zzjk
 	packadd open-remote
 	packadd CamelCaseMotion
-	packadd splitjoin.vim
 	packadd commentary
 	packadd unimpaired
 	packadd vim-surround

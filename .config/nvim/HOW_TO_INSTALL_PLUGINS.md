@@ -21,7 +21,6 @@ Make sure everything you're cloning has a `plugins/` directory in it
 | open-remote        	| ~/.local/share/nvim/site/pack/simple-plugins/start/       	| sl clone git@github.com:vegerot/open-remote.git                        	|
 | CamelCaseMotion    	|                                                           	| sl clone git@github.com:bkad/CamelCaseMotion.git                       	|
 | vim-fetch          	|                                                           	| git clone git@github.com:wsdjeg/vim-fetch.git                          	|
-| splitjoin          	|                                                           	| sl clone git@github.com:AndrewRadev/splitjoin.vim.git                  	|
 | vim-tmux-navigator 	| ~/.local/share/nvim/site/pack/complex-plugins/start/      	| sl clone git@github.com:christoomey/vim-tmux-navigator.git             	|
 | telescope.nvim     	|                                                           	| sl clone git@github.com:nvim-telescope/telescope.nvim                  	|
 | plenary.nvim       	|                                                           	| sl clone git@github.com:nvim-lua/plenary.nvim                          	|
