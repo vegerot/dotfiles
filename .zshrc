@@ -36,7 +36,7 @@ elif [[ -z ${ZSH_SKIP_LOADING_PLUGINS:-} ]]; then
 fi;
 
 local use_fancy_prompt
-if [[ $TERM_PROGRAM != "WarpTerminal" && ${TERMINAL_EMULATOR:-} != "JetBrains-JediTerm" ]]; then
+if [[ ${TERM_PROGRAM:-} != "WarpTerminal" && ${TERMINAL_EMULATOR:-} != "JetBrains-JediTerm" ]]; then
 	use_fancy_prompt="true"
 else
 	use_fancy_prompt="false"
