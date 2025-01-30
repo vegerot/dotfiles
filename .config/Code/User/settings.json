@@ -158,7 +158,6 @@
     "source.fixAll.eslint": "explicit",
     "source.fixAll.stylelint": "explicit"
   },
-  "editor.cursorSurroundingLines": 15,
   "editor.formatOnType": true,
   "editor.lineNumbers": "relative",
   "editor.quickSuggestions": {
