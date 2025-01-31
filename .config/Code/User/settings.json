@@ -557,4 +557,13 @@
   "[html]": {
     "editor.defaultFormatter": "vscode.html-language-features"
   },
+  "workbench.colorTheme": "Deep Blue",
+  "extensions.supportUntrustedWorkspaces": {
+    "byted-ide.dev-environment-manager": {
+      "supported": true
+    }
+  },
+  "remote.SSH.defaultExtensions": [
+    "byted-ide.gallery"
+  ],
 }
