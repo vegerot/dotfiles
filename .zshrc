@@ -228,6 +228,10 @@ load_plugins() {
 	  #source <(rg --generate=complete-zsh)
   fi
 
+  if type cloudide-cli > /dev/null; then
+	  source <(cloudide-cli completion zsh)
+  fi
+
   if type fzf > /dev/null; then
 	  ## read by fzf program (see man fzf)
 	  export FZF_DEFAULT_OPTS='--height=70% '
