@@ -76,7 +76,8 @@ function upgrade_npm() {
 			sudo npm update --global
 		else
 			npm install npm --global --force
-			npm update --global
+			# HACK: this is dumb
+			npm update --global || npm update --global --registry https://bnpm.byted.org
 		fi
 	fi
 }
