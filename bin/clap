@@ -1,0 +1,27 @@
+#!/usr/bin/env sh
+
+set -eauo pipefail
+
+clapstdin() {
+	while read line; do
+		for word in $line; do
+			printf '%s 👏 ' "$word"
+		done
+		printf '\n'
+	done
+	printf '\b\b \n'
+}
+clapcmd() {
+	for word in "$@"; do
+		printf '%s 👏 ' "$word"
+	done
+	printf '\b\b \n'
+}
+clap() {
+	if [ "$#" -eq 0 ]; then
+		clapstdin
+	else
+		clapcmd "$@"
+	fi
+}
+clap "$@"
