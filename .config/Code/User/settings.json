@@ -122,6 +122,8 @@
     "rpcnotify",
     "runtimepath",
     "scripthost",
+    "SETGID",
+    "SETUID",
     "sfile",
     "smartlists",
     "spid",
