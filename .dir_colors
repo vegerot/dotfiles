@@ -246,26 +246,14 @@ EXEC 01;32
 .go              00;32
 .sql             00;32
 .sh              00;32
-
-# header files
-.h               38;2;85;255;0
-.hpp             38;2;85;255;0
-
-# artifacts
-.o 01;42
-.class 01;42
-
-# build files
-*Makefile        95
-*Rakefile        95
-*Dockerfile      95
-*build.xml       95
+.zig             00;32
 
 # config files
 *rc              37
 .conf            37
 .ini             37
 .yml             37
+.yaml            37
 .cfg             37
 .json            37
 .xml             37
@@ -273,17 +261,38 @@ EXEC 01;32
 .env             37
 *config          37
 
+# artifacts
+.o 38;5;58
+.class 38;5;58
 
 # Text files
 .markdown        00;33
 .md              00;33
 *README*         00;33
 .txt             00;33
+
+# header files
+.h               38;2;85;255;0
+.hpp             38;2;85;255;0
+
+# build files
+*Makefile          95
+*Rakefile          95
+*Dockerfile        95
+*build.xml         95
+.mod               95
+.sum               35
+*build.zig         95
+*package.json      95
+*package-lock.json 35
+*pnpm-lock.yaml    35
+
 # docs
 .doc 33
 .docx  33
 .xls 33
 .xlsx 33
+.csv             00;38;5;245
 
 # random stuff 1
 .tex             00;38;5;245
@@ -295,7 +304,6 @@ EXEC 01;32
 .torrent         00;38;5;245
 *1               00;38;5;245
 .nfo             00;38;5;245
-.csv             00;38;5;245
 
 # unimportant files
 .log        00;38;5;240
