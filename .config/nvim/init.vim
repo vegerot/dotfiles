@@ -79,6 +79,9 @@ set spelllang=en,en_us,softwareterms,shell,vim,golang,html,lua,makefile,npm,pyth
 set spelloptions+=camel,noplainbuffer
 
 "" Appearance end
+command Edir :e %:h
+command VEdir :Ve %:h
+command Cd :cd %:h
 
 "NetRW (should netrw config go in vanilla or plugin section?? 🤔)
 
