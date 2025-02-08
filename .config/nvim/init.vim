@@ -138,11 +138,13 @@ if exists('g:vscode')
 	set scrolloff=0
 	nnoremap <c-u> <c-u>zzjk
 	nnoremap <c-d> <c-d>zzjk
-	packadd open-remote
-	packadd CamelCaseMotion
-	packadd commentary
-	packadd unimpaired
-	packadd vim-surround
+	if &loadplugins
+		packadd open-remote
+		packadd CamelCaseMotion
+		packadd commentary
+		packadd unimpaired
+		packadd vim-surround
+	endif
 	set nospell
 	set noloadplugins
 	finish
@@ -438,7 +440,9 @@ LUAEND
 
 " MarsCode start
 
-silent! packadd codeverse.vim
+if &loadplugins
+	silent! packadd codeverse.vim
+endif
 if exists(":Marscode")
 	let g:marscode_filetypes = {
 				\ '*': v:true,
@@ -488,7 +492,9 @@ let g:fzf_history_dir = '~/.local/share/fzf-history'
 command! -bang -nargs=* Ag
   \  :Files
 
-silent! packadd fzf.vim
+if &loadplugins
+	silent! packadd fzf.vim
+endif
 if exists(":Files")
        nmap <C-p> :Files<Cr>
 else
@@ -498,7 +504,9 @@ endif
 "" FZF end
 
 "" TELESCOPE start
-silent! packadd telescope.nvim
+if &loadplugins
+	silent! packadd telescope.nvim
+endif
 if exists(":Telescope")
 	nmap <leader>tr <cmd>Telescope resume<Cr>
 	nmap <leader>tf :lua require('telescope.builtin').find_files({hidden=true})<Cr>
