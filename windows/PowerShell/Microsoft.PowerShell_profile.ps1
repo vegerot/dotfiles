@@ -16,4 +16,6 @@ function prompt {
 
 Set-Alias sap sl.exe
 
+Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete # make tab work like bash
+
 #oh-my-posh init pwsh | Invoke-Expression
