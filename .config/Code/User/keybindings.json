@@ -18,6 +18,11 @@
         "key": "ctrl+l",
         "command": "workbench.action.compareEditor.focusOtherSide",
         "when": "textCompareEditorVisible"
+    },
+    {
+        "key": "z",
+        "command": "-vscode-neovim.send",
+        "when": "editorTextFocus && neovim.init && focusedView == 'workbench.panel.output' && neovim.mode != 'insert'"
     }
 ]
 
