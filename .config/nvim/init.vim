@@ -139,11 +139,11 @@ if exists('g:vscode')
 	nnoremap <c-u> <c-u>zzjk
 	nnoremap <c-d> <c-d>zzjk
 	if &loadplugins
-		packadd open-remote
-		packadd CamelCaseMotion
-		packadd commentary
-		packadd unimpaired
-		packadd vim-surround
+		silent! packadd open-remote
+		silent! packadd CamelCaseMotion
+		silent! packadd commentary
+		silent! packadd unimpaired
+		silent! packadd vim-surround
 	endif
 	set nospell
 	set noloadplugins
