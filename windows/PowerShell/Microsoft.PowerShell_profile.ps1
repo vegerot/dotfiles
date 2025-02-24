@@ -1,3 +1,5 @@
+# PUT ME IN $profile (C:\Users\Max\Documents\PowerShell\Microsoft.PowerShell_profile.ps1)
+
 # Chocolatey profile
 $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
 if (Test-Path($ChocolateyProfile)) {

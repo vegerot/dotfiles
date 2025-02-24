@@ -1,4 +1,5 @@
 // put in "$HOME/Library/Application Support/Code/User/settings.json" on macOS
+// put in "$env:USERPROFILE\AppData\Roaming\Code\User\settings.json" on Windows
 {
   "[javascript, typescript, Vue, javascriptreact]": {
     "editor.formatOnSave": true
