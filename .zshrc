@@ -169,6 +169,43 @@ load_plugins() {
 	  eval "$(jump shell)"
   fi
 
+  local zig_shell_complete_path=${plugin_paths[zig-shell-complete]}/zig-shell-completions.plugin.zsh
+  if [[ -r $zig_shell_complete_path ]]; then
+	  source $zig_shell_complete_path
+  fi
+
+  if type gh > /dev/null; then
+	source <(TCELL_MINIMIZE=1 gh completion -s zsh)
+  fi
+
+  if type fd > /dev/null; then
+	  source <(fd --gen-completions)
+  fi
+
+  if type rg > /dev/null; then
+	  source <(rg --generate=complete-zsh) &> /dev/null
+  fi
+
+  if type cloudide-cli > /dev/null; then
+	  source <(cloudide-cli completion zsh)
+  fi
+
+  if type fzf > /dev/null; then
+	  ## read by fzf program (see man fzf)
+	  export FZF_DEFAULT_OPTS='--height=70% '
+	  export FZF_DEFAULT_COMMAND='fd --no-require-git 2>/dev/null || git ls-tree -r --name-only HEAD'
+
+	  # read by fzf/shell/key-bindings.zsh
+	  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+	  export FZF_PREVIEW_OPTS='--preview "bat --color always {} 2>/dev/null || cat {}" --preview-window=right:60%:wrap'
+	  export FZF_CTRL_T_OPTS=$FZF_PREVIEW_OPTS
+
+	  source <(fzf --zsh)
+
+	  ## from fzf.zsh plugin
+	  bindkey '^p' fzf-file-widget
+  fi
+
   if [[ $use_fancy_prompt == "false" ]]; then
 	  return
   fi
@@ -211,42 +248,6 @@ load_plugins() {
 	  bindkey "$terminfo[kcud1]" history-substring-search-down
   fi
 
-  local zig_shell_complete_path=${plugin_paths[zig-shell-complete]}/zig-shell-completions.plugin.zsh
-  if [[ -r $zig_shell_complete_path ]]; then
-	  source $zig_shell_complete_path
-  fi
-
-  if type gh > /dev/null; then
-	source <(TCELL_MINIMIZE=1 gh completion -s zsh)
-  fi
-
-  if type fd > /dev/null; then
-	  source <(fd --gen-completions)
-  fi
-
-  if type rg > /dev/null; then
-	  #source <(rg --generate=complete-zsh)
-  fi
-
-  if type cloudide-cli > /dev/null; then
-	  source <(cloudide-cli completion zsh)
-  fi
-
-  if type fzf > /dev/null; then
-	  ## read by fzf program (see man fzf)
-	  export FZF_DEFAULT_OPTS='--height=70% '
-	  export FZF_DEFAULT_COMMAND='fd --no-require-git 2>/dev/null || git ls-tree -r --name-only HEAD'
-
-	  # read by fzf/shell/key-bindings.zsh
-	  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-	  export FZF_PREVIEW_OPTS='--preview "bat --color always {} 2>/dev/null || cat {}" --preview-window=right:60%:wrap'
-	  export FZF_CTRL_T_OPTS=$FZF_PREVIEW_OPTS
-
-	  source <(fzf --zsh)
-
-	  ## from fzf.zsh plugin
-	  bindkey '^p' fzf-file-widget
-  fi
 }
 if [[ -z ${ZSH_SKIP_LOADING_PLUGINS:-} ]]; then
 	load_plugins
