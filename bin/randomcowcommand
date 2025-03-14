@@ -10,6 +10,7 @@ find_random_manpage() {
  	done | shuf -n 1
 	IFS=$OLDIFS
 }
+
 get_description_of_manpage() {
 	# source: https://stackoverflow.com/a/3352015/6100005
 	trim() {
@@ -25,7 +26,8 @@ get_description_of_manpage() {
 	  manPageText=$(lexgrog -w "$1")
 	  if [[ $? -ne 0 ]]; then
 		  echo "randomcowcommand: We messed up with $1" 1>&2
-		  manPageText=""
+		  echo ""
+		  return
 	  fi
 	  echo "$manPageText"| shuf -n 1 | sed -E 's/^.*: "(.*)"$/\1/'
   else
