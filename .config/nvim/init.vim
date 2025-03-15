@@ -169,6 +169,36 @@ if not status then
 	--print("lspconfig" .. " plugin not loaded.  Not loading lsp stuff")
 	return false
 end
+
+function handleGotoDefinition(options)
+	local title = options.title
+	local all_items = options.items
+	local method = options.context.method
+	local bufnr = options.context.bufnr
+
+	if #all_items == 1 then
+		local result = all_items[1]
+		local result_bufnr = result.bufnr or vim.fn.bufadd(result.filename)
+
+		local maybeW = vim.fn.win_findbuf(result_bufnr)[1]
+		if maybeW then
+			local w = maybeW
+			vim.api.nvim_win_set_buf(w, result_bufnr)
+			vim.api.nvim_win_set_cursor(w, { result.lnum, result.col - 1 })
+			-- This will also switch the tab
+			vim.api.nvim_set_current_win(w)
+		else
+			vim.cmd('tabnew');
+			vim.bo[result_bufnr].buflisted = true;
+			local w = vim.api.nvim_get_current_win()
+			vim.api.nvim_win_set_buf(w, result_bufnr);
+			vim.api.nvim_win_set_cursor(w, { result.lnum, result.col - 1 })
+		end
+	else
+		vim.fn.setqflist({}, ' ', { title = title, items = all_items })
+		vim.cmd('botright copen')
+	end
+end
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
@@ -192,7 +222,7 @@ local on_attach = function(client, bufnr)
 	-- See `:help vim.lsp.*` for documentation on any of the below functions
 	local methodsAndKeymaps = {
 		["textDocument/declaration"] = { { "n", "gD", ":lua vim.lsp.buf.declaration()<CR>" } },
-		["textDocument/definition"] = { { "n", "gd", ":lua vim.lsp.buf.definition()<CR>" } },
+		["textDocument/definition"] = { { "n", "gd", ":lua vim.lsp.buf.definition({on_list = handleGotoDefinition})<CR>" } },
 		["textDocument/hover"] = { { "n", "K", ":lua vim.lsp.buf.hover()<CR>" } },
 		["textDocument/signatureHelp"] = { { "n", "<leader>k", ":lua vim.lsp.buf.signature_help()<CR>" } },
 		["textDocument/workspaceFolders"] = {
