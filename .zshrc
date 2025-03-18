@@ -156,6 +156,7 @@ compinit -C
 
 # PLUGINS
 typeset -A plugin_paths=(
+	[dotfiles]="$HOME/dotfiles"
 	[powerlevel10k]="$HOME/workspace/github.com/romkatv/powerlevel10k"
 	[sapling]="$HOME/workspace/github.com/facebook/sapling"
 	[zsh-syntax-highlighting]="$HOME/workspace/github.com/zdharma-continuum/fast-syntax-highlighting"
