@@ -45,6 +45,7 @@ set $quickOpen \
 bindsym $mod+d exec --no-startup-id $quickOpen
 bindsym --release $mod3 exec --no-startup-id $quickOpen
 for_window [instance="^fzf-menu$"] floating enable
+for_window [instance="^snek$"] floating enable
 
 # remap capslock to escape
 bindsym F2 exec /home/max/bin/remapCapslock
