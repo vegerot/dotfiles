@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# List all repositories in the current directory recursively
+
+main() {
+	fd '^\.(git|sl)$' "$@" \
+		--unrestricted --hidden --type=d --follow --prune \
+		--exec dirname {} \; \
+		| sort
+}
+
+main "$@"
