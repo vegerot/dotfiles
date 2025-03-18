@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+
+main() {
+    if type pbpaste > /dev/null 2>&1; then
+        exec pbpaste "$@"
+    elif type xclip > /dev/null 2>&1; then
+        exec xclip -selection clipboard -o "$@"
+    else
+        echo "Neither pbpaste nor xclip is installed. Cannot paste from clipboard." >&2
+        exit 127
+    fi
+}
+
+main "$@"
+

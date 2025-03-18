@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+main() {
+    if type pbcopy > /dev/null 2>&1; then
+        exec pbcopy "$@"
+    elif type xclip > /dev/null 2>&1; then
+        exec xclip -selection clipboard "$@"
+    else
+        echo "Neither pbcopy nor xclip is installed. Cannot copy to clipboard." >&2
+        exit 1
+    fi
+}
+
+main "$@"
