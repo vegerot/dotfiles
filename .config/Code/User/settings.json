@@ -523,7 +523,7 @@
   "versionlens.logging.level": "debug",
   "eslint.format.enable": true,
   "audioCues.debuggerStoppedOnBreakpoint": "on",
-  "editor.fontFamily": "SFMono Nerd Font, Consolas, 'Courier New', Monaco, monospace",
+  "editor.fontFamily": "'JetBrains Mono', Liga SFMono Nerd Font, SFMono Nerd Font, Menlo, Monaco, 'Courier New', monospace",
   "go.toolsManagement.autoUpdate": true,
   "vs-kubernetes": {
     "vscode-kubernetes.helm-path.mac": "/Users/m0c0j7y/.vs-kubernetes/tools/helm/darwin-amd64/helm",
