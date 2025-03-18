@@ -904,7 +904,7 @@
 			<key>Non-ASCII Ligatures</key>
 			<false/>
 			<key>Normal Font</key>
-			<string>SFMonoNerdFontComplete-Regular 18</string>
+			<string>LigaSFMonoNerdFont-Regular 18</string>
 			<key>Only The Default BG Color Uses Transparency</key>
 			<false/>
 			<key>Open Password Manager Automatically</key>
