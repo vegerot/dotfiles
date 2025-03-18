@@ -184,7 +184,9 @@ load_plugins() {
   fi
 
   if type rg > /dev/null; then
-	  source <(rg --generate=complete-zsh) &> /dev/null
+	  # suppress errors because this doesn't work until my landed patch is packaged
+	  # see https://github.com/BurntSushi/ripgrep/commit/94305125ef33b86151b6cd2ce2b33d641f6b6ac3 for more info
+	  source <(rg --generate=complete-zsh 2>/dev/null) &> /dev/null
   fi
 
   if type cloudide-cli > /dev/null; then
