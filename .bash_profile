@@ -1,3 +1,13 @@
+# Compute how long startup takes.
+# Only GNU date supports milliseconds, and also only GNU date has `--help`
+if type gdate > /dev/null; then
+	start=$(gdate +%s.%N)
+elif $(date --help &> /dev/null); then
+	start=`date +%s.%N`
+else
+	start=$(python3 -c "import time; print(time.time())")
+fi
+
 # POSIX stuff
 [[ -r "$HOME/.profile" ]] && source ~/.profile
 
@@ -42,4 +52,22 @@ export PROMPT_COMMAND="history -a"
 
 if type randomcowcommand >/dev/null 2>&1; then
   randomcowcommand --async
+fi
+
+# Compute time taken
+if type gdate > /dev/null; then
+	end=$(gdate +%s.%N)
+elif $(date --help &> /dev/null); then
+	end=`date +%s.%N`
+else
+	end=$(python3 -c "import time; print(time.time())")
+fi
+runtime=$( echo "$end - $start" | bc -l )
+
+startuptime=$(printf '%.2f seconds\n' $runtime)
+
+if type rainbow > /dev/null; then
+	printf "$startuptime\n" | rainbow
+else
+	printf "$startuptime\n"
 fi
