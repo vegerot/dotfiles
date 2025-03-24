@@ -144,6 +144,7 @@ if exists('g:vscode')
 		silent! packadd commentary
 		silent! packadd unimpaired
 		silent! packadd vim-surround
+		packadd matchit
 	endif
 	set nospell
 	set noloadplugins
