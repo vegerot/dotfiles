@@ -1,6 +1,6 @@
 # Compute how long startup takes.
 # Only GNU date supports milliseconds, and also only GNU date has `--help`
-if type gdate > /dev/null; then
+if type gdate > /dev/null 2>&1; then
 	start=$(gdate +%s.%N)
 elif $(date --help &> /dev/null); then
 	start=`date +%s.%N`
@@ -55,7 +55,7 @@ if type randomcowcommand >/dev/null 2>&1; then
 fi
 
 # Compute time taken
-if type gdate > /dev/null; then
+if type gdate > /dev/null 2>&1; then
 	end=$(gdate +%s.%N)
 elif $(date --help &> /dev/null); then
 	end=`date +%s.%N`
@@ -66,7 +66,7 @@ runtime=$( echo "$end - $start" | bc -l )
 
 startuptime=$(printf '%.2f seconds\n' $runtime)
 
-if type rainbow > /dev/null; then
+if type rainbow > /dev/null 2>&1; then
 	printf "$startuptime\n" | rainbow
 else
 	printf "$startuptime\n"
