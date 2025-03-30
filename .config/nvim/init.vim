@@ -224,6 +224,8 @@ local on_attach = function(client, bufnr)
 	-- besides for insert-mode mappings, since <cmd> can improve performance
 
 	-- See `:help vim.lsp.*` for documentation on any of the below functions
+
+	-- TODO: try using the new built-in keymaps instead
 	local methodsAndKeymaps = {
 		["textDocument/declaration"] = { { "n", "gD", ":lua vim.lsp.buf.declaration()<CR>" } },
 		["textDocument/definition"] = { { "n", "gd", ":lua vim.lsp.buf.definition({on_list = handleGotoDefinition})<CR>" } },
