@@ -327,7 +327,9 @@ local godotnvim = function()
 		},
 	})
 end
-godotnvim()
+if vim.fn.expand("%:e") == "go" then
+	godotnvim()
+end
 
 local quick_lint_js = {
 	"quick_lint_js",
