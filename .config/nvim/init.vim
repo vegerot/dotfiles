@@ -156,17 +156,24 @@ set completefuzzycollect=keyword,files,whole_line
 set completeopt+=fuzzy,menuone,noinsert
 
 lua << LUAEND
+
+-- new versions of nvim have built-in completions
+-- only use coq on older versions of nvim
+local shouldUseCoq = false
+
 -- autocomplete with COQ
 -- note: MUST be before `require("coq")`!
-vim.g.coq_settings = {
-	["clients.tabnine"] = {
-		enabled = true,
-		weight_adjust = -0.4,
-	},
-	auto_start = "shut-up",
-	-- conflicts with Tmux
-	["keymap.jump_to_mark"] = "",
-}
+if shouldUseCoq then
+	vim.g.coq_settings = {
+		["clients.tabnine"] = {
+			enabled = true,
+			weight_adjust = -0.4,
+		},
+		auto_start = "shut-up",
+		-- conflicts with Tmux
+		["keymap.jump_to_mark"] = "",
+	}
+end
 
 local status, lspconfig_plugin = pcall(require, "lspconfig")
 if not status then
@@ -279,6 +286,9 @@ local on_attach = function(client, bufnr)
 	if client.supports_method("textDocument/inlayHint") then
 		-- unstable API.  Might break soon
 		vim.lsp.inlay_hint.enable(true)
+	end
+	if client.supports_method("textDocument/completion") then
+		vim.lsp.completion.enable(true, client.id, bufnr, { autotrigger = true })
 	end
 	vim.diagnostic.config({
 		virtual_lines = {current_line = true}
@@ -471,7 +481,7 @@ for _, lsp in ipairs(servers) do
 	if settings == nil then
 		settings = defaultConfig
 	end
-	if (is_coq_running) then
+	if (is_coq_running and shouldUseCoq) then
 		settings = coq.lsp_ensure_capabilities(settings)
 	end
 	lspconfig_plugin[name].setup(settings)
