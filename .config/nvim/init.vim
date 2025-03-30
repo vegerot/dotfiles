@@ -278,6 +278,9 @@ local on_attach = function(client, bufnr)
 		-- unstable API.  Might break soon
 		vim.lsp.inlay_hint.enable(true)
 	end
+	vim.diagnostic.config({
+		virtual_lines = {current_line = true}
+	})
 end
 
 local godotnvim = function()
