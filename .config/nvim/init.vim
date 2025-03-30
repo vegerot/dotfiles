@@ -152,6 +152,9 @@ if exists('g:vscode')
 endif
 
 "" LSP+autocomplete start
+set completefuzzycollect=keyword,files,whole_line
+set completeopt+=fuzzy,menuone,noinsert
+
 lua << LUAEND
 -- autocomplete with COQ
 -- note: MUST be before `require("coq")`!
