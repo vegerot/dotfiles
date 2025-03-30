@@ -263,10 +263,10 @@ update_plugins() {
 		set -o nounset
 		set -o pipefail
 		dir=$1
-		if [[ -d "$dir/.git" ]]; then
-			(cd "$dir" && git pull)
-		elif [[ -d "$dir/.sl" ]]; then
+		if [[ -d "$dir/.sl" ]] || [[ -d "$dir/.git/sl" ]]; then
 			(cd "$dir" && sl pull && sl top --newest)
+		elif [[ -d "$dir/.git" ]]; then
+			(cd "$dir" && git pull)
 		fi
 	}
 	ZSH_SKIP_LOADING_PLUGINS=1 parallel zsh -c "$(declare -f pull_and_update) && pull_and_update {}" ::: "${plugin_paths[@]}"
