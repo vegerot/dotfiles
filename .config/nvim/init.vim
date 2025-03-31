@@ -192,6 +192,11 @@ function handleGotoDefinition(options)
 		local result_bufnr = result.bufnr or vim.fn.bufadd(result.filename)
 
 		local maybeW = vim.fn.win_findbuf(result_bufnr)[1]
+		-- Save position in jumplist
+		vim.cmd("normal! m'")
+		-- Push a new item into tagstack
+		local tagstack = { { tagname = tagname, from = from } }
+		vim.fn.settagstack(vim.fn.win_getid(win), { items = tagstack }, 't')
 		if maybeW then
 			local w = maybeW
 			vim.api.nvim_win_set_buf(w, result_bufnr)
