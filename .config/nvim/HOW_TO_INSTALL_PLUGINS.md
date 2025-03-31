@@ -30,13 +30,10 @@ Make sure everything you're cloning has a `plugins/` directory in it
 |                    	|                                                           	| sl clone git@github.com:junegunn/fzf.vim.git                           	|
 | treesitter         	| ~/.local/share/nvim/site/pack/treesitter/start/           	| sl clone git@github.com:nvim-treesitter/nvim-treesitter.git            	|
 | treesitter-context 	|                                                           	| sl clone git@github.com:nvim-treesitter/nvim-treesitter-context.git    	|
-| coq                	| ~/.local/share/nvim/site/pack/autocomplete-and-lsp/start/ 	| sl clone git@github.com:ms-jpq/coq_nvim.git                            	|
-|                    	|                                                           	| sl clone git@github.com:ms-jpq/coq.thirdparty.git                      	|
-|                    	|                                                           	| sl clone git@github.com:ms-jpq/coq.artifacts.git                       	|
-| copilot            	|                                                           	| sl clone git@github.com:github/copilot.vim.git                         	|
+| copilot            	| ~/.local/share/nvim/site/pack/autocomplete-and-lsp/start/ 	| sl clone git@github.com:github/copilot.vim.git                         	|
 | nvim-lspconfig     	|                                                           	| sl clone git@github.com:neovim/nvim-lspconfig.git                      	|
 | go.nvim            	|                                                           	| git clone git@github.com:ray-x/go.nvim                                 	|
 | guihua.lua         	|                                                           	| git clone git@github.com:ray-x/guihua.lua                              	|
 | zig.vim            	|                                                           	| git clone git@github.com:ziglang/zig.vim                               	|
-| MarsCode           	| ~/.local/share/nvim/site/pack/byted/start/                	| git clone git@code.???.org:chenjiaqi.cposture/codeverse.vim.git      	|
+| MarsCode           	| ~/.local/share/nvim/site/pack/byted/start/                	| git clone git@code.???.org:chenjiaqi.cposture/codeverse.vim.git        	|
 
