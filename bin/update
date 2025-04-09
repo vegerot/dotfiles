@@ -9,6 +9,7 @@ function upgrade_brew() {
 	local outdated
 	outdated=$(brew outdated --quiet)
 	if [[ -n "$outdated" ]]; then
+		printf "Outdated macOS brew packages:\n$outdated\n"
 		read -p 'Would you like to upgrade Brew (y/n): ' upgradeBrew
 		if [[ "$upgradeBrew" == "y" ]]; then
 			# sometimes corepack will prevent brew from overwriting npm
@@ -86,22 +87,29 @@ function upgrade_npm() {
 function upgrade_app_store() {
 	echo "App Store"
 	# open "macappstore://showUpdatesPage"
-	mas outdated
-	# TODO: Don't ask to upgrade apps if nothing is outdated
-	read -p 'Would you like to upgrade apps?  (y/n): ' upgradeApps
-	if [[ "$upgradeApps" == "y" ]]; then
-		mas upgrade
+	local outdated=$(mas outdated)
+	if [[ -n "$outdated" ]]; then
+		printf "Outdated macOS App Store apps:\n$outdated\n"
+		read -p 'Would you like to upgrade apps?  (y/n): ' upgradeApps
+		if [[ "$upgradeApps" == "y" ]]; then
+			mas upgrade
+		fi
 	fi
+
 	echo
 }
 
 function upgrade_macos() {
 	echo "macOS"
-	softwareupdate --list
-	# TODO: Don't ask to upgrade macOS if nothing is outdated
-	read -p 'Would you like to upgrade macOS (y/n): ' upgradeMacOS
-	if [[ "$upgradeMacOS" == "y" ]]; then
-		softwareupdate --install --all --verbose
+	local outdated=$(softwareupdate --list)
+
+	local outdated_count=$(echo "$outdated" | grep -c "*")
+
+	if [[ "$outdated_count" -gt 0 ]]; then
+		read -p 'Would you like to upgrade macOS (y/n): ' upgradeMacOS
+		if [[ "$upgradeMacOS" == "y" ]]; then
+			softwareupdate --install --all --verbose
+		fi
 	fi
 }
 
