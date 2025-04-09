@@ -11,7 +11,8 @@ function upgrade_brew() {
 	if [[ -n "$outdated" ]]; then
 		read -p 'Would you like to upgrade Brew (y/n): ' upgradeBrew
 		if [[ "$upgradeBrew" == "y" ]]; then
-			brew upgrade
+			# sometimes corepack will prevent brew from overwriting npm
+			brew upgrade || brew link --overwrite node
 			echo "brew upgrade --cask"
 			brew upgrade --cask
 		fi
