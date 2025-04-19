@@ -58,6 +58,10 @@ format_message() {
 }
 
 main() {
+  if ! type manpath > /dev/null 2>&1; then
+    echo "randomcowcommand - cannot run because manpath not installed" >&2
+    exit 1
+  fi
 	manpagefile=$(find_random_manpage)
 	commanddescription=$(get_description_of_manpage "$manpagefile")
 	if [[ -z "$commanddescription" || "$commanddescription" == "builtin"*  ]]; then
