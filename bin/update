@@ -20,15 +20,22 @@ function upgrade_brew() {
 }
 
 function upgrade_apt() {
+  if type snap 2>/dev/null ; then
+		echo "snap refresh"
+		sudo snap refresh
+	fi
 	echo "apt update"
 	sudo apt update
 	echo "apt list --upgradable"
-	apt list --upgradable
-
-	read -p 'Would you like to upgrade APT (y/n): ' upgradeApt
-	if [[ "$upgradeApt" == "y" ]]; then
-		sudo apt upgrade
+  if (("$(apt list --upgradeable 2>/dev/null | wc -l )" >=2)); then
+		echo "You have outdated packages"
+		apt list --upgradeable
+		read -p 'Would you like to upgrade APT (y/n): ' upgradeApt
+		if [[ "$upgradeApt" == "y" ]]; then
+			sudo apt upgrade
+		fi
 	fi
+
 }
 
 function upgrade_zsh() {
