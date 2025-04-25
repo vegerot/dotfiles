@@ -51,7 +51,9 @@ shopt -s lithist
 export PROMPT_COMMAND="history -a"
 
 if type randomcowcommand >/dev/null 2>&1; then
-  randomcowcommand --async
+  if type manpath >/dev/null 2>&1; then
+    randomcowcommand --async
+  fi
 fi
 
 # Compute time taken
@@ -62,7 +64,12 @@ elif $(date --help &> /dev/null); then
 else
 	end=$(python3 -c "import time; print(time.time())")
 fi
-runtime=$( echo "$end - $start" | bc -l )
+
+if type bc > /dev/null 2>&1; then
+  runtime=$( echo "$end - $start" | bc -l )
+else
+  runtime=$( python3 <(echo "print($end - $start)") )
+fi
 
 startuptime=$(printf '%.2f seconds\n' $runtime)
 
