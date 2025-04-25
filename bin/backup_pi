@@ -10,3 +10,4 @@ time sudo /root/.local/bin/duplicity backup / file:///mnt/sda1/shared/pi_nas/dup
   --exclude-if-present=.nobackup
  
 # restore with `/root/.local/bin/duplicity restore --restore-time 1M --path-to-restore home/max/dotfiles/.zshrc file:///mnt/nas/pi_nas/duplicity/ /tmp/restoredzshrc2`
+# restore with `sudo /root/.local/bin/duplicity restore file:///mnt/sda1/shared/pi_nas/duplicity/ --restore-time 1M --path-to-restore home/pi/.bash_history/ /tmp/restoredhistory`
