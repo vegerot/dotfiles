@@ -592,4 +592,5 @@
   "gitlens.views.commitDetails.files.layout": "tree",
   "editor.minimap.enabled": true,
   "editor.minimap.size": "fill",
+  "terminal.integrated.confirmOnExit": "hasChildProcesses",
 }
