@@ -348,6 +348,7 @@ local godotnvim = function()
 	})
 end
 if vim.fn.expand("%:e") == "go" then
+	-- FIXME: If the first file you open isn't a go file, go.nvim will never load
 	godotnvim()
 end
 
