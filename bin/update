@@ -133,5 +133,4 @@ if [[ $OSTYPE == "darwin"* ]]; then
 fi
 
 
-set +o xtrace
 
