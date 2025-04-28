@@ -78,3 +78,4 @@ if type rainbow > /dev/null 2>&1; then
 else
 	printf "$startuptime\n"
 fi
+
