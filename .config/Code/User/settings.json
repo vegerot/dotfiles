@@ -592,5 +592,6 @@
   "gitlens.views.commitDetails.files.layout": "tree",
   "editor.minimap.enabled": true,
   "editor.minimap.size": "fill",
+  "workbench.preferredLightColorTheme": "Deep Blue",
   "terminal.integrated.confirmOnExit": "hasChildProcesses",
 }
