@@ -2,12 +2,23 @@
 
 set -o errexit -o nounset -o pipefail
 
+myshuf() {
+	if type shuf > /dev/null 2>&1; then
+		command shuf $*
+	else
+		awk 'BEGIN { srand() } { printf "%s\t%s\n", rand(), $0 }' |
+			sort -k1,1n |
+			cut -f2- |
+			head -n1
+	fi
+}
+
 find_random_manpage() {
 	OLDIFS=$IFS
 	IFS=:
  	for dir in $(manpath -q); do
  		[[ -n $dir ]] && printf "%s\n" $dir/man{1,2}/* 2>/dev/null | grep -v perl
- 	done | shuf -n 1
+ 	done | myshuf -n 1
 	IFS=$OLDIFS
 }
 
@@ -29,7 +40,7 @@ get_description_of_manpage() {
 		  echo ""
 		  return
 	  fi
-	  echo "$manPageText"| shuf -n 1 | sed -E 's/^.*: "(.*)"$/\1/'
+	  echo "$manPageText"| myshuf -n 1 | sed -E 's/^.*: "(.*)"$/\1/'
   else
 	  #local manPageText="$(man -P cat $1)"
 	  ## HACK(max): If you give `man` the path to the file, it won't correctly
@@ -108,21 +119,21 @@ fi
 #
 # ```sh
 # hyperfine -w 2 \
-# 	'find $(manpath -q | tr ":" " ") -type f -name "*.1" | shuf -n 1' \
-# 	'gfind $(manpath -q | tr ":" " ") -type f -name "*.1" | shuf -n 1' \
-# 	'fd \.1 $(manpath -q | tr ":" " ") --type=file | shuf -n 1' \
+# 	'find $(manpath -q | tr ":" " ") -type f -name "*.1" | myshuf -n 1' \
+# 	'gfind $(manpath -q | tr ":" " ") -type f -name "*.1" | myshuf -n 1' \
+# 	'fd \.1 $(manpath -q | tr ":" " ") --type=file | myshuf -n 1' \
 # 	'OLDIFS=$IFS
 # 	IFS=:
 # 	for dir in $(manpath -q); do
 # 		[[ -n $dir ]] && printf "%s\n" $dir/man1/* | grep -i perl
-# 	done | shuf -n 1
+# 	done | myshuf -n 1
 # 	IFS=$OLDIFS'
 # 	'
 # 	OLDIFS=$IFS
 # 	IFS=:
 # 	for dir in $(manpath -q); do
 # 		[[ -n $dir ]] && fd --exact-depth=2 . $dir/ | grep -i perl
-# 	done | shuf -n 1
+# 	done | myshuf -n 1
 # 	IFS=$OLDIFS
 # 	'
 #```
