@@ -153,7 +153,8 @@ endif
 
 "" LSP+autocomplete start
 set completefuzzycollect=keyword,files,whole_line
-set completeopt+=fuzzy,menuone,noinsert
+set completeopt+=fuzzy,menuone ",noinsert
+
 
 lua << LUAEND
 
