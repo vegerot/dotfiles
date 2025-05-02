@@ -506,6 +506,7 @@ endif
 if exists(":Marscode")
 	let g:marscode_filetypes = {
 				\ '*': v:true,
+				\ '*.c': v:false,
 				\}
 	imap <C-e> <Plug>(marscode-accept-word)
 endif
