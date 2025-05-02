@@ -5,7 +5,7 @@ export GOSUMDB="sum.golang.google.cn"
 
 function set_tiktok_email() {
         if [[ -d .git && ! $(grep -e "^email =" .git/sl/config 2>/dev/null) ]]; then
-                sl config --local ui.email=max.coplan@Bytedance.com
+                sl config --local ui.email=max.coplan@bytedance.com
         fi
 }
 
