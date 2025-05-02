@@ -64,6 +64,8 @@ inoremap <Space> <Space><c-g>u
 
 " always have at least 3 lines on top-bottom
 set scrolloff=15
+set sidescroll=6
+set sidescrolloff=3
 " show special characters in bad spots
 set showbreak=↪
 set list
