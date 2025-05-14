@@ -4,7 +4,7 @@ time sudo /root/.local/bin/duplicity backup / file:///mnt/nas/debian-12/duplicit
   --volsize=1024\
   --verbosity=5\
   --include=/root --include=/home/\
-  --exclude=/sys --exclude=/run --exclude=/proc --exclude=/dev --exclude=/var/tmp --exclude=/tmp --exclude-regexp='^node_modules$' --exclude-regexp='^out$' --exclude-regexp='^build$' --exclude-regexp="cache$"\
+  --exclude=/sys --exclude=/run --exclude=/proc --exclude=/dev --exclude=/var/tmp --exclude=/tmp --exclude-regexp="/.ollama/models/blobs/.*" --exclude-regexp='^node_modules$' --exclude-regexp='^out$' --exclude-regexp='^build$' --exclude-regexp="cache$"\
   --exclude-other-filesystems\
   --exclude-device-files\
   --exclude-if-present=.nobackup
