@@ -50,6 +50,14 @@ fi
 #sapling
 
 if type sl >/dev/null 2>&1; then
+  function sl() {
+    if [[ "$PWD" =~ "code.byted.or" ]]; then
+      command sl --config 'ui.username=Max 🕺 Coplan <max.coplan@bytedance.com>' $@
+    else
+      command sl $@
+    fi
+  }
+
   alias sst="sl status && sl ssl"
 
   alias slc="sl commit --verbose"
