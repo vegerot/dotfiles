@@ -392,6 +392,10 @@ local tsserver_config = {
 	},
 }
 
+local jsonls_config = {
+	"jsonls",
+}
+
 local clangd_config = {
 	"clangd",
 	{
@@ -486,7 +490,7 @@ local is_coq_running, coq = pcall(require, "coq")
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { quick_lint_js, clangd_config, tsserver_config, rust_config, zig_config }
+local servers = { quick_lint_js, tsserver_config, jsonls_config, clangd_config, rust_config, zig_config }
 for _, lsp in ipairs(servers) do
 	local name, settings = unpack(lsp)
 	if settings == nil then
