@@ -381,6 +381,17 @@ local quick_lint_js = {
 	},
 }
 
+local tsserver_config = {
+	"ts_ls",
+	{
+		on_attach = on_attach,
+		flags = {
+			debounce_text_changes = 300,
+		},
+		cmd = { "typescript-language-server", "--stdio" },
+	},
+}
+
 local clangd_config = {
 	"clangd",
 	{
@@ -408,16 +419,6 @@ local configure_clangd_for_chromium = function()
 end
 configure_clangd_for_chromium()
 
-local tsserver_config = {
-	"ts_ls",
-	{
-		on_attach = on_attach,
-		flags = {
-			debounce_text_changes = 300,
-		},
-		cmd = { "typescript-language-server", "--stdio" },
-	},
-}
 
 local rust_config = {
 	"rust_analyzer",
