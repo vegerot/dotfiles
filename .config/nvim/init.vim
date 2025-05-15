@@ -488,6 +488,13 @@ local zig_config = configure_zig()
 
 local is_coq_running, coq = pcall(require, "coq")
 
+local defaultConfig = {
+  on_attach = on_attach,
+  flags = {
+    debounce_text_changes = 150,
+  }
+}
+
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 local servers = { quick_lint_js, tsserver_config, jsonls_config, clangd_config, rust_config, zig_config }
