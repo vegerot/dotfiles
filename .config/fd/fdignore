@@ -1,1 +1,4 @@
---no-require-git --hidden
+# requires https://github.com/sharkdp/fd/pull/1218 to use
+
+#--no-require-git --hidden
+.git

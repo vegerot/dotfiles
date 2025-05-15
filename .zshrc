@@ -196,7 +196,7 @@ load_plugins() {
   if type fzf > /dev/null; then
 	  ## read by fzf program (see man fzf)
 	  export FZF_DEFAULT_OPTS='--height=70% '
-	  export FZF_DEFAULT_COMMAND='fd 2>/dev/null || git ls-tree -r --name-only HEAD'
+	  export FZF_DEFAULT_COMMAND='fd --no-require-git --hidden --exclude .git 2>/dev/null || git ls-tree -r --name-only HEAD'
 
 	  # read by fzf/shell/key-bindings.zsh
 	  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
