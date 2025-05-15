@@ -131,6 +131,8 @@
     "resave",
     "rpcnotify",
     "rsbuild",
+    "RSDOCTOR",
+    "rspack",
     "runtimepath",
     "scripthost",
     "serv",
