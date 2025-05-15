@@ -8,7 +8,7 @@ mkcd() {
 cdr() {
 	local dir="$(git rev-parse --show-toplevel)"
 	if [[ -d "$dir" ]]; then
-		cd "$dir"
+		cd "$dir/$1"
 	else
 		echo "Not in a git repo" >&2
 		return 1
