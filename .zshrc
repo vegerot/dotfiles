@@ -196,11 +196,12 @@ load_plugins() {
   if type fzf > /dev/null; then
 	  ## read by fzf program (see man fzf)
 	  export FZF_DEFAULT_OPTS='--height=70% '
-	  export FZF_DEFAULT_COMMAND='fd --no-require-git 2>/dev/null || git ls-tree -r --name-only HEAD'
+	  export FZF_DEFAULT_COMMAND='fd 2>/dev/null || git ls-tree -r --name-only HEAD'
 
 	  # read by fzf/shell/key-bindings.zsh
 	  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-	  export FZF_PREVIEW_OPTS='--preview "bat --color always {} 2>/dev/null || cat {}" --preview-window=right:60%:wrap'
+	  export FZF_PREVIEW_OPTS='--preview "bat --color always {} 2>/dev/null || tree -C -L2 {} || ls --color=always {} || cat {}" --preview-window=right:60%:wrap'
+	  export FZF_PREVIEW_COMMAND="bat --color always {} || tree -C -L2 {} || ls --color=always {} || cat {}"
 	  export FZF_CTRL_T_OPTS=$FZF_PREVIEW_OPTS
 
 	  source <(fzf --zsh)
