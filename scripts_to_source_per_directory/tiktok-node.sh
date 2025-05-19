@@ -128,3 +128,7 @@ function yarn() {
 function pnpx() {
 	node_nvm_wrapper $0 $*
 }
+
+function emo() {
+	node_nvm_wrapper $0 $*
+}
