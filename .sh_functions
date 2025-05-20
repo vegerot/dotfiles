@@ -84,6 +84,17 @@ EOF
 )
 }
 
+function fastrm() {
+	(
+		set -o errexit
+		set -o nounset
+		set -o pipefail
+		local tempdir=$(mktemp -d)
+		mv $@ $tempdir
+		rsync --delete --archive $(mktemp -d) $tempdir&
+	)
+}
+
 [[ -r ~/dotfiles/bin/clone ]] && source ~/dotfiles/bin/clone
 
 [[ -r ~/dotfiles/wmt.sh ]] && source ~/dotfiles/wmt.sh
