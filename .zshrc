@@ -201,7 +201,7 @@ load_plugins() {
 	  # read by fzf/shell/key-bindings.zsh
 	  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 	  export FZF_PREVIEW_OPTS='--preview "bat --color always {} 2>/dev/null || tree -C -L2 {} || ls --color=always {} || cat {}" --preview-window=right:60%:wrap'
-	  export FZF_PREVIEW_COMMAND="bat --color always {} || tree -C -L2 {} || ls --color=always {} || cat {}"
+	  export FZF_PREVIEW_COMMAND="bat --style=numbers --color=always --pager=never --highlight-line=1 -- {} || tree -C -L2 {} || ls --color=always {} || cat {}"
 	  export FZF_CTRL_T_OPTS=$FZF_PREVIEW_OPTS
 
 	  source <(fzf --zsh)
