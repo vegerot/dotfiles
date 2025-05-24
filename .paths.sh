@@ -112,3 +112,10 @@ else
 	export PYTHONPATH="."
 fi
 
+if [[ -d /usr/lib/wsl/lib ]]; then
+	if [[ -z ${LD_LIBRARY_PATH:-} ]]; then
+		export LD_LIBRARY_PATH="/usr/lib/wsl/lib"
+	else
+		export LD_LIBRARY_PATH="/usr/lib/wsl/lib:$LD_LIBRARY_PATH"
+	fi
+fi
