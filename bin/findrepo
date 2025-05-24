@@ -6,6 +6,7 @@ main() {
 	fd '^\.(git|sl)$' "$@" \
 		--unrestricted --hidden --type=d --follow --prune \
 		--exec dirname {} \; \
+		--max-depth 8 \
 		| sort
 }
 
