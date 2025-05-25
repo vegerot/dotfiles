@@ -33,6 +33,15 @@ nvmuse() {
 	SetWebCerts
 }
 
+fnminit() {
+	# node via fnm
+	FNM_PATH="$HOME/.local/share/fnm"
+	if [ -d "$FNM_PATH" ]; then
+		export PATH="$PATH:$FNM_PATH"
+		eval "`fnm env`"
+	fi
+}
+
 SdkManInit() {
 	export SDKMAN_DIR="$HOME/.sdkman"
 	[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
