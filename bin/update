@@ -22,7 +22,7 @@ function upgrade_brew() {
 function upgrade_apt() {
   if type snap 2>/dev/null ; then
 		echo "snap refresh"
-		sudo snap refresh
+		sudo snap refresh || true
 	fi
 	echo "apt update"
 	sudo apt update
