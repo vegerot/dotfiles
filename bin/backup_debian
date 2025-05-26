@@ -1,13 +1,44 @@
 #!/usr/bin/env bash
 
-time sudo /root/.local/bin/duplicity backup / file:///mnt/nas/debian-12/duplicity\
-  --volsize=1024\
-  --verbosity=5\
-  --include=/root --include=/home/\
-  --exclude=/sys --exclude=/run --exclude=/proc --exclude=/dev --exclude=/var/tmp --exclude=/tmp --exclude-regexp="/.ollama/models/blobs/.*" --exclude-regexp='^node_modules$' --exclude-regexp='^out$' --exclude-regexp='^build$' --exclude-regexp="cache$"\
-  --exclude-other-filesystems\
-  --exclude-device-files\
-  --exclude-if-present=.nobackup
+set -euo pipefail
+
+check_if_backup_mounted() {
+  if ! mountpoint -q /mnt/nas; then
+    echo "Mounting backup..."
+    sudo mount /mnt/nas || { echo "Failed to mount backup. Exiting." >&2; exit 1; }
+  else
+    echo "Backup already mounted."
+  fi
+}
+
+main() {
+  check_if_backup_mounted
+  sudo /root/.local/bin/duplicity backup / file:///mnt/nas/debian-12/duplicity \
+    --volsize=1024 \
+    --verbosity=5 \
+    --include=/bin \
+    --include=/boot \
+    --include=/etc \
+    --include=/home \
+    --include=/lib \
+    --include=/lost+found \
+    --include=/opt \
+    --include=/root \
+    --include=/sbin \
+    --include=/usr/ \
+    --include=/var \
+    --include=/vmlinuz \
+    --exclude=/home/max/.ollama/models/blobs \
+    --exclude-regexp='^node_modules$' \
+    --exclude-regexp='^out$' \
+    --exclude-regexp='^cache$' \
+    --exclude-regexp='^Cache$' \
+    --exclude=** \
+    --exclude-other-filesystems \
+    --exclude-device-files \
+    --exclude-if-present=.nobackup
+}
+
+main
 
 # restore with `/root/.local/bin/duplicity restore --restore-time 1M --path-to-restore home/max/dotfiles/.zshrc file:///mnt/nas/debian-12/duplicity/ /tmp/restoredzshrc2`
-
