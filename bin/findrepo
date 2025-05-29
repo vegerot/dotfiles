@@ -1,13 +1,24 @@
 #!/usr/bin/env bash
 
-# List all repositories in the current directory recursively
+set -o errexit
+set -o nounset
+set -o pipefail
+
+# List all repositories in the current directory
 
 main() {
-	fd '^\.(git|sl)$' "$@" \
-		--unrestricted --hidden --type=d --follow --prune \
-		--exec dirname {} \; \
-		--max-depth 8 \
-		| sort
+	if [[ ${1:-} == "deep" ]]; then
+		shift
+		fd '^\.(git|sl)$' "$@" \
+			--max-depth=10 --hidden --type=d --follow --prune \
+			--exec dirname {} \; \
+			| sort
+	else
+		fd '^.git$' "$@" \
+			--max-depth=5 --hidden --type=d --follow --prune \
+			--exec dirname {} \; \
+			| sort
+	fi
 }
 
-main "$@"
+main $@
