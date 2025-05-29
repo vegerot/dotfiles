@@ -16,6 +16,37 @@ cdr() {
 
 }
 
+# cd to node package root
+cdp() {
+	find-up() {
+		local current_path
+		current_path=$(pwd)
+		while [[ -n $current_path ]]; do
+			if [[ -e $current_path/$1 ]]; then
+				echo $current_path/$1
+				return
+			fi
+			current_path=${current_path%/*}
+		done
+		return 1
+	}
+
+	local packagejson
+	packagejson=$(find-up package.json)
+	if [[ $? != 0 ]]; then
+		echo "Not in a node package" >&2
+		return 1
+	fi
+	local package_root=$(dirname "$packagejson")
+	if [[ -d "$package_root" ]]; then
+		cd "$package_root/$1"
+	else
+		echo "Not in a node package" >&2
+		return 1
+	fi
+
+}
+
 fdNvimRtp() {
 	local search_term="${1:-.}"
 	nvim -e -s -c "set runtimepath?" \
@@ -100,6 +131,7 @@ function fastrm() {
 		set -o pipefail
 		local tempdir=$(mktemp -d)
 		mv $@ $tempdir
+		# https://unix.stackexchange.com/questions/277203/whats-the-fastest-way-to-remove-all-files-subfolders-in-a-directory/277205
 		rsync --delete --archive $(mktemp -d) $tempdir&
 	)
 }
