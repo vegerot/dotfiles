@@ -656,6 +656,13 @@ LUAEND
 
 lua << LUAEND
 
+-- better builtin pager
+
+local status, extui = pcall(require, "vim._extui")
+if status then
+	extui.enable({})
+end
+
 local status, devicons_plugin = pcall(require, "nvim-web-devicons")
 if status then
 	devicons_plugin.setup({
