@@ -131,8 +131,10 @@ function fastrm() {
 		set -o pipefail
 		local tempdir=$(mktemp -d)
 		mv $@ $tempdir
-		# https://unix.stackexchange.com/questions/277203/whats-the-fastest-way-to-remove-all-files-subfolders-in-a-directory/277205
-		rsync --delete --archive $(mktemp -d) $tempdir&
+		rm -rf $tempdir&
+		# if you want it to be extra fast, uncomment the next two lines
+		## https://unix.stackexchange.com/questions/277203/whats-the-fastest-way-to-remove-all-files-subfolders-in-a-directory/277205
+		# rsync --delete --archive $(mktemp -d) $tempdir&
 	)
 }
 
