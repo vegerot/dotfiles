@@ -650,9 +650,14 @@ configs_plugin.setup({
 	},
 })
 install_plugin.prefer_git = true
-vim.keymap.set("n", "[c", function()
-	require("treesitter-context").go_to_context(vim.v.count1)
-end)
+local install_plugin_name = "treesitter-context"
+local status, treesitterContext = pcall(require, install_plugin_name)
+if not status then
+	print(treesitterContext .. " plugin not loaded.  Not loading treesitter-context")
+	return false
+end
+treesitterContext.setup{}
+vim.keymap.set("n", "[c", function() treesitterContext.go_to_context(vim.v.count1) end)
 LUAEND
 
 lua << LUAEND
