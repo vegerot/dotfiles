@@ -39,6 +39,7 @@ autocmd BufReadPost *
 " Undo and backup
 set backupdir=~/.local/state/nvim/backup//
 set undofile
+set shada+='42069
 
 " Don't warn about existing swap files being open, since neovim will update a
 " file when a write is detected
