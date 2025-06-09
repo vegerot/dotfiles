@@ -83,7 +83,7 @@ esac
 
 
 # make sure this is the last thing
-export PATH="$PATH:."
+export PATH="$PATH:./node_modules/.bin:."
 
 ### -----------------------------------
 ### MAN path
