@@ -7,6 +7,7 @@ set relativenumber
 set ignorecase
 set smartcase
 set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
+nmap <leader>n :nohl<CR>
 
 command -nargs=* GrepNoTests grep --glob="!test/" --glob="!__tests__/" --glob "!e2e/" --glob="!*.test.*" --glob "!*.spec.*" <args>
 
@@ -21,7 +22,6 @@ set virtualedit=block
 set switchbuf=usetab,uselast
 
 set exrc
-nmap <leader>n :nohl<CR>
 
 " When editing a file, always jump to the last known cursor position.
 " Don't do it when the position is invalid, when inside an event handler
