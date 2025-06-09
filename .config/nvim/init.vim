@@ -29,12 +29,16 @@ set exrc
 " (likely a different one than last time), and when using xxd(1) to filter
 " and edit binary files (it transforms input files back and forth, causing
 " them to have dual nature, so to speak)
-autocmd BufReadPost *
-\ let line = line("'\"")
-\ | if line >= 1 && line <= line("$") && &filetype !~# 'commit'
-\      && index(['xxd', 'gitrebase'], &filetype) == -1
-\ |   execute "normal! g`\""
-\ | endif
+augroup RestoreCursor
+	autocmd!
+	autocmd BufReadPre * autocmd FileType <buffer> ++once
+				\ let s:line = line("'\"")
+				\ | if s:line >= 1 && s:line <= line("$") && &filetype !~# 'commit'
+				\      && index(['xxd', 'gitrebase'], &filetype) == -1
+				\      && !&diff
+				\ |   execute "normal! g`\""
+				\ | endif
+augroup END
 
 " Undo and backup
 set backupdir=~/.local/state/nvim/backup//
