@@ -116,6 +116,8 @@ bindkey '^x^e' edit-command-line
 ## 10ms for key sequences.  Makes going to normal mode fast
 KEYTIMEOUT=1
 bindkey -M vicmd "" edit-command-line
+bindkey '^a' beginning-of-line
+bindkey '^e' end-of-line
 
 # set up keymap stuff here because it's not working other places
 
