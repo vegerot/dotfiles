@@ -124,6 +124,7 @@ autocmd FileType cpp let g:c_syntax_for_h=v:false
 
 autocmd FileType *sh set makeprg=shellcheck\ -f\ gcc\ -x\ %
 autocmd BufNewFile,BufRead *.mdx   setfiletype markdown
+autocmd BufNewFile,BufRead *.commit.sl.txt   setfiletype hgcommit
 
 " don't continue comments on new lines
 set formatoptions-=ro
