@@ -81,6 +81,7 @@
     "Horiz",
     "hsts",
     "instanceof",
+    "instock",
     "ipairs",
     "jank",
     "jsonb",
@@ -598,4 +599,5 @@
   "editor.minimap.size": "fill",
   "workbench.preferredLightColorTheme": "Deep Blue",
   "terminal.integrated.confirmOnExit": "hasChildProcesses",
+  "CodeGPT.apiKey": "Ollama",
 }
