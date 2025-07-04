@@ -13,6 +13,7 @@ check_if_backup_mounted() {
 
 main() {
   check_if_backup_mounted
+  touch ~/.ollama/models/blobs/.nobackup
   sudo /root/.local/bin/duplicity backup / file:///mnt/nas/debian-12/duplicity \
     --volsize=1024 \
     --verbosity=5 \
