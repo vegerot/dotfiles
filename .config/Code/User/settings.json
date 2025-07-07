@@ -115,6 +115,7 @@
     "parallelizable",
     "pino",
     "pixantiqua",
+    "pnpx",
     "postgres",
     "postgresql",
     "preact",
