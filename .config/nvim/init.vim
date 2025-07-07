@@ -402,6 +402,19 @@ local jsonls_config = {
 	"jsonls",
 }
 
+local pythonruff_config = {
+	"ruff",
+	{
+		on_attach = function(client, bufnr)
+			on_attach(client, bufnr)
+			vim.lsp.enable("ty")
+		end
+	},
+}
+local pythonty_config = {
+	"ty",
+}
+
 local clangd_config = {
 	"clangd",
 	{
@@ -503,7 +516,7 @@ local defaultConfig = {
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { quick_lint_js, tsserver_config, jsonls_config, clangd_config, rust_config, zig_config }
+local servers = { quick_lint_js, tsserver_config, jsonls_config, pythonruff_config, pythonty_config, clangd_config, rust_config, zig_config }
 for _, lsp in ipairs(servers) do
 	local name, settings = unpack(lsp)
 	if settings == nil then
