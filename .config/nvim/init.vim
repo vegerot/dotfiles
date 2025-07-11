@@ -185,12 +185,6 @@ if shouldUseCoq then
 	}
 end
 
-local status, lspconfig_plugin = pcall(require, "lspconfig")
-if not status then
-	--print("lspconfig" .. " plugin not loaded.  Not loading lsp stuff")
-	return false
-end
-
 function handleGotoDefinition(options)
 	local title = options.title
 	local all_items = options.items
@@ -404,12 +398,6 @@ local jsonls_config = {
 
 local pythonruff_config = {
 	"ruff",
-	{
-		on_attach = function(client, bufnr)
-			on_attach(client, bufnr)
-			vim.lsp.enable("ty")
-		end
-	},
 }
 local pythonty_config = {
 	"ty",
@@ -525,7 +513,8 @@ for _, lsp in ipairs(servers) do
 	if (is_coq_running and shouldUseCoq) then
 		settings = coq.lsp_ensure_capabilities(settings)
 	end
-	lspconfig_plugin[name].setup(settings)
+	vim.lsp.config(name, settings)
+	vim.lsp.enable(name)
 end
 
 LUAEND
