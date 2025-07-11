@@ -264,7 +264,7 @@ local on_attach = function(client, bufnr)
 			-- same as previous, but if there's only one possible action, just apply it
 			{ "n", "<leader>qf", ":lua vim.lsp.buf.code_action({apply=1})<CR>" },
 		},
-		["textDocument/completion"] = { { "i", "<C-<Space>>", "<cmd>lua vim.lsp.buf.completion()<CR>" } },
+		["textDocument/completion"] = { { "i", "<c-space>", "<cmd>lua vim.lsp.buf.completion()<CR>" } },
 		["textDocument/references"] = { { "n", "gr", ":lua vim.lsp.buf.references()<CR>" } },
 		["textDocument/publishDiagnostics"] = {
 			{ "n", "<leader>d", ":lua vim.lsp.diagnostic.show_line_diagnostics()<CR>" },
