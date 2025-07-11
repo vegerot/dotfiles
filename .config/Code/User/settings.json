@@ -601,4 +601,6 @@
   "workbench.preferredLightColorTheme": "Deep Blue",
   "terminal.integrated.confirmOnExit": "hasChildProcesses",
   "CodeGPT.apiKey": "Ollama",
+  "trae.tab.enableAutoImport": true,
+  "trae.tab.enableAutoRename": true,
 }
