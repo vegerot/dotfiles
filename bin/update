@@ -41,7 +41,7 @@ function upgrade_apt() {
 function upgrade_zsh() {
 	echo "zsh plugins"
 	read -p 'Would you like to upgrade zsh plugins (y/n): ' upgradeZsh
-	if [[ "$upgradeZsh" == "y" ]] && type zsh 2>/dev/null ; then
+	if [[ "$upgradeZsh" == "y" ]] && type zsh 1>/dev/null 2>&1 ; then
 		ZSH_SKIP_LOADING_PLUGINS=1 zsh -lic "
 		set -o errexit
 		set -o nounset
