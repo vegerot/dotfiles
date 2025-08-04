@@ -104,6 +104,7 @@
     "neovim",
     "nestjs",
     "nnoremap",
+    "noaction",
     "npmjs",
     "nsec",
     "nvim",
@@ -532,7 +533,7 @@
   "versionlens.logging.level": "debug",
   "eslint.format.enable": true,
   "audioCues.debuggerStoppedOnBreakpoint": "on",
-  "editor.fontFamily": "'JetBrainsMono Nerd Font', 'JetBrains Mono', Liga SFMono Nerd Font, SFMono Nerd Font, Menlo, Monaco, 'Courier New', monospace",
+  "editor.fontFamily": "'JetBrains Mono', Liga SFMono Nerd Font, SFMono Nerd Font, Menlo, Monaco, 'Courier New', monospace",
   "go.toolsManagement.autoUpdate": true,
   "vs-kubernetes": {
     "vscode-kubernetes.helm-path.mac": "/Users/m0c0j7y/.vs-kubernetes/tools/helm/darwin-amd64/helm",
@@ -578,6 +579,7 @@
   "terminal.integrated.suggest.enabled": true,
   "explorer.openEditors.sortOrder": "fullPath",
   "settingsSync.ignoredExtensions": [
+
     "byted-ide.gallery"
   ],
   "[html]": {
