@@ -313,7 +313,7 @@ local godotnvim = function()
 		-- Only print this message if we're in a go file
 		-- we cannot check the filetype with `vim.bo.filetype` because the
 		-- filetype is not detected until after the plugins are loaded
-		if vim.fn.expand("%:e") == "go" then
+		if vim.fn.expand("%:e") == "go" or vim.bo.filetype=="go" then
 			print("go.nvim installed but gopls not found.  Not loading go.nvim")
 		end
 		return false
@@ -351,7 +351,7 @@ local godotnvim = function()
 		},
 	})
 end
-if vim.fn.expand("%:e") == "go" then
+if vim.fn.expand("%:e") == "go" or vim.bo.filetype=="go" then
 	-- FIXME: If the first file you open isn't a go file, go.nvim will never load
 	godotnvim()
 end
