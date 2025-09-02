@@ -40,6 +40,8 @@ ZIGTOOLS="$HOME/workspace/github.com/zigtools"
 if [[ -f $ZIGTOOLS/zls/zig-out/bin/zls ]]; then
 	export PATH="$PATH:$ZIGTOOLS/zls/zig-out/bin"
 fi
+ZIG_14="/opt/homebrew/opt/zig@0.14/bin"
+[[ -d $ZIG_14 ]] && export PATH="$PATH:$ZIG_14"
 
 
 ## macOS' toolchain doesn't come with tools like clang-format and clang-tidy
