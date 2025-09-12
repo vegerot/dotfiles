@@ -194,6 +194,9 @@ load_plugins() {
   if type cloudide-cli > /dev/null; then
 	  source <(cloudide-cli completion zsh)
   fi
+  if type coco > /dev/null; then
+	  source <(coco completion zsh)
+  fi
 
   if type fzf > /dev/null; then
 	  ## read by fzf program (see man fzf)
@@ -326,4 +329,3 @@ fi
 
 set +o nounset
 set +o pipefail
-
