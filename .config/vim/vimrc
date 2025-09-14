@@ -25,6 +25,12 @@ set directory=~/.cache/swap//
 set undodir=~/.cache/undo//
 set undofile
 
+" Don't warn about existing swap files being open (A), since neovim will update a
+" file when a write is detected
+set shortmess+=A
+" Show number of search results
+set shortmess-=S
+
 command! -nargs=1 FindFile tabnew | execute "0read !fd '<args>'" | set nomodified | norm gg
 nmap <C-p> :FindFile<SPACE>
 
