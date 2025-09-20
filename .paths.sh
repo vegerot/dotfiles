@@ -13,6 +13,8 @@
 if [[ -d /opt/homebrew ]]; then
 	export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/opt/homebrew/opt/coreutils/libexec/gnubin:/opt/homebrew/opt/curl/bin:$PATH"
 fi
+# use self-built Go if present
+[[ -x $HOME/workspace/googlesource.com/go/bin/go ]] && export PATH="$HOME/workspace/googlesource.com/go/bin:$PATH"
 
 export PATH="$HOME/bin:$HOME/.local/bin:/sbin:$PATH"
 
@@ -68,6 +70,16 @@ export PATH="$PATH:$BUN_INSTALL/bin"
 # ADB installed by Android Studio
 export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools/"
 
+# Nvidia CUDA stuff
+if [[ -d /usr/local/cuda/bin ]]; then
+	export PATH="$PATH:/usr/local/cuda/bin"
+fi
+
+# Invoke AI image generation
+if [[ -d $HOME/Invoke ]]; then
+	export PATH="$PATH:$HOME/Invoke"
+fi
+
 # pnpm
 export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
@@ -121,3 +133,4 @@ if [[ -d /usr/lib/wsl/lib ]]; then
 		export LD_LIBRARY_PATH="/usr/lib/wsl/lib:$LD_LIBRARY_PATH"
 	fi
 fi
+
