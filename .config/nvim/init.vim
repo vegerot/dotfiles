@@ -562,7 +562,7 @@ endif
 " Copilot end
 
 
-command! -nargs=* FindFile tabnew | execute "0read !fd <args> | sort" | set nomodified | 0
+command! -nargs=* FindFile tabnew | execute "0read !fd --follow <args> | sort" | set nomodified | 0
 
 "" FZF start
 " Enable per-command history
