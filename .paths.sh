@@ -134,3 +134,9 @@ if [[ -d /usr/lib/wsl/lib ]]; then
 	fi
 fi
 
+if [[ -d /opt/homebrew/include ]]; then
+	export CPATH="/opt/homebrew/include:${CPATH:-}"
+fi
+if [[ -d /opt/homebrew/lib ]]; then
+	export LIBRARY_PATH="/opt/homebrew/lib:${LIBRARY_PATH:-}"
+fi
