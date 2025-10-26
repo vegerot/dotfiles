@@ -70,6 +70,8 @@ export PATH="$PATH:$BUN_INSTALL/bin"
 # ADB installed by Android Studio
 export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools/"
 
+[[ -d "$HOME/.atuin/bin/" ]] && export PATH="$HOME/.atuin/bin:$PATH"
+
 # Nvidia CUDA stuff
 if [[ -d /usr/local/cuda/bin ]]; then
 	export PATH="$PATH:/usr/local/cuda/bin"

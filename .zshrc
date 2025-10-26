@@ -198,21 +198,38 @@ load_plugins() {
 	  source <(coco completion zsh)
   fi
 
-  if type fzf > /dev/null; then
-	  ## read by fzf program (see man fzf)
-	  export FZF_DEFAULT_OPTS='--height=70% '
-	  export FZF_DEFAULT_COMMAND='fd --no-require-git --hidden --exclude .git 2>/dev/null || git ls-tree -r --name-only HEAD'
+  if type atuin > /dev/null; then
+	  eval "$(atuin init zsh)"
+  else
+	  local zsh_history_substring_search_path=${plugin_paths[zsh-history-substring-search]}/zsh-history-substring-search.zsh
+	  if [[ -r $zsh_history_substring_search_path ]]; then
+		  source $zsh_history_substring_search_path
+		  ## Bind j and k for history-substring-search in normal mode
+		  bindkey -M vicmd 'k' history-substring-search-up
+		  bindkey -M vicmd 'j' history-substring-search-down
+		  ## Bind ⬆️ and ⬇️ for history-substring-search in insert mode
+		  bindkey '^[[A' history-substring-search-up
+		  bindkey '^[[B' history-substring-search-down
+		  bindkey "$terminfo[kcuu1]" history-substring-search-up
+		  bindkey "$terminfo[kcud1]" history-substring-search-down
+	  fi
+	  if type fzf > /dev/null; then
+		  ## read by fzf program (see man fzf)
+		  export FZF_DEFAULT_OPTS='--height=70% '
+		  export FZF_DEFAULT_COMMAND='fd --no-require-git --hidden --exclude .git 2>/dev/null || git ls-tree -r --name-only HEAD'
 
-	  # read by fzf/shell/key-bindings.zsh
-	  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-	  export FZF_PREVIEW_OPTS='--preview "bat --color=always --pager=never --highlight-line=1 -- {} 2>/dev/null || tree -C -L2 {} || ls --color=always {} || cat {}" --preview-window=right:60%:wrap'
-	  export FZF_CTRL_T_OPTS=$FZF_PREVIEW_OPTS
+		  # read by fzf/shell/key-bindings.zsh
+		  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+		  export FZF_PREVIEW_OPTS='--preview "bat --color=always --pager=never --highlight-line=1 -- {} 2>/dev/null || tree -C -L2 {} || ls --color=always {} || cat {}" --preview-window=right:60%:wrap'
+		  export FZF_CTRL_T_OPTS=$FZF_PREVIEW_OPTS
 
-	  source <(fzf --zsh)
+		  source <(fzf --zsh)
 
-	  ## from fzf.zsh plugin
-	  bindkey '^p' fzf-file-widget
+		  ## from fzf.zsh plugin
+		  bindkey '^p' fzf-file-widget
+	  fi
   fi
+
 
   if [[ $use_fancy_prompt == "false" ]]; then
 	  return
@@ -241,19 +258,6 @@ load_plugins() {
   local zsh_autosuggestions_path=${plugin_paths[zsh-autosuggestions]}/zsh-autosuggestions.zsh
   if [[ -r $zsh_autosuggestions_path ]]; then
 	  source $zsh_autosuggestions_path
-  fi
-
-  local zsh_history_substring_search_path=${plugin_paths[zsh-history-substring-search]}/zsh-history-substring-search.zsh
-  if [[ -r $zsh_history_substring_search_path ]]; then
-	  source $zsh_history_substring_search_path
-	  ## Bind j and k for history-substring-search in normal mode
-	  bindkey -M vicmd 'k' history-substring-search-up
-	  bindkey -M vicmd 'j' history-substring-search-down
-	  ## Bind ⬆️ and ⬇️ for history-substring-search in insert mode
-	  bindkey '^[[A' history-substring-search-up
-	  bindkey '^[[B' history-substring-search-down
-	  bindkey "$terminfo[kcuu1]" history-substring-search-up
-	  bindkey "$terminfo[kcud1]" history-substring-search-down
   fi
 
 }
@@ -329,3 +333,4 @@ fi
 
 set +o nounset
 set +o pipefail
+
