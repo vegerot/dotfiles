@@ -198,7 +198,11 @@ load_plugins() {
 	  source <(coco completion zsh)
   fi
 
+  # HISTORY plugins start
   if type atuin > /dev/null; then
+	  export FZF_CTRL_R_COMMAND=
+	  export FZF_CTRL_T_COMMAND=
+	  export FZF_ALT_C_COMMAND=
 	  eval "$(atuin init zsh)"
   else
 	  local zsh_history_substring_search_path=${plugin_paths[zsh-history-substring-search]}/zsh-history-substring-search.zsh
@@ -213,22 +217,24 @@ load_plugins() {
 		  bindkey "$terminfo[kcuu1]" history-substring-search-up
 		  bindkey "$terminfo[kcud1]" history-substring-search-down
 	  fi
-	  if type fzf > /dev/null; then
-		  ## read by fzf program (see man fzf)
-		  export FZF_DEFAULT_OPTS='--height=70% '
-		  export FZF_DEFAULT_COMMAND='fd --no-require-git --hidden --exclude .git 2>/dev/null || git ls-tree -r --name-only HEAD'
-
-		  # read by fzf/shell/key-bindings.zsh
-		  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-		  export FZF_PREVIEW_OPTS='--preview "bat --color=always --pager=never --highlight-line=1 -- {} 2>/dev/null || tree -C -L2 {} || ls --color=always {} || cat {}" --preview-window=right:60%:wrap'
-		  export FZF_CTRL_T_OPTS=$FZF_PREVIEW_OPTS
-
-		  source <(fzf --zsh)
-
-		  ## from fzf.zsh plugin
-		  bindkey '^p' fzf-file-widget
-	  fi
   fi
+  # We still need fzf for ctrl-p, even if we're using atuin
+  if type fzf > /dev/null; then
+	  ## read by fzf program (see man fzf)
+	  export FZF_DEFAULT_OPTS='--height=70% '
+	  export FZF_DEFAULT_COMMAND='fd --no-require-git --hidden --exclude .git 2>/dev/null || git ls-tree -r --name-only HEAD'
+
+	  # read by fzf/shell/key-bindings.zsh
+	  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+	  export FZF_PREVIEW_OPTS='--preview "bat --color=always --pager=never --highlight-line=1 -- {} 2>/dev/null || tree -C -L2 {} || ls --color=always {} || cat {}" --preview-window=right:60%:wrap'
+	  export FZF_CTRL_T_OPTS=$FZF_PREVIEW_OPTS
+
+	  source <(fzf --zsh)
+
+	  ## from fzf.zsh plugin
+	  bindkey '^p' fzf-file-widget
+  fi
+  # HISTORY plugins end
 
 
   if [[ $use_fancy_prompt == "false" ]]; then
