@@ -862,3 +862,4 @@ end
 
 LUAEND
 
+lua require("hardtime").setup()
