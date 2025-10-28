@@ -364,9 +364,13 @@ local configure_breadcrumbs = function(client)
 	        textDocument = textDocumentParams
 	    }
 
-	    local result = client:request("textDocument/documentSymbol", params, breadcrumbs_set)
+	    --local result = client:request("textDocument/documentSymbol", params, breadcrumbs_set)
 	    --local otherClient = vim.lsp.get_active_clients()[1]
 	    --print("client1: " .. vim.inspect(client) .. " client2: " .. vim.inspect(otherClient))
+
+	    -- I don't know why I can't use `client:request` here, but if I do
+	    -- it doesn't work with multiple tabs
+	    local result = vim.lsp.buf_request(bufnr, "textDocument/documentSymbol", params, breadcrumbs_set)
 	    if not result then
 		    print("Error: Could not get document symbols. Is the LSP server running?")
 	        return
