@@ -153,11 +153,21 @@ if exists('g:vscode')
 		silent! packadd commentary
 		silent! packadd unimpaired
 		silent! packadd vim-surround
+		silent! packadd vim-sneak
 		packadd matchit
 	endif
 	set nospell
 	set noloadplugins
 	finish
+endif
+
+"" sneak
+if &loadplugins
+    let g:sneak#label=1
+    map f <Plug>Sneak_s
+    map F <Plug>Sneak_S
+    map t <Plug>Sneak_t
+    map T <Plug>Sneak_T
 endif
 
 "" LSP+autocomplete start
