@@ -15,7 +15,6 @@ Make sure everything you're cloning has a `plugins/` directory in it
 | surround           	| ~/.local/share/nvim/site/pack/tpope/start/                	| sl clone git@github.com:tpope/vim-surround.git                         	|
 | commentary         	|                                                           	| git clone https://tpope.io/vim/commentary.git                          	|
 | repeat             	|                                                           	| sl clone https://tpope.io/vim/repeat.git                               	|
-| vinegar            	|                                                           	| sl clone https://github.com/tpope/vim-vinegar.git                      	|
 | unimpaired         	|                                                           	| sl clone https://tpope.io/vim/unimpaired.git                           	|
 | sleuth             	|                                                           	| git clone https://tpope.io/vim/sleuth.git                              	|
 | open-remote        	| ~/.local/share/nvim/site/pack/simple-plugins/start/       	| sl clone git@github.com:vegerot/open-remote.git                        	|
@@ -28,7 +27,8 @@ Make sure everything you're cloning has a `plugins/` directory in it
 | nvim-web-devicons  	|                                                           	| sl clone git@github.com:nvim-tree/nvim-web-devicons                    	|
 | fzy-native         	|                                                           	| sl clone git@github.com:nvim-telescope/telescope-fzy-native.nvim.git   	|
 | hardtime           	|                                                           	| sl clone git@github.com:m4xshen/hardtime.nvim.git                      	|
-| gitsigns           	|                                                           	| git clone git@github.com:lewis6991/gitsigns.nvim                       	|
+| gitsigns           	|                                                           	| git clone git@github.com:lewis6991/gitsigns.nvim.git                   	|
+| oil                	|                                                           	| git clone git@github.com:stevearc/oil.nvim.git                         	|
 | fzf                	| ~/.local/share/nvim/site/pack/fzf/start/                  	| sl clone git@github.com:junegunn/fzf.git                               	|
 |                    	|                                                           	| sl clone git@github.com:junegunn/fzf.vim.git                           	|
 | treesitter         	| ~/.local/share/nvim/site/pack/treesitter/start/           	| sl clone git@github.com:nvim-treesitter/nvim-treesitter.git            	|

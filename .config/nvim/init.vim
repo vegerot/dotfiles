@@ -873,3 +873,4 @@ end
 LUAEND
 
 lua require("hardtime").setup{restriction_mode="hint", disable_mouse=false, disabled_keys={}}
+lua require("oil").setup(); vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
