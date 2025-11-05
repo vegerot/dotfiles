@@ -367,6 +367,9 @@ local configure_breadcrumbs = function(client)
 	end
 
 	local function breadcrumbs_trigger_set()
+	    if not client.supports_method("textDocument/documentSymbol") then
+		return
+	    end
 	    local bufnr = vim.api.nvim_get_current_buf()
 	    local textDocumentParams = vim.lsp.util.make_text_document_params(bufnr)
 
