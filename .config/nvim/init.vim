@@ -200,35 +200,46 @@ function handleGotoDefinition(options)
 	local all_items = options.items
 	local method = options.context.method
 	local bufnr = options.context.bufnr
+	local shouldReuseWin = true
 
 	if #all_items == 1 then
-		local result = all_items[1]
-		local result_bufnr = result.bufnr or vim.fn.bufadd(result.filename)
+		local item = all_items[1]
+		local item_bufnr = item.bufnr or vim.fn.bufadd(item.filename)
 
 		-- Save position in jumplist
 		vim.cmd("normal! m'")
 		-- Push a new item into tagstack
+		local from = vim.fn.getpos('.')
+		from[1] = bufnr
+		local tagname = vim.fn.expand('<cword>')
 		local tagstack = { { tagname = tagname, from = from } }
-		vim.fn.settagstack(vim.fn.win_getid(win), { items = tagstack }, 't')
+		local currentWindow = vim.api.nvim_get_current_win()
+		vim.fn.settagstack(vim.fn.win_getid(currentWindow), { items = tagstack }, 't')
 
-		local maybeW = vim.fn.win_findbuf(result_bufnr)[1]
-		if maybeW then
-			local w = maybeW
-			vim.api.nvim_win_set_buf(w, result_bufnr)
-			vim.api.nvim_win_set_cursor(w, { result.lnum, result.col - 1 })
-			-- This will also switch the tab
-			vim.api.nvim_set_current_win(w)
-		else
-			vim.cmd('tabnew');
-			vim.bo[result_bufnr].buflisted = true;
-			local w = vim.api.nvim_get_current_win()
-			vim.api.nvim_win_set_buf(w, result_bufnr);
-			vim.api.nvim_win_set_cursor(w, { result.lnum, result.col - 1 })
+		vim.bo[item_bufnr].buflisted = true
+		local resultWindow = currentWindow
+		if shouldReuseWin then
+			local maybeAlreadyOpenedWindow = vim.fn.win_findbuf(item_bufnr)[1]
+			if maybeAlreadyOpenedWindow then
+				resultWindow = maybeAlreadyOpenedWindow
+			else
+				vim.cmd('tabnew');
+				resultWindow = vim.api.nvim_get_current_win()
+				vim.bo[item_bufnr].buflisted = true;
+			end
+			if resultWindow ~= currentWindow then
+				vim.api.nvim_set_current_win(resultWindow)
+			end
 		end
+		vim.api.nvim_win_set_buf(resultWindow, item_bufnr)
+		vim.api.nvim_win_set_cursor(resultWindow, { item.lnum, item.col - 1 })
+		-- Open folds under the cursor
+		vim._with({ win = resultWindow }, function() vim.cmd('normal! zv') end)
 	else
 		vim.fn.setqflist({}, ' ', { title = title, items = all_items })
 		vim.cmd('botright copen')
 	end
+
 end
 
 -- initially copied from https://github.com/juniorsundar/nvim/blob/534554a50cc468df0901dc3861e7325a54c01457/lua/config/lsp/breadcrumbs.lua
