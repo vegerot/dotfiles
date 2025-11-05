@@ -32,7 +32,7 @@ if type git > /dev/null; then
   alias gcw="git cw"
   alias gfr="git fr"
   alias gfru="git fru"
-  alias glo="git log --graph --decorate=full --oneline"
+  alias glo="git -c color.ui=always log --graph --decorate=full --oneline"
   alias glog="git log --graph --decorate=full"
   alias gp="git push"
   alias gr="git rebase"
