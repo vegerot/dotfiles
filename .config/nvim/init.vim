@@ -242,6 +242,38 @@ function handleGotoDefinition(options)
 
 end
 
+function tagBackInAppropriateTab(direction)
+    local currentWindow = vim.fn.win_getid()
+
+    local tagstack = vim.fn.gettagstack(currentWindow)
+    local items = tagstack.items
+    local current_position = tagstack.curidx
+
+     --vim.print("Tagstack: " .. vim.inspect(tagstack))
+    if current_position > #items + 1 then
+	print("No more items in tagstack")
+	return
+    end
+
+    local next_position = current_position + direction
+    local target = items[next_position]
+    --vim.print("next_position: " .. next_position .. " target: " .. vim.inspect(target))
+    if target then
+	local maybeAlreadyOpenedWindow = vim.fn.win_findbuf(target.from[1])[1]
+	local resultWindow = maybeAlreadyOpenedWindow or currentWindow
+	--vim.print("maybeAlreadyOpenedWindow: " .. vim.inspect(maybeAlreadyOpenedWindow) .. " resultWindow: " .. vim.inspect(resultWindow))
+	vim.api.nvim_set_current_win(resultWindow)
+	vim.fn.settagstack(resultWindow, { items = items, curidx = next_position}, 't')
+	vim.api.nvim_win_set_buf(resultWindow, target.from[1])
+	vim.fn.cursor(target.from[2], target.from[3])
+	if direction == 1 then
+	    vim.cmd('stag') -- update the tagstack curidx
+	else
+	    vim.cmd('pop') -- update the tagstack curidx
+	end
+    end
+end
+
 -- initially copied from https://github.com/juniorsundar/nvim/blob/534554a50cc468df0901dc3861e7325a54c01457/lua/config/lsp/breadcrumbs.lua
 -- now with my own patches
 local configure_breadcrumbs = function(client)
@@ -444,7 +476,11 @@ local on_attach = function(client, bufnr)
 	-- TODO: try using the new built-in keymaps instead
 	local methodsAndKeymaps = {
 		["textDocument/declaration"] = { { "n", "gD", ":lua vim.lsp.buf.declaration()<CR>" } },
-		["textDocument/definition"] = { { "n", "gd", ":lua vim.lsp.buf.definition({on_list = handleGotoDefinition})<CR>" } },
+		["textDocument/definition"] = {
+		    { "n", "gd", ":lua vim.lsp.buf.definition({on_list = handleGotoDefinition})<CR>" },
+		    { "n", "<C-t>", ":lua tagBackInAppropriateTab(-1)<CR>" },
+		    { "n", "<C-i>", ":stag<CR>" },
+		},
 		["textDocument/hover"] = { { "n", "K", ":lua vim.lsp.buf.hover()<CR>" } },
 		["textDocument/signatureHelp"] = { { "n", "<leader>k", ":lua vim.lsp.buf.signature_help()<CR>" } },
 		["textDocument/workspaceFolders"] = {
