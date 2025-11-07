@@ -163,7 +163,7 @@ endif
 
 "" sneak
 if &loadplugins
-    let g:sneak#label=1
+    map s <Plug>Sneak_s
     map f <Plug>Sneak_s
     map F <Plug>Sneak_S
     map t <Plug>Sneak_t
