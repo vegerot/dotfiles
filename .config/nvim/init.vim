@@ -164,10 +164,7 @@ endif
 "" sneak
 if &loadplugins
     map s <Plug>Sneak_s
-    map f <Plug>Sneak_s
-    map F <Plug>Sneak_S
-    map t <Plug>Sneak_t
-    map T <Plug>Sneak_T
+    map S <Plug>Sneak_S
 endif
 
 "" LSP+autocomplete start
