@@ -195,7 +195,8 @@ load_plugins() {
 	  source <(cloudide-cli completion zsh)
   fi
   if type coco > /dev/null; then
-	  source <(coco completion zsh)
+	  # TODO: currently this takes about 4s due to a bug in coco.  Uncomment when coco is fixed
+	  # source <(coco completion zsh)
   fi
 
   # HISTORY plugins start
