@@ -1,0 +1,10 @@
+{
+    "extensions.supportUntrustedWorkspaces": {
+        "byted-ide.dev-environment-manager": {
+            "supported": true
+        }
+    },
+    "remote.SSH.defaultExtensions": [
+        "byted-ide.gallery"
+    ]
+}
