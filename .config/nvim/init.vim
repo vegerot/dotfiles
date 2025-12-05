@@ -168,7 +168,6 @@ if &loadplugins
 endif
 
 "" LSP+autocomplete start
-set completefuzzycollect=keyword,files,whole_line
 set completeopt+=fuzzy,menuone,noinsert
 
 
