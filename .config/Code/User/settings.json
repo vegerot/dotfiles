@@ -29,5 +29,7 @@
     "terminal.integrated.shellIntegration.environmentReporting": true,
     "terminal.integrated.stickyScroll.enabled": true,
     "terminal.integrated.suggest.enabled": true,
-    "git.blame.editorDecoration.enabled": false
+    "git.blame.editorDecoration.enabled": false,
+    "github.copilot.nextEditSuggestions.enabled": true,
+
 }
