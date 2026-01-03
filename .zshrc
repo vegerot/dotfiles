@@ -106,8 +106,9 @@ autoload -U run-help
 alias help=run-help
 
 # COMMAND LINE EDITING
-setopt vi
-bindkey -v '^?' backward-delete-char
+# setopt vi
+setopt emacs
+# bindkey -v '^?' backward-delete-char
 ## edit the current line in vim with `C-x C-e` like in bash
 autoload -U edit-command-line
 zle -N edit-command-line
@@ -115,7 +116,7 @@ bindkey '^xe' edit-command-line
 bindkey '^x^e' edit-command-line
 ## 10ms for key sequences.  Makes going to normal mode fast
 KEYTIMEOUT=1
-bindkey -M vicmd "" edit-command-line
+# bindkey -M vicmd "" edit-command-line
 bindkey '^a' beginning-of-line
 bindkey '^e' end-of-line
 
@@ -135,8 +136,8 @@ else
 	echo -ne "\e[5 q"
 fi
 }
-precmd_functions+=(zle-keymap-select)
-zle -N zle-keymap-select
+# precmd_functions+=(zle-keymap-select)
+# zle -N zle-keymap-select
 
 setopt correct
 COMPLETION_WAITING_DOTS="true"
