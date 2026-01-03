@@ -7,5 +7,25 @@
     {
         "key": "cmd+2",
         "command": "-workbench.action.focusSecondEditorGroup"
+    },
+    {
+        "key": "ctrl+alt+f",
+        "command": "cursorWordPartRight",
+        "when": "textInputFocus"
+    },
+    {
+        "key": "ctrl+shift+alt+f",
+        "command": "cursorWordPartRightSelect",
+        "when": "textInputFocus"
+    },
+    {
+        "key": "ctrl+alt+b",
+        "command": "cursorWordPartLeft",
+        "when": "textInputFocus"
+    },
+    {
+        "key": "ctrl+shift+alt+b",
+        "command": "cursorWordPartLeftSelect",
+        "when": "textInputFocus"
     }
 ]
