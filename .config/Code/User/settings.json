@@ -31,5 +31,12 @@
     "terminal.integrated.suggest.enabled": true,
     "git.blame.editorDecoration.enabled": false,
     "github.copilot.nextEditSuggestions.enabled": true,
+    "zenMode.showTabs": "none",
+    "terminal.integrated.tabs.title": "${process} (${cwdFolder})",
+    "trae.tab.enableSummaryAutoDisplay": true,
+    "trae.beta.enableAgentReviewOnCommit": true,
+    "window.nativeTabs": true,
+    "window.titleBarStyle": "native",
+    "window.menuStyle": "inherit",
 
 }
