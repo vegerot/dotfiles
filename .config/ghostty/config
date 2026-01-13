@@ -1,6 +1,9 @@
 background-opacity=0.8
 background-blur=true
 
+keybind = cmd+enter=ignore
+macos-titlebar-style = native
+
 # Config syntax crash course
 # ==========================
 # Run `ghostty +show-config --default --docs` to view a list of
