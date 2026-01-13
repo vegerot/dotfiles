@@ -196,7 +196,8 @@ load_plugins() {
 	  source <(cloudide-cli completion zsh)
   fi
   if type coco > /dev/null; then
-	  source <(coco completion zsh)
+    # FIXME: re-enable when slow bug fixed
+	#   source <(coco completion zsh)
   fi
 
   # HISTORY plugins start
@@ -340,4 +341,3 @@ fi
 
 set +o nounset
 set +o pipefail
-
