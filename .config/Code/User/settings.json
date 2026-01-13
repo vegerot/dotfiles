@@ -38,5 +38,12 @@
     "window.nativeTabs": true,
     "window.titleBarStyle": "native",
     "window.menuStyle": "inherit",
+    "workbench.editor.customLabels.patterns": {
+        "**/page.tsx": "${dirname}.page.tsx",
+        "**/page.data.ts": "${dirname}.data.ts",
+        "**/layout.tsx": "${dirname}.layout.tsx",
+        "**/layout.data.ts": "${dirname}.layout.data.tsx"
+    },
+    "git.blame.statusBarItem.enabled": true,
 
 }
