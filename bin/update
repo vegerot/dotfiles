@@ -13,8 +13,6 @@ function upgrade_brew() {
 		if [[ "$upgradeBrew" == "y" ]]; then
 			# sometimes corepack will prevent brew from overwriting npm
 			brew upgrade || brew link --overwrite node
-			echo "brew upgrade --cask"
-			brew upgrade --cask
 		fi
 	fi
 }
