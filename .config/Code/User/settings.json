@@ -42,7 +42,9 @@
         "**/page.tsx": "${dirname}.page.tsx",
         "**/page.data.ts": "${dirname}.data.ts",
         "**/layout.tsx": "${dirname}.layout.tsx",
-        "**/layout.data.ts": "${dirname}.layout.data.tsx"
+        "**/layout.data.ts": "${dirname}.layout.data.tsx",
+        "**/index.tsx": "${dirname}.index.tsx",
+        "**/index.scss": "${dirname}.index.scss"
     },
     "git.blame.statusBarItem.enabled": true,
 
