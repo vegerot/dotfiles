@@ -20,3 +20,4 @@ sudo mount --rbind {,$MNT}/sys
 # sudo mount --rbind {,$MNT}/usr/lib
 sudo mount -o bind {,$MNT}/tmp/.X11-unix
 sudo chroot $MNT bash -c 'cd ~max && su max'
+
