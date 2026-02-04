@@ -9,9 +9,9 @@
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
 # Option / Alt
-set $mod Mod1
+set $mod Mod4
 # Super_L / Command / Windows
-set $mod2 Mod4
+set $mod2 Mod1
 # I don't know why this acts different than `Mod4`
 set $mod3 Super_L
 
@@ -34,7 +34,7 @@ font xft:JetBrains Mono:style=Regular:pixelsize=12:antialias=true:autohint=true
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod2+Return exec i3-sensible-terminal
+bindsym $mod+Return exec i3-sensible-terminal
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -50,10 +50,10 @@ for_window [instance="^snek$"] floating enable
 # remap capslock to escape
 bindsym F2 exec /home/max/bin/remapCapslock
 # change focus
-bindsym $mod2+h focus left
-bindsym $mod2+j focus down
-bindsym $mod2+k focus up
-bindsym $mod2+l focus right
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -62,10 +62,10 @@ bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
 # move focused window
-bindsym $mod2+Shift+h move left
-bindsym $mod2+Shift+j move down
-bindsym $mod2+Shift+k move up
-bindsym $mod2+Shift+l move right
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
 
 bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Down move down
@@ -76,11 +76,9 @@ bindsym $mod+Shift+Right move right
 bindsym $mod+bar split h
 bindsym $mod+backslash split h
 bindsym $mod+apostrophe split h
-bindsym $mod2+apostrophe split h
 
 # split in vertical orientation
 bindsym $mod+minus split v
-bindsym $mod2+minus split v
 bindsym $mod+quotedbl split v
 
 # enter fullscreen mode for the focused container
