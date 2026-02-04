@@ -23,7 +23,7 @@
     "terminal.integrated.persistentSessionScrollback": 100000000000,
     "terminal.integrated.scrollback": 10000000000,
     "editor.minimap.enabled": true,
-    "editor.inlayHints.enabled": "off",
+    "editor.inlayHints.enabled": "on",
     "workbench.preferredLightColorTheme": "Light",
     "terminal.integrated.hideOnStartup": "whenEmpty",
     "terminal.integrated.shellIntegration.environmentReporting": true,
@@ -42,10 +42,44 @@
         "**/page.tsx": "${dirname}.page.tsx",
         "**/page.data.ts": "${dirname}.data.ts",
         "**/layout.tsx": "${dirname}.layout.tsx",
-        "**/layout.data.ts": "${dirname}.layout.data.tsx",
+        "**/layout.data.ts": "${dirname}.layout.data.ts",
         "**/index.tsx": "${dirname}.index.tsx",
         "**/index.scss": "${dirname}.index.scss"
     },
     "git.blame.statusBarItem.enabled": true,
-
+    "trae.tab.test.showCueflowFail": true,
+    "trae.guide.neverShowNoticeForLanguages": [],
+    "cSpell.userWords": [
+        "bfcache",
+        "connfd",
+        "crosskit",
+        "Deeplink",
+        "ecom",
+        "edenx",
+        "EDITORCORE",
+        "elementtiming",
+        "libpython",
+        "Lngs",
+        "Navs",
+        "rustc",
+        "slardar",
+        "smartlog",
+        "Ssrd",
+        "sysconfig",
+        "tokopedia",
+        "TTFB"
+    ],
+    "better-comments.highlightPlainText": true,
+    "byted-ide.clouddevUnitTestGeneration.commentLanguage": "English",
+    "better-comments.tags": [
+        {
+            "tag": "@@@",
+            "color": "#FF0000",
+            "bold": true,
+            "italic": true,
+            
+        }
+    ],
+    "chat.tools.terminal.outputLocation": "chat",
+    "python.analysis.typeCheckingMode": "standard"
 }
