@@ -34,6 +34,7 @@ main() {
     --exclude-regexp='^out$' \
     --exclude-regexp='^cache$' \
     --exclude-regexp='^Cache$' \
+    --exclude-regexp='timeshift' \
     --exclude=** \
     --exclude-other-filesystems \
     --exclude-device-files \
