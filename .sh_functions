@@ -95,10 +95,10 @@ SetWebCerts() {
 
 function afk() {
   echo "set i to 0
-  repeat while i < 20
+  repeat while i < 120
   tell application \"System Events\" to key code 80
   set i to i + 1
-  delay 180
+  delay 30
 end repeat" | osascript
 }
 
