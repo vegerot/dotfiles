@@ -313,8 +313,7 @@ chpwd_functions+=(source_max_scripts)
 source_max_scripts
 
 # Print time taken since zsh startup
-typeset -F SECONDS
-startuptime=$(printf '%.2f seconds\n' $SECONDS)
+startuptime=$(typeset -F SECONDS && printf '%.2f seconds\n' $SECONDS)
 if type rainbow > /dev/null; then
 	printf "$startuptime\n" | rainbow
 else
