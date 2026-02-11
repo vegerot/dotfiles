@@ -1,16 +1,6 @@
 set -o nounset
 set -o pipefail
 
-# Compute how long startup takes.
-# Only GNU date supports milliseconds, and also only GNU date has `--help`
-if type gdate > /dev/null; then
-	start=$(gdate +%s.%N)
-elif $(date --help &> /dev/null); then
-	start=`date +%s.%N`
-else
-	start=$(python3 -c "import time; print(time.time())")
-fi
-
 # remove duplicates from PATH
 typeset -aU path
 typeset -U PATH
@@ -322,17 +312,9 @@ fi
 chpwd_functions+=(source_max_scripts)
 source_max_scripts
 
-# Compute time taken
-if type gdate > /dev/null; then
-	end=$(gdate +%s.%N)
-elif $(date --help &> /dev/null); then
-	end=`date +%s.%N`
-else
-	end=$(python3 -c "import time; print(time.time())")
-fi
-runtime=$( echo "$end - $start" | bc -l )
-
-startuptime=$(printf '%.2f seconds\n' $runtime)
+# Print time taken since zsh startup
+typeset -F SECONDS
+startuptime=$(printf '%.2f seconds\n' $SECONDS)
 if type rainbow > /dev/null; then
 	printf "$startuptime\n" | rainbow
 else
