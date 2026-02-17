@@ -52,6 +52,7 @@
     "trae.guide.neverShowNoticeForLanguages": [],
     "cSpell.userWords": [
         "bfcache",
+        "BYTEFAAS",
         "connfd",
         "CONV",
         "crosskit",
@@ -61,6 +62,7 @@
         "edenx",
         "EDITORCORE",
         "elementtiming",
+        "fsopen",
         "larkcontact",
         "larkcore",
         "larkws",
@@ -68,6 +70,7 @@
         "Lngs",
         "lraylib",
         "Navs",
+        "oapi",
         "rustc",
         "slardar",
         "smartlog",
@@ -86,7 +89,6 @@
             "color": "#FF0000",
             "bold": true,
             "italic": true,
-            
         }
     ],
     "chat.tools.terminal.outputLocation": "chat",
@@ -223,5 +225,8 @@
     "remote.defaultExtensionsIfInstalledLocally": [
         "byted-extensions.stratocube-remote-ssh"
     ],
-    "cSpell.allowCompoundWords": true
+    "cSpell.allowCompoundWords": true,
+    "go.alternateTools": {
+        "gopls": "trae-gopls"
+    }
 }
