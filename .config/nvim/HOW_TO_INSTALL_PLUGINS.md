@@ -22,10 +22,8 @@ Make sure everything you're cloning has a `plugins/` directory in it
 | vim-fetch          	|                                                           	| git clone git@github.com:wsdjeg/vim-fetch.git                          	|
 | vim-sneak          	|                                                           	| git clone git@github.com:justinmk/vim-sneak.git                        	|
 | vim-tmux-navigator 	| ~/.local/share/nvim/site/pack/complex-plugins/start/      	| sl clone git@github.com:christoomey/vim-tmux-navigator.git             	|
-| telescope.nvim     	|                                                           	| sl clone git@github.com:nvim-telescope/telescope.nvim                  	|
 | plenary.nvim       	|                                                           	| sl clone git@github.com:nvim-lua/plenary.nvim                          	|
 | nvim-web-devicons  	|                                                           	| sl clone git@github.com:nvim-tree/nvim-web-devicons                    	|
-| fzy-native         	|                                                           	| sl clone git@github.com:nvim-telescope/telescope-fzy-native.nvim.git   	|
 | hardtime           	|                                                           	| sl clone git@github.com:m4xshen/hardtime.nvim.git                      	|
 | gitsigns           	|                                                           	| git clone git@github.com:lewis6991/gitsigns.nvim.git                   	|
 | oil                	|                                                           	| git clone git@github.com:stevearc/oil.nvim.git                         	|
@@ -37,6 +35,6 @@ Make sure everything you're cloning has a `plugins/` directory in it
 | nvim-lspconfig     	|                                                           	| sl clone git@github.com:neovim/nvim-lspconfig.git                      	|
 | go.nvim            	|                                                           	| git clone git@github.com:ray-x/go.nvim                                 	|
 | guihua.lua         	|                                                           	| git clone git@github.com:ray-x/guihua.lua                              	|
-| zig.vim            	|                                                           	| git clone git@github.com:ziglang/zig.vim                               	|
+| zig.vim            	|                                                           	| git clone https://codeberg.org/ziglang/zig.vim.git                     	|
 | MarsCode           	| ~/.local/share/nvim/site/pack/byted/start/                	| git clone git@code.???.org:chenjiaqi.cposture/codeverse.vim.git        	|
 
