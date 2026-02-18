@@ -228,5 +228,7 @@
     "cSpell.allowCompoundWords": true,
     "go.alternateTools": {
         "gopls": "trae-gopls"
-    }
+    },
+    "git.enableCommitSigning": true,
+    "git.verboseCommit": true,
 }
