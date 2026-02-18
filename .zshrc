@@ -158,9 +158,8 @@ typeset -A plugin_paths=(
 	[zig-shell-complete]="$HOME/workspace/github.com/ziglang/shell-completions"
 )
 load_plugins() {
-  # install from https://github.com/gsamokovarov/jump
-  if type jump > /dev/null; then
-	  eval "$(jump shell)"
+  if type zoxide > /dev/null; then
+	  eval "$(zoxide init zsh)"
   fi
 
   local zig_shell_complete_path=${plugin_paths[zig-shell-complete]}/zig-shell-completions.plugin.zsh

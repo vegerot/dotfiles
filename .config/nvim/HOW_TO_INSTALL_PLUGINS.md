@@ -21,6 +21,7 @@ Make sure everything you're cloning has a `plugins/` directory in it
 | CamelCaseMotion    	|                                                           	| sl clone git@github.com:bkad/CamelCaseMotion.git                       	|
 | vim-fetch          	|                                                           	| git clone git@github.com:wsdjeg/vim-fetch.git                          	|
 | vim-sneak          	|                                                           	| git clone git@github.com:justinmk/vim-sneak.git                        	|
+| zoxide.vim         	|                                                           	| git clone git@github.com:nanotee/zoxide.vim.git                        	|
 | vim-tmux-navigator 	| ~/.local/share/nvim/site/pack/complex-plugins/start/      	| sl clone git@github.com:christoomey/vim-tmux-navigator.git             	|
 | plenary.nvim       	|                                                           	| sl clone git@github.com:nvim-lua/plenary.nvim                          	|
 | nvim-web-devicons  	|                                                           	| sl clone git@github.com:nvim-tree/nvim-web-devicons                    	|
