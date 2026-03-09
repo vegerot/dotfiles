@@ -1,0 +1,147 @@
+{
+  "meta": {
+    "lastTouchedVersion": "2026.2.18",
+    "lastTouchedAt": "2026-02-19T22:16:41.416Z"
+  },
+  "wizard": {
+    "lastRunAt": "2026-02-18T21:21:11.046Z",
+    "lastRunVersion": "2026.2.18",
+    "lastRunCommand": "onboard",
+    "lastRunMode": "local"
+  },
+  "browser": {},
+  "auth": {
+    "profiles": {
+      "google:default": {
+        "provider": "google",
+        "mode": "api_key"
+      },
+      "volcengine:default": {
+        "provider": "volcengine",
+        "mode": "api_key"
+      }
+    }
+  },
+  "models": {
+    "providers": {
+      "volcengine": {
+        "baseUrl": "https://ark-cn-beijing.bytedance.net/api/v3",
+        "apiKey": "${VOLCENGINE_API_KEY}",
+        "api": "openai-completions",
+        "models": [
+          {
+            "id": "doubao-seed-2-0-pro-260215",
+            "name": "doubao-seed-2-0-pro-260215"
+          },
+          {
+            "id": "doubao-seed-1-8-251228",
+            "name": "doubao-seed-1-8-251228"
+          },
+          {
+            "id": "doubao-seed-2-0-pro-260215",
+            "name": "doubao-seed-2-0-pro-260215"
+          },
+          {
+            "id": "doubao-seed-2-0-code-preview-260215",
+            "name": "doubao-seed-2-0-code-preview-260215"
+          }
+        ]
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "volcengine/doubao-seed-2-0-pro-260215",
+        "fallbacks": [
+          "volcengine/doubao-seed-1-8-251228",
+          "google/gemini-3-pro-preview",
+          "doubao-seed-2-0-code-preview-260215"
+        ]
+      },
+      "models": {
+        "volcengine/doubao-seed-2-0-pro-260215": {},
+        "doubao-seed-2-0-code-preview-260215": {},
+        "volcengine/doubao-seed-1-8-251228": {},
+        "google/gemini-3-pro-preview": {
+          "alias": "gemini"
+        }
+      },
+      "workspace": "/Users/bytedance/.openclaw/workspace",
+      "compaction": {
+        "mode": "safeguard"
+      },
+      "maxConcurrent": 4,
+      "subagents": {
+        "maxConcurrent": 8
+      }
+    }
+  },
+  "messages": {
+    "ackReactionScope": "group-mentions"
+  },
+  "commands": {
+    "native": "auto",
+    "nativeSkills": "auto"
+  },
+  "hooks": {
+    "internal": {
+      "enabled": true,
+      "entries": {
+        "command-logger": {
+          "enabled": true
+        },
+        "session-memory": {
+          "enabled": true
+        }
+      }
+    }
+  },
+  "channels": {
+    "feishu": {
+      "enabled": true,
+      "appId": "cli_a91ca8c568f8dcd1",
+      "appSecret": "${FEISHU_APP_SECRET}",
+      "domain": "feishu",
+      "groupPolicy": "allowlist",
+      "groupAllowFrom": [
+        "oc_55167b7e032ef39c98e5934efecf0a1d"
+      ]
+    }
+  },
+  "gateway": {
+    "port": 18789,
+    "mode": "local",
+    "bind": "loopback",
+    "auth": {
+      "mode": "token",
+      "token": "${GATEWAY_AUTH_TOKEN}"
+    },
+    "tailscale": {
+      "mode": "off",
+      "resetOnExit": false
+    },
+    "nodes": {
+      "denyCommands": [
+        "camera.snap",
+        "camera.clip",
+        "screen.record",
+        "calendar.add",
+        "contacts.add",
+        "reminders.add"
+      ]
+    }
+  },
+  "plugins": {
+    "load": {
+      "paths": [
+        "/Users/bytedance/workspace/github.com/openclaw/openclaw/extensions/feishu"
+      ]
+    },
+    "entries": {
+      "feishu": {
+        "enabled": true
+      }
+    }
+  }
+}
