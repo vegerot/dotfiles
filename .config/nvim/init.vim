@@ -100,6 +100,7 @@ let g:netrw_altfile=1 "make CTRL-^ return to last edited file instead of netrw b
 
 nmap <c-S-R> <Plug>NetrwRefresh
 
+set termguicolors
 colorscheme retrobox
 
 " random colorscheme
@@ -921,3 +922,4 @@ LUAEND
 
 lua require("hardtime").setup{restriction_mode="hint", disable_mouse=false, disabled_keys={}, max_time=0}
 lua require("oil").setup(); vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+lua require("colorizer").setup()

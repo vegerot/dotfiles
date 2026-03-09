@@ -28,6 +28,7 @@ Make sure everything you're cloning has a `plugins/` directory in it
 | hardtime           	|                                                           	| sl clone git@github.com:m4xshen/hardtime.nvim.git                      	|
 | gitsigns           	|                                                           	| git clone git@github.com:lewis6991/gitsigns.nvim.git                   	|
 | oil                	|                                                           	| git clone git@github.com:stevearc/oil.nvim.git                         	|
+| colorizer          	|                                                           	| git clone git@github.com:catgoose/nvim-colorizer.lua                   	|
 | fzf                	| ~/.local/share/nvim/site/pack/fzf/start/                  	| sl clone git@github.com:junegunn/fzf.git                               	|
 |                    	|                                                           	| sl clone git@github.com:junegunn/fzf.vim.git                           	|
 | treesitter         	| ~/.local/share/nvim/site/pack/treesitter/start/           	| sl clone git@github.com:nvim-treesitter/nvim-treesitter.git            	|
