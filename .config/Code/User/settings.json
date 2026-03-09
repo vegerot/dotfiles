@@ -53,11 +53,14 @@
     "cSpell.userWords": [
         "bfcache",
         "BYTEFAAS",
+        "Clawdbot",
         "connfd",
         "CONV",
+        "creds",
         "crosskit",
         "csatmodalv",
         "Deeplink",
+        "doubao",
         "ecom",
         "edenx",
         "EDITORCORE",
@@ -71,6 +74,7 @@
         "lraylib",
         "Navs",
         "oapi",
+        "ollama",
         "rustc",
         "slardar",
         "smartlog",
@@ -79,7 +83,9 @@
         "SSTCSAT",
         "sysconfig",
         "tokopedia",
-        "TTFB"
+        "TTFB",
+        "Unkeyed",
+        "volcengine"
     ],
     "better-comments.highlightPlainText": true,
     "byted-ide.clouddevUnitTestGeneration.commentLanguage": "English",
