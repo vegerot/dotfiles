@@ -184,9 +184,9 @@ load_plugins() {
   if type cloudide-cli > /dev/null; then
 	  source <(cloudide-cli completion zsh)
   fi
-  if type coco > /dev/null; then
+  if type traecli > /dev/null; then
     # FIXME: re-enable when slow bug fixed
-	#   source <(coco completion zsh)
+	#   source <(traecli completion zsh)
   fi
 
   # HISTORY plugins start
