@@ -99,6 +99,7 @@ alias help=run-help
 # setopt vi
 setopt emacs
 # bindkey -v '^?' backward-delete-char
+bindkey '^[[3~' delete-char
 ## edit the current line in vim with `C-x C-e` like in bash
 autoload -U edit-command-line
 zle -N edit-command-line
