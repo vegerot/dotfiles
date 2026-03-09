@@ -589,8 +589,13 @@ local godotnvim = function()
 end
 if vim.fn.expand("%:e") == "go" or vim.bo.filetype=="go" then
 	-- FIXME: If the first file you open isn't a go file, go.nvim will never load
-	godotnvim()
+
+	-- NOTE: Unfortunately, TikTok's go codebase imports tens of gigabytes of dependencies
+	-- that I don't want on my machine, so I'm disabling it for now and instead adding a function
+	-- to manually turn it on
+	--godotnvim()
 end
+vim.api.nvim_create_user_command("Plsgo", godotnvim, {})
 
 local quick_lint_js = {
 	"quick_lint_js",
@@ -868,6 +873,7 @@ end
 
 configs_plugin.setup({
 	ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+	ignore_install = {"ipkg"},
 	highlight = {
 		enable = true, -- false will disable the whole extension
 		-- Setting this to true will run `:h syntax` and tree-sitter at the same time.
