@@ -1,3 +1,4 @@
+// symlink me to ~/{.config/Code,Library/Application Support/Trae{,CN}}/User/settings.json
 {
     "extensions.supportUntrustedWorkspaces": {
         "byted-ide.dev-environment-manager": {
@@ -237,4 +238,6 @@
     },
     "git.enableCommitSigning": true,
     "git.verboseCommit": true,
+    "AI.toolcall.v2.ide.command.mode": "alwaysAsk",
+    "AI.rules.importClaudeMd": true,
 }
