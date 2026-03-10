@@ -97,6 +97,9 @@ esac
 # cargo
 #. "$HOME/.cargo/env"
 
+if [[ -d "$HOME/.npm-globa/bin" ]]; then
+	export PATH="$PATH:$HOME/.npm-global/bin"
+fi
 
 # make sure this is the last thing
 export PATH="$PATH:./node_modules/.bin:."
@@ -142,3 +145,4 @@ fi
 if [[ -d /opt/homebrew/lib ]]; then
 	export LIBRARY_PATH="/opt/homebrew/lib:${LIBRARY_PATH:-}"
 fi
+
