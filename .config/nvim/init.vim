@@ -573,7 +573,16 @@ local on_attach = function(client, bufnr)
 	    if not is_sidekick_installed then
 		print("sidekick not installed, not setting up inline completion keymaps")
 	    else
-		sidekick.setup{}
+		sidekick.setup{
+		    cli = {
+			tools = {
+			    traecli = {
+				cmd = { "traecli" },
+				title = "Trae CLI",
+			    }
+			}
+		    }
+		}
 		local keys = {
 		    {
 		        "<Tab>",
