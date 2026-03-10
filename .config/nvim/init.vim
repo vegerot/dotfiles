@@ -823,6 +823,11 @@ else
        nmap <C-p> :FindFile<SPACE>
 endif
 
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case -u -- '.fzf#shellescape(<q-args>),
+  \   fzf#vim#with_preview(), <bang>0)
+
 "" FZF end
 
 "" TELESCOPE start
