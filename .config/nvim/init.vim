@@ -171,7 +171,6 @@ endif
 "" LSP+autocomplete start
 set completeopt+=fuzzy,menuone,noinsert
 
-
 lua << LUAEND
 
 -- new versions of nvim have built-in completions
@@ -452,6 +451,7 @@ end
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
 	local function buf_set_keymap(...)
+		-- TODO: switch to `vim.keymap.set`
 		vim.api.nvim_buf_set_keymap(bufnr, ...)
 	end
 	local function buf_set_option(...)
@@ -504,6 +504,10 @@ local on_attach = function(client, bufnr)
 			{ "n", "<leader>l", ":lua vim.diagnostic.setloclist({open=true})<CR>" },
 		},
 		["textDocument/formatting"] = { { "n", "<leader>f", ":lua vim.lsp.buf.format()<CR>" } },
+		[vim.lsp.protocol.Methods.textDocument_inlineCompletion] = {
+			{"i", "<C-F>", "<cmd>lua vim.lsp.inline_completion.get()<CR>"},
+			{"i", "<C-G>", "<cmd>lua vim.lsp.inline_completion.select()<CR>"},
+		},
 	}
 	local telescope_installed, telescope_builtin = pcall(require, "telescope.builtin")
 	if telescope_installed then
@@ -534,6 +538,91 @@ local on_attach = function(client, bufnr)
 	end
 	if client.supports_method("textDocument/documentSymbol") then
 		configure_breadcrumbs(client)
+	end
+	if client:supports_method(vim.lsp.protocol.Methods.textDocument_inlineCompletion, bufnr) then
+	    vim.lsp.inline_completion.enable(true, {bufnr = bufnr})
+	    local is_sidekick_installed, sidekick = pcall(require, "sidekick")
+	    if not is_sidekick_installed then
+		print("sidekick not installed, not setting up inline completion keymaps")
+	    else
+		sidekick.setup{}
+		local keys = {
+		    {
+		        "<Tab>",
+		        function()
+			    -- if there is a next edit, jump to it, otherwise apply it if any
+			    if require("sidekick").nes_jump_or_apply() then
+				return -- jumped or applied
+			    end
+
+			    -- if you are using Neovim's native inline completions
+			    if vim.lsp.inline_completion.get() then
+				return
+			    end
+
+			    -- any other things (like snippets) you want to do on <tab> go here.
+
+			    -- fall back to normal tab
+			    return "<tab>"
+
+		        end,
+		        expr = true,
+		        mode = { "i", "n" },
+		        desc = "Goto/Apply Next Edit Suggestion",
+		    },
+		    {
+			"<c-.>",
+			function() require("sidekick.cli").toggle() end,
+			desc = "Sidekick Toggle",
+		    },
+		    {
+			"<leader>aa",
+			function() require("sidekick.cli").toggle() end,
+			desc = "Sidekick Toggle CLI",
+		    },
+		    {
+			"<leader>as",
+			function() require("sidekick.cli").select() end,
+			-- Or to select only installed tools:
+			-- require("sidekick.cli").select({ filter = { installed = true } })
+			desc = "Select CLI",
+		    },
+		    {
+			"<leader>ad",
+			function() require("sidekick.cli").close() end,
+			desc = "Detach a CLI Session",
+		    },
+		    {
+			"<leader>at",
+			function() require("sidekick.cli").send({ msg = "{this}" }) end,
+			mode = { "x", "n" },
+			desc = "Send This",
+		    },
+		    {
+			"<leader>af",
+			function() require("sidekick.cli").send({ msg = "{file}" }) end,
+			mode = { "n" },
+			desc = "Send File",
+		    },
+		    {
+			"<leader>av",
+			function() require("sidekick.cli").send({ msg = "{selection}" }) end,
+			mode = { "x" },
+			desc = "Send Visual Selection",
+		    },
+		    {
+			"<leader>ap",
+			function() require("sidekick.cli").prompt() end,
+			mode = { "n", "x" },
+			desc = "Sidekick Select Prompt",
+		    },
+		}
+
+		for _, key in ipairs(keys) do
+		    local lhs, func = unpack(key)
+		    vim.keymap.set(key.mode or "", lhs, func, { silent = false, desc = key.desc, expr=key.expr })
+		end
+	    end
 	end
 	vim.diagnostic.config({
 		virtual_lines = {current_line = true}
@@ -742,9 +831,13 @@ local defaultConfig = {
   }
 }
 
+local copilot = {
+    "copilot",
+}
+
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { quick_lint_js, tsserver_config, pythonruff_config, pythonty_config, clangd_config, rust_config, zig_config }
+local servers = { quick_lint_js, tsserver_config, pythonruff_config, pythonty_config, clangd_config, rust_config, zig_config, copilot }
 for _, lsp in ipairs(servers) do
 	local name, settings = unpack(lsp)
 	if settings == nil then
@@ -759,10 +852,12 @@ end
 
 LUAEND
 
+" AI START
+
 " MarsCode start
 
 if &loadplugins
-	silent! packadd codeverse.vim
+	" silent! packadd codeverse.vim
 endif
 if exists(":Marscode")
 	let g:marscode_filetypes = {
@@ -776,30 +871,32 @@ endif
 "" PLUGINS start
 
 " Copilot
-if !exists(":Marscode")
-	let g:copilot_no_tab_map = v:true
-	let g:copilot_assume_mapped = v:true
-	let g:copilot_tab_fallback = ""
-	if filereadable("/opt/homebrew/bin/node")
-		let g:copilot_node_command = "/opt/homebrew/bin/node"
-	endif
-	imap <script><expr> <C-e> copilot#AcceptLine("\<CR>")
-	imap <C-f> <Plug>(copilot-accept-word)
+lua << LUAEND
+    local copilot_ok, copilot = pcall(require, "copilot")
+    if not copilot_ok then
+	--print("copilot not installed")
+    else
+	-- TODO: because startup is slow I need to lazy load this
+	--copilot.setup({
 
-	" copilot is disabled in markdown (and other languages) by default
-	" copilot appends g:copilot_filetypes to s:filetype_defaults (in copilot.vim)
-	" so we can override the defaults by putting them all to true
-	let g:copilot_filetypes = {
-				\ '*': v:true,
-				\ 'c': v:false,
-				\ 'cpp': v:true,
-				\}
-else
-	let g:copilot_filetypes = {
-				\ '*': v:false,
-				\}
-endif
+	--})
+    end
+LUAEND
 " Copilot end
+lua << LUAEND
+
+local snacks_ok, snacks = pcall(require, "snacks")
+if not snacks_ok then
+    print("snacks not installed")
+end
+snacks.setup({
+    picker = { enabled=true },
+    debug = { enabled = true }
+})
+
+LUAEND
+" AI END
+
 
 
 command! -nargs=* FindFile tabnew | execute "0read !fd --follow <args> | sort" | set nomodified | 0
