@@ -447,6 +447,34 @@ local configure_breadcrumbs = function(client)
 	})
 end
 
+_G.SidekickStatusline = function()
+  local ok, status = pcall(require, "sidekick.status")
+  if not ok then
+    return ""
+  end
+
+  local parts = {}
+
+  local st = status.get()
+  if st then
+    if st.kind == "Error" then
+      table.insert(parts, "%#DiagnosticError# err%#StatusLine#")
+    elseif st.busy then
+      table.insert(parts, "%#DiagnosticWarn# …%#StatusLine#")
+    else
+      -- "ok" color: reuse DiagnosticInfo unless you define something else
+      table.insert(parts, " ok%#StatusLine#")
+    end
+  end
+
+  local cli = status.cli()
+  if type(cli) == "table" and #cli > 0 then
+    table.insert(parts, "%#Special# " .. tostring(#cli) .. "%#StatusLine#")
+  end
+
+  return (#parts > 0) and (table.concat(parts, " ") .. " ") or ""
+end
+
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
@@ -621,6 +649,11 @@ local on_attach = function(client, bufnr)
 		for _, key in ipairs(keys) do
 		    local lhs, func = unpack(key)
 		    vim.keymap.set(key.mode or "", lhs, func, { silent = false, desc = key.desc, expr=key.expr })
+		end
+
+		if not vim.g.sidekick_statusline_added then
+		    vim.g.sidekick_statusline_added = true
+		    vim.o.statusline = vim.o.statusline .. " %{% v:lua.SidekickStatusline() %}"
 		end
 	    end
 	end
