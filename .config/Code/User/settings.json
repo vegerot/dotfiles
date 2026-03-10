@@ -240,4 +240,14 @@
     "git.verboseCommit": true,
     "AI.toolcall.v2.ide.command.mode": "alwaysAsk",
     "AI.rules.importClaudeMd": true,
-}
+    "microsoft-sovereign-cloud.environment": "",
+    "notebook.lineNumbers": "on",
+    "chat.viewSessions.orientation": "stacked",
+    "files.watcherExclude": {
+        "**/.venv/**": true,
+        "**/dist/**": true,
+        "**/node_modules/**": true,
+        "node_modules": true
+    },
+    "security.workspace.trust.untrustedFiles": "open",
+    "tabnine.experimentalAutoImports": true
