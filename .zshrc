@@ -279,10 +279,10 @@ update_plugins() {
 	ZSH_SKIP_LOADING_PLUGINS=1 parallel zsh -c "$(declare -f pull_and_update) && pull_and_update {}" ::: "${plugin_paths[@]}"
 }
 
-# j makes jumping to directories easier
-# if j isn't installed, then do the poverty method of adding common directories
+# z makes jumping to directories easier
+# if z isn't installed, then do the poverty method of adding common directories
 # to CDPATH
-if ! type j > /dev/null; then
+if ! type z > /dev/null; then
 	export CDPATH="$CDPATH:$HOME/gecgithub01.walmart.com/m0c0j7y/:$HOME/gecgithub01.walmart.com/walmart-web/walmart-web-worktree/"
 fi
 
