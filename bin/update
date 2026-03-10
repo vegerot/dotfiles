@@ -75,7 +75,7 @@ function upgrade_neovim_plugins() {
 function upgrade_npm() {
 	read -p 'Would you like to upgrade Node (y/n): ' upgradeNode
 	if [[ "$upgradeNode" == "y" ]]; then
-		npm outdated
+		npm outdated || true
 		echo "npm update --global"
 		if [[ $OSTYPE != "darwin"* ]]; then
 			sudo npm install npm --global --force
