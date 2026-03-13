@@ -522,16 +522,6 @@ local on_attach = function(client, bufnr)
 		},
 		["textDocument/completion"] = { { "i", "<c-space>", "<cmd>lua vim.lsp.buf.completion()<CR>" } },
 		["textDocument/references"] = { { "n", "gr", ":lua vim.lsp.buf.references()<CR>" } },
-		["textDocument/publishDiagnostics"] = {
-			{ "n", "<leader>d", ":lua vim.lsp.diagnostic.show_line_diagnostics()<CR>" },
-			{ "n", "[d", ":lua vim.diagnostic.jump({count=-1, float=true})<CR>"},
-			{ "n", "]d", ":lua vim.diagnostic.jump({count=1, float=true})<CR>"},
-			-- uncomment this if using vim <0.11 (0.11+ has `vim.diagnostic.jump`)
-			--{ "n", "[d", ":lua vim.diagnostic.goto_prev({float=true})<CR>" },
-			--{ "n", "]d", ":lua vim.diagnostic.goto_next({float=true})<CR>" },
-			{ "n", "<leader>q", ":lua vim.diagnostic.setqflist({open=true})<CR>" },
-			{ "n", "<leader>l", ":lua vim.diagnostic.setloclist({open=true})<CR>" },
-		},
 		["textDocument/formatting"] = { { "n", "<leader>f", ":lua vim.lsp.buf.format()<CR>" } },
 		[vim.lsp.protocol.Methods.textDocument_inlineCompletion] = {
 			{"i", "<C-F>", "<cmd>lua vim.lsp.inline_completion.get()<CR>"},
@@ -555,7 +545,14 @@ local on_attach = function(client, bufnr)
 			end
 		end
 	end
-	-- * thingies
+	-- vim.diagnostic keymaps are unconditional: `textDocument/publishDiagnostics` is a server→client
+	-- notification, not a ServerCapability, so supports_method() always returns false for it
+	buf_set_keymap("n", "<leader>d", ":lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", opts)
+	buf_set_keymap("n", "[d", ":lua vim.diagnostic.jump({count=-1, float=true})<CR>", opts)
+	buf_set_keymap("n", "]d", ":lua vim.diagnostic.jump({count=1, float=true})<CR>", opts)
+	buf_set_keymap("n", "<leader>q", ":lua vim.diagnostic.setqflist({open=true})<CR>", opts)
+	buf_set_keymap("n", "<leader>l", ":lua vim.diagnostic.setloclist({open=true})<CR>", opts)
+
 	buf_set_keymap("n", "<leader>D", ":lua vim.lsp.buf.type_definition()<CR>", opts)
 	buf_set_keymap("n", "gi", ":lua vim.lsp.buf.implementation()<CR>", opts)
 	if client.supports_method("textDocument/inlayHint") then
