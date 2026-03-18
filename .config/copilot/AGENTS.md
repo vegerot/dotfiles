@@ -1,5 +1,1 @@
-# Global Copilot CLI instructions
-
-## Command preferences
-- When searching file contents, prefer `rg` (ripgrep) over `grep`.
-- When searching for files by name/path, prefer `fd` over `find`.
+- When using the Bash tool, prefer `rg` (ripgrep) and `fd` over `grep` and `find`.
