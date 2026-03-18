@@ -96,8 +96,8 @@ autoload -U run-help
 alias help=run-help
 
 # COMMAND LINE EDITING
-# setopt vi
-setopt emacs
+setopt vi
+# setopt emacs
 # bindkey -v '^?' backward-delete-char
 bindkey '^[[3~' delete-char
 ## edit the current line in vim with `C-x C-e` like in bash
