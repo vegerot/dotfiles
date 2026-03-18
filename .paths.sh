@@ -97,7 +97,7 @@ esac
 # cargo
 #. "$HOME/.cargo/env"
 
-if [[ -d "$HOME/.npm-globa/bin" ]]; then
+if [[ -d "$HOME/.npm-global/bin" ]]; then
 	export PATH="$PATH:$HOME/.npm-global/bin"
 fi
 
