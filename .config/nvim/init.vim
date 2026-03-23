@@ -171,6 +171,20 @@ endif
 "" LSP+autocomplete start
 set completeopt+=fuzzy,menuone,noinsert
 
+lua << REQUIRE_WRAPPER_END
+-- Require wrapper that returns nil when --noplugin or module not found
+function RequireChecked(name)
+  if not vim.o.loadplugins then
+    return nil
+  end
+  local ok, mod = pcall(require, name)
+  if not ok then
+    return nil
+  end
+  return mod
+end
+REQUIRE_WRAPPER_END
+
 lua << LUAEND
 
 -- new versions of nvim have built-in completions
@@ -273,7 +287,8 @@ end
 -- initially copied from https://github.com/juniorsundar/nvim/blob/534554a50cc468df0901dc3861e7325a54c01457/lua/config/lsp/breadcrumbs.lua
 -- now with my own patches
 local configure_breadcrumbs = function(client)
-	local devicons_ok, devicons = pcall(require, "nvim-web-devicons")
+
+	local devicons = RequireChecked("nvim-web-devicons")
 	local folder_icon = "%#Conditional#" .. "󰉋" .. "%#Normal#"
 	local file_icon = "󰈙"
 
@@ -391,7 +406,7 @@ local configure_breadcrumbs = function(client)
 	            local icon
 	            local icon_hl
 
-	            if devicons_ok then
+	            if devicons ~= nil then
 	                icon, icon_hl = devicons.get_icon(component)
 	            end
 	            table.insert(breadcrumbs, "%#" .. icon_hl .. "#" .. (icon or file_icon) .. "%#Normal#" .. " " .. component)
@@ -453,8 +468,8 @@ local configure_breadcrumbs = function(client)
 end
 
 _G.SidekickStatusline = function()
-  local ok, status = pcall(require, "sidekick.status")
-  if not ok then
+  local status = RequireChecked("sidekick.status")
+  if status == nil then
     return ""
   end
 
@@ -532,8 +547,8 @@ local on_attach = function(client, bufnr)
 			{"i", "<C-G>", "<cmd>lua vim.lsp.inline_completion.select()<CR>"},
 		},
 	}
-	local telescope_installed, telescope_builtin = pcall(require, "telescope.builtin")
-	if telescope_installed then
+	local telescope_builtin = RequireChecked("telescope.builtin")
+	if telescope_builtin ~= nil then
 		methodsAndKeymaps["textDocument/definition"] = {
 			{ "n", "gd", ":lua require('telescope.builtin').lsp_definitions()<CR>" },
 		}
@@ -571,8 +586,8 @@ local on_attach = function(client, bufnr)
 	end
 	if client:supports_method(vim.lsp.protocol.Methods.textDocument_inlineCompletion, bufnr) then
 	    vim.lsp.inline_completion.enable(true, {bufnr = bufnr})
-	    local is_sidekick_installed, sidekick = pcall(require, "sidekick")
-	    if not is_sidekick_installed then
+	    local sidekick = RequireChecked("sidekick")
+	    if sidekick == nil then
 		print("sidekick not installed, not setting up inline completion keymaps")
 	    else
 		sidekick.setup{
@@ -674,8 +689,9 @@ local on_attach = function(client, bufnr)
 end
 
 local godotnvim = function()
-	local status, go = pcall(require, "go")
-	if not status then
+	local go = RequireChecked("go")
+	if go == nil then
+		print("go.nvim not installed.  Not loading go.nvim")
 		return false
 	end
 	if vim.fn.executable("gopls") == 0 then
@@ -867,7 +883,7 @@ end
 
 local zig_config = configure_zig()
 
-local is_coq_running, coq = pcall(require, "coq")
+local coq = RequireChecked("coq")
 local defaultConfig = {
   on_attach = on_attach,
   flags = {
@@ -887,7 +903,7 @@ for _, lsp in ipairs(servers) do
 	if settings == nil then
 		settings = defaultConfig
 	end
-	if (is_coq_running and shouldUseCoq) then
+	if (coq ~= nil and shouldUseCoq) then
 		settings = coq.lsp_ensure_capabilities(settings)
 	end
 	vim.lsp.config(name, settings)
@@ -916,8 +932,8 @@ endif
 
 " Copilot
 lua << LUAEND
-    local copilot_ok, copilot = pcall(require, "copilot")
-    if not copilot_ok then
+    local copilot = RequireChecked("copilot")
+    if copilot == nil then
 	--print("copilot not installed")
     else
 	-- TODO: because startup is slow I need to lazy load this
@@ -929,9 +945,10 @@ LUAEND
 " Copilot end
 lua << LUAEND
 
-local snacks_ok, snacks = pcall(require, "snacks")
-if not snacks_ok then
+local snacks = RequireChecked("snacks")
+if snacks == nil then
     print("snacks not installed")
+	return
 end
 snacks.setup({
     picker = { enabled=true },
@@ -988,12 +1005,12 @@ if exists(":Telescope")
 endif
 
 lua <<LUAEND
-local status, telescope = pcall(require, "telescope")
-if not status then
+local telescope = RequireChecked("telescope")
+if telescope == nil then
 	return false
 end
-local status, fzy_native = pcall(require, "telescope._extensions.fzy_native")
-if not status then
+local fzy_native = RequireChecked("telescope._extensions.fzy_native")
+if fzy_native == nil then
 	return false
 end
 telescope.load_extension("fzy_native")
@@ -1004,16 +1021,16 @@ LUAEND
 lua << LUAEND
 
 local configs_plugin_name = "nvim-treesitter.configs"
-local status, configs_plugin = pcall(require, configs_plugin_name)
-if not status then
+local configs_plugin = RequireChecked(configs_plugin_name)
+if configs_plugin == nil then
 	print(configs_plugin_name .. " plugin not loaded.  Not loading treesitter")
 	return false
 end
 
 local install_plugin_name = "nvim-treesitter.install"
-local status, install_plugin = pcall(require, install_plugin_name)
-if not status then
-	print(install_plugin .. " plugin not loaded.  Not loading treesitter")
+local install_plugin = RequireChecked(install_plugin_name)
+if install_plugin == nil then
+	print(install_plugin_name .. " plugin not loaded.  Not loading treesitter")
 	return false
 end
 
@@ -1045,9 +1062,9 @@ configs_plugin.setup({
 })
 install_plugin.prefer_git = true
 local install_plugin_name = "treesitter-context"
-local status, treesitterContext = pcall(require, install_plugin_name)
-if not status then
-	print(treesitterContext .. " plugin not loaded.  Not loading treesitter-context")
+local treesitterContext = RequireChecked(install_plugin_name)
+if treesitterContext == nil then
+	print(install_plugin_name .. " plugin not loaded.  Not loading treesitter-context")
 	return false
 end
 treesitterContext.setup{}
@@ -1058,13 +1075,13 @@ lua << LUAEND
 
 -- better builtin pager
 
-local status, extui = pcall(require, "vim._extui")
-if status then
+local extui = RequireChecked("vim._extui")
+if extui ~= nil then
 	extui.enable({})
 end
 
-local status, devicons_plugin = pcall(require, "nvim-web-devicons")
-if status then
+local devicons_plugin = RequireChecked("nvim-web-devicons")
+if devicons_plugin ~= nil then
 	devicons_plugin.setup({
 		default = true,
 	})
@@ -1072,6 +1089,6 @@ end
 
 LUAEND
 
-lua require("hardtime").setup{restriction_mode="hint", disable_mouse=false, disabled_keys={}, max_time=0}
-lua require("oil").setup(); vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
-lua require("colorizer").setup()
+lua local hardtime = RequireChecked("hardtime"); if hardtime ~= nil then hardtime.setup{restriction_mode="hint", disable_mouse=false, disabled_keys={}, max_time=0} end
+lua local oil = RequireChecked("oil"); if oil ~= nil then oil.setup(); vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" }) end
+lua local colorizer = RequireChecked("colorizer"); if colorizer ~= nil then colorizer.setup() end
