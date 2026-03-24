@@ -752,11 +752,9 @@ local quick_lint_js = {
 	"quick_lint_js",
 	{
 		on_attach = on_attach,
-		handlers = {
-			["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-				update_in_insert = true,
-			}),
-		},
+		on_init = function(client)
+			vim.diagnostic.config({ update_in_insert = true }, vim.lsp.diagnostic.get_namespace(client.id))
+		end,
 		filetypes = {
 			"javascript",
 			"javascriptreact",
