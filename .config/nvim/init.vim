@@ -1020,47 +1020,41 @@ LUAEND
 " TREESITTER start
 lua << LUAEND
 
-local configs_plugin_name = "nvim-treesitter.configs"
-local configs_plugin = RequireChecked(configs_plugin_name)
-if configs_plugin == nil then
-	print(configs_plugin_name .. " plugin not loaded.  Not loading treesitter")
+local treesitter_plugin = RequireChecked("nvim-treesitter")
+if treesitter_plugin == nil then
+	print("Treesitter plugin not loaded.  Not loading treesitter")
 	return false
 end
 
-local install_plugin_name = "nvim-treesitter.install"
-local install_plugin = RequireChecked(install_plugin_name)
-if install_plugin == nil then
-	print(install_plugin_name .. " plugin not loaded.  Not loading treesitter")
-	return false
-end
-
-configs_plugin.setup({
-	ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-	ignore_install = {"ipkg"},
-	highlight = {
-		enable = true, -- false will disable the whole extension
-		-- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-		-- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-		-- Using this option may slow down your editor, and you may see some duplicate highlights.
-		-- Instead of true it can also be a list of languages
-		additional_vim_regex_highlighting = false,
-	},
-	incremental_selection = {
-		enable = true,
-		keymaps = {
-			init_selection = "gnn",
-			node_incremental = "grn",
-			scope_incremental = "grc",
-			node_decremental = "grm",
-		},
-	},
-	textobjects = { enable = true },
-	indent = {
-		enable = true,
-		disable = { "go" },
-	},
+vim.api.nvim_create_autocmd('FileType', {
+	pattern = { "*" },
+	callback = function()
+		local ok, _ = pcall(vim.treesitter.start)
+		if not ok then
+			local lang = vim.treesitter.language.get_lang(vim.bo.filetype)
+			local parsers = require('nvim-treesitter.parsers')
+			if lang and parsers[lang] then
+				local bufnr = vim.api.nvim_get_current_buf()
+				require('nvim-treesitter').install({ lang })
+				vim.api.nvim_create_autocmd('User', {
+					pattern = 'TSUpdate',
+					once = true,
+					callback = function()
+						if vim.api.nvim_buf_is_valid(bufnr) then
+							vim.api.nvim_buf_call(bufnr, function()
+								vim.treesitter.start()
+							end)
+						end
+					end,
+				})
+			end
+		end
+		vim.wo[0][0].foldmethod = 'expr'
+		vim.wo[0][0].foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+		vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+	end
 })
-install_plugin.prefer_git = true
+
 local install_plugin_name = "treesitter-context"
 local treesitterContext = RequireChecked(install_plugin_name)
 if treesitterContext == nil then
