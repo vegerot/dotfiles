@@ -43,3 +43,13 @@ Make sure everything you're cloning has a `plugins/` directory in it
 | zig.vim            	|                                                           	| git clone https://codeberg.org/ziglang/zig.vim.git                     	|
 | MarsCode           	| ~/.local/share/nvim/site/pack/byted/start/                	| git clone git@code.???.org:chenjiaqi.cposture/codeverse.vim.git        	|
 
+## Windows
+
+use these `:h` pages: xdg, runtimepath, plugin
+```pwsh
+$ New-Item -ItemType SymbolicLink -Path $env:LOCALAPPDATA\nvim\init.vim -Target $env:USERPROFILE\dotfiles\.config\nvim\init.vim
+$ New-Item -ItemType Directory -Path $env:LOCALAPPDATA\nvim-data\site\pack\simple-plugins\start\
+$ cd $env:LOCALAPPDATA\nvim-data\site\pack\simple-plugins\start\
+$ git clone git@github.com:vegerot/open-remote.git
+# etc.
+```
