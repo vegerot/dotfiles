@@ -1,5 +1,7 @@
 # PUT ME IN $profile (C:\Users\Max\Documents\PowerShell\Microsoft.PowerShell_profile.ps1)
 
+Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete # make tab work like bash
+
 # Chocolatey profile
 $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
 if (Test-Path($ChocolateyProfile)) {
@@ -17,7 +19,7 @@ function prompt {
 }
 
 Set-Alias sap sl.exe
+Set-Alias pilot "$env:LOCALAPPDATA\Voidstar\FilePilot\FPilot.exe"
 
-Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete # make tab work like bash
 
 #oh-my-posh init pwsh | Invoke-Expression
