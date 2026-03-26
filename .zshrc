@@ -271,9 +271,23 @@ update_plugins() {
 		set -o pipefail
 		dir=$1
 		if [[ -d "$dir/.sl" ]] || [[ -d "$dir/.git/sl" ]]; then
-			(cd "$dir" && sl pull && sl top --newest)
+			(
+				cd "$dir"
+				if sl paths upstream >/dev/null 2>&1; then
+					sl pull upstream
+				fi
+				sl pull
+				sl top --newest
+			)
 		elif [[ -d "$dir/.git" ]]; then
-			(cd "$dir" && git pull)
+			(
+				cd "$dir"
+				current_branch=$(git symbolic-ref --quiet --short HEAD || true)
+				if [[ -n "$current_branch" ]] && git remote get-url upstream >/dev/null 2>&1; then
+					git pull upstream "$current_branch"
+				fi
+				git pull
+			)
 		fi
 	}
 	ZSH_SKIP_LOADING_PLUGINS=1 parallel zsh -c "$(declare -f pull_and_update) && pull_and_update {}" ::: "${plugin_paths[@]}"
