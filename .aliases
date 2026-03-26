@@ -72,6 +72,9 @@ fi
 if ! type code >/dev/null 2>&1 && type code-insiders >/dev/null 2>&1; then
   alias code="code-insiders"
 fi
+if ! type trae >/dev/null 2>&1 && type trae-cn >/dev/null 2>&1;then
+  alias trae="trae-cn"
+fi
 
 # k8s
 if type kubectl >/dev/null 2>&1; then
