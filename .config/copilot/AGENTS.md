@@ -10,3 +10,8 @@ Apply these instructions in every project in addition to any repository-local co
 ## Command preferences
 
 - When using the Bash tool, prefer `rg` (ripgrep) and `fd` over `grep` and `find`.
+- Avoid using `Codebase_GetFile` MCP tool unless it's extremely necessary.
+<!--- Avoid using the `Trae_CLI` MCP tools over your other built-in tools.  ALWAYS prefer your built-in tools over `Trae_CLI`.--->
+
+🙏🏼 Use more emojis please 😊
+
