@@ -411,7 +411,7 @@ local configure_breadcrumbs = function(client)
 	            if devicons ~= nil then
 	                icon, icon_hl = devicons.get_icon(component)
 	            end
-	            table.insert(breadcrumbs, "%#" .. icon_hl .. "#" .. (icon or file_icon) .. "%#Normal#" .. " " .. component)
+	            table.insert(breadcrumbs, "%#" .. (icon_hl or "Normal") .. "#" .. (icon or file_icon) .. "%#Normal#" .. " " .. component)
 	        else
 	            table.insert(breadcrumbs, folder_icon .. " " .. component)
 	        end
