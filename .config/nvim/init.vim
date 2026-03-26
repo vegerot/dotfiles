@@ -1029,30 +1029,40 @@ end
 vim.api.nvim_create_autocmd('FileType', {
 	pattern = { "*" },
 	callback = function()
-		local ok, _ = pcall(vim.treesitter.start)
-		if not ok then
-			local lang = vim.treesitter.language.get_lang(vim.bo.filetype)
-			local parsers = require('nvim-treesitter.parsers')
-			if lang and parsers[lang] then
-				local bufnr = vim.api.nvim_get_current_buf()
-				require('nvim-treesitter').install({ lang })
-				vim.api.nvim_create_autocmd('User', {
-					pattern = 'TSUpdate',
-					once = true,
-					callback = function()
-						if vim.api.nvim_buf_is_valid(bufnr) then
-							vim.api.nvim_buf_call(bufnr, function()
-								vim.treesitter.start()
-							end)
-						end
-					end,
-				})
-			end
+		local ok = pcall(vim.treesitter.start)
+		if ok then
+			return
 		end
+
+		local lang = vim.treesitter.language.get_lang(vim.bo.filetype)
+		if not lang then
+			return
+		end
+
+		local parsers = require('nvim-treesitter.parsers')
+		if not parsers[lang] then
+			return
+		end
+
+		local installed = require('nvim-treesitter.config').get_installed('parsers')
+		if vim.list_contains(installed, lang) then
+			return
+		end
+
+		vim.schedule(function()
+			vim.api.nvim_create_autocmd('User', {
+				pattern = 'TSUpdate',
+				once = true,
+				callback = function()
+					pcall(vim.treesitter.start)
+				end,
+			})
+			require('nvim-treesitter').install({ lang })
+		end)
 		vim.wo[0][0].foldmethod = 'expr'
 		vim.wo[0][0].foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 		vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-	end
+	end,
 })
 
 local install_plugin_name = "treesitter-context"
@@ -1087,4 +1097,3 @@ lua local hardtime = RequireChecked("hardtime"); if hardtime ~= nil then hardtim
 lua local oil = RequireChecked("oil"); if oil ~= nil then oil.setup(); vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" }) end
 lua local colorizer = RequireChecked("colorizer"); if colorizer ~= nil then colorizer.setup() end
 lua local gitsigns = RequireChecked("gitsigns"); if gitsigns ~= nil then vim.o.statusline = vim.o.statusline .. " %{get(b:,'gitsigns_status','')}" end
-
