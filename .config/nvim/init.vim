@@ -1086,3 +1086,5 @@ LUAEND
 lua local hardtime = RequireChecked("hardtime"); if hardtime ~= nil then hardtime.setup{restriction_mode="hint", disable_mouse=false, disabled_keys={}, max_time=0} end
 lua local oil = RequireChecked("oil"); if oil ~= nil then oil.setup(); vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" }) end
 lua local colorizer = RequireChecked("colorizer"); if colorizer ~= nil then colorizer.setup() end
+lua local gitsigns = RequireChecked("gitsigns"); if gitsigns ~= nil then vim.o.statusline = vim.o.statusline .. " %{get(b:,'gitsigns_status','')}" end
+
