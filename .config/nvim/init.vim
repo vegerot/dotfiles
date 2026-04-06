@@ -559,7 +559,7 @@ local on_attach = function(client, bufnr)
 		}
 	end
 	for method, keymaps in pairs(methodsAndKeymaps) do
-		if client.supports_method(method) then
+		if client:supports_method(method, bufnr) then
 			for _, keymap in ipairs(keymaps) do
 				local mode, map, cmd = unpack(keymap)
 				buf_set_keymap(mode, map, cmd, opts)
@@ -576,14 +576,14 @@ local on_attach = function(client, bufnr)
 
 	buf_set_keymap("n", "<leader>D", ":lua vim.lsp.buf.type_definition()<CR>", opts)
 	buf_set_keymap("n", "gi", ":lua vim.lsp.buf.implementation()<CR>", opts)
-	if client.supports_method("textDocument/inlayHint") then
+	if client:supports_method("textDocument/inlayHint", bufnr) then
 		-- unstable API.  Might break soon
 		vim.lsp.inlay_hint.enable(true)
 	end
-	if client.supports_method("textDocument/completion") then
+	if client:supports_method("textDocument/completion", bufnr) then
 		vim.lsp.completion.enable(true, client.id, bufnr, { autotrigger = true })
 	end
-	if client.supports_method("textDocument/documentSymbol") then
+	if client:supports_method("textDocument/documentSymbol", bufnr) then
 		configure_breadcrumbs(client)
 	end
 	if client:supports_method(vim.lsp.protocol.Methods.textDocument_inlineCompletion, bufnr) then
