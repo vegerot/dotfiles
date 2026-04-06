@@ -190,6 +190,9 @@ load_plugins() {
 	#   source <(traecli completion zsh)
   fi
 
+  # bun completions
+  [[ -s "$HOME/.bun/_bun" ]] && source "$HOME/.bun/_bun"
+
   # HISTORY plugins start
   if type atuin > /dev/null; then
 	  export FZF_CTRL_R_COMMAND=
