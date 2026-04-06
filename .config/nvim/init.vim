@@ -1027,7 +1027,7 @@ if treesitter_plugin == nil then
 end
 
 vim.api.nvim_create_autocmd('FileType', {
-	pattern = { "*" },
+	pattern = '*',
 	callback = function()
 		local ok = pcall(vim.treesitter.start)
 		if ok then
