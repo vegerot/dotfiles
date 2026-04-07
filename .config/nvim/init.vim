@@ -573,13 +573,13 @@ local on_attach = function(client, bufnr)
 				mode = "n",
 				lhs = "gd",
 				rhs = function() vim.lsp.buf.definition({ on_list = handleGotoDefinition }) end,
-				desc = "vim.lsp.buf.definition()",
+				desc = "vim.lsp.buf.definition({ on_list = handleGotoDefinition })",
 			},
 			{
 				mode = "n",
 				lhs = "<C-t>",
 				rhs = function() tagBackInAppropriateTab(-1) end,
-				desc = "Custom LSP tag back",
+				desc = "tagBackInAppropriateTab(-1)",
 			},
 			{
 				mode = "n",
@@ -613,7 +613,7 @@ local on_attach = function(client, bufnr)
 				mode = "n",
 				lhs = "<leader>dl",
 				rhs = function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end,
-				desc = "Print workspace folders",
+				desc = "print(vim.inspect(vim.lsp.buf.list_workspace_folders()))",
 			},
 		},
 		["textDocument/codeAction"] = {
