@@ -255,6 +255,8 @@ REQUIRE_WRAPPER_END
 
 lua << LUAEND
 
+local LspMethods = vim.lsp.protocol.Methods
+
 function handleGotoDefinition(options)
 	local title = options.title
 	local all_items = options.items
@@ -477,7 +479,7 @@ local configure_breadcrumbs = function(client)
 
 	local function breadcrumbs_trigger_set()
 	    local bufnr = vim.api.nvim_get_current_buf()
-	    local clients = vim.lsp.get_clients({ bufnr = bufnr, method = "textDocument/documentSymbol" })
+	    local clients = vim.lsp.get_clients({ bufnr = bufnr, method = LspMethods.textDocument_documentSymbol })
 	    if #clients == 0 then
 		return
 	    end
@@ -493,7 +495,7 @@ local configure_breadcrumbs = function(client)
 
 	    -- I don't know why I can't use `client:request` here, but if I do
 	    -- it doesn't work with multiple tabs
-	    local result = vim.lsp.buf_request(bufnr, "textDocument/documentSymbol", params, breadcrumbs_set)
+	    local result = vim.lsp.buf_request(bufnr, LspMethods.textDocument_documentSymbol, params, breadcrumbs_set)
 	    if not result then
 		    print("Error: Could not get document symbols. Is the LSP server running?")
 	        return
@@ -560,7 +562,7 @@ local on_attach = function(client, bufnr)
 	-- See `:help vim.lsp.*` for documentation on any of the below functions
 
 	local methodsAndKeymaps = {
-		["textDocument/declaration"] = {
+		[LspMethods.textDocument_declaration] = {
 			{
 				mode = "n",
 				lhs = "gD",
@@ -568,7 +570,7 @@ local on_attach = function(client, bufnr)
 				desc = "vim.lsp.buf.declaration()",
 			},
 		},
-		["textDocument/definition"] = {
+		[LspMethods.textDocument_definition] = {
 			{
 				mode = "n",
 				lhs = "gd",
@@ -588,7 +590,7 @@ local on_attach = function(client, bufnr)
 				desc = ":stag",
 			},
 		},
-		["textDocument/signatureHelp"] = {
+		[LspMethods.textDocument_signatureHelp] = {
 			{
 				mode = "n",
 				lhs = "<leader>k",
@@ -616,7 +618,7 @@ local on_attach = function(client, bufnr)
 				desc = "print(vim.inspect(vim.lsp.buf.list_workspace_folders()))",
 			},
 		},
-		["textDocument/codeAction"] = {
+		[LspMethods.textDocument_codeAction] = {
 			-- same as previous, but if there's only one possible action, just apply it
 			{
 				mode = "n",
@@ -625,7 +627,7 @@ local on_attach = function(client, bufnr)
 				desc = "Apply single code action",
 			},
 		},
-		["textDocument/completion"] = {
+		[LspMethods.textDocument_completion] = {
 			{
 				mode = "i",
 				lhs = "<c-space>",
@@ -633,7 +635,7 @@ local on_attach = function(client, bufnr)
 				desc = "vim.lsp.buf.completion()",
 			},
 		},
-		["textDocument/formatting"] = {
+		[LspMethods.textDocument_formatting] = {
 			{
 				mode = "n",
 				lhs = "<leader>f",
@@ -641,7 +643,7 @@ local on_attach = function(client, bufnr)
 				desc = "vim.lsp.buf.format()",
 			},
 		},
-		[vim.lsp.protocol.Methods.textDocument_inlineCompletion] = {
+		[LspMethods.textDocument_inlineCompletion] = {
 			{
 				mode = "i",
 				lhs = "<C-F>",
@@ -658,7 +660,7 @@ local on_attach = function(client, bufnr)
 	}
 	local telescope_builtin = RequireChecked("telescope.builtin")
 	if telescope_builtin ~= nil then
-		methodsAndKeymaps["textDocument/definition"] = {
+		methodsAndKeymaps[LspMethods.textDocument_definition] = {
 			{
 				mode = "n",
 				lhs = "gd",
@@ -680,17 +682,17 @@ local on_attach = function(client, bufnr)
 	map("n", "<leader>q", function() vim.diagnostic.setqflist({ open = true }) end, "vim.diagnostic.setqflist()")
 	map("n", "<leader>l", function() vim.diagnostic.setloclist({ open = true }) end, "vim.diagnostic.setloclist()")
 
-	if client:supports_method("textDocument/inlayHint", bufnr) then
+	if client:supports_method(LspMethods.textDocument_inlayHint, bufnr) then
 		-- unstable API.  Might break soon
 		vim.lsp.inlay_hint.enable(true)
 	end
-	if client:supports_method("textDocument/completion", bufnr) then
+	if client:supports_method(LspMethods.textDocument_completion, bufnr) then
 		vim.lsp.completion.enable(true, client.id, bufnr, { autotrigger = true })
 	end
-	if client:supports_method("textDocument/documentSymbol", bufnr) then
+	if client:supports_method(LspMethods.textDocument_documentSymbol, bufnr) then
 		configure_breadcrumbs(client)
 	end
-	if client:supports_method(vim.lsp.protocol.Methods.textDocument_inlineCompletion, bufnr) then
+	if client:supports_method(LspMethods.textDocument_inlineCompletion, bufnr) then
 	    vim.lsp.inline_completion.enable(true, {bufnr = bufnr})
 	    local sidekick = RequireChecked("sidekick")
 	    if sidekick == nil then
