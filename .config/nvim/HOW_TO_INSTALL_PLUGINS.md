@@ -1,54 +1,73 @@
-<!- vim:nowrap
-->
-1. `mkcd ~/.local/share/nvim/site/pack/`
-2. make directories for _categories_ of plugins, e.g. `mkcd tpope/start`
-3. `sl clone git@github.com:tpope/vim-surround.git`, `git clone https://tpope.io/vim/commentary.git`
-4. done!
+<!-- vim:nowrap -->
 
-Make sure everything you're cloning has a `plugins/` directory in it
+## Plugin Management
 
+Plugins are declared directly in `~/.config/nvim/init.vim` with Neovim's built-in
+package manager, `vim.pack`.
 
-## List of plugins to install
+Neovim installs managed plugins into:
 
-| plugin             	| directory                                                 	| command                                                                	|
-|--------------------	|-----------------------------------------------------------	|------------------------------------------------------------------------	|
-| surround           	| ~/.local/share/nvim/site/pack/tpope/start/                	| sl clone git@github.com:tpope/vim-surround.git                         	|
-| repeat             	|                                                           	| sl clone https://tpope.io/vim/repeat.git                               	|
-| unimpaired         	|                                                           	| sl clone https://tpope.io/vim/unimpaired.git                           	|
-| sleuth             	|                                                           	| git clone https://tpope.io/vim/sleuth.git                              	|
-| snacks             	| ~/.local/share/nvim/site/pack/folke/start/                	| git clone git@github.com:folke/snacks.nvim.git                         	|
-| sidekick           	|                                                           	| git clone git@github.com:folke/sidekick.nvim.git                       	|
-| open-remote        	| ~/.local/share/nvim/site/pack/simple-plugins/start/       	| sl clone git@github.com:vegerot/open-remote.git                        	|
-| CamelCaseMotion    	|                                                           	| sl clone git@github.com:bkad/CamelCaseMotion.git                       	|
-| vim-fetch          	|                                                           	| git clone git@github.com:wsdjeg/vim-fetch.git                          	|
-| vim-sneak          	|                                                           	| git clone git@github.com:justinmk/vim-sneak.git                        	|
-| zoxide.vim         	|                                                           	| git clone git@github.com:nanotee/zoxide.vim.git                        	|
-| vim-tmux-navigator 	| ~/.local/share/nvim/site/pack/complex-plugins/start/      	| sl clone git@github.com:christoomey/vim-tmux-navigator.git             	|
-| plenary.nvim       	|                                                           	| sl clone git@github.com:nvim-lua/plenary.nvim                          	|
-| nvim-web-devicons  	|                                                           	| sl clone git@github.com:nvim-tree/nvim-web-devicons                    	|
-| hardtime           	|                                                           	| sl clone git@github.com:m4xshen/hardtime.nvim.git                      	|
-| gitsigns           	|                                                           	| git clone git@github.com:lewis6991/gitsigns.nvim.git                   	|
-| oil                	|                                                           	| git clone git@github.com:stevearc/oil.nvim.git                         	|
-| colorizer          	|                                                           	| git clone git@github.com:catgoose/nvim-colorizer.lua                   	|
-| fzf                	| ~/.local/share/nvim/site/pack/fzf/start/                  	| sl clone git@github.com:junegunn/fzf.git                               	|
-|                    	|                                                           	| sl clone git@github.com:junegunn/fzf.vim.git                           	|
-| treesitter         	| ~/.local/share/nvim/site/pack/treesitter/start/           	| sl clone git@github.com:nvim-treesitter/nvim-treesitter.git            	|
-| treesitter-context 	|                                                           	| sl clone git@github.com:nvim-treesitter/nvim-treesitter-context.git    	|
-| ts-textobjects     	|                                                           	| sl clone git@github.com:nvim-treesitter/nvim-treesitter-textobjects.git	|
-| copilot            	| ~/.local/share/nvim/site/pack/autocomplete-and-lsp/start/ 	| git clone git@github.com:zbirenbaum/copilot.lua.git                    	|
-| nvim-lspconfig     	|                                                           	| sl clone git@github.com:neovim/nvim-lspconfig.git                      	|
-| go.nvim            	|                                                           	| git clone git@github.com:ray-x/go.nvim                                 	|
-| guihua.lua         	|                                                           	| git clone git@github.com:ray-x/guihua.lua                              	|
-| zig.vim            	|                                                           	| git clone https://codeberg.org/ziglang/zig.vim.git                     	|
-| MarsCode           	| ~/.local/share/nvim/site/pack/byted/start/                	| git clone git@code.???.org:chenjiaqi.cposture/codeverse.vim.git        	|
+- `~/.local/share/nvim/site/pack/core/opt/`
 
-## Windows
+`vim.pack` also writes a lockfile here:
 
-use these `:h` pages: xdg, runtimepath, plugin
-```pwsh
-$ New-Item -ItemType SymbolicLink -Path $env:LOCALAPPDATA\nvim\init.vim -Target $env:USERPROFILE\dotfiles\.config\nvim\init.vim
-$ New-Item -ItemType Directory -Path $env:LOCALAPPDATA\nvim-data\site\pack\simple-plugins\start\
-$ cd $env:LOCALAPPDATA\nvim-data\site\pack\simple-plugins\start\
-$ git clone git@github.com:vegerot/open-remote.git
-# etc.
+- `~/.config/nvim/nvim-pack-lock.json`
+
+## First Install
+
+1. Start `nvim`
+2. `vim.pack.add(...)` in `init.vim` will install any missing plugins automatically.
+3. Restart Neovim after the first install so newly installed plugin code is available from startup.
+
+## Update Plugins
+
+Run:
+
+```vim
+:lua vim.pack.update()
 ```
+
+This opens a review buffer.
+
+- `:write` confirms updates
+- `:quit` discards them
+
+After updating, restart Neovim.
+
+## Remove A Plugin
+
+1. Remove its spec from `init.vim`
+2. Restart Neovim
+3. Delete it from disk:
+
+```vim
+:lua vim.pack.del({ 'plugin-name' })
+```
+
+## Rebuild Native Plugins
+
+`telescope-fzy-native.nvim` is built automatically via a `PackChanged` autocmd in
+`init.vim` which runs `make` after install or update.
+
+## Test That Plugin Management Works
+
+Headless smoke test:
+
+```sh
+NVIM_APPNAME=nvim-pack-test nvim --headless
+```
+
+The throwaway test config lives at:
+
+- `~/.config/nvim-pack-test/init.vim`
+
+It installs a plugin with `vim.pack` and writes `ok` to:
+
+- `~/.local/state/nvim-pack-test/pack-test-result.txt`
+
+## Notes
+
+- Built-in Neovim plugins like commenting, `matchit`, and `nvim.undotree` do not
+  need to be installed separately.
+- If a plugin update overwrites a local patch, reapply the patch or move the
+  workaround into `init.vim`.
