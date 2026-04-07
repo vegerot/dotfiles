@@ -1,0 +1,48 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "Codebase": {
+      "type": "remote",
+      "url": "https://code.byted.org/api/mcp/codebase/mcp",
+      "headers": {
+        "X-Code-User-JWT": "{env:BYTED_AI_JWT}"
+      }
+    },
+    "Lark": {
+      "type": "remote",
+      "url": "https://code.byted.org/api/mcp/lark/mcp",
+      "headers": {
+        "X-Code-User-JWT": "{env:BYTED_AI_JWT}"
+      }
+    },
+    "ByteDance MCP": {
+      "type": "remote",
+      "url": "https://0r2y3xvu.mcp.bytedance.net/mcp",
+      "headers": {
+        "X-Code-User-JWT": "{env:BYTED_AI_JWT}"
+      }
+    },
+    "Chrome DevTools": {
+      "type": "local",
+      "command": [
+        "bunx",
+        "chrome-devtools-mcp",
+        "--channel=dev"
+      ]
+    },
+    //"Trae_CLI": {
+    //  "type": "local",
+    //  "command": [
+    //    "traecli",
+    //    "mcp",
+    //    "serve"
+    //  ]
+    //}
+  },
+
+  "permission": {
+    "Codebase_GetFile": "ask",
+    "Trae_CLI_Grep": "ask",
+    "Trae_CLI_Read": "ask"
+  }
+}

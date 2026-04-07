@@ -16,3 +16,6 @@ Thumbs.db
 
 # vim stuff
 .netrwhist
+
+#secret env variables
+.secrets.env
