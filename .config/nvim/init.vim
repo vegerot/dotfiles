@@ -6,13 +6,11 @@ set relativenumber
 
 set ignorecase
 set smartcase
-set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
-nmap <leader>n :nohl<CR>
+set grepprg=rg\ --vimgrep\ -uu\ --smart-case
 
 command -nargs=* GrepNoTests grep --glob="!test/" --glob="!__tests__/" --glob "!e2e/" --glob="!*.test.*" --glob "!*.spec.*" <args>
 
 set smartindent
-set tabstop=2
 
 set showmatch
 set virtualedit=block
@@ -20,7 +18,14 @@ set virtualedit=block
 " when going to a quickfix item, switch to an existing window that already has
 " the buffer in it and if not, open it in a vsplit
 set switchbuf=usetab,uselast
+set jumpoptions+=view
+set wildoptions+=fuzzy
+set smoothscroll
+set winborder=rounded
+set pumborder=rounded
 
+" In newer Nvim, 'exrc' also searches parent directories. Keep this enabled,
+" but rely on :trust to allow project-local config deliberately.
 set exrc
 
 " When editing a file, always jump to the last known cursor position.
@@ -41,14 +46,8 @@ augroup RestoreCursor
 augroup END
 
 " Undo and backup
-set backupdir=~/.local/state/nvim/backup//
 set undofile
 set shada+='42069
-
-" Don't warn about existing swap files being open, since neovim will update a
-" file when a write is detected
-set shortmess+=A
-
 
 " replace currently selected text with default register
 " without yanking it
@@ -93,8 +92,9 @@ colorscheme retrobox
 " random colorscheme
 " inspiration https://gist.github.com/ryanflorence/1381526
 function RandomColorScheme()
-  let mycolors = split(globpath(&rtp,"colors/*.vim"),"\n")
+  let mycolors = globpath(&rtp, "colors/*.{vim,lua}", v:false, v:true)
   let randomcolorpath = mycolors[localtime() % len(mycolors)]
+  echo randomcolorpath
   let randomcolor = fnamemodify(randomcolorpath, ":t:r")
   echo ':colorscheme ' . randomcolor
   exe 'colorscheme ' . randomcolor
@@ -171,7 +171,7 @@ if &loadplugins
 endif
 
 "" LSP+autocomplete start
-set completeopt+=fuzzy,menuone,noinsert
+set completeopt+=fuzzy,menuone,noinsert,popup,nearest
 
 lua << REQUIRE_WRAPPER_END
 -- Require wrapper that returns nil when --noplugin or module not found
@@ -188,24 +188,6 @@ end
 REQUIRE_WRAPPER_END
 
 lua << LUAEND
-
--- new versions of nvim have built-in completions
--- only use coq on older versions of nvim
-local shouldUseCoq = false
-
--- autocomplete with COQ
--- note: MUST be before `require("coq")`!
-if shouldUseCoq then
-	vim.g.coq_settings = {
-		["clients.tabnine"] = {
-			enabled = true,
-			weight_adjust = -0.4,
-		},
-		auto_start = "shut-up",
-		-- conflicts with Tmux
-		["keymap.jump_to_mark"] = "",
-	}
-end
 
 function handleGotoDefinition(options)
 	local title = options.title
@@ -246,7 +228,7 @@ function handleGotoDefinition(options)
 		vim.api.nvim_win_set_buf(resultWindow, item_bufnr)
 		vim.api.nvim_win_set_cursor(resultWindow, { item.lnum, item.col - 1 })
 		-- Open folds under the cursor
-		vim._with({ win = resultWindow }, function() vim.cmd('normal! zv') end)
+		vim.api.nvim_win_call(resultWindow, function() vim.cmd('normal! zv') end)
 	else
 		vim.fn.setqflist({}, ' ', { title = title, items = all_items })
 		vim.cmd('botright copen')
@@ -500,19 +482,10 @@ end
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
-	local function buf_set_keymap(...)
-		-- TODO: switch to `vim.keymap.set`
-		vim.api.nvim_buf_set_keymap(bufnr, ...)
+	local map = function(mode, lhs, rhs, desc, extra)
+		local opts = vim.tbl_extend("force", { buffer = bufnr, silent = false, desc = desc }, extra or {})
+		vim.keymap.set(mode, lhs, rhs, opts)
 	end
-	local function buf_set_option(...)
-		vim.api.nvim_buf_set_option(bufnr, ...)
-	end
-
-	-- Enable completion triggered by <c-x><c-o>
-	buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
-
-	-- Mappings.
-	local opts = { noremap = true, silent = false }
 
 	-- <cmd> `map-cmd`s are never echoed, making `silent` unneeded,
 	-- but I personally like seeing what each mapping does, so I use `:` instead,
@@ -520,62 +493,127 @@ local on_attach = function(client, bufnr)
 
 	-- See `:help vim.lsp.*` for documentation on any of the below functions
 
-	-- TODO: try using the new built-in keymaps instead
 	local methodsAndKeymaps = {
-		["textDocument/declaration"] = { { "n", "gD", ":lua vim.lsp.buf.declaration()<CR>" } },
+		["textDocument/declaration"] = {
+			{
+				mode = "n",
+				lhs = "gD",
+				rhs = function() vim.lsp.buf.declaration() end,
+				desc = "vim.lsp.buf.declaration()",
+			},
+		},
 		["textDocument/definition"] = {
-		    { "n", "gd", ":lua vim.lsp.buf.definition({on_list = handleGotoDefinition})<CR>" },
-		    { "n", "<C-t>", ":lua tagBackInAppropriateTab(-1)<CR>" },
-		    { "n", "<C-i>", ":stag<CR>" },
+			{
+				mode = "n",
+				lhs = "gd",
+				rhs = function() vim.lsp.buf.definition({ on_list = handleGotoDefinition }) end,
+				desc = "vim.lsp.buf.definition()",
+			},
+			{
+				mode = "n",
+				lhs = "<C-t>",
+				rhs = function() tagBackInAppropriateTab(-1) end,
+				desc = "Custom LSP tag back",
+			},
+			{
+				mode = "n",
+				lhs = "<C-i>",
+				rhs = function() vim.cmd('stag') end,
+				desc = ":stag",
+			},
 		},
-		["textDocument/hover"] = { { "n", "K", ":lua vim.lsp.buf.hover()<CR>" } },
-		["textDocument/signatureHelp"] = { { "n", "<leader>k", ":lua vim.lsp.buf.signature_help()<CR>" } },
+		["textDocument/signatureHelp"] = {
+			{
+				mode = "n",
+				lhs = "<leader>k",
+				rhs = function() vim.lsp.buf.signature_help() end,
+				desc = "vim.lsp.buf.signature_help()",
+			},
+		},
 		["textDocument/workspaceFolders"] = {
-			{ "n", "<leader>da", ":lua vim.lsp.buf.add_workspace_folder()<CR>" },
-			{ "n", "<leader>dr", ":lua vim.lsp.buf.remove_workspace_folder()<CR>" },
-			{ "n", "<leader>dl", ":lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>" },
+			{
+				mode = "n",
+				lhs = "<leader>da",
+				rhs = function() vim.lsp.buf.add_workspace_folder() end,
+				desc = "vim.lsp.buf.add_workspace_folder()",
+			},
+			{
+				mode = "n",
+				lhs = "<leader>dr",
+				rhs = function() vim.lsp.buf.remove_workspace_folder() end,
+				desc = "vim.lsp.buf.remove_workspace_folder()",
+			},
+			{
+				mode = "n",
+				lhs = "<leader>dl",
+				rhs = function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end,
+				desc = "Print workspace folders",
+			},
 		},
-		["textDocument/rename"] = { { "n", "<leader>rn", ":lua vim.lsp.buf.rename()<CR>" } },
 		["textDocument/codeAction"] = {
-			{ "n", "<leader>ca", ":lua vim.lsp.buf.code_action()<CR>" },
 			-- same as previous, but if there's only one possible action, just apply it
-			{ "n", "<leader>qf", ":lua vim.lsp.buf.code_action({apply=1})<CR>" },
+			{
+				mode = "n",
+				lhs = "<leader>qf",
+				rhs = function() vim.lsp.buf.code_action({ apply = true }) end,
+				desc = "Apply single code action",
+			},
 		},
-		["textDocument/completion"] = { { "i", "<c-space>", "<cmd>lua vim.lsp.buf.completion()<CR>" } },
-		["textDocument/references"] = { { "n", "gr", ":lua vim.lsp.buf.references()<CR>" } },
-		["textDocument/formatting"] = { { "n", "<leader>f", ":lua vim.lsp.buf.format()<CR>" } },
+		["textDocument/completion"] = {
+			{
+				mode = "i",
+				lhs = "<c-space>",
+				rhs = function() vim.lsp.buf.completion() end,
+				desc = "vim.lsp.buf.completion()",
+			},
+		},
+		["textDocument/formatting"] = {
+			{
+				mode = "n",
+				lhs = "<leader>f",
+				rhs = function() vim.lsp.buf.format() end,
+				desc = "vim.lsp.buf.format()",
+			},
+		},
 		[vim.lsp.protocol.Methods.textDocument_inlineCompletion] = {
-			{"i", "<C-F>", "<cmd>lua vim.lsp.inline_completion.get()<CR>"},
-			{"i", "<C-G>", "<cmd>lua vim.lsp.inline_completion.select()<CR>"},
+			{
+				mode = "i",
+				lhs = "<C-F>",
+				rhs = function() vim.lsp.inline_completion.get() end,
+				desc = "vim.lsp.inline_completion.get()",
+			},
+			{
+				mode = "i",
+				lhs = "<C-G>",
+				rhs = function() vim.lsp.inline_completion.select() end,
+				desc = "vim.lsp.inline_completion.select()",
+			},
 		},
 	}
 	local telescope_builtin = RequireChecked("telescope.builtin")
 	if telescope_builtin ~= nil then
 		methodsAndKeymaps["textDocument/definition"] = {
-			{ "n", "gd", ":lua require('telescope.builtin').lsp_definitions()<CR>" },
-		}
-		methodsAndKeymaps["textDocument/references"] = {
-			{ "n", "gr", ":lua require('telescope.builtin').lsp_references()<CR>" },
+			{
+				mode = "n",
+				lhs = "gd",
+				rhs = function() require('telescope.builtin').lsp_definitions() end,
+				desc = "telescope.builtin.lsp_definitions()",
+			},
 		}
 	end
 	for method, keymaps in pairs(methodsAndKeymaps) do
 		if client:supports_method(method, bufnr) then
 			for _, keymap in ipairs(keymaps) do
-				local mode, map, cmd = unpack(keymap)
-				buf_set_keymap(mode, map, cmd, opts)
+				map(keymap.mode, keymap.lhs, keymap.rhs, keymap.desc, keymap.opts)
 			end
 		end
 	end
 	-- vim.diagnostic keymaps are unconditional: `textDocument/publishDiagnostics` is a server→client
 	-- notification, not a ServerCapability, so supports_method() always returns false for it
-	buf_set_keymap("n", "<leader>d", ":lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", opts)
-	buf_set_keymap("n", "[d", ":lua vim.diagnostic.jump({count=-1, float=true})<CR>", opts)
-	buf_set_keymap("n", "]d", ":lua vim.diagnostic.jump({count=1, float=true})<CR>", opts)
-	buf_set_keymap("n", "<leader>q", ":lua vim.diagnostic.setqflist({open=true})<CR>", opts)
-	buf_set_keymap("n", "<leader>l", ":lua vim.diagnostic.setloclist({open=true})<CR>", opts)
+	map("n", "<leader>d", function() vim.diagnostic.open_float({ scope = 'line' }) end, "vim.diagnostic.open_float()")
+	map("n", "<leader>q", function() vim.diagnostic.setqflist({ open = true }) end, "vim.diagnostic.setqflist()")
+	map("n", "<leader>l", function() vim.diagnostic.setloclist({ open = true }) end, "vim.diagnostic.setloclist()")
 
-	buf_set_keymap("n", "<leader>D", ":lua vim.lsp.buf.type_definition()<CR>", opts)
-	buf_set_keymap("n", "gi", ":lua vim.lsp.buf.implementation()<CR>", opts)
 	if client:supports_method("textDocument/inlayHint", bufnr) then
 		-- unstable API.  Might break soon
 		vim.lsp.inlay_hint.enable(true)
@@ -751,9 +789,9 @@ vim.api.nvim_create_user_command("Plsgo", godotnvim, {})
 local quick_lint_js = {
 	"quick_lint_js",
 	{
-		on_attach = on_attach,
-		on_init = function(client)
+		on_attach = function(client, bufnr)
 			vim.diagnostic.config({ update_in_insert = true }, vim.lsp.diagnostic.get_namespace(client.id))
+			on_attach(client, bufnr)
 		end,
 		filetypes = {
 			"javascript",
@@ -883,7 +921,6 @@ end
 
 local zig_config = configure_zig()
 
-local coq = RequireChecked("coq")
 local defaultConfig = {
   on_attach = on_attach,
   flags = {
@@ -902,9 +939,6 @@ for _, lsp in ipairs(servers) do
 	local name, settings = unpack(lsp)
 	if settings == nil then
 		settings = defaultConfig
-	end
-	if (coq ~= nil and shouldUseCoq) then
-		settings = coq.lsp_ensure_capabilities(settings)
 	end
 	vim.lsp.config(name, settings)
 	vim.lsp.enable(name)
@@ -947,7 +981,6 @@ lua << LUAEND
 
 local snacks = RequireChecked("snacks")
 if snacks == nil then
-    print("snacks not installed")
 	return
 end
 snacks.setup({
@@ -1004,6 +1037,10 @@ if exists(":Telescope")
 	nmap <leader>tq <cmd>Telescope quickfix<Cr>
 endif
 
+if &loadplugins
+	silent! packadd nvim.undotree
+endif
+
 lua <<LUAEND
 local telescope = RequireChecked("telescope")
 if telescope == nil then
@@ -1029,6 +1066,10 @@ end
 vim.api.nvim_create_autocmd('FileType', {
 	pattern = '*',
 	callback = function()
+		vim.wo.foldmethod = 'expr'
+		vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+		vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+
 		local ok = pcall(vim.treesitter.start)
 		if ok then
 			return
@@ -1059,9 +1100,6 @@ vim.api.nvim_create_autocmd('FileType', {
 			})
 			require('nvim-treesitter').install({ lang })
 		end)
-		vim.wo[0][0].foldmethod = 'expr'
-		vim.wo[0][0].foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-		vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 	end,
 })
 
@@ -1077,11 +1115,9 @@ LUAEND
 
 lua << LUAEND
 
--- better builtin pager
-
-local extui = RequireChecked("vim._extui")
-if extui ~= nil then
-	extui.enable({})
+local ok, ui2 = pcall(require, "vim._core.ui2")
+if ok then
+	ui2.enable({})
 end
 
 local devicons_plugin = RequireChecked("nvim-web-devicons")

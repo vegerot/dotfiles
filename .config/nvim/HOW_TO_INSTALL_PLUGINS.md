@@ -13,7 +13,6 @@ Make sure everything you're cloning has a `plugins/` directory in it
 | plugin             	| directory                                                 	| command                                                                	|
 |--------------------	|-----------------------------------------------------------	|------------------------------------------------------------------------	|
 | surround           	| ~/.local/share/nvim/site/pack/tpope/start/                	| sl clone git@github.com:tpope/vim-surround.git                         	|
-| commentary         	|                                                           	| git clone https://tpope.io/vim/commentary.git                          	|
 | repeat             	|                                                           	| sl clone https://tpope.io/vim/repeat.git                               	|
 | unimpaired         	|                                                           	| sl clone https://tpope.io/vim/unimpaired.git                           	|
 | sleuth             	|                                                           	| git clone https://tpope.io/vim/sleuth.git                              	|
