@@ -108,16 +108,6 @@ command Edir :e %:h
 command VEdir :Ve %:h
 command Cd :cd %:h
 
-"NetRW (should netrw config go in vanilla or plugin section?? 🤔)
-
-let g:netrw_liststyle = 3
-let g:netrw_browse_split = 4
-let g:netrw_winsize = 25
-let g:netrw_altv = 1 " set automatically by `splitright`
-let g:netrw_altfile=1 "make CTRL-^ return to last edited file instead of netrw browsing buffer
-
-nmap <c-S-R> <Plug>NetrwRefresh
-
 autocmd FileType typescript,javascript,typescriptreact,javascriptreact nmap gD :GrepNoTests --case-sensitive "(const\\|function) <cword>\b" <CR>
 
 autocmd FileType man set nospell
