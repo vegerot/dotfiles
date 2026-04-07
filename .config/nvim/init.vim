@@ -137,6 +137,81 @@ autocmd BufWinEnter,BufNewFile,BufRead * setlocal formatoptions-=ro
 
 "" VANILLA end
 
+lua << LUAEND
+local function GitHub(repo)
+	return "https://github.com/" .. repo .. ".git"
+end
+
+local postinstall_hooks = {
+	["telescope-fzy-native.nvim"] = function(path)
+		vim.system({ "make" }, { cwd = path }):wait()
+	end,
+}
+
+vim.api.nvim_create_autocmd("PackChanged", {
+	callback = function(ev)
+		if ev.data.kind ~= "install" and ev.data.kind ~= "update" then
+			return
+		end
+
+		local hook = postinstall_hooks[ev.data.spec.name]
+		if hook then
+			hook(ev.data.path)
+		end
+	end,
+})
+
+if vim.g.vscode then
+	vim.pack.add({
+		GitHub("vegerot/open-remote"),
+		GitHub("bkad/CamelCaseMotion"),
+		GitHub("tpope/vim-unimpaired"),
+		GitHub("tpope/vim-surround"),
+		GitHub("justinmk/vim-sneak"),
+	}, {load=true})
+elseif vim.o.loadplugins then
+	vim.pack.add({
+		GitHub("vegerot/open-remote"),
+		GitHub("bkad/CamelCaseMotion"),
+		GitHub("wsdjeg/vim-fetch"),
+		GitHub("justinmk/vim-sneak"),
+		GitHub("nanotee/zoxide.vim"),
+
+		GitHub("tpope/vim-repeat"),
+		GitHub("tpope/vim-sleuth"),
+		GitHub("tpope/vim-unimpaired"),
+		GitHub("tpope/vim-surround"),
+
+		GitHub("folke/snacks.nvim"),
+		GitHub("folke/sidekick.nvim"),
+
+		GitHub("christoomey/vim-tmux-navigator"),
+		GitHub("nvim-lua/plenary.nvim"),
+		GitHub("nvim-tree/nvim-web-devicons"),
+		GitHub("m4xshen/hardtime.nvim"),
+		GitHub("lewis6991/gitsigns.nvim"),
+		GitHub("stevearc/oil.nvim"),
+		GitHub("catgoose/nvim-colorizer.lua"),
+
+		GitHub("junegunn/fzf"),
+		GitHub("junegunn/fzf.vim"),
+
+		GitHub("nvim-telescope/telescope.nvim"),
+		GitHub("nvim-telescope/telescope-fzy-native.nvim"),
+
+		GitHub("nvim-treesitter/nvim-treesitter"),
+		GitHub("nvim-treesitter/nvim-treesitter-context"),
+		GitHub("nvim-treesitter/nvim-treesitter-textobjects"),
+
+		GitHub("zbirenbaum/copilot.lua"),
+		GitHub("neovim/nvim-lspconfig"),
+		GitHub("ray-x/go.nvim"),
+		GitHub("ray-x/guihua.lua"),
+		{ src = "https://codeberg.org/ziglang/zig.vim.git" },
+	}, {load=true})
+end
+LUAEND
+
 " Open remote
 nmap <leader>op :OpenFile<CR>
 vmap <leader>op :OpenFile<CR>
@@ -150,15 +225,6 @@ if exists('g:vscode')
 	set scrolloff=0
 	nnoremap <c-u> <c-u>zzjk
 	nnoremap <c-d> <c-d>zzjk
-	if &loadplugins
-		silent! packadd open-remote
-		silent! packadd CamelCaseMotion
-		silent! packadd commentary
-		silent! packadd unimpaired
-		silent! packadd vim-surround
-		silent! packadd vim-sneak
-		packadd matchit
-	endif
 	set nospell
 	set noloadplugins
 	finish
@@ -1022,9 +1088,6 @@ command! -bang -nargs=* Rg
 "" FZF end
 
 "" TELESCOPE start
-if &loadplugins
-	silent! packadd telescope.nvim
-endif
 if exists(":Telescope")
 	nmap <leader>tr <cmd>Telescope resume<Cr>
 	nmap <leader>tf :lua require('telescope.builtin').find_files({hidden=true})<Cr>
@@ -1131,5 +1194,5 @@ LUAEND
 
 lua local hardtime = RequireChecked("hardtime"); if hardtime ~= nil then hardtime.setup{restriction_mode="hint", disable_mouse=false, disabled_keys={}, max_time=0} end
 lua local oil = RequireChecked("oil"); if oil ~= nil then oil.setup(); vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" }) end
-lua local colorizer = RequireChecked("colorizer"); if colorizer ~= nil then colorizer.setup() end
+lua local colorizer = RequireChecked("colorizer"); if colorizer ~= nil then vim.o.termguicolors = true; colorizer.setup() end
 lua local gitsigns = RequireChecked("gitsigns"); if gitsigns ~= nil then vim.o.statusline = vim.o.statusline .. " %{get(b:,'gitsigns_status','')}" end
