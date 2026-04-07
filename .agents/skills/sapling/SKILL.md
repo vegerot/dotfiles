@@ -1,7 +1,6 @@
 ---
 name: sapling
-description: Use Sapling (`sl`) instead of `git` for version control tasks. Prefer Sapling-native workflows, command translations, and Smartlog-first behavior.
-Use this skill whenever the user asks you to do anything in a Sapling repository, when the repository appears to use Sapling (e.g. when it includes `.sl/` or `.git/sl/` in the root), or when the user mentions "sapling" or "sl".
+description: Use Sapling (`sl`) instead of `git` for version control tasks. Prefer Sapling-native workflows, command translations, and Smartlog-first behavior.  Use this skill whenever the user asks you to do anything in a Sapling repository, when the repository appears to use Sapling (e.g. when it includes `.sl/` or `.git/sl/` in the root), or when the user mentions "sapling" or "sl".
 ---
 
 # Sapling skill
