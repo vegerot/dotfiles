@@ -136,6 +136,7 @@ function keepkillwd() {
   # use sudo here so that we're not prompted in the loop
   sudo echo "started successfully"
   while true; do
+	  sudo renice -n 20 -p $(pgrep wdavdaemon) $(pgrep epsext) $(pgrep mdatp) $(pgrep netext)
 	  sudo killall -9 wdavdaemon wdavdaemon_unprivileged wdavdaemon_enterprise
 	  local laststatus=$?
 	  local killed_something=0
