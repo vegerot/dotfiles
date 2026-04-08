@@ -138,6 +138,17 @@ function fastrm() {
 	)
 }
 
+pick_ide() {
+	printf "nvim\nnvim\nnvim\ntrae\ntrae\ncode" | shuf -n 1
+}
+
+function pick_ai() {
+	printf '%s\n' \
+		"crush 1" "codex 2" "gemini 2" "claude 3" "opencode 4" "trae 5" |
+		awk '{for (i = 0; i < $2; i++) print $1}' |
+		shuf -n 1
+}
+
 [[ -r ~/dotfiles/bin/clone ]] && source ~/dotfiles/bin/clone
 
 [[ -r ~/dotfiles/wmt.sh ]] && source ~/dotfiles/wmt.sh
