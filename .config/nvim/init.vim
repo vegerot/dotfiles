@@ -161,43 +161,51 @@ if vim.g.vscode then
 	}, {load=true})
 elseif vim.o.loadplugins then
 	vim.pack.add({
+		-- simple plugins
 		GitHub("vegerot/open-remote"),
 		GitHub("bkad/CamelCaseMotion"),
 		GitHub("wsdjeg/vim-fetch"),
 		GitHub("justinmk/vim-sneak"),
 		GitHub("nanotee/zoxide.vim"),
+		GitHub("nvim-lua/plenary.nvim"),
 
+		-- tpope's plugins
 		GitHub("tpope/vim-repeat"),
 		GitHub("tpope/vim-sleuth"),
 		GitHub("tpope/vim-unimpaired"),
 		GitHub("tpope/vim-surround"),
 
+		-- folke's plugins
 		GitHub("folke/snacks.nvim"),
 		GitHub("folke/sidekick.nvim"),
 
-		GitHub("christoomey/vim-tmux-navigator"),
-		GitHub("nvim-lua/plenary.nvim"),
-		GitHub("nvim-tree/nvim-web-devicons"),
-		GitHub("m4xshen/hardtime.nvim"),
-		GitHub("lewis6991/gitsigns.nvim"),
-		GitHub("stevearc/oil.nvim"),
-		GitHub("catgoose/nvim-colorizer.lua"),
-
-		GitHub("junegunn/fzf"),
-		GitHub("junegunn/fzf.vim"),
-
-		GitHub("nvim-telescope/telescope.nvim"),
-		GitHub("nvim-telescope/telescope-fzy-native.nvim"),
-
+		-- treesitter
 		GitHub("nvim-treesitter/nvim-treesitter"),
 		GitHub("nvim-treesitter/nvim-treesitter-context"),
 		GitHub("nvim-treesitter/nvim-treesitter-textobjects"),
 
+		-- fzf
+		GitHub("junegunn/fzf"),
+		GitHub("junegunn/fzf.vim"),
+
+		-- telescope
+		GitHub("nvim-telescope/telescope.nvim"),
+		GitHub("nvim-telescope/telescope-fzy-native.nvim"),
+
+		-- LSP+autocomplete
 		GitHub("zbirenbaum/copilot.lua"),
 		GitHub("neovim/nvim-lspconfig"),
 		GitHub("ray-x/go.nvim"),
 		GitHub("ray-x/guihua.lua"),
 		{ src = "https://codeberg.org/ziglang/zig.vim.git" },
+
+		-- complicated plugins
+		GitHub("christoomey/vim-tmux-navigator"),
+		GitHub("nvim-tree/nvim-web-devicons"),
+		GitHub("m4xshen/hardtime.nvim"),
+		GitHub("lewis6991/gitsigns.nvim"),
+		GitHub("stevearc/oil.nvim"),
+		GitHub("catgoose/nvim-colorizer.lua"),
 	}, {load=true})
 end
 LUAEND
