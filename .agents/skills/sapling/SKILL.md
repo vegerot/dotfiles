@@ -1,6 +1,6 @@
 ---
 name: sapling
-description: Use Sapling (`sl`) instead of `git` for version control tasks. Prefer Sapling-native workflows, command translations, and Smartlog-first behavior.  Use this skill whenever the user asks you to do anything in a Sapling repository, when the repository appears to use Sapling (e.g. when it includes `.sl/` or `.git/sl/` in the root), or when the user mentions "sapling" or "sl".
+description: Use Sapling (`sl`) instead of `git` for version control tasks. Prefer Sapling-native workflows, command translations, and Smartlog-first behavior.  Use this skill whenever the user asks you to do anything in a Sapling repository, when the repository appears to use Sapling (e.g. when it includes `.sl/` or `.git/sl/` in the root), or when the user mentions "sapling", "sl", or "git".
 ---
 
 # Sapling skill
@@ -9,7 +9,7 @@ Use this skill whenever the user asks you to inspect, modify, commit, review, re
 
 ## Core rule
 
-Prefer `sl` over `git` for all version-control tasks.
+Prefer `sl` over `git` for all version-control tasks.  If the user insists on using Git, then use git after confirming they don't want to use sl.  You may also use git if using sl repeatedly is causing you to get stuck on a problem that you think git would solve more easily.
 
 ## Goal
 
