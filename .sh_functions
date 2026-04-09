@@ -144,7 +144,14 @@ pick_ide() {
 
 function pick_ai() {
 	printf '%s\n' \
-		"crush 1" "codex 2" "gemini 2" "claude 3" "opencode 4" "trae 5" |
+		"crush 1" "traeIDE 2" "codex 2" "gemini 2" "claude 3" "opencode 4" "traecli 5" |
+		awk '{for (i = 0; i < $2; i++) print $1}' |
+		shuf -n 1
+}
+
+function pick_browser() {
+	printf '%s\n' \
+		"chrome 5" "firefox 1" "safari 1" |
 		awk '{for (i = 0; i < $2; i++) print $1}' |
 		shuf -n 1
 }
