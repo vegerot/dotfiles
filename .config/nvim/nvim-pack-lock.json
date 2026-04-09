@@ -32,6 +32,10 @@
       "rev": "b4e431934af1fe224a3a801f632c008278cb7628",
       "src": "https://github.com/m4xshen/hardtime.nvim.git"
     },
+    "mdx.nvim": {
+      "rev": "c2644328587bbd58eede41b2cd0c1ccc99175661",
+      "src": "https://github.com/davidmh/mdx.nvim.git"
+    },
     "nvim-colorizer.lua": {
       "rev": "c8c2c19436d33165ec34fa90c975bc0a739fe3fb",
       "src": "https://github.com/catgoose/nvim-colorizer.lua.git"

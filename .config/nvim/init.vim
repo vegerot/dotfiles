@@ -183,6 +183,7 @@ elseif vim.o.loadplugins then
 		GitHub("nvim-treesitter/nvim-treesitter"),
 		GitHub("nvim-treesitter/nvim-treesitter-context"),
 		GitHub("nvim-treesitter/nvim-treesitter-textobjects"),
+		GitHub("davidmh/mdx.nvim"),
 
 		-- fzf
 		GitHub("junegunn/fzf"),
