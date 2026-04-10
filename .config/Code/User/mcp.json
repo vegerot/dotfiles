@@ -1,0 +1,33 @@
+// symlink me to ~/{.config/Code,Library/Application Support/Trae{,CN}}/User/mcp.json
+{
+  "mcpServers": {
+    "Chrome DevTools MCP": {
+      "command": "bunx",
+      "args": [
+        "chrome-devtools-mcp",
+        "--channel=dev"
+      ],
+      "env": {},
+      "fromGalleryId": "byted-mcp.chrome-devtools"
+    },
+    "Codebase": {
+      "url": "https://code.byted.org/api/mcp/codebase/mcp",
+      "headers": {
+        "X-Code-User-JWT": "${env:BYTED_AI_JWT}",
+      }
+    },
+    "Lark": {
+      "url": "https://code.byted.org/api/mcp/lark/mcp",
+      "headers": {
+        "X-Code-User-JWT": "${env:BYTED_AI_JWT}",
+      }
+    },
+    "ByteDance MCP": {
+      "url": "https://0r2y3xvu.mcp.bytedance.net/mcp",
+      "headers": {
+        "X-Code-User-JWT": "${env:BYTED_AI_JWT}",
+      }
+    },
+
+  }
+}
