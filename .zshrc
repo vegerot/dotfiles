@@ -278,7 +278,6 @@ load_plugins() {
 		export DEEPSEEK_MODEL="grok-4-1-fast-non-reasoning"
       fi
       export SMART_SUGGESTION_AUTO_UPDATE=false
-      export SMART_SUGGESTION_BINARY=${plugin_paths[smart-suggestion]}/smart-suggestion
 	  source $smart_suggestions_path
   fi
 
