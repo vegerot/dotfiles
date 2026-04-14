@@ -38,7 +38,8 @@
       "args": [
         "--registry",
         "https://registry.npmjs.org",
-        "chrome-devtools-mcp@0.21.0"
+        "chrome-devtools-mcp@0.21.0",
+        "--channel=dev"
       ],
       "gallery": "https://api.mcp.github.com",
       "version": "0.21.0"
