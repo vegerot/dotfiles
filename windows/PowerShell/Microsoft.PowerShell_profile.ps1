@@ -21,5 +21,9 @@ function prompt {
 Set-Alias sap sl.exe
 Set-Alias pilot "$env:LOCALAPPDATA\Voidstar\FilePilot\FPilot.exe"
 
+$randomCowCommand = Join-Path $HOME 'dotfiles\bin\randomcowcommand.ps1'
+if (Test-Path -LiteralPath $randomCowCommand) {
+  & $randomCowCommand
+}
 
 #oh-my-posh init pwsh | Invoke-Expression
