@@ -208,7 +208,7 @@ elseif vim.o.loadplugins then
 		GitHub("lewis6991/gitsigns.nvim"),
 		GitHub("stevearc/oil.nvim"),
 		GitHub("catgoose/nvim-colorizer.lua"),
-	}, {load=true})
+	})
 end
 LUAEND
 
