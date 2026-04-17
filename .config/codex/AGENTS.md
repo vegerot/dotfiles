@@ -1,1 +1,0 @@
-../copilot/AGENTS.md
