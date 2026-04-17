@@ -152,15 +152,7 @@ vim.api.nvim_create_autocmd("PackChanged", {
 	end,
 })
 
-if vim.g.vscode then
-	vim.pack.add({
-		GitHub("vegerot/open-remote"),
-		GitHub("bkad/CamelCaseMotion"),
-		GitHub("tpope/vim-unimpaired"),
-		GitHub("tpope/vim-surround"),
-		GitHub("justinmk/vim-sneak"),
-	}, {load=true})
-elseif vim.o.loadplugins then
+if vim.o.loadplugins and not vim.g.vscode then
 	vim.pack.add({
 		-- simple plugins
 		GitHub("vegerot/open-remote"),
@@ -216,6 +208,15 @@ if exists('g:vscode')
 	set scrolloff=0
 	nnoremap <c-u> <c-u>zzjk
 	nnoremap <c-d> <c-d>zzjk
+lua << LUAEND
+	vim.pack.add({
+		GitHub("vegerot/open-remote"),
+		GitHub("bkad/CamelCaseMotion"),
+		GitHub("tpope/vim-unimpaired"),
+		GitHub("tpope/vim-surround"),
+		GitHub("justinmk/vim-sneak"),
+	}, {load=true})
+LUAEND
 	set nospell
 	set noloadplugins
 	finish
