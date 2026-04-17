@@ -1193,7 +1193,37 @@ end
 
 LUAEND
 
+lua << LUAEND
+local gitsigns = RequireChecked("gitsigns");
+if gitsigns == nil then return end
+vim.o.statusline = vim.o.statusline .. " %{get(b:,'gitsigns_status','')}"
+
+vim.keymap.set("n", "[c", function()
+	if vim.wo.diff then
+		vim.cmd("normal! [c")
+		return
+	else
+		gitsigns.prev_hunk()
+	end
+end)
+vim.keymap.set("n", "]c", function()
+	if vim.wo.diff then
+		vim.cmd("normal! ]c")
+		return
+	else
+		gitsigns.next_hunk()
+	end
+end)
+
+vim.keymap.set("n", "<leader>hp", ":Gitsigns preview_hunk<CR>")
+vim.keymap.set("n", "<leader>hi", ":Gitsigns preview_hunk_inline<CR>")
+vim.keymap.set("n", "<leader>hd", ":Gitsigns diffthis<CR>")
+vim.keymap.set("n", "<header>hb", function() gitsigns.blame_line({ full = true }) end)
+vim.keymap.set("n", "<leader>hw", ":Gitsigns toggle_word_diff<CR>")
+
+vim.keymap.set({"o", "x"}, "ih", gitsigns.select_hunk)
+LUAEND
+
 lua local hardtime = RequireChecked("hardtime"); if hardtime ~= nil then hardtime.setup{restriction_mode="hint", disable_mouse=false, disabled_keys={}, max_time=0} end
 lua local oil = RequireChecked("oil"); if oil ~= nil then oil.setup(); vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" }) end
 lua local colorizer = RequireChecked("colorizer"); if colorizer ~= nil then vim.o.termguicolors = true; colorizer.setup({options={parsers={css=true}, display={mode={"virtualtext", "foreground"}}}}) end
-lua local gitsigns = RequireChecked("gitsigns"); if gitsigns ~= nil then vim.o.statusline = vim.o.statusline .. " %{get(b:,'gitsigns_status','')}" end
