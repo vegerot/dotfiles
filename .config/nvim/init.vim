@@ -6,7 +6,7 @@ set relativenumber
 
 set ignorecase
 set smartcase
-set grepprg=rg\ --vimgrep\ -uu\ --smart-case
+set grepprg=rg\ --vimgrep\ --hidden\ --smart-case
 
 command -nargs=* GrepNoTests grep --glob="!test/" --glob="!__tests__/" --glob "!e2e/" --glob="!*.test.*" --glob "!*.spec.*" <args>
 
