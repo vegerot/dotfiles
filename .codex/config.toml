@@ -5,6 +5,27 @@ model_reasoning_effort = "medium"
 command = "bunx"
 args = ["chrome-devtools-mcp", "--channel=dev"]
 
+[mcp_servers.chrome_devtools.tools.new_page]
+approval_mode = "approve"
+
+[mcp_servers.chrome_devtools.tools.resize_page]
+approval_mode = "approve"
+
+[mcp_servers.chrome_devtools.tools.take_screenshot]
+approval_mode = "approve"
+
+[mcp_servers.chrome_devtools.tools.take_snapshot]
+approval_mode = "approve"
+
+[mcp_servers.chrome_devtools.tools.navigate_page]
+approval_mode = "approve"
+
+[mcp_servers.chrome_devtools.tools.click]
+approval_mode = "approve"
+
+[mcp_servers.chrome_devtools.tools.hover]
+approval_mode = "approve"
+
 [mcp_servers.codebase]
 url = "https://code.byted.org/api/mcp/codebase/mcp"
 env_http_headers = { "X-Code-User-JWT" = "BYTED_AI_JWT" }
