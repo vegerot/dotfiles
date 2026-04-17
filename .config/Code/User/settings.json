@@ -237,7 +237,7 @@
     },
     "git.enableCommitSigning": true,
     "git.verboseCommit": true,
-    "AI.toolcall.v2.ide.command.mode": "alwaysAsk",
+    "AI.toolcall.v2.ide.command.mode": "alwaysRun",
     "AI.rules.importClaudeMd": true,
     "microsoft-sovereign-cloud.environment": "",
     "notebook.lineNumbers": "on",
@@ -249,5 +249,16 @@
     },
     "security.workspace.trust.untrustedFiles": "open",
     "tabnine.experimentalAutoImports": true,
-    "chat.viewSessions.orientation": "stacked"
+    "chat.viewSessions.orientation": "stacked",
+    "trae.mcp.beta.enableWorkspaceMcp": true,
+    "chat.mcp.gallery.enabled": true,
+    "extensions.experimental.affinity": {
+        "asvetliakov.vscode-neovim": 1
+    },
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/bower_components": true,
+        "**/*.code-search": true,
+        "**/.eden-mono": true
+    },
 }
