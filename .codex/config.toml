@@ -1,0 +1,19 @@
+model = "gpt-5.4"
+model_reasoning_effort = "medium"
+
+[mcp_servers.chrome_devtools]
+command = "bunx"
+args = ["chrome-devtools-mcp", "--channel=dev"]
+
+[mcp_servers.codebase]
+url = "https://code.byted.org/api/mcp/codebase/mcp"
+env_http_headers = { "X-Code-User-JWT" = "BYTED_AI_JWT" }
+
+[mcp_servers.lark]
+url = "https://code.byted.org/api/mcp/lark/mcp"
+env_http_headers = { "X-Code-User-JWT" = "BYTED_AI_JWT" }
+
+[mcp_servers.bytedance]
+url = "https://0r2y3xvu.mcp.bytedance.net/mcp"
+env_http_headers = { "X-Code-User-JWT" = "BYTED_AI_JWT" }
+
