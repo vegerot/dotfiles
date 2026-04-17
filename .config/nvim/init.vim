@@ -127,6 +127,7 @@ autocmd BufWinEnter,BufNewFile,BufRead * setlocal formatoptions-=ro
 
 "" VANILLA end
 
+"" PLUGINS start
 lua << LUAEND
 local function GitHub(repo)
 	return "https://github.com/" .. repo .. ".git"
@@ -211,15 +212,6 @@ elseif vim.o.loadplugins then
 end
 LUAEND
 
-" Open remote
-nmap <leader>op :OpenFile<CR>
-vmap <leader>op :OpenFile<CR>
-nmap <leader>cp :CopyFile<CR>
-vmap <leader>cp :CopyFile<CR>
-
-
-let g:camelcasemotion_key = '<leader>'
-
 if exists('g:vscode')
 	set scrolloff=0
 	nnoremap <c-u> <c-u>zzjk
@@ -229,10 +221,18 @@ if exists('g:vscode')
 	finish
 endif
 
-"" sneak
 if &loadplugins
+    "sneak
     map s <Plug>Sneak_s
     map S <Plug>Sneak_S
+
+    " Open remote
+    nmap <leader>op :OpenFile<CR>
+    vmap <leader>op :OpenFile<CR>
+    nmap <leader>cp :CopyFile<CR>
+    vmap <leader>cp :CopyFile<CR>
+
+    let g:camelcasemotion_key = '<leader>'
 endif
 
 "" LSP+autocomplete start
