@@ -1199,22 +1199,8 @@ local gitsigns = RequireChecked("gitsigns");
 if gitsigns == nil then return end
 vim.o.statusline = vim.o.statusline .. " %{get(b:,'gitsigns_status','')}"
 
-vim.keymap.set("n", "[c", function()
-	if vim.wo.diff then
-		vim.cmd("normal! [c")
-		return
-	else
-		gitsigns.prev_hunk()
-	end
-end)
-vim.keymap.set("n", "]c", function()
-	if vim.wo.diff then
-		vim.cmd("normal! ]c")
-		return
-	else
-		gitsigns.next_hunk()
-	end
-end)
+vim.keymap.set("n", "[hc", ":Gitsigns prev_hunk<CR>")
+vim.keymap.set("n", "]hc", ":Gitsigns next_hunk<CR>")
 
 vim.keymap.set("n", "<leader>hp", ":Gitsigns preview_hunk<CR>")
 vim.keymap.set("n", "<leader>hi", ":Gitsigns preview_hunk_inline<CR>")
