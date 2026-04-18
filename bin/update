@@ -53,35 +53,10 @@ function upgrade_zsh() {
 function upgrade_neovim_plugins() {
 	echo "neovim plugins"
 
-	function pull_and_update() {
-		set -o errexit
-		set -o nounset
-		set -o pipefail
-		dir=$1
-		if [[ -d "$dir/.sl" || -d "$dir/.git/sl" ]]; then
-			(
-				cd "$dir"
-				if sl paths upstream >/dev/null 2>&1; then
-					sl pull upstream
-				fi
-				sl pull
-				sl top --newest
-			)
-		elif [[ -d "$dir/.git" ]]; then
-			(
-				cd "$dir"
-				current_branch=$(git symbolic-ref --quiet --short HEAD || true)
-				if [[ -n "$current_branch" ]] && git remote get-url upstream >/dev/null 2>&1; then
-					git pull upstream "$current_branch"
-				fi
-				git pull
-			)
-		fi
-	}
-
 	read -p 'Would you like to upgrade Neovim plugins (y/n): ' upgradeNvim
 	if [[ "$upgradeNvim" == "y" ]]; then
-		fd . --type d --max-depth 1 --full-path ~/.local/share/nvim/site/pack/*/start/ --exec zsh -c "($(declare -f pull_and_update) && pull_and_update {})";
+		nvim --headless -c "lua vim.pack.update(nil, { force = true })" -c "qall"
+		printf "\n"
 	fi
 }
 
