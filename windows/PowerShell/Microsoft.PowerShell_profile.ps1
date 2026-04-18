@@ -1,4 +1,7 @@
-# PUT ME IN $profile (C:\Users\Max\Documents\PowerShell\Microsoft.PowerShell_profile.ps1)
+# PowerShell profile
+# Symlink to: $PROFILE
+#   Windows: ~/Documents/PowerShell/Microsoft.PowerShell_profile.ps1
+#   macOS/Linux: ~/.config/powershell/Microsoft.PowerShell_profile.ps1
 
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete # make tab work like bash
 
