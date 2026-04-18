@@ -68,7 +68,16 @@ function Get-CommandSummary {
   return $null
 }
 
+function Test-HelpAvailable {
+  $testHelp = Get-Help Get-Command -ErrorAction SilentlyContinue -ProgressAction SilentlyContinue
+  return ($null -ne $testHelp.Synopsis -and -not [string]::IsNullOrWhiteSpace($testHelp.Synopsis) -and $testHelp.Synopsis -notmatch '^\s*Get-Command\s')
+}
+
 function Get-RandomCommandDescription {
+  if (-not (Test-HelpAvailable)) {
+    return 'randomcowcommand - PowerShell help not installed. Run: Update-Help'
+  }
+
   $commands = @(Get-Command -CommandType Cmdlet)
   foreach ($command in ($commands | Get-Random -Count 25)) {
     $summary = Get-CommandSummary -Command $command
