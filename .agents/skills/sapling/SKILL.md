@@ -32,6 +32,7 @@ You MUST read and understand ~/workspace/github.com/facebook/sapling/website/doc
 - `sl log` is for deeper history; `smartlog` is the day-to-day view.
 - `sl push` and `sl pr` are the main publishing paths for GitHub workflows.
     * NEVER run `sl push` or `sl pr` without explicit user permission. If you want to use `push` or `pr` without being asked, ask the user for permission first.
+- append `--config ui.paginate=false` to all `sl` commands that might produce long output
 
 ## Default workflow
 
