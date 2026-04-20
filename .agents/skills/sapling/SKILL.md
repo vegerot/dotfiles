@@ -38,13 +38,13 @@ You MUST read and understand ~/workspace/github.com/facebook/sapling/website/doc
 
 When working in Sapling:
 
-1. Start by checking `sl` / Smartlog.
+1. Start by checking `sl ssl` / Smartlog.
 2. Use `sl status` to inspect pending changes.
 3. Use `sl diff` to review changes.
 4. Use `sl show` to inspect a commit.
 5. Use `sl commit` or `sl amend` instead of `git commit` or `git commit --amend`.
 6. Use `sl goto` instead of checkout/reset-like movement.
-7. Use `sl rebase`, `sl fold`, `sl split`, `sl histedit`, `sl absorb`, `sl hide`, `sl uncommit`, `sl undo`, and `sl redo` when manipulating commits or history.
+7. Use `sl rebase`, `sl absorb`, `sl fold`, `sl split`, `sl histedit`, `sl hide`, `sl uncommit`, `sl undo`, and `sl redo` when manipulating commits or history.
 8. Use `sl push` or `sl pr` when publishing changes to GitHub.
 
 When unsure, use `sl githelp -- <git command>` to translate a Git command to Sapling.
@@ -95,25 +95,20 @@ When helping the user, use Sapling terminology consistently:
 
 ## Helpful commands to remember
 
-- `sl`
+- `sl ssl`
 - `sl status`
 - `sl diff`
 - `sl show`
 - `sl log`
 - `sl goto`
-- `sl add`
-- `sl remove`
-- `sl forget`
+- `sl addremove`
 - `sl revert`
-- `sl purge`
 - `sl shelve`
 - `sl commit`
 - `sl amend`
 - `sl metaedit`
 - `sl rebase`
-- `sl graft`
 - `sl hide`
-- `sl unhide`
 - `sl previous`
 - `sl next`
 - `sl split`
@@ -128,7 +123,6 @@ When helping the user, use Sapling terminology consistently:
 - `sl doctor`
 - `sl grep`
 - `sl journal`
-- `sl web`
 - `sl pr`
 - `sl push`
 
@@ -142,6 +136,7 @@ If a command choice is unclear, consult Sapling help:
 - `sl githelp -- <git command>`
 - ~/workspace/github.com/facebook/sapling/website/docs/
 - ~/workspace/github.com/facebook/sapling/eden/scm
+- https://sapling-scm.com/docs/introduction/git-cheat-sheet
 
 When facing a TOUGH challenge that requires deep understanding of Sapling's behavior, ground your answer in `~/workspace/github.com/facebook/sapling/eden/scm/`
 
