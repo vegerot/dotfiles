@@ -38,3 +38,20 @@ env_http_headers = { "X-Code-User-JWT" = "BYTED_AI_JWT" }
 url = "https://0r2y3xvu.mcp.bytedance.net/mcp"
 env_http_headers = { "X-Code-User-JWT" = "BYTED_AI_JWT" }
 
+[projects."/Users/bytedance/workspace/github.com/openai/codex"]
+trust_level = "trusted"
+
+[projects."/Users/bytedance/workspace/github.com/vegerot/dotfiles"]
+trust_level = "trusted"
+
+[projects."/Users/bytedance/code/github.com/openai/codex"]
+trust_level = "trusted"
+
+[projects."/Users/bytedance/code/github.com/google-gemini/gemini-cli"]
+trust_level = "trusted"
+
+[projects."/Users/bytedance/code/github.com/neovim/neovim"]
+trust_level = "trusted"
+
+[projects."/Users/bytedance/.local/share/nvim/site/pack/core/opt"]
+trust_level = "trusted"
