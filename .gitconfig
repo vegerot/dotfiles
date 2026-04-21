@@ -84,10 +84,8 @@
     sf = !git switch $(git for-each-ref --sort=-committerdate --format='%(refname)' refs/heads/ refs/remotes/$(git remote || printf origin)/|sed -e 's-refs/heads/--'| sed -e \"s-refs/remotes/$(git remote || printf origin)/--\" | uniq | fzf) $@
 
 [credential "https://github.com"]
-	helper =
-	helper = !/opt/homebrew/bin/gh auth git-credential
+	helper = !gh auth git-credential
 [credential "https://gist.github.com"]
-	helper =
-	helper = !/opt/homebrew/bin/gh auth git-credential
+	helper = !gh auth git-credential
 [gpg "ssh"]
 	allowedSignersFile = ~/.ssh/allowed_signers
