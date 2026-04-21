@@ -209,6 +209,9 @@ if exists('g:vscode')
 	nnoremap <c-u> <c-u>zzjk
 	nnoremap <c-d> <c-d>zzjk
 lua << LUAEND
+	local function GitHub(repo)
+		return "https://github.com/" .. repo .. ".git"
+	end
 	vim.pack.add({
 		GitHub("vegerot/open-remote"),
 		GitHub("bkad/CamelCaseMotion"),
