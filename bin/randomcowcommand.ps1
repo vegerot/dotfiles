@@ -99,7 +99,7 @@ function Format-Message {
 
   $cowsay = Get-Command -Name cowsay -ErrorAction SilentlyContinue
   if ($null -ne $cowsay) {
-    return (& $cowsay.Source $Message | Out-String).TrimEnd()
+    return (& $cowsay $Message | Out-String).TrimEnd()
   }
 
   return @(
@@ -115,7 +115,7 @@ function Get-RenderedMessage {
   $message = Format-Message -Message (Get-RandomCommandDescription)
   $rainbow = Get-Command -Name rainbow -ErrorAction SilentlyContinue
   if ($null -ne $rainbow) {
-    return (& $rainbow.Source $message | Out-String).TrimEnd()
+    return (& $rainbow $message | Out-String).TrimEnd()
   }
 
   return $message
