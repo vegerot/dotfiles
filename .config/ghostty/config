@@ -4,6 +4,8 @@ background-blur=macos-glass-regular
 keybind = cmd+enter=ignore
 macos-titlebar-style = native
 
+scrollback-limit=9876543210
+
 # Config syntax crash course
 # ==========================
 # Run `ghostty +show-config --default --docs` to view a list of
