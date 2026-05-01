@@ -117,6 +117,8 @@ bindkey '^e' end-of-line
 
 bindkey "^R" history-incremental-search-backward
 
+setopt extendedglob
+
 ## change cursor shape in vi mode
 zle-keymap-select () {
 if [[ $KEYMAP == vicmd ]]; then
