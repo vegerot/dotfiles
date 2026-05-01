@@ -29,6 +29,10 @@
         "X-Code-User-JWT": "${env:BYTED_AI_JWT}",
       }
     },
+    "HTTP Toolkit": {
+      "command": "${env:HOME}/.local/share/httptoolkit-server/client/bin/httptoolkit-server",
+      "args": ["mcp"]
+    }
   },
   // for VSCode MCP
   "servers": {
