@@ -55,3 +55,7 @@ trust_level = "trusted"
 
 [projects."/Users/bytedance/.local/share/nvim/site/pack/core/opt"]
 trust_level = "trusted"
+
+[features]
+js_repl = true
+
