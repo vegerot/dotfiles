@@ -9,7 +9,7 @@
       "src": "https://github.com/zbirenbaum/copilot.lua.git"
     },
     "fzf": {
-      "rev": "43f0508dd2c1830473488186b1c5eebd3dd3c974",
+      "rev": "27dab2422e5faa6149b302d941280fcb8f9fe74c",
       "src": "https://github.com/junegunn/fzf.git"
     },
     "fzf.vim": {
@@ -41,7 +41,7 @@
       "src": "https://github.com/catgoose/nvim-colorizer.lua.git"
     },
     "nvim-lspconfig": {
-      "rev": "e05fb8c3bd61d909dacff24f77f23beb644daf54",
+      "rev": "e146efacbafed3789ac568abcc5a981c5decaa58",
       "src": "https://github.com/neovim/nvim-lspconfig.git"
     },
     "nvim-treesitter": {
