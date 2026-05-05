@@ -167,12 +167,12 @@ function pick_ai_cli() {
 function pick_ai_chatbot() {
 	if is_bytedance_machine; then
 		printf '%s\n' \
-			"tika 5" "coco 5" "aime 4" "github_copilot 4" "gemini 3" "doubao 3" "dola 2" "grok 2" "chatgpt 2" "codex 1" "claude 1" "perplexity 1" "google_ai 1" "microsoft_copilot 1" "meta 1" |
+			"tika 5" "coco 5" "aime 4" "github_copilot 4" "gemini 3" "doubao 3" "dola 2" "grok 2" "chatgpt 2" "codex 1" "claude 1" "perplexity 1" "google_ai 1" "microsoft_copilot 1" "meta 1" "deepseek 1" |
 			awk '{for (i = 0; i < $2; i++) print $1}' |
 			shuf -n 1
 	else
 		printf '%s\n' \
-			"github_copilot 4" "gemini 3" "grok 2" "chatgpt 1" "claude 1" "perplexity 1" "google_ai 1" "microsoft_copilot 1" "meta 1" |
+			"github_copilot 4" "gemini 3" "grok 2" "chatgpt 1" "claude 1" "perplexity 1" "google_ai 1" "microsoft_copilot 1" "meta 1" "deepseek 1" |
 			awk '{for (i = 0; i < $2; i++) print $1}' |
 			shuf -n 1
 	fi
