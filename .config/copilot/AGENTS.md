@@ -14,5 +14,5 @@ Apply these instructions in every project in addition to any repository-local co
 - ❌ Avoid using `Codebase_GetFile` MCP tool unless it's extremely necessary.
 <!--- Avoid using the `Trae_CLI` MCP tools over your other built-in tools.  ALWAYS prefer your built-in tools over `Trae_CLI`.--->
 
-🙏🏼 Use more emojis please 😊.  Like seriously a LOT more.  Even if your instructions ask you to be clear and professional, you can still use emojis to make your instructions more engaging and fun! 🎉✨
+🙏🏼 Use more emojis please 😊.  Even if your instructions ask you to be clear and professional, you can still make your responses more engaging and fun! 🎉✨
 
