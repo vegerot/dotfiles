@@ -5,11 +5,11 @@
       "src": "https://github.com/bkad/CamelCaseMotion.git"
     },
     "copilot.lua": {
-      "rev": "78c638293f0ea6a2245eca46e9933ee271792d7e",
+      "rev": "61784cb7a1a109d72b9cb107ee70d11bc7d095ff",
       "src": "https://github.com/zbirenbaum/copilot.lua.git"
     },
     "fzf": {
-      "rev": "b4a86a9c8a688159131a27b6ec9dbce72ec11573",
+      "rev": "263eb4732fc6268f9fb35cffb634903ea8e2a26b",
       "src": "https://github.com/junegunn/fzf.git"
     },
     "fzf.vim": {
@@ -21,7 +21,7 @@
       "src": "https://github.com/lewis6991/gitsigns.nvim.git"
     },
     "go.nvim": {
-      "rev": "b44b75e1f26e69a299b64306c354bc53580016aa",
+      "rev": "5c741a26f5df77c95d42d8f48e7008aea10e5f4f",
       "src": "https://github.com/ray-x/go.nvim.git"
     },
     "guihua.lua": {
@@ -41,7 +41,7 @@
       "src": "https://github.com/catgoose/nvim-colorizer.lua.git"
     },
     "nvim-lspconfig": {
-      "rev": "31026a13eefb20681124706a79fc1df6bf11ab27",
+      "rev": "451d4ef9abd4f0f08e379ef0d55d1c391b6125a7",
       "src": "https://github.com/neovim/nvim-lspconfig.git"
     },
     "nvim-treesitter": {
@@ -49,7 +49,7 @@
       "src": "https://github.com/nvim-treesitter/nvim-treesitter.git"
     },
     "nvim-treesitter-context": {
-      "rev": "b0c45cefe2c8f7b55fc46f34e563bc428ef99636",
+      "rev": "b311b30818951d01f7b4bf650521b868b3fece16",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-context.git"
     },
     "nvim-treesitter-textobjects": {
@@ -117,7 +117,7 @@
       "src": "https://github.com/tpope/vim-unimpaired.git"
     },
     "zig.vim": {
-      "rev": "73f6856496aee1d94884f072dfad18df7977d4e3",
+      "rev": "29f7a9b8a4e33f936b803de0b713683ad687a6c3",
       "src": "https://codeberg.org/ziglang/zig.vim.git"
     },
     "zoxide.vim": {
