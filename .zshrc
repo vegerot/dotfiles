@@ -266,6 +266,9 @@ load_plugins() {
 
   local smart_suggestions_path=${plugin_paths[smart-suggestion]}/smart-suggestion.plugin.zsh
   if [[ -r $smart_suggestions_path ]]; then
+	if [[ -z "${TMUX:-}" ]]; then
+		export SMART_SUGGESTION_PROXY_MODE=false
+	fi
       if type apfel > /dev/null; then
           export SMART_SUGGESTION_AI_PROVIDER=deepseek
           export DEEPSEEK_BASE_URL="http://localhost:11434/v1"
