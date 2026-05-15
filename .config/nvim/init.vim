@@ -556,7 +556,7 @@ _G.SidekickStatusline = function()
   if st then
     if st.kind == "Error" then
       table.insert(parts, "%#DiagnosticError# err%#StatusLine#")
-    elseif st.busy then
+    elseif st.kind == "Warning" or st.busy then
       table.insert(parts, "%#DiagnosticWarn# …%#StatusLine#")
     else
       -- "ok" color: reuse DiagnosticInfo unless you define something else
