@@ -108,6 +108,28 @@ command Edir :e %:h
 command VEdir :Ve %:h
 command Cd :cd %:h
 
+function! s:Cdr(...) abort
+	let l:start = expand('%:p:h')
+	if empty(l:start)
+		let l:start = getcwd()
+	endif
+
+	let l:root = trim(system('git -C ' .. shellescape(l:start) .. ' rev-parse --show-toplevel'))
+	if v:shell_error || empty(l:root)
+		echoerr 'Not in a git repo'
+		return
+	endif
+
+	let l:path = a:0 ? a:1 : ''
+	if empty(l:path)
+		execute 'cd' fnameescape(l:root)
+	else
+		execute 'cd' fnameescape(l:root .. '/' .. l:path)
+	endif
+endfunction
+
+command -nargs=? Cdr call s:Cdr(<f-args>)
+
 autocmd FileType typescript,javascript,typescriptreact,javascriptreact nmap gD :GrepNoTests --case-sensitive "(const\\|function) <cword>\b" <CR>
 
 autocmd FileType man set nospell
