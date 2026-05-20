@@ -42,10 +42,472 @@
     //  ]
     //}
   },
-
   "permission": {
     "Codebase_GetFile": "ask",
     "Trae_CLI_Grep": "ask",
     "Trae_CLI_Read": "ask"
+  },
+
+  "provider": {
+    "ai_agent_proxy_chat": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "AI Agent Proxy Chat",
+      "options": {
+        "baseURL": "https://ai-coder.bytedance.net",
+        "apiKey": "{env:BYTED_AI_CODER_API_KEY}",
+        "headers": {}
+      },
+      "models": {
+        "kimi-k2.5-gpt": {
+          "name": "Kimi-K2.5",
+          "limit": {
+            "context": 200000,
+            "output": 64000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "kimi-k2-gpt": {
+          "name": "Kimi-K2",
+          "limit": {
+            "context": 200000,
+            "output": 64000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "kimi-k2-thinking": {
+          "name": "Kimi-K2-Thinking",
+          "limit": {
+            "context": 200000,
+            "output": 64000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "glm-4.6": {
+          "name": "GLM-4.6",
+          "limit": {
+            "context": 200000,
+            "output": 64000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "glm-4.7": {
+          "name": "GLM-4.7",
+          "limit": {
+            "context": 200000,
+            "output": 64000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "glm-5": {
+          "name": "GLM-5",
+          "limit": {
+            "context": 200000,
+            "output": 64000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gpt-5.1-2025-11-13": {
+          "name": "GPT-5.1",
+          "limit": {
+            "context": 200000,
+            "output": 100000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gpt-5.2-2025-12-11": {
+          "name": "GPT-5.2",
+          "limit": {
+            "context": 200000,
+            "output": 100000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gpt-5.4-2026-03-05": {
+          "name": "GPT-5.4",
+          "limit": {
+            "context": 200000,
+            "output": 100000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gpt-5.4-pro-2026-03-05": {
+          "name": "GPT-5.4 Pro",
+          "limit": {
+            "context": 200000,
+            "output": 100000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gpt-5.5-2026-04-24": {
+          "name": "GPT-5.5",
+          "limit": {
+            "context": 200000,
+            "output": 100000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        }
+      }
+    },
+    "ai_agent_proxy_responses": {
+      "npm": "@ai-sdk/openai",
+      "name": "AI Agent Proxy Responses",
+      "options": {
+        "baseURL": "https://ai-coder.bytedance.net/responses",
+        "apiKey": "{env:BYTED_AI_CODER_API_KEY}",
+        "headers": {}
+      },
+      "models": {
+        "gpt-5.1-codex-2025-11-13": {
+          "name": "GPT-5.1 Codex",
+          "limit": {
+            "context": 200000,
+            "output": 100000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gpt-5.1-codex-max-20251204": {
+          "name": "GPT-5.1 Codex Max",
+          "limit": {
+            "context": 200000,
+            "output": 100000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gpt-5.3-codex-2026-02-24": {
+          "name": "GPT-5.3 Codex",
+          "limit": {
+            "context": 200000,
+            "output": 100000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gpt-5.2-codex-2026-01-14": {
+          "name": "GPT-5.2 Codex",
+          "limit": {
+            "context": 200000,
+            "output": 100000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gpt-5.1-2025-11-13": {
+          "name": "GPT-5.1",
+          "limit": {
+            "context": 200000,
+            "output": 100000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gpt-5.2-2025-12-11": {
+          "name": "GPT-5.2",
+          "limit": {
+            "context": 200000,
+            "output": 100000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gpt-5.4-2026-03-05": {
+          "name": "GPT-5.4",
+          "limit": {
+            "context": 200000,
+            "output": 100000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gpt-5.4-pro-2026-03-05": {
+          "name": "GPT-5.4 Pro",
+          "limit": {
+            "context": 200000,
+            "output": 100000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gpt-5.5-2026-04-24": {
+          "name": "GPT-5.5",
+          "limit": {
+            "context": 200000,
+            "output": 100000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "doubao-seed-code-preview": {
+          "name": "Doubao Seed Code Preview (Responses)",
+          "limit": {
+            "context": 200000,
+            "output": 64000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        }
+      }
+    },
+    "ai_agent_proxy_google": {
+      "npm": "@ai-sdk/google",
+      "name": "AI Agent Proxy Google",
+      "options": {
+        "baseURL": "https://ai-coder.bytedance.net/gemini/v1beta",
+        "apiKey": "{env:BYTED_AI_CODER_API_KEY}",
+        "headers": {}
+      },
+      "models": {
+        "gemini-2.5-pro": {
+          "name": "Gemini 2.5 Pro",
+          "limit": {
+            "context": 200000,
+            "output": 100000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "gemini-2.5-flash": {
+          "name": "Gemini 2.5 Flash",
+          "limit": {
+            "context": 200000,
+            "output": 64000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+      }
+    },
+    "ai_agent_proxy_ark_chat": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "AI Agent Proxy ARK Chat",
+      "options": {
+        "baseURL": "https://ai-coder.bytedance.net",
+        "apiKey": "{env:BYTED_AI_CODER_API_KEY}",
+        "headers": {}
+      },
+      "models": {
+        "kimi-k2.5": {
+          "name": "Kimi K2.5",
+          "limit": {
+            "context": 200000,
+            "output": 64000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "kimi-k2-thinking": {
+          "name": "Kimi K2 Thinking",
+          "limit": {
+            "context": 200000,
+            "output": 64000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "doubao-seed-code-preview": {
+          "name": "Doubao Seed Code Preview",
+          "limit": {
+            "context": 200000,
+            "output": 64000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        }
+      }
+    }
   }
 }
