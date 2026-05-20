@@ -26,8 +26,10 @@ references:
 
 Example:
 
-- `https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Anchor_positioning/Using`
-- `https://raw.githubusercontent.com/mdn/content/refs/heads/main/files/en-us/web/css/guides/anchor_positioning/using/index.md`
+- https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Anchor_positioning/Using
+  * -> https://raw.githubusercontent.com/mdn/content/refs/heads/main/files/en-us/web/css/guides/anchor_positioning/using/index.md
+- https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/flex-basis
+  * -> https://raw.githubusercontent.com/mdn/content/refs/heads/main/files/en-us/web/css/reference/properties/flex-basis/index.md
 
 Translation steps:
 
