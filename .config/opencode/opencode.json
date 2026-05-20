@@ -1,5 +1,8 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "instructions": [
+    "~/dotfiles/.config/opencode/introspection.md"
+  ],
   "mcp": {
     "Codebase": {
       "type": "remote",
