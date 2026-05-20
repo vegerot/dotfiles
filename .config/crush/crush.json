@@ -1,7 +1,8 @@
 {
   "options": {
     "context_paths": [
-      "~/.config/crush/AGENTS.md"
+      "~/.config/crush/AGENTS.md",
+      "~/.config/crush/introspection.md"
     ]
   }
 }
