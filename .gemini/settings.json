@@ -13,7 +13,8 @@
       "AGENTS.md",
       "GEMINI.md",
       "CLAUDE.md",
-      "README.md"
+      "README.md",
+      "introspection.md"
     ]
   },
   "ui": {
