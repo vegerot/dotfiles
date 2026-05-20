@@ -76,6 +76,11 @@
         "Navs",
         "oapi",
         "ollama",
+        "Rsbuild",
+        "rslint",
+        "Rspack",
+        "Rspress",
+        "Rstack",
         "rustc",
         "slardar",
         "smartlog",
@@ -250,7 +255,6 @@
     "security.workspace.trust.untrustedFiles": "open",
     "tabnine.experimentalAutoImports": true,
     "chat.viewSessions.orientation": "stacked",
-    "trae.mcp.beta.enableWorkspaceMcp": true,
     "chat.mcp.gallery.enabled": true,
     "extensions.experimental.affinity": {
         "asvetliakov.vscode-neovim": 1
@@ -261,4 +265,5 @@
         "**/*.code-search": true,
         "**/.eden-mono": true
     },
+    "trae.mcp.enableWorkspaceMcp": true,
 }
