@@ -5,11 +5,11 @@
       "src": "https://github.com/bkad/CamelCaseMotion.git"
     },
     "copilot.lua": {
-      "rev": "61784cb7a1a109d72b9cb107ee70d11bc7d095ff",
+      "rev": "407349117f176789df6ec1c23bca72f34e15b4e8",
       "src": "https://github.com/zbirenbaum/copilot.lua.git"
     },
     "fzf": {
-      "rev": "263eb4732fc6268f9fb35cffb634903ea8e2a26b",
+      "rev": "5819e5ff2f206064d955854ad54182284bdae857",
       "src": "https://github.com/junegunn/fzf.git"
     },
     "fzf.vim": {
@@ -25,7 +25,7 @@
       "src": "https://github.com/ray-x/go.nvim.git"
     },
     "guihua.lua": {
-      "rev": "7c364432c2f9153ed068f4eab1989edd9f3fd302",
+      "rev": "ae1a09035709a5952ae6f2fab742c2097c31a8f2",
       "src": "https://github.com/ray-x/guihua.lua.git"
     },
     "hardtime.nvim": {
@@ -41,7 +41,7 @@
       "src": "https://github.com/catgoose/nvim-colorizer.lua.git"
     },
     "nvim-lspconfig": {
-      "rev": "451d4ef9abd4f0f08e379ef0d55d1c391b6125a7",
+      "rev": "3de240997fc3208eb29df5e5c17ba4665961bd84",
       "src": "https://github.com/neovim/nvim-lspconfig.git"
     },
     "nvim-treesitter": {
@@ -57,7 +57,7 @@
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-textobjects.git"
     },
     "nvim-web-devicons": {
-      "rev": "4fc505ac7bd7692824a142e96e5f529c133862f8",
+      "rev": "7d8dad2c837fcdf2e65997e68657c1a21c568074",
       "src": "https://github.com/nvim-tree/nvim-web-devicons.git"
     },
     "oil.nvim": {
@@ -85,7 +85,7 @@
       "src": "https://github.com/nvim-telescope/telescope-fzy-native.nvim.git"
     },
     "telescope.nvim": {
-      "rev": "f04ab730b8f9c6bf3f54a206d0dcddfd70c52d59",
+      "rev": "7d324792b7943e4aa16ad007212e6acc6f9fe335",
       "src": "https://github.com/nvim-telescope/telescope.nvim.git"
     },
     "vim-fetch": {
