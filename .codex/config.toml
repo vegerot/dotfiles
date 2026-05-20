@@ -1,5 +1,6 @@
 model = "gpt-5.5"
 model_reasoning_effort = "medium"
+developer_instructions = "For introspection questions about Codex, inspect `~/code/github.com/openai/codex`."
 
 [mcp_servers.chrome_devtools]
 command = "bunx"
