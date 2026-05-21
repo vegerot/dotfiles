@@ -196,6 +196,8 @@ load_plugins() {
   # bun completions
   [[ -s "$HOME/.bun/_bun" ]] && source "$HOME/.bun/_bun"
 
+  [[ -s "$HOME/.ttadk/completion/ttadk.zsh" ]] && source "$HOME/.ttadk/completion/ttadk.zsh"
+
   # HISTORY plugins start
   if type atuin > /dev/null; then
 	  export FZF_CTRL_R_COMMAND=
