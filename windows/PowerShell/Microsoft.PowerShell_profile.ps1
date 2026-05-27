@@ -31,4 +31,21 @@ if (Test-Path -LiteralPath $randomCowCommand) {
   & $randomCowCommand
 }
 
+function pick_ai_cli {
+  @(
+    "crush", "traeIDE", "traeIDE", "codex", "codex", "gemini", "gemini",
+    "claude", "claude", "claude", "opencode", "opencode", "opencode", "opencode"
+  ) | Get-Random
+}
+
+function pick_ai_chatbot {
+  @(
+    "github_copilot", "github_copilot", "github_copilot", "github_copilot",
+    "gemini", "gemini", "gemini",
+    "grok", "grok",
+    "chatgpt", "chatgpt",
+    "codex", "claude", "perplexity", "google_ai", "microsoft_copilot", "meta", "deepseek", "tako(phone)"
+  ) | Get-Random
+}
+
 #oh-my-posh init pwsh | Invoke-Expression
