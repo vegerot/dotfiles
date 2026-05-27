@@ -40,7 +40,7 @@ function Get-WeightedRandom {
 function pick_ai_cli {
   Get-WeightedRandom @{
     crush    = 1; traeIDE  = 2; codex    = 2
-    gemini   = 2; claude   = 3; opencode = 4
+    gemini   = 2; copilot  = 2; claude   = 3; opencode = 4
   }
 }
 
@@ -50,6 +50,7 @@ function pick_ai_chatbot {
     chatgpt           = 2; codex             = 1; claude            = 1
     perplexity        = 1; google_ai         = 1; microsoft_copilot = 1
     meta              = 1; deepseek          = 1; "tako(phone)"     = 1
+    openrouter_chat   = 1; hf_inference      = 1
   }
 }
 
