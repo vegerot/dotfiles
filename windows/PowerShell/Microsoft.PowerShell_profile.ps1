@@ -31,21 +31,26 @@ if (Test-Path -LiteralPath $randomCowCommand) {
   & $randomCowCommand
 }
 
+function Get-WeightedRandom {
+  param([hashtable]$Weights)
+  $pool = $Weights.GetEnumerator() | ForEach-Object { @($_.Key) * $_.Value }
+  $pool | Get-Random
+}
+
 function pick_ai_cli {
-  @(
-    "crush", "traeIDE", "traeIDE", "codex", "codex", "gemini", "gemini",
-    "claude", "claude", "claude", "opencode", "opencode", "opencode", "opencode"
-  ) | Get-Random
+  Get-WeightedRandom @{
+    crush    = 1; traeIDE  = 2; codex    = 2
+    gemini   = 2; claude   = 3; opencode = 4
+  }
 }
 
 function pick_ai_chatbot {
-  @(
-    "github_copilot", "github_copilot", "github_copilot", "github_copilot",
-    "gemini", "gemini", "gemini",
-    "grok", "grok",
-    "chatgpt", "chatgpt",
-    "codex", "claude", "perplexity", "google_ai", "microsoft_copilot", "meta", "deepseek", "tako(phone)"
-  ) | Get-Random
+  Get-WeightedRandom @{
+    github_copilot    = 4; gemini            = 3; grok              = 2
+    chatgpt           = 2; codex             = 1; claude            = 1
+    perplexity        = 1; google_ai         = 1; microsoft_copilot = 1
+    meta              = 1; deepseek          = 1; "tako(phone)"     = 1
+  }
 }
 
 #oh-my-posh init pwsh | Invoke-Expression
