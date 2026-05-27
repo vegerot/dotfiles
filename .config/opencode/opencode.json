@@ -49,6 +49,17 @@
   },
 
   "provider": {
+    "openrouter": {
+      "models": {
+        "openrouter/pareto-code": {
+          "options": {
+            "plugins": [
+              { "id": "pareto-router", "min_coding_score": 0.5 }
+            ]
+          }
+        }
+      }
+    },
     "ai_agent_proxy_chat": {
       "npm": "@ai-sdk/openai-compatible",
       "name": "AI Agent Proxy Chat",
