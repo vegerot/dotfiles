@@ -53,10 +53,17 @@
       "models": {
         "openrouter/pareto-code": {
           "variants": {
-            "low": {
+            "💩": {
               "options": {
                 "plugins": [
                   { "id": "pareto-router", "min_coding_score": 0.0 }
+                ]
+              }
+            },
+            "low": {
+              "options": {
+                "plugins": [
+                  { "id": "pareto-router", "min_coding_score": 0.1 }
                 ]
               }
             },
@@ -71,6 +78,13 @@
               "options": {
                 "plugins": [
                   { "id": "pareto-router", "min_coding_score": 0.67 }
+                ]
+              }
+            },
+            "🤩": {
+              "options": {
+                "plugins": [
+                  { "id": "pareto-router", "min_coding_score": 1 }
                 ]
               }
             }
