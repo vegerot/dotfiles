@@ -26,7 +26,7 @@ elif [[ -z ${ZSH_SKIP_LOADING_PLUGINS:-} ]]; then
 fi;
 
 local use_fancy_prompt
-if [[ ${TERM_PROGRAM:-} != "WarpTerminal" && ${TERMINAL_EMULATOR:-} != "JetBrains-JediTerm" ]]; then
+if [[ ${TERM_PROGRAM:-} != "WarpTerminal" && ${TERMINAL_EMULATOR:-} != "JetBrains-JediTerm" && -z ${ZSH_SKIP_LOADING_PLUGINS:-} ]]; then
 	use_fancy_prompt="true"
 else
 	use_fancy_prompt="false"
@@ -34,7 +34,6 @@ fi
 
 if [[ $use_fancy_prompt == "true" \
 	&& -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"\
-	&& -z ${ZSH_SKIP_LOADING_PLUGINS:-} \
 	]]; then
 	source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 else
