@@ -22,7 +22,7 @@ function prompt {
 }
 
 Set-Alias sap sl.exe
-Set-Alias pilot "$env:LOCALAPPDATA\Voidstar\FilePilot\FPilot.exe"
+Set-Alias filepilot "$env:LOCALAPPDATA\Voidstar\FilePilot\FPilot.exe"
 
 $randomCowCommand = Join-Path $HOME 'dotfiles\bin\randomcowcommand.ps1'
 if (Test-Path -LiteralPath $randomCowCommand) {
