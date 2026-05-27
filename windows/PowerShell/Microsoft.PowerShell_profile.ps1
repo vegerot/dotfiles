@@ -10,14 +10,16 @@ $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
 if (Test-Path($ChocolateyProfile)) {
   Import-Module "$ChocolateyProfile"
 }
-# prompt
+
+# Start new terminals in the same directory as the current terminal
 function prompt {
   $loc = $executionContext.SessionState.Path.CurrentLocation;
 
-  $out = "PS $loc$('>' * ($nestedPromptLevel + 1)) ";
+  $out = ""
   if ($loc.Provider.Name -eq "FileSystem") {
     $out += "$([char]27)]9;9;`"$($loc.ProviderPath)`"$([char]27)\"
   }
+  $out += "PS $loc$('>' * ($nestedPromptLevel + 1)) ";
   return $out
 }
 
