@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# sArCaSm - CoNvErTs TeXt To AlTeRnAtInG cApS
+
+awk '{
+    for (i=1; i<=length($0); i++) {
+        c = substr($0, i, 1)
+        if (i % 2 == 1) {
+            printf toupper(c)
+        } else {
+            printf tolower(c)
+        }
+    }
+    print ""
+}'
