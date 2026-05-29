@@ -1,11 +1,10 @@
-// symlink me to `$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json`
 {
     "$help": "https://aka.ms/terminal-documentation",
     "$schema": "https://aka.ms/terminal-profiles-schema",
-    "actions":
+    "actions": 
     [
         {
-            "command":
+            "command": 
             {
                 "action": "splitPane",
                 "split": "auto",
@@ -18,7 +17,7 @@
             "id": "User.find"
         },
         {
-            "command":
+            "command": 
             {
                 "action": "sendInput",
                 "input": "\u001b\r"
@@ -32,7 +31,7 @@
     "defaultProfile": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
     "firstWindowPreference": "persistedWindowLayout",
     "focusFollowMouse": true,
-    "keybindings":
+    "keybindings": 
     [
         {
             "id": "User.sendInput.8F63D3A9",
@@ -47,25 +46,25 @@
             "keys": "ctrl+shift+t"
         }
     ],
-    "newTabMenu":
+    "newTabMenu": 
     [
         {
             "type": "remainingProfiles"
         }
     ],
-    "profiles":
+    "profiles": 
     {
-        "defaults":
+        "defaults": 
         {
             "experimental.retroTerminalEffect": false,
-            "font":
+            "font": 
             {
                 "face": "JetBrainsMono Nerd Font"
             },
             "opacity": 75,
             "useAcrylic": true
         },
-        "list":
+        "list": 
         [
             {
                 "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
@@ -84,7 +83,7 @@
                 "source": "Windows.Terminal.Azure"
             },
             {
-                "font":
+                "font": 
                 {
                     "size": 14
                 },
@@ -105,12 +104,6 @@
                 "hidden": false,
                 "name": "Git Bash",
                 "source": "Git"
-            },
-            {
-                "guid": "{5a390dc7-1e41-559f-b60c-a8fb441f35c2}",
-                "hidden": false,
-                "name": "Developer Command Prompt for VS 2019",
-                "source": "Windows.Terminal.VisualStudio"
             },
             {
                 "guid": "{63964994-3e95-545a-97f0-8ed5037a06f4}",
@@ -149,10 +142,12 @@
                 "source": "VSDebugConsole"
             },
             {
-                "guid": "{6dfc1ee8-b687-50c5-a592-80d32861f1ca}",
+                "commandline": "pwsh.exe -NoExit -Command \"& { $vsPath = & \\\"${env:ProgramFiles(x86)}\\\\Microsoft Visual Studio\\\\Installer\\\\vswhere.exe\\\" -latest -property installationPath; Import-Module (Join-Path $vsPath 'Common7\\\\Tools\\\\Microsoft.VisualStudio.DevShell.dll'); Enter-VsDevShell -VsInstallPath $vsPath -SkipAutomaticLocation -SetDefaultWindowTitle }\"",
+                "guid": "{e94ad8e7-8411-487e-8b64-5f932bc81db8}",
                 "hidden": false,
-                "name": "Developer Command Prompt for VS 18",
-                "source": "Windows.Terminal.VisualStudio"
+                "icon": "ms-appx:///ProfileIcons/vs-powershell.png",
+                "name": "Developer PowerShell for VS 2026",
+                "startingDirectory": null
             },
             {
                 "guid": "{ce52d838-587e-550e-87c1-0226774c40c5}",
