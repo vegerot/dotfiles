@@ -57,6 +57,7 @@
               "plugins": [
                 { "id": "pareto-router", "min_coding_score": 0.0 }
               ],
+              "reasoning": { "effort": "none" }
             },
             "low": {
               "plugins": [
@@ -77,6 +78,7 @@
               "plugins": [
                 { "id": "pareto-router", "min_coding_score": 1 }
               ],
+              "reasoning": { "effort": "xhigh" }
             }
           }
         }
