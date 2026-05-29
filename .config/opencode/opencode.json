@@ -54,39 +54,29 @@
         "openrouter/pareto-code": {
           "variants": {
             "💩": {
-              "options": {
-                "plugins": [
-                  { "id": "pareto-router", "min_coding_score": 0.0 }
-                ]
-              }
+              "plugins": [
+                { "id": "pareto-router", "min_coding_score": 0.0 }
+              ],
             },
             "low": {
-              "options": {
-                "plugins": [
-                  { "id": "pareto-router", "min_coding_score": 0.1 }
-                ]
-              }
+              "plugins": [
+                { "id": "pareto-router", "min_coding_score": 0.1 }
+              ]
             },
             "medium": {
-              "options": {
-                "plugins": [
-                  { "id": "pareto-router", "min_coding_score": 0.34 }
-                ]
-              }
+              "plugins": [
+                { "id": "pareto-router", "min_coding_score": 0.34 }
+              ]
             },
             "high": {
-              "options": {
-                "plugins": [
-                  { "id": "pareto-router", "min_coding_score": 0.67 }
-                ]
-              }
+              "plugins": [
+                { "id": "pareto-router", "min_coding_score": 0.67 }
+              ]
             },
             "🤩": {
-              "options": {
-                "plugins": [
-                  { "id": "pareto-router", "min_coding_score": 1 }
-                ]
-              }
+              "plugins": [
+                { "id": "pareto-router", "min_coding_score": 1 }
+              ],
             }
           }
         }
