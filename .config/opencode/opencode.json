@@ -45,7 +45,11 @@
   "permission": {
     "Codebase_GetFile": "ask",
     "Trae_CLI_Grep": "ask",
-    "Trae_CLI_Read": "ask"
+    "Trae_CLI_Read": "ask",
+    "external_directory": {
+      "/tmp/**": "allow",
+      "~/code/github.com/anomalyco/opencode/**": "allow",
+    }
   },
 
   "provider": {
