@@ -49,6 +49,7 @@
     "external_directory": {
       "/tmp/**": "allow",
       "~/code/github.com/anomalyco/opencode/**": "allow",
+      "~/.config/opencode/**": "allow"
     }
   },
 
@@ -61,12 +62,15 @@
               "plugins": [
                 { "id": "pareto-router", "min_coding_score": 0.0 }
               ],
-              "reasoning": { "effort": "none" }
+              "reasoning": { "effort": "none" },
+              "limit": {
+                "context": 100000
+              }
             },
             "low": {
               "plugins": [
                 { "id": "pareto-router", "min_coding_score": 0.1 }
-              ]
+              ],
             },
             "medium": {
               "plugins": [
@@ -76,13 +80,16 @@
             "high": {
               "plugins": [
                 { "id": "pareto-router", "min_coding_score": 0.67 }
-              ]
+              ],
             },
             "🤩": {
               "plugins": [
                 { "id": "pareto-router", "min_coding_score": 1 }
               ],
-              "reasoning": { "effort": "xhigh" }
+              "reasoning": { "effort": "xhigh" },
+              "limit": {
+                "context": 1048576
+              }
             }
           }
         }
