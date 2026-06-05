@@ -68,8 +68,12 @@ MINT_PATH=$HOME/.mint
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$PATH:$BUN_INSTALL/bin"
 
-# ADB installed by Android Studio
-export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools/"
+# adb
+if [[ -d "$HOME/Library/Android/sdk/platform-tools/" ]]; then
+	export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools"
+elif [[ -d "$HOME/.local/bin/android-platform-tools/" ]]; then
+	export PATH="$PATH:$HOME/.local/bin/android-platform-tools"
+fi
 
 [[ -d "$HOME/.atuin/bin/" ]] && export PATH="$HOME/.atuin/bin:$PATH"
 
