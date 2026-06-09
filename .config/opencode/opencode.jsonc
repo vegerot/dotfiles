@@ -3,6 +3,7 @@
   "instructions": [
     "~/dotfiles/.config/opencode/introspection.md"
   ],
+  "plugin": ["./plugin/conditional-bytedance.ts"],
   "mcp": {
     "Codebase": {
       "type": "remote",
