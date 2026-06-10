@@ -162,10 +162,7 @@ typeset -A plugin_paths=(
 )
 load_plugins() {
   if type zoxide > /dev/null; then
-		eval "$(zoxide init zsh)"
-		function cd() {
-			__zoxide_cd "$@"
-		}
+		eval "$(zoxide init zsh --cmd cd)"
   fi
 
   local zig_shell_complete_path=${plugin_paths[zig-shell-complete]}/zig-shell-completions.plugin.zsh
