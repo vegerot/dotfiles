@@ -71,8 +71,18 @@ export PATH="$PATH:$BUN_INSTALL/bin"
 # adb
 if [[ -d "$HOME/Library/Android/sdk/platform-tools/" ]]; then
 	export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools"
+elif [[ -d "$HOME/Android/Sdk/platform-tools/" ]]; then
+	export PATH="$PATH:$HOME/Android/Sdk/platform-tools"
 elif [[ -d "$HOME/.local/bin/android-platform-tools/" ]]; then
 	export PATH="$PATH:$HOME/.local/bin/android-platform-tools"
+fi
+
+if [[ -d "/opt/google/android-studio/bin/" ]]; then
+	export PATH="$PATH:/opt/google/android-studio/bin"
+fi
+
+if [[ -d "/opt/google/antigravity/" ]]; then
+	export PATH="$PATH:/opt/google/antigravity"
 fi
 
 [[ -d "$HOME/.atuin/bin/" ]] && export PATH="$HOME/.atuin/bin:$PATH"
