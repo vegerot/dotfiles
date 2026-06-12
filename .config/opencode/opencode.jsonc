@@ -55,6 +55,58 @@
   },
 
   "provider": {
+    "better_pareto_router": {
+      "name": "Better Pareto Router",
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "apiKey": "{env:OPENROUTER_API_KEY}",
+        "baseURL": "http://127.0.0.1:4000/v1"
+      }
+      "models": {
+        "pareto": {
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "name": "Better Pareto Router",
+          "variants": {
+            "💩": {
+              "headers": {
+                "X-Pareto-P": "0"
+              },
+              "reasoning": { "effort": "none" },
+            },
+            "low": {
+              "headers": {
+                "X-Pareto-P": "0.67"
+              },
+              "reasoning": { "effort": "low" },
+            },
+            "medium": {
+              "headers": {
+                "X-Pareto-P": "0.8"
+              }
+            },
+            "high": {
+              "headers": {
+                "X-Pareto-P": "0.9"
+              }
+            },
+            "🤩": {
+              "headers": {
+                "X-Pareto-P": "1"
+              },
+              "reasoning": { "effort": "xhigh" },
+            },
+          }
+        }
+      },
+    },
     "openrouter": {
       "models": {
         "openrouter/pareto-code": {
@@ -554,58 +606,6 @@
             ]
           }
         }
-      }
-    },
-    "better_pareto_router": {
-      "models": {
-        "pareto": {
-          "modalities": {
-            "input": [
-              "text",
-              "image"
-            ],
-            "output": [
-              "text"
-            ]
-          },
-          "name": "Better Pareto Router",
-          "variants": {
-            "💩": {
-              "headers": {
-                "X-Pareto-P": "0"
-              },
-              "reasoning": { "effort": "none" },
-            },
-            "low": {
-              "headers": {
-                "X-Pareto-P": "0.67"
-              },
-              "reasoning": { "effort": "low" },
-            },
-            "medium": {
-              "headers": {
-                "X-Pareto-P": "0.8"
-              }
-            },
-            "high": {
-              "headers": {
-                "X-Pareto-P": "0.9"
-              }
-            },
-            "🤩": {
-              "headers": {
-                "X-Pareto-P": "1"
-              },
-              "reasoning": { "effort": "xhigh" },
-            },
-          }
-        }
-      },
-      "name": "Better Pareto Router",
-      "npm": "@ai-sdk/openai-compatible",
-      "options": {
-        "apiKey": "{env:OPENROUTER_API_KEY}",
-        "baseURL": "http://127.0.0.1:4000/v1"
       }
     }
   }
