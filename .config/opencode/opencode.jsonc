@@ -557,45 +557,47 @@
       }
     },
     "better_pareto_router": {
-      "npm": "@ai-sdk/openai-compatible",
-      "name": "Better Pareto Router",
-      "options": {
-        "baseURL": "http://127.0.0.1:4000/v1",
-        "apiKey": "{env:OPENROUTER_API_KEY}"
-      },
       "models": {
-        "pareto@0": {
-          "name": "Better Pareto Router (cheapest)",
+        "pareto": {
           "modalities": {
-            "input": ["text", "image"],
-            "output": ["text"]
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
           },
-          "headers": { "X-Pareto-P": "0" }
-        },
-        "pareto@0.67": {
-          "name": "Better Pareto Router (medium)",
-          "modalities": {
-            "input": ["text", "image"],
-            "output": ["text"]
-          },
-          "headers": { "X-Pareto-P": "0.67" }
-        },
-        "pareto@0.8": {
-          "name": "Better Pareto Router (high)",
-          "modalities": {
-            "input": ["text", "image"],
-            "output": ["text"]
-          },
-          "headers": { "X-Pareto-P": "0.8" }
-        },
-        "pareto@1": {
-          "name": "Better Pareto Router (best)",
-          "modalities": {
-            "input": ["text", "image"],
-            "output": ["text"]
-          },
-          "headers": { "X-Pareto-P": "1" }
+          "name": "Better Pareto Router",
+          "variants": {
+            "best": {
+              "headers": {
+                "X-Pareto-P": "1"
+              }
+            },
+            "cheapest": {
+              "headers": {
+                "X-Pareto-P": "0"
+              }
+            },
+            "high": {
+              "headers": {
+                "X-Pareto-P": "0.8"
+              }
+            },
+            "medium": {
+              "headers": {
+                "X-Pareto-P": "0.67"
+              }
+            }
+          }
         }
+      },
+      "name": "Better Pareto Router",
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "apiKey": "{env:OPENROUTER_API_KEY}",
+        "baseURL": "http://127.0.0.1:4000/v1"
       }
     }
   }
