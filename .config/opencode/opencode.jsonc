@@ -570,31 +570,34 @@
           },
           "name": "Better Pareto Router",
           "variants": {
-            "best": {
-              "headers": {
-                "X-Pareto-P": "1"
-              }
-            },
-            "cheapest": {
+            "💩": {
               "headers": {
                 "X-Pareto-P": "0"
-              }
+              },
+              "reasoning": { "effort": "none" },
             },
-            "high": {
+            "low": {
+              "headers": {
+                "X-Pareto-P": "0.67"
+              },
+              "reasoning": { "effort": "low" },
+            },
+            "medium": {
               "headers": {
                 "X-Pareto-P": "0.8"
               }
             },
-            "great": {
+            "high": {
               "headers": {
                 "X-Pareto-P": "0.9"
               }
             },
-            "medium": {
+            "🤩": {
               "headers": {
-                "X-Pareto-P": "0.67"
-              }
-            }
+                "X-Pareto-P": "1"
+              },
+              "reasoning": { "effort": "xhigh" },
+            },
           }
         }
       },
