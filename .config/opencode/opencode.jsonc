@@ -585,6 +585,11 @@
                 "X-Pareto-P": "0.8"
               }
             },
+            "great": {
+              "headers": {
+                "X-Pareto-P": "0.9"
+              }
+            },
             "medium": {
               "headers": {
                 "X-Pareto-P": "0.67"
