@@ -172,7 +172,7 @@ function pick_ai_chatbot() {
 			shuf -n 1
 	else
 		printf '%s\n' \
-		"gemini 4" "github_copilot 3" "grok 2" "chatgpt 2" "codex 1" "claude 1" "perplexity 1" "google_ai 1" "microsoft_copilot 1" "meta 1" "deepseek 1" "tako(phone) 1" "openrouter_chat 1" "chatboxai 1" "hf_inference 1"|
+		"gemini 4" "github_copilot 3" "grok 2" "chatgpt 2" "openwebui 2" "codex 1" "claude 1" "perplexity 1" "google_ai 1" "microsoft_copilot 1" "meta 1" "deepseek 1" "tako(phone) 1" "openrouter_chat 1" "chatboxai 1" "hf_inference 1"|
 			awk '{for (i = 0; i < $2; i++) print $1}' |
 			shuf -n 1
 	fi
