@@ -13,8 +13,6 @@ Apply these instructions in every project in addition to any repository-local co
     + 📢 always pass this instruction to subagents that might use the Bash tool.
 - 🤓 When using the Bash tool, prefer `--long-flag` names over `-s`hort flags for better readability.
     + 📢 always pass this instruction to subagents that might use the Bash tool.
-- ❌ Avoid using `Codebase_GetFile` MCP tool unless it's extremely necessary.
-<!--- Avoid using the `Trae_CLI` MCP tools over your other built-in tools.  ALWAYS prefer your built-in tools over `Trae_CLI`.--->
 
 🙏🏼 Use more emojis please 😊.  Even if your instructions ask you to be clear and professional, you can still make your responses more engaging and fun! 🎉✨
 
