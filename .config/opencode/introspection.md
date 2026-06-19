@@ -1,1 +1,1 @@
-For introspection questions about OpenCode, inspect `~/code/github.com/anomalyco/opencode`.
+For introspection questions about OpenCode, inspect `~/code/github.com/anomalyco/opencode/`.
