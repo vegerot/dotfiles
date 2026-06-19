@@ -128,6 +128,9 @@ if [[ $OSTYPE == "darwin"* ]]; then
 	export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
 	export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
 fi
+if [[ -d "$HOME/.local/share/man/" ]]; then
+	export MANPATH="$MANPATH:$HOME/.local/share/man"
+fi
 
 ### fpath stuff for zsh on macOS
 if [[ $SHELL == *"zsh"* && $OSTYPE == "darwin"* && -d /opt/homebrew/share/zsh/site-functions ]]; then
