@@ -4,6 +4,7 @@
     "~/dotfiles/.config/opencode/introspection.md"
   ],
   "plugin": ["./plugin/conditional-bytedance.ts"],
+  "lsp": true,
   "mcp": {
     "Codebase": {
       "type": "remote",
