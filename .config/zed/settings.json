@@ -1,0 +1,257 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+	"proxy": "",
+	"edit_predictions": {
+		"provider": "copilot",
+	},
+	"tabs": {
+		"show_diagnostics": "errors",
+		"file_icons": false,
+		"git_status": true,
+	},
+	"title_bar": {
+		"show_menus": false,
+		"show_branch_status_icon": false,
+	},
+	"status_bar": {
+		"show_active_file": true,
+	},
+	"search": {
+		"center_on_match": true,
+	},
+	"use_smartcase_search": true,
+	"diagnostics": {
+		"inline": {
+			"enabled": true,
+		},
+	},
+	"document_symbols": "on",
+	"document_folding_ranges": "on",
+	"semantic_tokens": "combined",
+	"colorize_brackets": true,
+	"code_lens": "on",
+	"inlay_hints": {
+		"show_background": true,
+		"enabled": true,
+	},
+	"indent_guides": {
+		"coloring": "indent_aware",
+		"background_coloring": "disabled",
+	},
+	"preferred_line_length": 100,
+	"hard_tabs": true,
+	"toolbar": {
+		"code_actions": true,
+	},
+	"show_signature_help_after_edits": true,
+	"auto_signature_help": true,
+	"autoscroll_on_clicks": true,
+	"sticky_scroll": {
+		"enabled": true,
+	},
+	"which_key": {
+		"enabled": true,
+	},
+	"telemetry": {
+		"diagnostics": true,
+		"metrics": true,
+		"anthropic_retention": true,
+	},
+	"agent": {
+		"auto_compact": {
+			"threshold": "90%",
+		},
+		"show_turn_stats": true,
+		"tool_permissions": {
+			"tools": {
+				"terminal": {
+					"always_deny": [
+						{
+							"pattern": "^cat\\s+internal/proxy/server\\.go(\\s|$)",
+						},
+					],
+					"always_allow": [
+						{
+							"pattern": "^rg\\b",
+						},
+						{
+							"pattern": "^head\\b",
+						},
+						{
+							"pattern": "^make\\s+test(\\s|$)",
+						},
+						{
+							"pattern": "^git\\s+status(\\s|$)",
+						},
+						{
+							"pattern": "^fd\\b",
+						},
+						{
+							"pattern": "^cat\\b",
+						},
+						{
+							"pattern": "^ls\\b",
+						},
+						{
+							"pattern": "^sed\\b",
+						},
+						{
+							"pattern": "^cd\\s+\\~/code/github\\.com/openai/codex/(\\s|$)",
+						},
+						{
+							"pattern": "^gh\\s+issue\\s+view(\\s|$)",
+						},
+						{
+							"pattern": "^gh\\s+issue\\s+list(\\s|$)",
+						},
+						{
+							"pattern": "^sqlite3\\s+\\~/\\.local/share/opencode/opencode-\\.db(\\s|$)",
+						},
+						{
+							"pattern": "^sqlite3\\s+\\~/\\.local/share/opencode/opencode-local\\.db(\\s|$)",
+						},
+						{
+							"pattern": "^wc\\b",
+						},
+					],
+				},
+			},
+		},
+		"default_model": {
+			"provider": "Better Coding Router",
+			"model": "pareto@0.6",
+			"enable_thinking": false,
+		},
+		"favorite_models": [
+			{
+				"provider": "Better Coding Router",
+				"model": "pareto@0.6",
+				"enable_thinking": true,
+			},
+			{
+				"provider": "Better Coding Router",
+				"model": "pareto@0.8",
+				"enable_thinking": true,
+			},
+			{
+				"provider": "Better Coding Router",
+				"model": "pareto@0.9",
+				"enable_thinking": true,
+			},
+		],
+		"model_parameters": [],
+	},
+	"language_models": {
+		"openai_compatible": {
+			"Better Coding Router": {
+				"api_url": "http://localhost:4000/v1",
+				"available_models": [
+					{
+						"name": "pareto@0.6",
+						"max_tokens": 200000,
+						"max_output_tokens": 32000,
+						"max_completion_tokens": 200000,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": false,
+						},
+					},
+					{
+						"name": "pareto@0.8",
+						"max_tokens": 1000000,
+						"max_output_tokens": 32000,
+						"max_completion_tokens": 200000,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": false,
+						},
+					},
+					{
+						"name": "pareto@0.9",
+						"max_tokens": 1000000,
+						"max_output_tokens": 64000,
+						"max_completion_tokens": 400000,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": false,
+						},
+					},
+				],
+			},
+		},
+	},
+	"cli_default_open_behavior": "existing_window",
+	"session": {
+		"trust_all_worktrees": true,
+	},
+	"vim_mode": false,
+	"terminal": {
+		"max_scroll_history_lines": 10000000000,
+	},
+	"git": {
+		"inline_blame": {
+			"enabled": false,
+		},
+	},
+	"base_keymap": "VSCode",
+	"minimap": {
+		"show": "always",
+	},
+	"use_system_window_tabs": true,
+	"autosave": "on_focus_change",
+	"buffer_font_fallbacks": [
+		"SFMono Nerd Font",
+		"JetBrainsMono Nerd Font",
+		"JetBrains Mono",
+		"Menlo",
+		"Monaco",
+		"Courier New",
+		"monospace",
+	],
+	"buffer_font_family": "SFMono Nerd Font",
+	"linked_edits": true,
+	"agent_servers": {
+		"opencode": {
+			"type": "custom",
+			"command": "opencode",
+			"args": ["acp"],
+		},
+		"github-copilot-cli": {
+			"type": "custom",
+			"command": "copilot",
+			"args": ["--acp"],
+		},
+		"codex-acp": {
+			"type": "registry",
+		},
+		"claude-acp": {
+			"type": "registry",
+		},
+	},
+	"ui_font_size": 16,
+	"buffer_font_size": 14.0,
+	"theme": {
+		"mode": "system",
+		"light": "One Light",
+		"dark": "One Dark",
+	},
+}
