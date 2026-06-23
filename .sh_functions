@@ -147,7 +147,7 @@ is_bytedance_machine() {
 }
 
 pick_ide() {
-	printf "nvim\nnvim\nnvim\ntrae\ntrae\ncode" | shuf -n 1
+	printf "nvim\nnvim\nnvim\ntrae\ntrae\ncode\nzed" | shuf -n 1
 }
 
 function pick_ai_cli() {
