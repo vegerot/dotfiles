@@ -1,4 +1,60 @@
 {
+  "$schema": "https://charm.land/crush.json",
+  "providers": {
+    "better_pareto_router": {
+      "type": "openai-compat",
+      "name": "Better Pareto Router",
+      "base_url": "http://localhost:4000/v1",
+      "api_key": "$OPENROUTER_API_KEY",
+      "models": [
+        {
+          "id": "pareto@0.6",
+          "name": "Better Pareto Router Low",
+          "context_window": 200000,
+          "default_max_tokens": 64000,
+          "provider_options": {
+            "reasoning_effort": "low"
+          }
+        },
+        {
+          "id": "pareto@0.8",
+          "name": "Better Pareto Router Medium",
+          "context_window": 200000,
+          "default_max_tokens": 64000
+        },
+        {
+          "id": "pareto@0.9",
+          "name": "Better Pareto Router High",
+          "context_window": 200000,
+          "default_max_tokens": 64000,
+          "provider_options": {
+            "reasoning_effort": "high"
+          }
+        },
+        {
+          "id": "pareto@1",
+          "name": "Better Pareto Router Max",
+          "context_window": 200000,
+          "default_max_tokens": 64000,
+          "provider_options": {
+            "reasoning_effort": "high"
+          }
+        }
+      ]
+    }
+  },
+  "models": {
+    "large": {
+      "provider": "better_pareto_router",
+      "model": "pareto@0.9",
+      "max_tokens": 64000
+    },
+    "small": {
+      "provider": "better_pareto_router",
+      "model": "pareto@0.6",
+      "max_tokens": 64000
+    }
+  },
   "options": {
     "context_paths": [
       "~/.config/crush/AGENTS.md",
