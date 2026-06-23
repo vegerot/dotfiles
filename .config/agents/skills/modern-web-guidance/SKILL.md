@@ -79,9 +79,9 @@ bunx -y modern-web-guidance@latest retrieve "<id>"
 **Example Output**:
 `The markdown content of the guide describing implementation steps...`
 
-## Using npx
+## Using bunx
 
--   IMPORTANT: on Windows, using `npx` may fail. Use `npx.cmd ...` instead.
+-   IMPORTANT: on Windows, using `bunx` may fail. Use `bunx.cmd ...` or `npx.cmd ...` instead.
 -   Network access is required for fetching npm packages needed by the task.
 -   If the `bunx -y modern-web-guidance…` command hangs, you may be offline. Try running again in offline
     mode: `npx --offline …`.

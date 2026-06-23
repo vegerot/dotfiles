@@ -6,18 +6,18 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/GoogleChrome/modern-web-guidance.git",
       "skillPath": "skills/modern-web-guidance/SKILL.md",
-      "skillFolderHash": "9b9e922aa2a9875b133a3bf12f4fd4dbcad30d5a",
+      "skillFolderHash": "6a556d0fcee54f2fa419c30147a90d8b55b5b777",
       "installedAt": "2026-05-30T00:52:40.267Z",
-      "updatedAt": "2026-05-30T00:52:40.267Z"
+      "updatedAt": "2026-06-23T22:48:16.214Z"
     },
     "find-skills": {
       "source": "vercel-labs/skills",
       "sourceType": "github",
       "sourceUrl": "https://github.com/vercel-labs/skills.git",
       "skillPath": "skills/find-skills/SKILL.md",
-      "skillFolderHash": "3013fdeb8a11b10b1eb795ec3ae8bfca38f7c26d",
+      "skillFolderHash": "eb6a23305aea6e340d14b9de3766e721f9f4861b",
       "installedAt": "2026-05-30T00:52:44.033Z",
-      "updatedAt": "2026-05-30T00:52:44.033Z"
+      "updatedAt": "2026-06-23T22:48:17.951Z"
     },
     "lark-apps": {
       "source": "open.feishu.cn",
@@ -42,6 +42,7 @@
       "skillFolderHash": "",
       "installedAt": "2026-06-11T21:58:28.953Z",
       "updatedAt": "2026-06-12T03:50:17.213Z"
+    },
     "lark-im": {
       "source": "open.feishu.cn",
       "sourceType": "well-known",
