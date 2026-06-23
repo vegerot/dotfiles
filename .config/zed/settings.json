@@ -78,56 +78,62 @@
 						},
 					],
 					"always_allow": [
-						{
-							"pattern": "^rg\\b",
-						},
-						{
-							"pattern": "^head\\b",
-						},
-						{
-							"pattern": "^make\\s+test(\\s|$)",
-						},
-						{
-							"pattern": "^git\\s+status(\\s|$)",
-						},
-						{
-							"pattern": "^fd\\b",
-						},
-						{
-							"pattern": "^cat\\b",
-						},
-						{
-							"pattern": "^ls\\b",
-						},
-						{
-							"pattern": "^sed\\b",
-						},
-						{
-							"pattern": "^cd\\s+\\~/code/github\\.com/openai/codex/(\\s|$)",
-						},
-						{
-							"pattern": "^gh\\s+issue\\s+view(\\s|$)",
-						},
-						{
-							"pattern": "^gh\\s+issue\\s+list(\\s|$)",
-						},
-						{
-							"pattern": "^sqlite3\\s+\\~/\\.local/share/opencode/opencode-\\.db(\\s|$)",
-						},
-						{
-							"pattern": "^sqlite3\\s+\\~/\\.local/share/opencode/opencode-local\\.db(\\s|$)",
-						},
-						{
-							"pattern": "^wc\\b",
-						},
-					],
+      {
+       "pattern": "^rg\\b"
+      },
+      {
+       "pattern": "^head\\b"
+      },
+      {
+       "pattern": "^make\\s+test(\\s|$)"
+      },
+      {
+       "pattern": "^git\\s+status(\\s|$)"
+      },
+      {
+       "pattern": "^fd\\b"
+      },
+      {
+       "pattern": "^cat\\b"
+      },
+      {
+       "pattern": "^ls\\b"
+      },
+      {
+       "pattern": "^sed\\b"
+      },
+      {
+       "pattern": "^cd\\s+\\~/code/github\\.com/openai/codex/(\\s|$)"
+      },
+      {
+       "pattern": "^gh\\s+issue\\s+view(\\s|$)"
+      },
+      {
+       "pattern": "^gh\\s+issue\\s+list(\\s|$)"
+      },
+      {
+       "pattern": "^sqlite3\\s+\\~/\\.local/share/opencode/opencode-\\.db(\\s|$)"
+      },
+      {
+       "pattern": "^sqlite3\\s+\\~/\\.local/share/opencode/opencode-local\\.db(\\s|$)"
+      },
+      {
+       "pattern": "^wc\\b"
+      },
+      {
+       "pattern": "^cat\\s+/Users/bytedance/\\.config/zed/settings\\.json(\\s|$)"
+      },
+      {
+       "pattern": "^grep\\b"
+      }
+     ],
 				},
 			},
 		},
 		"default_model": {
-			"provider": "Better Coding Router",
-			"model": "pareto@0.6",
-			"enable_thinking": false,
+			"provider": "openrouter",
+			"model": "deepseek/deepseek-v4-pro",
+			"enable_thinking": true,
 		},
 		"favorite_models": [
 			{
@@ -230,6 +236,12 @@
 	"buffer_font_family": "SFMono Nerd Font",
 	"linked_edits": true,
 	"agent_servers": {
+		"traecli": {
+			"type": "custom",
+			"command": "traecli",
+			"args": ["acp", "serve"]
+		},
+
 		"opencode": {
 			"type": "custom",
 			"command": "opencode",
