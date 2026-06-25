@@ -89,6 +89,9 @@ set nofoldenable
 set termguicolors
 colorscheme retrobox
 
+" Font for Neovide (GUI).
+set guifont=SFMono\ Nerd\ Font,JetBrainsMono\ Nerd\ Font,JetBrains\ Mono,Menlo,Monaco,Courier\ New,monospace:h14
+
 " random colorscheme
 " inspiration https://gist.github.com/ryanflorence/1381526
 function RandomColorScheme()
@@ -146,6 +149,9 @@ set formatoptions-=ro
 " many plugins overwrite this, so overoverwrite it
 autocmd BufWinEnter,BufNewFile,BufRead * setlocal formatoptions-=ro
 
+if exists('g:neovide')
+	let $PATH = system('/bin/sh -lc ''printf "%s" "$PATH"''')
+endif
 
 "" VANILLA end
 
