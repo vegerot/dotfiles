@@ -218,7 +218,6 @@ if vim.o.loadplugins and not vim.g.vscode then
 		-- complicated plugins
 		GitHub("christoomey/vim-tmux-navigator"),
 		GitHub("nvim-tree/nvim-web-devicons"),
-		GitHub("m4xshen/hardtime.nvim"),
 		GitHub("lewis6991/gitsigns.nvim"),
 		GitHub("stevearc/oil.nvim"),
 		GitHub("catgoose/nvim-colorizer.lua"),
@@ -1236,6 +1235,5 @@ vim.keymap.set("n", "<leader>hw", ":Gitsigns toggle_word_diff<CR>")
 vim.keymap.set({"o", "x"}, "ih", gitsigns.select_hunk)
 LUAEND
 
-lua local hardtime = RequireChecked("hardtime"); if hardtime ~= nil then hardtime.setup{restriction_mode="hint", disable_mouse=false, disabled_keys={}, max_time=0} end
 lua local oil = RequireChecked("oil"); if oil ~= nil then oil.setup({columns={"icon", "size", "mtime"}}); vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" }) end
 lua local colorizer = RequireChecked("colorizer"); if colorizer ~= nil then vim.o.termguicolors = true; colorizer.setup({options={parsers={css=true}, display={mode={"virtualtext", "foreground"}}}}) end
