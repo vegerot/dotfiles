@@ -151,6 +151,15 @@ autocmd BufWinEnter,BufNewFile,BufRead * setlocal formatoptions-=ro
 
 if exists('g:neovide')
 	let $PATH = system('/bin/sh -lc ''printf "%s" "$PATH"''')
+
+	" Neovide Cmd key mappings (Cmd+C/V/S like a normal app)
+	vnoremap <D-c> "+y
+
+	nnoremap <D-v> "+p
+	inoremap <D-v> <C-R>+
+	vnoremap <D-v> "+p
+	cnoremap <D-v> <C-R>+
+	tnoremap <D-v> <C-\><C-N>"+pi
 endif
 
 "" VANILLA end
