@@ -256,6 +256,10 @@ LUAEND
 endif
 
 if &loadplugins
+	silent! packadd nvim.undotree
+endif
+
+if &loadplugins
     "sneak
     map s <Plug>Sneak_s
     map S <Plug>Sneak_S
@@ -1109,10 +1113,6 @@ command! -bang -nargs=* Rg
   \   fzf#vim#with_preview(), <bang>0)
 
 "" FZF end
-
-if &loadplugins
-	silent! packadd nvim.undotree
-endif
 
 " TREESITTER start
 lua << LUAEND
