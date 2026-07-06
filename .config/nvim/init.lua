@@ -31,34 +31,15 @@ vim.o.pumborder = "rounded"
 vim.o.exrc = true
 
 -- When editing a file, always jump to the last known cursor position.
--- Don't do it when the position is invalid, when inside an event handler
--- (happens when dropping a file on gvim), for a commit or rebase message
--- (likely a different one than last time), and when using xxd(1) to filter
--- and edit binary files (it transforms input files back and forth, causing
--- them to have dual nature, so to speak)
-vim.api.nvim_create_autocmd("BufReadPre", {
-	group = vim.api.nvim_create_augroup("RestoreCursor", {}),
+vim.api.nvim_create_autocmd("BufReadPost", {
 	desc = "Open file at the last position it was edited earlier",
-	callback = function(ev)
-		-- wait for FileType so the filetype exclusions below see the final value
-		vim.api.nvim_create_autocmd("FileType", {
-			buffer = ev.buf,
-			once = true,
-			callback = function()
-				local mark = vim.api.nvim_buf_get_mark(0, '"')
-				local filetype = vim.bo.filetype
-				if
-					mark[1] >= 1
-					and mark[1] <= vim.api.nvim_buf_line_count(0)
-					and not filetype:find("commit", 1, true)
-					and not vim.list_contains({ "xxd", "gitrebase" }, filetype)
-					and not vim.wo.diff
-				then
-					-- out-of-range column is clamped silently; row is guarded above
-					vim.api.nvim_win_set_cursor(0, mark)
-				end
-			end,
-		})
+	pattern = "*",
+	callback = function()
+		local mark = vim.api.nvim_buf_get_mark(0, '"')
+		local lcount = vim.api.nvim_buf_line_count(0)
+		if mark[1] > 0 and mark[1] <= lcount then
+			vim.api.nvim_win_set_cursor(0, mark)
+		end
 	end,
 })
 
