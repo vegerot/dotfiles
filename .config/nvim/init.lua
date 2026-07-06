@@ -810,7 +810,8 @@ local on_attach = function(client, bufnr)
 		}
 
 		for _, key in ipairs(keys) do
-		    local lhs, func = unpack(key)
+		    local lhs = key[1] --[[@as string]]
+		    local func = key[2] --[[@as string|function]]
 		    vim.keymap.set(key.mode or "", lhs, func, { silent = false, desc = key.desc, expr=key.expr })
 		end
 
