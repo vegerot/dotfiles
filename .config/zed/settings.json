@@ -9,7 +9,7 @@
 {
 	"proxy": "",
 	"edit_predictions": {
-		"provider": "copilot",
+		"provider": "mercury",
 	},
 	"tabs": {
 		"show_diagnostics": "errors",
@@ -65,7 +65,11 @@
 		"anthropic_retention": true,
 	},
 	"agent": {
-		"auto_compact": {
+		"play_sound_when_agent_done": "when_hidden",
+  "sandbox_permissions": {
+   "allow_unsandboxed": true
+  },
+  "auto_compact": {
 			"threshold": "90%",
 		},
 		"show_turn_stats": true,
@@ -131,9 +135,9 @@
 			},
 		},
 		"default_model": {
-			"provider": "openrouter",
-			"model": "deepseek/deepseek-v4-pro",
-			"enable_thinking": true,
+			"provider": "Better Coding Router",
+			"model": "pareto@0.6",
+			"enable_thinking": false,
 		},
 		"favorite_models": [
 			{
