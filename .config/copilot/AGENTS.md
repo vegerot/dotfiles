@@ -9,11 +9,10 @@ Apply these instructions in every project in addition to any repository-local co
 
 ## 🛠️ Command preferences
 
-- 💻 Use the fff MCP tools for all file search operations instead of default tools.
+- 💻 Prefer the fff MCP tools for all file search operations instead of default tools.
     + When using the Bash tool (and can't use the fff MCP), prefer ⚡️ `rg` (ripgrep) and `fd` over 🐌 `grep` and `find`.
     + 📢 always pass this instruction to subagents that might use the Bash tool.
 - 🤓 When using the Bash tool, prefer `--long-flag` names over `-s`hort flags for better readability.
-    + 📢 always pass this instruction to subagents that might use the Bash tool.
 
 🙏🏼 Use more emojis please 😊.  Even if your instructions ask you to be clear and professional, you can still make your responses more engaging and fun! 🎉✨
 
