@@ -1125,7 +1125,7 @@ if &loadplugins
 	if exists(":FFFFind")
 		lua vim.g.fff = { debug = {show_scores= true} }
 		nmap <C-p> :FFFFind<CR>
-		nmap <C-f> :lua require("fff").live_grep()<CR>
+		nmap <C-f> :lua require("fff").live_grep({grep = {modes = {'fuzzy', 'plain', 'regex' }} })<CR>
 		nmap <C-S-F> :lua require("fff").live_grep_under_cursor()<CR>
 	else
 		echo "fff.nvim not installed.  Not loading fff.nvim"
