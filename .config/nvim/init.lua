@@ -331,6 +331,9 @@ local function AUTOCOMPLETE()
 	vim.opt.completeopt:append({ "fuzzy", "menuone", "noinsert", "popup", "nearest" })
 
 	do
+		if not vim.o.loadplugins then
+			return
+		end
 		local LspMethods = vim.lsp.protocol.Methods
 
 		local function handleGotoDefinition(options)
