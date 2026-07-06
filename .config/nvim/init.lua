@@ -261,7 +261,7 @@ if vim.g.vscode then
 end
 
 if vim.o.loadplugins then
-	pcall(vim.cmd.packadd, "nvim.undotree")
+	vim.cmd.packadd("nvim.undotree")
 end
 
 if vim.o.loadplugins then
@@ -1121,16 +1121,13 @@ do
 end
 -- Copilot end
 
-;(function()
-	local snacks = RequireChecked("snacks")
-	if snacks == nil then
-		return
-	end
+local snacks = RequireChecked("snacks")
+if snacks ~= nil then
 	snacks.setup({
-	    picker = { enabled=true },
-	    debug = { enabled = true }
+		picker = { enabled=true },
+		debug = { enabled = true }
 	})
-end)()
+end
 -- AI END
 
 
