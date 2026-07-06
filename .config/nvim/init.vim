@@ -171,7 +171,11 @@ local function GitHub(repo)
 end
 
 local postinstall_hooks = {
+	["fff.nvim"] = function(path)
+		if not ev.data.active then vim.cmd.packadd('fff.nvim') end
+		require('fff.download').download_or_build_binary()
 	end,
+
 }
 
 vim.api.nvim_create_autocmd("PackChanged", {
@@ -230,6 +234,7 @@ if vim.o.loadplugins and not vim.g.vscode then
 		GitHub("lewis6991/gitsigns.nvim"),
 		GitHub("stevearc/oil.nvim"),
 		GitHub("catgoose/nvim-colorizer.lua"),
+		GitHub("dmtrKovalenko/fff.nvim"),
 	})
 end
 LUAEND
@@ -683,7 +688,7 @@ local on_attach = function(client, bufnr)
 		[LspMethods.textDocument_inlineCompletion] = {
 			{
 				mode = "i",
-				lhs = "<C-F>",
+				lhs = "<C-B>",
 				rhs = function() vim.lsp.inline_completion.get() end,
 				desc = "vim.lsp.inline_completion.get()",
 			},
@@ -1113,6 +1118,19 @@ command! -bang -nargs=* Rg
   \   fzf#vim#with_preview(), <bang>0)
 
 "" FZF end
+
+" FFF
+if &loadplugins
+	silent! packadd fff.nvim
+	if exists(":FFFFind")
+		lua vim.g.fff = { debug = {show_scores= true} }
+		nmap <C-p> :FFFFind<CR>
+		nmap <C-f> :lua require("fff").live_grep()<CR>
+		nmap <C-S-F> :lua require("fff").live_grep_under_cursor()<CR>
+	else
+		echo "fff.nvim not installed.  Not loading fff.nvim"
+	end
+endif
 
 " TREESITTER start
 lua << LUAEND

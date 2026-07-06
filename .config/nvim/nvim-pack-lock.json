@@ -8,6 +8,10 @@
       "rev": "d521d3959f81f4fa58870ed329754f1dd5057511",
       "src": "https://github.com/zbirenbaum/copilot.lua.git"
     },
+    "fff.nvim": {
+      "rev": "18f546a4fe8939d884b495a7d761f4905ad205a3",
+      "src": "https://github.com/dmtrKovalenko/fff.nvim.git"
+    },
     "fzf": {
       "rev": "f7392a8b63ba399582418f097026c80bab30bd12",
       "src": "https://github.com/junegunn/fzf.git"
