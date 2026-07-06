@@ -70,11 +70,11 @@ vim.keymap.set("i", "!", "!<c-g>u")
 vim.keymap.set("i", "?", "?<c-g>u")
 vim.keymap.set("i", "<Space>", "<Space><c-g>u")
 
--- always have at least 3 lines on top-bottom
+-- always have at least N lines on top-bottom and sides
 vim.o.scrolloff = 15
 vim.o.sidescroll = 6
 vim.o.sidescrolloff = 3
--- show special characters in bad spots
+
 vim.o.showbreak = "↪"
 vim.o.list = true
 vim.opt.listchars = { tab = "→ ", nbsp = "␣", trail = "•", extends = "⟩", precedes = "⟨" }
@@ -111,6 +111,7 @@ end
 vim.api.nvim_create_user_command("RandomColor", RandomColorScheme, {})
 
 -- Appearance end
+
 vim.api.nvim_create_user_command("Edir", "e %:h", {})
 vim.api.nvim_create_user_command("VEdir", "Ve %:h", {})
 vim.api.nvim_create_user_command("Cd", "cd %:h", {})
@@ -146,7 +147,6 @@ vim.api.nvim_create_autocmd("FileType", { pattern = "man", command = "set nospel
 vim.api.nvim_create_autocmd("FileType", { pattern = "c", callback = function() vim.g.c_syntax_for_h = true end })
 vim.api.nvim_create_autocmd("FileType", { pattern = "cpp", callback = function() vim.g.c_syntax_for_h = false end })
 
-vim.api.nvim_create_autocmd("FileType", { pattern = "*sh", command = [[set makeprg=shellcheck\ -f\ gcc\ -x\ %]] })
 vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, { pattern = "*.mdx", command = "setfiletype markdown" })
 vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, { pattern = "*.commit.sl.txt", command = "setfiletype hgcommit" })
 
@@ -154,6 +154,8 @@ vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, { pattern = "*.commit.s
 vim.cmd("set formatoptions-=ro")
 -- many plugins overwrite this, so overoverwrite it
 vim.api.nvim_create_autocmd({ "BufWinEnter", "BufNewFile", "BufRead" }, { pattern = "*", command = "setlocal formatoptions-=ro" })
+
+-- VANILLA end
 
 if vim.g.neovide then
 	vim.env.PATH = vim.fn.system([[/bin/sh -lc 'printf "%s" "$PATH"']])
@@ -167,8 +169,6 @@ if vim.g.neovide then
 	vim.keymap.set("c", "<D-v>", "<C-R>+")
 	vim.keymap.set("t", "<D-v>", [[<C-\><C-N>"+pi]])
 end
-
--- VANILLA end
 
 -- PLUGINS start
 local function GitHub(repo)
@@ -251,6 +251,7 @@ if vim.g.vscode then
 		GitHub("vegerot/open-remote"),
 		GitHub("bkad/CamelCaseMotion"),
 		GitHub("tpope/vim-unimpaired"),
+		GitHub("tpope/vim-repeat"),
 		GitHub("tpope/vim-surround"),
 		GitHub("justinmk/vim-sneak"),
 	}, { load = true })
