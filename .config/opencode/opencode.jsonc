@@ -27,6 +27,10 @@
         "X-Code-User-JWT": "{env:BYTED_AI_JWT}"
       }
     },
+    "robinhood-trading": {
+      "type": "remote",
+      "url": "https://agent.robinhood.com/mcp/trading"
+    },
     "Chrome DevTools": {
       "type": "local",
       "command": [
