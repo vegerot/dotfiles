@@ -1027,9 +1027,55 @@ local copilot = {
     "copilot",
 }
 
+-- lua_ls: nvim-lspconfig already supplies cmd/filetypes/root_markers.
+-- The on_init below teaches it about the Neovim runtime (the `vim` global,
+-- LuaJIT, and the API) so editing this config gets completion + no false
+-- "undefined global vim" diagnostics. Cribbed from nvim-lspconfig's own
+-- lsp/lua_ls.lua recommendation (uses $VIMRUNTIME, not all of 'runtimepath',
+-- which that doc warns is slow and breaks when editing your own config).
+local lua_ls_config = {
+	"lua_ls",
+	{
+		on_attach = on_attach,
+		on_init = function(client)
+			if client.workspace_folders then
+				local path = client.workspace_folders[1].name
+				if
+					path ~= vim.fn.stdpath('config')
+					and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc'))
+				then
+					return
+				end
+			end
+
+			client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+				runtime = {
+					-- Neovim uses LuaJIT
+					version = 'LuaJIT',
+					-- Find Lua modules the same way Neovim does (see `:h lua-module-load`)
+					path = {
+						'lua/?.lua',
+						'lua/?/init.lua',
+					},
+				},
+				workspace = {
+					checkThirdParty = false,
+					library = {
+						vim.env.VIMRUNTIME,
+						vim.api.nvim_get_runtime_file("lua/lspconfig", false)[1],
+					},
+				},
+			})
+		end,
+		settings = {
+			Lua = {},
+		},
+	},
+}
+
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { quick_lint_js, tsserver_config, pythonruff_config, pythonty_config, clangd_config, rust_config, zig_config, copilot }
+local servers = { quick_lint_js, tsserver_config, pythonruff_config, pythonty_config, clangd_config, rust_config, zig_config, copilot, lua_ls_config }
 for _, lsp in ipairs(servers) do
 	local name, settings = unpack(lsp)
 	if settings == nil then
