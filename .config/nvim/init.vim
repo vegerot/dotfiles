@@ -917,13 +917,12 @@ local quick_lint_js = {
 }
 
 local tsserver_config = {
-	"ts_ls",
+	"tsgo",
 	{
 		on_attach = on_attach,
 		flags = {
 			debounce_text_changes = 300,
 		},
-		cmd = { "typescript-language-server", "--stdio" },
 	},
 }
 
