@@ -32,10 +32,6 @@
       "rev": "4c513d5dac550af77034cced421967b393261509",
       "src": "https://github.com/ray-x/guihua.lua.git"
     },
-    "hardtime.nvim": {
-      "rev": "b4e431934af1fe224a3a801f632c008278cb7628",
-      "src": "https://github.com/m4xshen/hardtime.nvim.git"
-    },
     "mdx.nvim": {
       "rev": "6c3dc7c4a4b58b5d86404c21a9b4655282ca08c5",
       "src": "https://github.com/davidmh/mdx.nvim.git"
@@ -83,14 +79,6 @@
     "snacks.nvim": {
       "rev": "882c996cf28183f4d63640de0b4c02ec886d01f2",
       "src": "https://github.com/folke/snacks.nvim.git"
-    },
-    "telescope-fzy-native.nvim": {
-      "rev": "282f069504515eec762ab6d6c89903377252bf5b",
-      "src": "https://github.com/nvim-telescope/telescope-fzy-native.nvim.git"
-    },
-    "telescope.nvim": {
-      "rev": "427b576c16792edad01a92b89721d923c19ad60f",
-      "src": "https://github.com/nvim-telescope/telescope.nvim.git"
     },
     "vim-fetch": {
       "rev": "b88bc5c4a8652b73bcdb577e0c90700a5064fd00",
