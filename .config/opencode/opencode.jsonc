@@ -35,6 +35,10 @@
         "--channel=dev"
       ]
     },
+    "openrouter": {
+      "type": "remote",
+      "url": "https://mcp.openrouter.ai/mcp",
+    }
     //"Trae_CLI": {
     //  "type": "local",
     //  "command": [
