@@ -5,11 +5,11 @@
       "src": "https://github.com/bkad/CamelCaseMotion.git"
     },
     "copilot.lua": {
-      "rev": "7df55b20b5b653941f0bcff87e559cabb6fafeb0",
+      "rev": "d521d3959f81f4fa58870ed329754f1dd5057511",
       "src": "https://github.com/zbirenbaum/copilot.lua.git"
     },
     "fzf": {
-      "rev": "3c9965a61a842ef54e976c7195b985ee43a3e776",
+      "rev": "f7392a8b63ba399582418f097026c80bab30bd12",
       "src": "https://github.com/junegunn/fzf.git"
     },
     "fzf.vim": {
@@ -17,7 +17,7 @@
       "src": "https://github.com/junegunn/fzf.vim.git"
     },
     "gitsigns.nvim": {
-      "rev": "2038c666bd9d8a0b7349a0b6ee00dc83104b9ecf",
+      "rev": "eb60cc7b94c46005237fd34170d76f3a089a90aa",
       "src": "https://github.com/lewis6991/gitsigns.nvim.git"
     },
     "go.nvim": {
@@ -25,7 +25,7 @@
       "src": "https://github.com/ray-x/go.nvim.git"
     },
     "guihua.lua": {
-      "rev": "f8e06bd8a26dee3377d63c2adf1e57cdb58ac474",
+      "rev": "4c513d5dac550af77034cced421967b393261509",
       "src": "https://github.com/ray-x/guihua.lua.git"
     },
     "hardtime.nvim": {
@@ -41,7 +41,7 @@
       "src": "https://github.com/catgoose/nvim-colorizer.lua.git"
     },
     "nvim-lspconfig": {
-      "rev": "bfcc0171a43f22afa61d927ffe9fcb6cb85dc99e",
+      "rev": "d224a1920728ba129880efc700d4a0180ac4ecbb",
       "src": "https://github.com/neovim/nvim-lspconfig.git"
     },
     "nvim-treesitter": {
@@ -57,7 +57,7 @@
       "src": "https://github.com/nvim-treesitter/nvim-treesitter-textobjects.git"
     },
     "nvim-web-devicons": {
-      "rev": "dfbfaa967a6f7ec50789bead7ef87e336c1fa63c",
+      "rev": "dad71387de386a946b123079d0e53f23028f3abd",
       "src": "https://github.com/nvim-tree/nvim-web-devicons.git"
     },
     "oil.nvim": {
@@ -85,7 +85,7 @@
       "src": "https://github.com/nvim-telescope/telescope-fzy-native.nvim.git"
     },
     "telescope.nvim": {
-      "rev": "9377230aa5305d9e9aca4ed8dadf1070fb4aa9fc",
+      "rev": "427b576c16792edad01a92b89721d923c19ad60f",
       "src": "https://github.com/nvim-telescope/telescope.nvim.git"
     },
     "vim-fetch": {
@@ -117,7 +117,7 @@
       "src": "https://github.com/tpope/vim-unimpaired.git"
     },
     "zig.vim": {
-      "rev": "29f7a9b8a4e33f936b803de0b713683ad687a6c3",
+      "rev": "e3becb683d29c6b15c7ecbbaa349431a1a3bd55d",
       "src": "https://codeberg.org/ziglang/zig.vim.git"
     },
     "zoxide.vim": {
