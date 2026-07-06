@@ -266,4 +266,33 @@
         "**/.eden-mono": true
     },
     "trae.mcp.enableWorkspaceMcp": true,
+    "acp.agents": {
+        "Claude Code": {
+            "command": "npx",
+            "args": [
+                "@agentclientprotocol/claude-agent-acp@latest"
+            ],
+            "env": {}
+        },
+        "Codex CLI": {
+            "command": "npx",
+            "args": [
+                "@zed-industries/codex-acp@latest"
+            ],
+            "env": {}
+        },
+        "copilot-cli": {
+            "command": "copilot",
+            "args": [
+                "--acp"
+            ]
+        },
+        "opencode": {
+            "command": "opencode",
+            "args": [
+                "acp"
+            ]
+        }
+    },
+
 }
