@@ -4,7 +4,16 @@ developer_instructions = "For introspection questions about Codex, inspect `~/co
 
 [mcp_servers.chrome_devtools]
 command = "bunx"
-args = [ "chrome-devtools-mcp", "--channel=dev" ]
+args = ["chrome-devtools-mcp", "--channel=dev"]
+
+[mcp_servers.chrome_devtools.tools.click]
+approval_mode = "approve"
+
+[mcp_servers.chrome_devtools.tools.hover]
+approval_mode = "approve"
+
+[mcp_servers.chrome_devtools.tools.navigate_page]
+approval_mode = "approve"
 
 [mcp_servers.chrome_devtools.tools.new_page]
 approval_mode = "approve"
@@ -18,32 +27,23 @@ approval_mode = "approve"
 [mcp_servers.chrome_devtools.tools.take_snapshot]
 approval_mode = "approve"
 
-[mcp_servers.chrome_devtools.tools.navigate_page]
-approval_mode = "approve"
-
-[mcp_servers.chrome_devtools.tools.click]
-approval_mode = "approve"
-
-[mcp_servers.chrome_devtools.tools.hover]
-approval_mode = "approve"
-
 [mcp_servers.codebase]
 url = "https://code.byted.org/api/mcp/codebase/mcp"
 
-  [mcp_servers.codebase.env_http_headers]
-  X-Code-User-JWT = "BYTED_AI_JWT"
+[mcp_servers.codebase.env_http_headers]
+X-Code-User-JWT = "BYTED_AI_JWT"
 
 [mcp_servers.lark]
 url = "https://code.byted.org/api/mcp/lark/mcp"
 
-  [mcp_servers.lark.env_http_headers]
-  X-Code-User-JWT = "BYTED_AI_JWT"
+[mcp_servers.lark.env_http_headers]
+X-Code-User-JWT = "BYTED_AI_JWT"
 
 [mcp_servers.bytedance]
 url = "https://0r2y3xvu.mcp.bytedance.net/mcp"
 
-  [mcp_servers.bytedance.env_http_headers]
-  X-Code-User-JWT = "BYTED_AI_JWT"
+[mcp_servers.bytedance.env_http_headers]
+X-Code-User-JWT = "BYTED_AI_JWT"
 
 [features]
 js_repl = true
