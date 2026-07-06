@@ -6,6 +6,13 @@
   "plugin": ["./plugin/conditional-bytedance.ts"],
   "lsp": true,
   "mcp": {
+    "fff": {
+      "type": "local",
+      "command": [
+        "fff-mcp"
+      ],
+      "enabled": true
+    },
     "Codebase": {
       "type": "remote",
       "url": "https://code.byted.org/api/mcp/codebase/mcp",

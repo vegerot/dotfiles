@@ -45,6 +45,9 @@ url = "https://0r2y3xvu.mcp.bytedance.net/mcp"
 [mcp_servers.bytedance.env_http_headers]
 X-Code-User-JWT = "BYTED_AI_JWT"
 
+[mcp_servers.fff]
+command = "fff-mcp"
+
 [features]
 js_repl = true
 
