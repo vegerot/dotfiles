@@ -171,8 +171,6 @@ local function GitHub(repo)
 end
 
 local postinstall_hooks = {
-	["telescope-fzy-native.nvim"] = function(path)
-		vim.system({ "make" }, { cwd = path }):wait()
 	end,
 }
 
@@ -218,10 +216,6 @@ if vim.o.loadplugins and not vim.g.vscode then
 		-- fzf
 		GitHub("junegunn/fzf"),
 		GitHub("junegunn/fzf.vim"),
-
-		-- telescope
-		GitHub("nvim-telescope/telescope.nvim"),
-		GitHub("nvim-telescope/telescope-fzy-native.nvim"),
 
 		-- LSP+autocomplete
 		GitHub("zbirenbaum/copilot.lua"),
@@ -697,17 +691,6 @@ local on_attach = function(client, bufnr)
 			},
 		},
 	}
-	local telescope_builtin = RequireChecked("telescope.builtin")
-	if telescope_builtin ~= nil then
-		methodsAndKeymaps[LspMethods.textDocument_definition] = {
-			{
-				mode = "n",
-				lhs = "gd",
-				rhs = function() require('telescope.builtin').lsp_definitions() end,
-				desc = "telescope.builtin.lsp_definitions()",
-			},
-		}
-	end
 	for method, keymaps in pairs(methodsAndKeymaps) do
 		if client:supports_method(method, bufnr) then
 			for _, keymap in ipairs(keymaps) do
@@ -1127,35 +1110,9 @@ command! -bang -nargs=* Rg
 
 "" FZF end
 
-"" TELESCOPE start
-if exists(":Telescope")
-	nmap <leader>tr <cmd>Telescope resume<Cr>
-	nmap <leader>tf :lua require('telescope.builtin').find_files({hidden=true})<Cr>
-	nmap <leader>tg <cmd>Telescope live_grep<Cr>
-	nmap <leader>tb <cmd>Telescope buffers<Cr>
-	nmap <leader>to <cmd>Telescope oldfiles<Cr>
-	nmap <leader>th <cmd>Telescope help_tags<Cr>
-	nmap <leader>tm <cmd>Telescope man_pages<Cr>
-	nmap <leader>td <cmd>Telescope diagnostics<Cr>
-	nmap <leader>tq <cmd>Telescope quickfix<Cr>
-endif
-
 if &loadplugins
 	silent! packadd nvim.undotree
 endif
-
-lua <<LUAEND
-local telescope = RequireChecked("telescope")
-if telescope == nil then
-	return false
-end
-local fzy_native = RequireChecked("telescope._extensions.fzy_native")
-if fzy_native == nil then
-	return false
-end
-telescope.load_extension("fzy_native")
-LUAEND
-"" TELESCOPE end
 
 " TREESITTER start
 lua << LUAEND
