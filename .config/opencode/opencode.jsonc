@@ -3,7 +3,10 @@
   "instructions": [
     "~/dotfiles/.config/opencode/introspection.md"
   ],
-  "plugin": ["./plugin/conditional-bytedance.ts"],
+  "plugin": [
+    "./plugin/conditional-bytedance.ts",
+    ".\/plugins\/cmux-session.js"
+  ],
   "lsp": true,
   "mcp": {
     "fff": {
