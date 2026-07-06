@@ -38,22 +38,24 @@ vim.o.exrc = true
 -- them to have dual nature, so to speak)
 vim.api.nvim_create_autocmd("BufReadPre", {
 	group = vim.api.nvim_create_augroup("RestoreCursor", {}),
+	desc = "Open file at the last position it was edited earlier",
 	callback = function(ev)
 		-- wait for FileType so the filetype exclusions below see the final value
 		vim.api.nvim_create_autocmd("FileType", {
 			buffer = ev.buf,
 			once = true,
 			callback = function()
-				local line = vim.fn.line([['"]])
+				local mark = vim.api.nvim_buf_get_mark(0, '"')
 				local filetype = vim.bo.filetype
 				if
-					line >= 1
-					and line <= vim.fn.line("$")
+					mark[1] >= 1
+					and mark[1] <= vim.api.nvim_buf_line_count(0)
 					and not filetype:find("commit", 1, true)
 					and not vim.list_contains({ "xxd", "gitrebase" }, filetype)
 					and not vim.wo.diff
 				then
-					vim.cmd([[normal! g`"]])
+					-- out-of-range column is clamped silently; row is guarded above
+					vim.api.nvim_win_set_cursor(0, mark)
 				end
 			end,
 		})
