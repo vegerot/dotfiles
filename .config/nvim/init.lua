@@ -1,39 +1,42 @@
-"" VANILLA start
-set clipboard=unnamed,unnamedplus
+-- VANILLA start
+vim.o.clipboard = "unnamed,unnamedplus"
 
-set number
-set relativenumber
+vim.o.number = true
+vim.o.relativenumber = true
 
-set ignorecase
-set smartcase
-set grepprg=rg\ --vimgrep\ --hidden\ --smart-case\ --glob='!pnpm-lock.yaml'\ --glob='!.git/'
+vim.o.ignorecase = true
+vim.o.smartcase = true
+vim.o.grepprg = [[rg --vimgrep --hidden --smart-case --glob='!pnpm-lock.yaml' --glob='!.git/']]
 
-command -nargs=* GrepNoTests grep --glob="!test/" --glob="!__tests__/" --glob "!e2e/" --glob="!*.test.*" --glob "!*.spec.*" <args>
+vim.api.nvim_create_user_command("GrepNoTests",
+	'grep --glob="!test/" --glob="!__tests__/" --glob "!e2e/" --glob="!*.test.*" --glob "!*.spec.*" <args>',
+	{ nargs = "*" })
 
-set smartindent
+vim.o.smartindent = true
 
-set showmatch
-set virtualedit=block
+vim.o.showmatch = true
+vim.o.virtualedit = "block"
 
-" when going to a quickfix item, switch to an existing window that already has
-" the buffer in it and if not, open it in a vsplit
-set switchbuf=usetab,uselast
-set jumpoptions+=view
-set wildoptions+=fuzzy
-set smoothscroll
-set winborder=rounded
-set pumborder=rounded
+-- when going to a quickfix item, switch to an existing window that already has
+-- the buffer in it and if not, open it in a vsplit
+vim.o.switchbuf = "usetab,uselast"
+vim.opt.jumpoptions:append("view")
+vim.opt.wildoptions:append("fuzzy")
+vim.o.smoothscroll = true
+vim.o.winborder = "rounded"
+vim.o.pumborder = "rounded"
 
-" In newer Nvim, 'exrc' also searches parent directories. Keep this enabled,
-" but rely on :trust to allow project-local config deliberately.
-set exrc
+-- In newer Nvim, 'exrc' also searches parent directories. Keep this enabled,
+-- but rely on :trust to allow project-local config deliberately.
+vim.o.exrc = true
 
-" When editing a file, always jump to the last known cursor position.
-" Don't do it when the position is invalid, when inside an event handler
-" (happens when dropping a file on gvim), for a commit or rebase message
-" (likely a different one than last time), and when using xxd(1) to filter
-" and edit binary files (it transforms input files back and forth, causing
-" them to have dual nature, so to speak)
+-- When editing a file, always jump to the last known cursor position.
+-- Don't do it when the position is invalid, when inside an event handler
+-- (happens when dropping a file on gvim), for a commit or rebase message
+-- (likely a different one than last time), and when using xxd(1) to filter
+-- and edit binary files (it transforms input files back and forth, causing
+-- them to have dual nature, so to speak)
+vim.cmd([[
 augroup RestoreCursor
 	autocmd!
 	autocmd BufReadPre * autocmd FileType <buffer> ++once
@@ -44,134 +47,138 @@ augroup RestoreCursor
 				\ |   execute "normal! g`\""
 				\ | endif
 augroup END
+]])
 
-" Undo and backup
-set undofile
-set shada+='42069
+-- Undo and backup
+vim.o.undofile = true
+vim.opt.shada:append("'42069")
 
-" replace currently selected text with default register
-" without yanking it
-vnoremap p "_dP
+-- replace currently selected text with default register
+-- without yanking it
+vim.keymap.set("v", "p", '"_dP')
 
-" center search results
-nnoremap n nzz
-nnoremap N Nzz
-nmap <leader>n :nohl<CR>
+-- center search results
+vim.keymap.set("n", "n", "nzz")
+vim.keymap.set("n", "N", "Nzz")
+vim.keymap.set("n", "<leader>n", ":nohl<CR>", { remap = true })
 
-" Undo break points (cred: Prime)
-" TODO: function that takes list of chars and does this remap for them
-inoremap , ,<c-g>u
-inoremap . .<c-g>u
-inoremap ! !<c-g>u
-inoremap ? ?<c-g>u
-inoremap <Space> <Space><c-g>u
+-- Undo break points (cred: Prime)
+-- TODO: function that takes list of chars and does this remap for them
+vim.keymap.set("i", ",", ",<c-g>u")
+vim.keymap.set("i", ".", ".<c-g>u")
+vim.keymap.set("i", "!", "!<c-g>u")
+vim.keymap.set("i", "?", "?<c-g>u")
+vim.keymap.set("i", "<Space>", "<Space><c-g>u")
 
-" always have at least 3 lines on top-bottom
-set scrolloff=15
-set sidescroll=6
-set sidescrolloff=3
-" show special characters in bad spots
-set showbreak=↪
-set list
-set listchars=tab:→\ ,nbsp:␣,trail:•,extends:⟩,precedes:⟨
+-- always have at least 3 lines on top-bottom
+vim.o.scrolloff = 15
+vim.o.sidescroll = 6
+vim.o.sidescrolloff = 3
+-- show special characters in bad spots
+vim.o.showbreak = "↪"
+vim.o.list = true
+vim.opt.listchars = { tab = "→ ", nbsp = "␣", trail = "•", extends = "⟩", precedes = "⟨" }
 
-set tabstop=4
-set shiftwidth=4
-set shiftround
-set splitright " splitting a window will put the new window right of the current one
+vim.o.tabstop = 4
+vim.o.shiftwidth = 4
+vim.o.shiftround = true
+vim.o.splitright = true -- splitting a window will put the new window right of the current one
 
-set spell
-set spelllang=en,en_us,softwareterms,shell,vim,golang,html,lua,makefile,npm,python,sql,typescript,x86
-set spelloptions+=camel,noplainbuffer
+vim.o.spell = true
+vim.o.spelllang = "en,en_us,softwareterms,shell,vim,golang,html,lua,makefile,npm,python,sql,typescript,x86"
+vim.opt.spelloptions:append({ "camel", "noplainbuffer" })
 
-set nofoldenable
+vim.o.foldenable = false
 
-set termguicolors
-colorscheme retrobox
+vim.o.termguicolors = true
+vim.cmd.colorscheme("retrobox")
 
-" Font for Neovide (GUI).
-set guifont=SFMono\ Nerd\ Font,JetBrainsMono\ Nerd\ Font,JetBrains\ Mono,Menlo,Monaco,Courier\ New,monospace:h14
+-- Font for Neovide (GUI).
+vim.o.guifont = "SFMono Nerd Font,JetBrainsMono Nerd Font,JetBrains Mono,Menlo,Monaco,Courier New,monospace:h14"
 
-" random colorscheme
-" inspiration https://gist.github.com/ryanflorence/1381526
-function RandomColorScheme()
-  let mycolors = globpath(&rtp, "colors/*.{vim,lua}", v:false, v:true)
-  let randomcolorpath = mycolors[localtime() % len(mycolors)]
-  echo randomcolorpath
-  let randomcolor = fnamemodify(randomcolorpath, ":t:r")
-  echo ':colorscheme ' . randomcolor
-  exe 'colorscheme ' . randomcolor
-  unlet mycolors randomcolor
-endfunction
+-- random colorscheme
+-- inspiration https://gist.github.com/ryanflorence/1381526
+local function RandomColorScheme()
+	local mycolors = vim.fn.globpath(vim.o.runtimepath, "colors/*.{vim,lua}", false, true)
+	-- NOTE: Lua tables are 1-indexed, so `+ 1` is required here (VimScript was 0-indexed)
+	local randomcolorpath = mycolors[vim.fn.localtime() % #mycolors + 1]
+	print(randomcolorpath)
+	local randomcolor = vim.fn.fnamemodify(randomcolorpath, ":t:r")
+	print(":colorscheme " .. randomcolor)
+	vim.cmd.colorscheme(randomcolor)
+end
 
-:command RandomColor call RandomColorScheme()
+vim.api.nvim_create_user_command("RandomColor", RandomColorScheme, {})
 
-"" Appearance end
-command Edir :e %:h
-command VEdir :Ve %:h
-command Cd :cd %:h
+-- Appearance end
+vim.api.nvim_create_user_command("Edir", "e %:h", {})
+vim.api.nvim_create_user_command("VEdir", "Ve %:h", {})
+vim.api.nvim_create_user_command("Cd", "cd %:h", {})
 
-function! s:Cdr(...) abort
-	let l:start = expand('%:p:h')
-	if empty(l:start)
-		let l:start = getcwd()
-	endif
+local function Cdr(path)
+	local start = vim.fn.expand("%:p:h")
+	if start == "" then
+		start = vim.fn.getcwd()
+	end
 
-	let l:root = trim(system('git -C ' .. shellescape(l:start) .. ' rev-parse --show-toplevel'))
-	if v:shell_error || empty(l:root)
-		echoerr 'Not in a git repo'
+	local root = vim.trim(vim.fn.system("git -C " .. vim.fn.shellescape(start) .. " rev-parse --show-toplevel"))
+	if vim.v.shell_error ~= 0 or root == "" then
+		vim.api.nvim_echo({ { "Not in a git repo", "ErrorMsg" } }, true, { err = true })
 		return
-	endif
+	end
 
-	let l:path = a:0 ? a:1 : ''
-	if empty(l:path)
-		execute 'cd' fnameescape(l:root)
+	path = path or ""
+	if path == "" then
+		vim.cmd.cd(vim.fn.fnameescape(root))
 	else
-		execute 'cd' fnameescape(l:root .. '/' .. l:path)
-	endif
-endfunction
+		vim.cmd.cd(vim.fn.fnameescape(root .. "/" .. path))
+	end
+end
 
-command -nargs=? Cdr call s:Cdr(<f-args>)
+vim.api.nvim_create_user_command("Cdr", function(o)
+	Cdr(o.fargs[1])
+end, { nargs = "?" })
 
-autocmd FileType typescript,javascript,typescriptreact,javascriptreact nmap gD :GrepNoTests --case-sensitive "(const\\|function) <cword>\b" <CR>
+vim.cmd([[autocmd FileType typescript,javascript,typescriptreact,javascriptreact nmap gD :GrepNoTests --case-sensitive "(const\\|function) <cword>\b" <CR>]])
 
-autocmd FileType man set nospell
+vim.api.nvim_create_autocmd("FileType", { pattern = "man", command = "set nospell" })
 
-autocmd FileType c let g:c_syntax_for_h=v:true
-autocmd FileType cpp let g:c_syntax_for_h=v:false
+vim.api.nvim_create_autocmd("FileType", { pattern = "c", callback = function() vim.g.c_syntax_for_h = true end })
+vim.api.nvim_create_autocmd("FileType", { pattern = "cpp", callback = function() vim.g.c_syntax_for_h = false end })
 
-autocmd FileType *sh set makeprg=shellcheck\ -f\ gcc\ -x\ %
-autocmd BufNewFile,BufRead *.mdx   setfiletype markdown
-autocmd BufNewFile,BufRead *.commit.sl.txt   setfiletype hgcommit
+vim.api.nvim_create_autocmd("FileType", { pattern = "*sh", command = [[set makeprg=shellcheck\ -f\ gcc\ -x\ %]] })
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, { pattern = "*.mdx", command = "setfiletype markdown" })
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, { pattern = "*.commit.sl.txt", command = "setfiletype hgcommit" })
 
-" don't continue comments on new lines
-set formatoptions-=ro
-" many plugins overwrite this, so overoverwrite it
-autocmd BufWinEnter,BufNewFile,BufRead * setlocal formatoptions-=ro
+-- don't continue comments on new lines
+vim.cmd("set formatoptions-=ro")
+-- many plugins overwrite this, so overoverwrite it
+vim.api.nvim_create_autocmd({ "BufWinEnter", "BufNewFile", "BufRead" }, { pattern = "*", command = "setlocal formatoptions-=ro" })
 
-if exists('g:neovide')
-	let $PATH = system('/bin/sh -lc ''printf "%s" "$PATH"''')
+if vim.g.neovide then
+	vim.env.PATH = vim.fn.system([[/bin/sh -lc 'printf "%s" "$PATH"']])
 
-	" Neovide Cmd key mappings (Cmd+C/V/S like a normal app)
-	vnoremap <D-c> "+y
+	-- Neovide Cmd key mappings (Cmd+C/V/S like a normal app)
+	vim.keymap.set("v", "<D-c>", '"+y')
 
-	nnoremap <D-v> "+p
-	inoremap <D-v> <C-R>+
-	vnoremap <D-v> "+p
-	cnoremap <D-v> <C-R>+
-	tnoremap <D-v> <C-\><C-N>"+pi
-endif
+	vim.keymap.set("n", "<D-v>", '"+p')
+	vim.keymap.set("i", "<D-v>", "<C-R>+")
+	vim.keymap.set("v", "<D-v>", '"+p')
+	vim.keymap.set("c", "<D-v>", "<C-R>+")
+	vim.keymap.set("t", "<D-v>", [[<C-\><C-N>"+pi]])
+end
 
-"" VANILLA end
+-- VANILLA end
 
-"" PLUGINS start
-lua << LUAEND
+-- PLUGINS start
 local function GitHub(repo)
 	return "https://github.com/" .. repo .. ".git"
 end
 
 local postinstall_hooks = {
 	["fff.nvim"] = function(path)
+		-- FIXME(pre-existing): `ev` is not in scope inside this hook (the hook is called as
+		-- `hook(ev.data.path)` below, so its only parameter is `path`). Ported verbatim.
 		if not ev.data.active then vim.cmd.packadd('fff.nvim') end
 		require('fff.download').download_or_build_binary()
 	end,
@@ -237,69 +244,61 @@ if vim.o.loadplugins and not vim.g.vscode then
 		GitHub("dmtrKovalenko/fff.nvim"),
 	})
 end
-LUAEND
 
-if exists('g:vscode')
-	set scrolloff=0
-	nnoremap <c-u> <c-u>zzjk
-	nnoremap <c-d> <c-d>zzjk
-lua << LUAEND
-	local function GitHub(repo)
-		return "https://github.com/" .. repo .. ".git"
-	end
+if vim.g.vscode then
+	vim.o.scrolloff = 0
+	vim.keymap.set("n", "<c-u>", "<c-u>zzjk")
+	vim.keymap.set("n", "<c-d>", "<c-d>zzjk")
 	vim.pack.add({
 		GitHub("vegerot/open-remote"),
 		GitHub("bkad/CamelCaseMotion"),
 		GitHub("tpope/vim-unimpaired"),
 		GitHub("tpope/vim-surround"),
 		GitHub("justinmk/vim-sneak"),
-	}, {load=true})
-LUAEND
-	set nospell
-	set noloadplugins
-	finish
-endif
-
-if &loadplugins
-	silent! packadd nvim.undotree
-endif
-
-if &loadplugins
-    "sneak
-    map s <Plug>Sneak_s
-    map S <Plug>Sneak_S
-
-    " Open remote
-    nmap <leader>op :OpenFile<CR>
-    vmap <leader>op :OpenFile<CR>
-    nmap <leader>cp :CopyFile<CR>
-    vmap <leader>cp :CopyFile<CR>
-
-    let g:camelcasemotion_key = '<leader>'
-endif
-
-"" LSP+autocomplete start
-set completeopt+=fuzzy,menuone,noinsert,popup,nearest
-
-lua << REQUIRE_WRAPPER_END
--- Require wrapper that returns nil when --noplugin or module not found
-function RequireChecked(name)
-  if not vim.o.loadplugins then
-    return nil
-  end
-  local ok, mod = pcall(require, name)
-  if not ok then
-    return nil
-  end
-  return mod
+	}, { load = true })
+	vim.o.spell = false
+	vim.o.loadplugins = false
+	return
 end
-REQUIRE_WRAPPER_END
 
-lua << LUAEND
+if vim.o.loadplugins then
+	pcall(vim.cmd.packadd, "nvim.undotree")
+end
+
+if vim.o.loadplugins then
+	-- sneak
+	vim.keymap.set("", "s", "<Plug>Sneak_s", { remap = true })
+	vim.keymap.set("", "S", "<Plug>Sneak_S", { remap = true })
+
+	-- Open remote
+	vim.keymap.set("n", "<leader>op", ":OpenFile<CR>", { remap = true })
+	vim.keymap.set("v", "<leader>op", ":OpenFile<CR>", { remap = true })
+	vim.keymap.set("n", "<leader>cp", ":CopyFile<CR>", { remap = true })
+	vim.keymap.set("v", "<leader>cp", ":CopyFile<CR>", { remap = true })
+
+	vim.g.camelcasemotion_key = "<leader>"
+end
+
+-- LSP+autocomplete start
+vim.opt.completeopt:append({ "fuzzy", "menuone", "noinsert", "popup", "nearest" })
+
+-- Require wrapper that returns nil when --noplugin or module not found
+local function RequireChecked(name)
+	if not vim.o.loadplugins then
+		return nil
+	end
+	local ok, mod = pcall(require, name)
+	if not ok then
+		return nil
+	end
+	return mod
+end
+
+do
 
 local LspMethods = vim.lsp.protocol.Methods
 
-function handleGotoDefinition(options)
+local function handleGotoDefinition(options)
 	local title = options.title
 	local all_items = options.items
 	local method = options.context.method
@@ -346,7 +345,7 @@ function handleGotoDefinition(options)
 
 end
 
-function tagBackInAppropriateTab(direction)
+local function tagBackInAppropriateTab(direction)
     local currentWindow = vim.fn.win_getid()
 
     local tagstack = vim.fn.gettagstack(currentWindow)
@@ -389,29 +388,29 @@ local configure_breadcrumbs = function(client)
 	local kind_icons = {
 	    "%#File#" .. "󰈙" .. "%#Normal#", -- file
 	    "%#Module#" .. "󰠱" .. "%#Normal#", -- module
-	    "%#Structure#" .. "" .. "%#Normal#", -- namespace
+	    "%#Structure#" .. "" .. "%#Normal#", -- namespace
 	    "%#Keyword#" .. "󰌋" .. "%#Normal#", -- key
-	    "%#Class#" .. "" .. "%#Normal#", -- class
+	    "%#Class#" .. "" .. "%#Normal#", -- class
 	    "%#Method#" .. "󰆧" .. "%#Normal#", -- method
-	    "%#Property#" .. "" .. "%#Normal#", -- property
-	    "%#Field#" .. "" .. "%#Normal#", -- field
-	    "%#Function#" .. "" .. "%#Normal#", -- constructor
-	    "%#Enum#" .. "" .. "%#Normal#", -- enum
-	    "%#Type#" .. "" .. "%#Normal#", -- interface
+	    "%#Property#" .. "" .. "%#Normal#", -- property
+	    "%#Field#" .. "" .. "%#Normal#", -- field
+	    "%#Function#" .. "" .. "%#Normal#", -- constructor
+	    "%#Enum#" .. "" .. "%#Normal#", -- enum
+	    "%#Type#" .. "" .. "%#Normal#", -- interface
 	    "%#Function#" .. "󰊕" .. "%#Normal#", -- function
 	    "%#None#" .. "󰂡" .. "%#Normal#", -- variable
 	    "%#Constant#" .. "󰏿" .. "%#Normal#", -- constant
-	    "%#String#" .. "" .. "%#Normal#", -- string
-	    "%#Number#" .. "" .. "%#Normal#", -- number
-	    "%#Boolean#" .. "" .. "%#Normal#", -- boolean
-	    "%#Array#" .. "" .. "%#Normal#", -- array
-	    "%#Class#" .. "" .. "%#Normal#", -- object
-	    "", -- package
+	    "%#String#" .. "" .. "%#Normal#", -- string
+	    "%#Number#" .. "" .. "%#Normal#", -- number
+	    "%#Boolean#" .. "" .. "%#Normal#", -- boolean
+	    "%#Array#" .. "" .. "%#Normal#", -- array
+	    "%#Class#" .. "" .. "%#Normal#", -- object
+	    "", -- package
 	    "󰟢", -- null
-	    "", -- enum-member
-	    "%#Struct#" .. "" .. "%#Normal#", -- struct
-	    "", -- event
-	    "", -- operator
+	    "", -- enum-member
+	    "%#Struct#" .. "" .. "%#Normal#", -- struct
+	    "", -- event
+	    "", -- operator
 	    "󰅲", -- type-parameter
 	}
 
@@ -441,7 +440,7 @@ local configure_breadcrumbs = function(client)
 
 	    for _, symbol in ipairs(symbol_list) do
 	        if range_contains_pos(symbol.range, line, char) then
-	            local icon = kind_icons[symbol.kind] or ""
+	            local icon = kind_icons[symbol.kind] or ""
 	            table.insert(path, icon .. " " .. symbol.name)
 	            find_symbol_path(symbol.children, line, char, path)
 	            return true
@@ -572,18 +571,18 @@ _G.SidekickStatusline = function()
   local st = status.get()
   if st then
     if st.kind == "Error" then
-      table.insert(parts, "%#DiagnosticError# err%#StatusLine#")
+      table.insert(parts, "%#DiagnosticError# err%#StatusLine#")
     elseif st.kind == "Warning" or st.busy then
-      table.insert(parts, "%#DiagnosticWarn# …%#StatusLine#")
+      table.insert(parts, "%#DiagnosticWarn# …%#StatusLine#")
     else
       -- "ok" color: reuse DiagnosticInfo unless you define something else
-      table.insert(parts, " ok%#StatusLine#")
+      table.insert(parts, " ok%#StatusLine#")
     end
   end
 
   local cli = status.cli()
   if type(cli) == "table" and #cli > 0 then
-    table.insert(parts, "%#Special# " .. tostring(#cli) .. "%#StatusLine#")
+    table.insert(parts, "%#Special# " .. tostring(#cli) .. "%#StatusLine#")
   end
 
   return (#parts > 0) and (table.concat(parts, " ") .. " ") or ""
@@ -1042,98 +1041,100 @@ for _, lsp in ipairs(servers) do
 	vim.lsp.enable(name)
 end
 
-LUAEND
-
-" AI START
-
-" MarsCode start
-
-if &loadplugins
-	" silent! packadd codeverse.vim
-endif
-if exists(":Marscode")
-	let g:marscode_filetypes = {
-				\ '*': v:true,
-				\ '*.c': v:false,
-				\}
-	imap <C-e> <Plug>(marscode-accept-word)
-endif
-" MarsCode end
-
-"" PLUGINS start
-
-" Copilot
-lua << LUAEND
-    local copilot = RequireChecked("copilot")
-    if copilot == nil then
-	--print("copilot not installed")
-    else
-	-- TODO: because startup is slow I need to lazy load this
-	--copilot.setup({
-
-	--})
-    end
-LUAEND
-" Copilot end
-lua << LUAEND
-
-local snacks = RequireChecked("snacks")
-if snacks == nil then
-	return
 end
-snacks.setup({
-    picker = { enabled=true },
-    debug = { enabled = true }
-})
 
-LUAEND
-" AI END
+-- AI START
+
+-- MarsCode start
+
+if vim.o.loadplugins then
+	-- silent! packadd codeverse.vim
+end
+if vim.fn.exists(":Marscode") == 2 then
+	vim.g.marscode_filetypes = {
+		["*"] = true,
+		["*.c"] = false,
+	}
+	vim.keymap.set("i", "<C-e>", "<Plug>(marscode-accept-word)", { remap = true })
+end
+-- MarsCode end
+
+-- PLUGINS start
+
+-- Copilot
+do
+	local copilot = RequireChecked("copilot")
+	if copilot == nil then
+		--print("copilot not installed")
+	else
+		-- TODO: because startup is slow I need to lazy load this
+		--copilot.setup({
+
+		--})
+	end
+end
+-- Copilot end
+
+;(function()
+	local snacks = RequireChecked("snacks")
+	if snacks == nil then
+		return
+	end
+	snacks.setup({
+	    picker = { enabled=true },
+	    debug = { enabled = true }
+	})
+end)()
+-- AI END
 
 
 
-command! -nargs=* FindFile tabnew | execute "0read !fd --follow <args> | sort" | set nomodified | 0
+vim.api.nvim_create_user_command("FindFile",
+	'tabnew | execute "0read !fd --follow <args> | sort" | set nomodified | 0',
+	{ nargs = "*" })
 
-"" FZF start
-" Enable per-command history
-" - History files will be stored in the specified directory
-" - When set, CTRL-N and CTRL-P will be bound to 'next-history' and
-"   'previous-history' instead of 'down' and 'up'.
-let g:fzf_history_dir = '~/.local/share/fzf-history'
+-- FZF start
+-- Enable per-command history
+-- - History files will be stored in the specified directory
+-- - When set, CTRL-N and CTRL-P will be bound to 'next-history' and
+--   'previous-history' instead of 'down' and 'up'.
+vim.g.fzf_history_dir = "~/.local/share/fzf-history"
 
-command! -bang -nargs=* Ag
-  \  :Files
+vim.api.nvim_create_user_command("Ag", "Files", { bang = true, nargs = "*" })
 
-if &loadplugins
-	silent! packadd fzf.vim
-endif
-if exists(":Files")
-       nmap <C-p> :Files<Cr>
+if vim.o.loadplugins then
+	pcall(vim.cmd.packadd, "fzf.vim")
+end
+if vim.fn.exists(":Files") == 2 then
+	vim.keymap.set("n", "<C-p>", ":Files<Cr>", { remap = true })
 else
-       nmap <C-p> :FindFile<SPACE>
-endif
+	vim.keymap.set("n", "<C-p>", ":FindFile<SPACE>", { remap = true })
+end
 
+vim.cmd([[
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
   \   'rg --column --line-number --no-heading --color=always --smart-case -u -- '.fzf#shellescape(<q-args>),
   \   fzf#vim#with_preview(), <bang>0)
+]])
 
-"" FZF end
+-- FZF end
 
-" FFF
-if &loadplugins
-	silent! packadd fff.nvim
-	if exists(":FFFFind")
-		lua vim.g.fff = { debug = {show_scores= true} }
-		nmap <C-p> :FFFFind<CR>
-		nmap <C-f> :lua require("fff").live_grep({grep = {modes = {'fuzzy', 'plain', 'regex' }} })<CR>
-		nmap <C-S-F> :lua require("fff").live_grep_under_cursor()<CR>
+-- FFF
+if vim.o.loadplugins then
+	pcall(vim.cmd.packadd, "fff.nvim")
+	if vim.fn.exists(":FFFFind") == 2 then
+		vim.g.fff = { debug = { show_scores = true } }
+		vim.keymap.set("n", "<C-p>", ":FFFFind<CR>", { remap = true })
+		vim.keymap.set("n", "<C-f>", function() require("fff").live_grep({ grep = { modes = { "fuzzy", "plain", "regex" } } }) end)
+		vim.keymap.set("n", "<C-S-F>", function() require("fff").live_grep_under_cursor() end)
 	else
-		echo "fff.nvim not installed.  Not loading fff.nvim"
+		print("fff.nvim not installed.  Not loading fff.nvim")
 	end
-endif
+end
 
-" TREESITTER start
-lua << LUAEND
+-- TREESITTER start
+;(function()
 
 local treesitter_plugin = RequireChecked("nvim-treesitter")
 if treesitter_plugin == nil then
@@ -1189,9 +1190,9 @@ if treesitterContext == nil then
 end
 treesitterContext.setup{}
 vim.keymap.set("n", "[c", function() treesitterContext.go_to_context(vim.v.count1) end)
-LUAEND
+end)()
 
-lua << LUAEND
+do
 
 local ok, ui2 = pcall(require, "vim._core.ui2")
 if ok then
@@ -1205,9 +1206,9 @@ if devicons_plugin ~= nil then
 	})
 end
 
-LUAEND
+end
 
-lua << LUAEND
+;(function()
 local gitsigns = RequireChecked("gitsigns");
 if gitsigns == nil then return end
 vim.o.statusline = vim.o.statusline .. " %{get(b:,'gitsigns_status','')}"
@@ -1218,11 +1219,12 @@ vim.keymap.set("n", "]hc", ":Gitsigns next_hunk<CR>")
 vim.keymap.set("n", "<leader>hp", ":Gitsigns preview_hunk<CR>")
 vim.keymap.set("n", "<leader>hi", ":Gitsigns preview_hunk_inline<CR>")
 vim.keymap.set("n", "<leader>hd", ":Gitsigns diffthis<CR>")
+-- NOTE(pre-existing): "<header>hb" is almost certainly a typo for "<leader>hb". Ported verbatim.
 vim.keymap.set("n", "<header>hb", function() gitsigns.blame_line({ full = true }) end)
 vim.keymap.set("n", "<leader>hw", ":Gitsigns toggle_word_diff<CR>")
 
 vim.keymap.set({"o", "x"}, "ih", gitsigns.select_hunk)
-LUAEND
+end)()
 
-lua local oil = RequireChecked("oil"); if oil ~= nil then oil.setup({columns={"icon", "size", "mtime"}}); vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" }) end
-lua local colorizer = RequireChecked("colorizer"); if colorizer ~= nil then vim.o.termguicolors = true; colorizer.setup({options={parsers={css=true}, display={mode={"virtualtext", "foreground"}}}}) end
+do local oil = RequireChecked("oil"); if oil ~= nil then oil.setup({columns={"icon", "size", "mtime"}}); vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" }) end end
+do local colorizer = RequireChecked("colorizer"); if colorizer ~= nil then vim.o.termguicolors = true; colorizer.setup({options={parsers={css=true}, display={mode={"virtualtext", "foreground"}}}}) end end
