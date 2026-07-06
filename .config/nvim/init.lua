@@ -176,10 +176,8 @@ local function GitHub(repo)
 end
 
 local postinstall_hooks = {
-	["fff.nvim"] = function(path)
-		-- FIXME(pre-existing): `ev` is not in scope inside this hook (the hook is called as
-		-- `hook(ev.data.path)` below, so its only parameter is `path`). Ported verbatim.
-		if not ev.data.active then vim.cmd.packadd('fff.nvim') end
+	["fff.nvim"] = function(data)
+		if not data.active then vim.cmd.packadd('fff.nvim') end
 		require('fff.download').download_or_build_binary()
 	end,
 
@@ -193,7 +191,7 @@ vim.api.nvim_create_autocmd("PackChanged", {
 
 		local hook = postinstall_hooks[ev.data.spec.name]
 		if hook then
-			hook(ev.data.path)
+			hook(ev.data)
 		end
 	end,
 })
@@ -1219,8 +1217,7 @@ vim.keymap.set("n", "]hc", ":Gitsigns next_hunk<CR>")
 vim.keymap.set("n", "<leader>hp", ":Gitsigns preview_hunk<CR>")
 vim.keymap.set("n", "<leader>hi", ":Gitsigns preview_hunk_inline<CR>")
 vim.keymap.set("n", "<leader>hd", ":Gitsigns diffthis<CR>")
--- NOTE(pre-existing): "<header>hb" is almost certainly a typo for "<leader>hb". Ported verbatim.
-vim.keymap.set("n", "<header>hb", function() gitsigns.blame_line({ full = true }) end)
+vim.keymap.set("n", "<leader>hb", function() gitsigns.blame_line({ full = true }) end)
 vim.keymap.set("n", "<leader>hw", ":Gitsigns toggle_word_diff<CR>")
 
 vim.keymap.set({"o", "x"}, "ih", gitsigns.select_hunk)
