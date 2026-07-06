@@ -36,18 +36,29 @@ vim.o.exrc = true
 -- (likely a different one than last time), and when using xxd(1) to filter
 -- and edit binary files (it transforms input files back and forth, causing
 -- them to have dual nature, so to speak)
-vim.cmd([[
-augroup RestoreCursor
-	autocmd!
-	autocmd BufReadPre * autocmd FileType <buffer> ++once
-				\ let s:line = line("'\"")
-				\ | if s:line >= 1 && s:line <= line("$") && &filetype !~# 'commit'
-				\      && index(['xxd', 'gitrebase'], &filetype) == -1
-				\      && !&diff
-				\ |   execute "normal! g`\""
-				\ | endif
-augroup END
-]])
+vim.api.nvim_create_autocmd("BufReadPre", {
+	group = vim.api.nvim_create_augroup("RestoreCursor", {}),
+	callback = function(ev)
+		-- wait for FileType so the filetype exclusions below see the final value
+		vim.api.nvim_create_autocmd("FileType", {
+			buffer = ev.buf,
+			once = true,
+			callback = function()
+				local line = vim.fn.line([['"]])
+				local filetype = vim.bo.filetype
+				if
+					line >= 1
+					and line <= vim.fn.line("$")
+					and not filetype:find("commit", 1, true)
+					and not vim.list_contains({ "xxd", "gitrebase" }, filetype)
+					and not vim.wo.diff
+				then
+					vim.cmd([[normal! g`"]])
+				end
+			end,
+		})
+	end,
+})
 
 -- Undo and backup
 vim.o.undofile = true
@@ -140,8 +151,15 @@ vim.api.nvim_create_user_command("Cdr", function(o)
 	Cdr(o.fargs[1])
 end, { nargs = "?" })
 
-vim.cmd(
-[[autocmd FileType typescript,javascript,typescriptreact,javascriptreact nmap gD :GrepNoTests --case-sensitive "(const\\|function) <cword>\b" <CR>]])
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "typescript", "javascript", "typescriptreact", "javascriptreact" },
+	callback = function()
+		-- global on purpose (matches the original nmap): once any JS/TS file is
+		-- opened, gD works from every buffer
+		vim.keymap.set("n", "gD", [[:GrepNoTests --case-sensitive "(const\|function) <cword>\b" <CR>]],
+			{ remap = true })
+	end,
+})
 
 vim.api.nvim_create_autocmd("FileType", { pattern = "man", command = "set nospell" })
 
@@ -153,7 +171,7 @@ vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" },
 	{ pattern = "*.commit.sl.txt", command = "setfiletype hgcommit" })
 
 -- don't continue comments on new lines
-vim.cmd("set formatoptions-=ro")
+vim.opt.formatoptions:remove({ "r", "o" })
 -- many plugins overwrite this, so overoverwrite it
 vim.api.nvim_create_autocmd({ "BufWinEnter", "BufNewFile", "BufRead" },
 	{ pattern = "*", command = "setlocal formatoptions-=ro" })
@@ -1153,12 +1171,14 @@ else
 	vim.keymap.set("n", "<C-p>", ":FindFile<SPACE>", { remap = true })
 end
 
-vim.cmd([[
-command! -bang -nargs=* Rg
-  \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always --smart-case -u -- '.fzf#shellescape(<q-args>),
-  \   fzf#vim#with_preview(), <bang>0)
-]])
+vim.api.nvim_create_user_command("Rg", function(o)
+	vim.fn["fzf#vim#grep"](
+		"rg --column --line-number --no-heading --color=always --smart-case -u -- "
+		.. vim.fn["fzf#shellescape"](o.args),
+		vim.fn["fzf#vim#with_preview"](),
+		o.bang and 1 or 0
+	)
+end, { bang = true, nargs = "*" })
 
 -- FZF end
 
