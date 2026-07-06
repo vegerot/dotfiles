@@ -640,19 +640,19 @@ local on_attach = function(client, bufnr)
 		["textDocument/workspaceFolders"] = {
 			{
 				mode = "n",
-				lhs = "<leader>da",
+				lhs = "<leader>wfa",
 				rhs = function() vim.lsp.buf.add_workspace_folder() end,
 				desc = "vim.lsp.buf.add_workspace_folder()",
 			},
 			{
 				mode = "n",
-				lhs = "<leader>dr",
+				lhs = "<leader>wfr",
 				rhs = function() vim.lsp.buf.remove_workspace_folder() end,
 				desc = "vim.lsp.buf.remove_workspace_folder()",
 			},
 			{
 				mode = "n",
-				lhs = "<leader>dl",
+				lhs = "<leader>wfl",
 				rhs = function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end,
 				desc = "print(vim.inspect(vim.lsp.buf.list_workspace_folders()))",
 			},
