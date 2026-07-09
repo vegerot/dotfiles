@@ -800,7 +800,6 @@ local function AUTOCOMPLETE()
 				"vim.diagnostic.setloclist()")
 			if client:supports_method(LspMethods.textDocument_inlayHint, bufnr) then
 				-- unstable API.  Might break soon
-				vim.lsp.inlay_hint.enable(true)
 				vim.keymap.set('n', '<bs>', function()
 					vim.diagnostic.config({ virtual_lines = { current_line = not vim.diagnostic.config().virtual_lines.current_line } })
 					vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
@@ -916,6 +915,10 @@ local function AUTOCOMPLETE()
 				virtual_lines = { current_line = true }
 			})
 		end
+
+		local bashls_config = {
+			"bashls",
+		}
 
 		local godotnvim = function()
 			local go = RequireChecked("go")
@@ -1108,13 +1111,6 @@ local function AUTOCOMPLETE()
 
 		local zig_config = configure_zig()
 
-		local defaultConfig = {
-			on_attach = on_attach,
-			flags = {
-				debounce_text_changes = 150,
-			}
-		}
-
 		local copilot = {
 			"copilot",
 		}
@@ -1165,9 +1161,17 @@ local function AUTOCOMPLETE()
 			},
 		}
 
+		local defaultConfig = {
+			on_attach = on_attach,
+			flags = {
+				debounce_text_changes = 150,
+			}
+		}
+
 		-- Use a loop to conveniently call 'setup' on multiple servers and
 		-- map buffer local keybindings when the language server attaches
-		local servers = { quick_lint_js, tsserver_config, pythonruff_config, pythonty_config, clangd_config, rust_config,
+		local servers = { quick_lint_js, tsserver_config, bashls_config, pythonruff_config, pythonty_config,
+			clangd_config, rust_config,
 			zig_config, copilot, lua_ls_config }
 		for _, lsp in ipairs(servers) do
 			local name, settings = unpack(lsp)
