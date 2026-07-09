@@ -181,7 +181,7 @@ end
 VANILLA()
 
 if vim.g.neovide then
-	vim.env.PATH = vim.fn.system([[/bin/sh -lc 'printf "%s" "$PATH"']])
+	vim.env.PATH = vim.fn.system([[/bin/bash -lc 'printf "%s" "$PATH"']])
 
 	-- Neovide Cmd key mappings (Cmd+C/V/S like a normal app)
 	vim.keymap.set("v", "<D-c>", '"+y')
