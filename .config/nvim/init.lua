@@ -799,6 +799,11 @@ local function AUTOCOMPLETE()
 			if client:supports_method(LspMethods.textDocument_inlayHint, bufnr) then
 				-- unstable API.  Might break soon
 				vim.lsp.inlay_hint.enable(true)
+				vim.keymap.set('n', '<bs>', function()
+					vim.diagnostic.config({ virtual_lines = { current_line = not vim.diagnostic.config().virtual_lines.current_line } })
+					vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+				end, { buffer = 0, desc = 'Toggle verbose diagnostics and inlay_hints.' }
+				)
 			end
 			if client:supports_method(LspMethods.textDocument_completion, bufnr) then
 				vim.lsp.completion.enable(true, client.id, bufnr, { autotrigger = true })
