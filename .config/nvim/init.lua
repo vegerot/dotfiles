@@ -99,6 +99,9 @@ local function VANILLA()
 
 	-- Font for Neovide (GUI).
 	vim.o.guifont = "SFMono Nerd Font,JetBrainsMono Nerd Font,JetBrains Mono,Menlo,Monaco,Courier New,monospace:h14"
+	vim.keymap.set('t', '<C-[>', [[<C-\><C-N>]])
+	-- Map ESC to ESC, so we have a way to send literal ESC.
+	vim.keymap.set('t', '<Esc>', '<Esc>')
 
 	-- random colorscheme
 	-- inspiration https://gist.github.com/ryanflorence/1381526
@@ -331,6 +334,8 @@ local function PLUGINS()
 	local function gitsigns_plugin()
 		local gitsigns = RequireChecked("gitsigns");
 		if gitsigns == nil then return end
+
+		gitsigns.setup({ current_line_blame = true })
 		vim.o.statusline = vim.o.statusline .. " %{get(b:,'gitsigns_status','')}"
 
 		vim.keymap.set("n", "[hc", ":Gitsigns prev_hunk<CR>")
