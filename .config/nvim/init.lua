@@ -20,7 +20,7 @@ local function VANILLA()
 	-- when going to a quickfix item, switch to an existing window that already has
 	-- the buffer in it and if not, open it in a vsplit
 	vim.o.switchbuf = "usetab,uselast"
-	vim.opt.tabclose="uselast"
+	vim.opt.tabclose = "uselast"
 	vim.opt.jumpoptions:append("view")
 	vim.opt.wildoptions:append("fuzzy")
 
@@ -88,7 +88,7 @@ local function VANILLA()
 	vim.o.spell = true
 	vim.o.spelllang = "en,en_us,softwareterms,shell,vim,golang,html,lua,makefile,npm,python,sql,typescript,x86"
 	vim.opt.spelloptions:append({ "camel", "noplainbuffer" })
-	vim.opt.dictionary:append({"/usr/share/dict/words"}) -- for <C-x><C-k> completion
+	vim.opt.dictionary:append({ "/usr/share/dict/words" }) -- for <C-x><C-k> completion
 
 	vim.opt.title = true
 
@@ -161,7 +161,7 @@ local function VANILLA()
 		pattern = "diff",
 		command = "setlocal includeexpr=substitute(v:fname,'^[^\\/]*/','','')",
 	})
-	vim.opt.suffixesadd:append({".js", ".mjs", ".ts", ".tsx"})
+	vim.opt.suffixesadd:append({ ".js", ".mjs", ".ts", ".tsx" })
 
 	vim.api.nvim_create_autocmd("FileType", { pattern = "c", callback = function() vim.g.c_syntax_for_h = true end })
 	vim.api.nvim_create_autocmd("FileType", { pattern = "cpp", callback = function() vim.g.c_syntax_for_h = false end })
@@ -171,8 +171,8 @@ local function VANILLA()
 		{ pattern = "*.commit.sl.txt", command = "setfiletype hgcommit" })
 
 	-- don't continue comments on new lines
-vim.opt.formatoptions:append({"n", "1" })
-vim.opt.formatoptions:remove({ "r", "o" })
+	vim.opt.formatoptions:append({ "n", "1" })
+	vim.opt.formatoptions:remove({ "r", "o" })
 	-- many plugins overwrite this, so overoverwrite it
 	vim.api.nvim_create_autocmd({ "BufWinEnter", "BufNewFile", "BufRead" },
 		{ pattern = "*", command = "setlocal formatoptions-=ro" })
@@ -192,11 +192,10 @@ if vim.g.neovide then
 	vim.keymap.set("c", "<D-v>", "<C-R>+")
 	vim.keymap.set("t", "<D-v>", [[<C-\><C-N>"+pi]])
 
-	vim.keymap.set({"n", "i"}, "<D-s>", "<ESC>:w<CR>")
-	vim.keymap.set({"n", "i"}, "<D-q>", "<ESC>:q<CR>")
+	vim.keymap.set({ "n", "i" }, "<D-s>", "<ESC>:w<CR>")
+	vim.keymap.set({ "n", "i" }, "<D-q>", "<ESC>:q<CR>")
 	vim.keymap.set("n", "<D-t>", "<ESC>:tabnew<CR>")
 	vim.keymap.set("t", "<D-t>", [[<C-\><C-N><ESC>:tabnew | terminal<CR>]])
-
 end
 
 -- Require wrapper that returns nil when --noplugin or module not found
@@ -359,8 +358,8 @@ local function PLUGINS()
 	local quicker = RequireChecked("quicker"); if quicker ~= nil then
 		quicker.setup({
 			keys = {
-				{">", function() quicker.expand({ before=2, after=2, add_to_existing=true}) end, desc = "Expand quickfix content"},
-				{"<", function() quicker.collapse() end, desc = "Collapse quickfix content"}
+				{ ">", function() quicker.expand({ before = 2, after = 2, add_to_existing = true }) end, desc = "Expand quickfix content" },
+				{ "<", function() quicker.collapse() end,                                                desc = "Collapse quickfix content" }
 			}
 		})
 	end
@@ -372,7 +371,7 @@ end
 
 local function AUTOCOMPLETE()
 	vim.opt.completeopt:append({ "fuzzy", "menuone", "noinsert", "popup", "nearest" })
-	vim.opt.complete:append({"f", "kspell"}) -- include buffer names and dictionary for autocomplete
+	vim.opt.complete:append({ "f", "kspell" }) -- include buffer names and dictionary for autocomplete
 
 	do
 		if not vim.o.loadplugins then
@@ -795,7 +794,6 @@ local function AUTOCOMPLETE()
 			map("n", "<leader>q", function() vim.diagnostic.setqflist({ open = true }) end, "vim.diagnostic.setqflist()")
 			map("n", "<leader>l", function() vim.diagnostic.setloclist({ open = true }) end,
 				"vim.diagnostic.setloclist()")
-
 			if client:supports_method(LspMethods.textDocument_inlayHint, bufnr) then
 				-- unstable API.  Might break soon
 				vim.lsp.inlay_hint.enable(true)
