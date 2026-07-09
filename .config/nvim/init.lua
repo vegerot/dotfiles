@@ -494,6 +494,9 @@ local function AUTOCOMPLETE()
 			}
 
 			local function range_contains_pos(range, line, char)
+				if not range then
+					return false
+				end
 				local start = range.start
 				local stop = range['end']
 
@@ -518,7 +521,8 @@ local function AUTOCOMPLETE()
 				end
 
 				for _, symbol in ipairs(symbol_list) do
-					if range_contains_pos(symbol.range, line, char) then
+					local range = symbol.range or (symbol.location and symbol.location.range)
+					if range_contains_pos(range, line, char) then
 						local icon = kind_icons[symbol.kind] or ""
 						table.insert(path, icon .. " " .. symbol.name)
 						find_symbol_path(symbol.children, line, char, path)
