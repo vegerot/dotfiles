@@ -290,6 +290,7 @@ local function PLUGINS()
 			GitHub("dmtrKovalenko/fff.nvim"),
 			GitHub("nvim-mini/mini.align"),
 			GitHub("stevearc/quicker.nvim"),
+			GitHub("MeanderingProgrammer/render-markdown.nvim"),
 		})
 	end
 
