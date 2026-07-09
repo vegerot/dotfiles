@@ -20,8 +20,10 @@ local function VANILLA()
 	-- when going to a quickfix item, switch to an existing window that already has
 	-- the buffer in it and if not, open it in a vsplit
 	vim.o.switchbuf = "usetab,uselast"
+	vim.opt.tabclose="uselast"
 	vim.opt.jumpoptions:append("view")
 	vim.opt.wildoptions:append("fuzzy")
+
 	vim.o.smoothscroll = true
 	vim.o.winborder = "rounded"
 	vim.o.pumborder = "rounded"
@@ -68,19 +70,27 @@ local function VANILLA()
 	vim.o.scrolloff = 15
 	vim.o.sidescroll = 6
 	vim.o.sidescrolloff = 3
+	vim.opt.cursorline = true
+	vim.opt.linebreak = true
 
 	vim.o.showbreak = "↪"
 	vim.o.list = true
 	vim.opt.listchars = { tab = "→ ", nbsp = "␣", trail = "•", extends = "⟩", precedes = "⟨" }
+	vim.opt.fillchars:append({ msgsep = "‾", eob = "·" })
 
 	vim.o.tabstop = 4
 	vim.o.shiftwidth = 4
 	vim.o.shiftround = true
 	vim.o.splitright = true -- splitting a window will put the new window right of the current one
 
+	vim.o.inccommand = 'split' -- show off-screen search/replace matches in a split preview window
+
 	vim.o.spell = true
 	vim.o.spelllang = "en,en_us,softwareterms,shell,vim,golang,html,lua,makefile,npm,python,sql,typescript,x86"
 	vim.opt.spelloptions:append({ "camel", "noplainbuffer" })
+	vim.opt.dictionary:append({"/usr/share/dict/words"}) -- for <C-x><C-k> completion
+
+	vim.opt.title = true
 
 	vim.o.foldenable = false
 
@@ -146,6 +156,13 @@ local function VANILLA()
 
 	vim.api.nvim_create_autocmd("FileType", { pattern = "man", command = "set nospell" })
 
+	-- DWIM 'includeexpr' for diffs: make gf work on filenames like "a/…" (strip a/ b/ prefix)
+	vim.api.nvim_create_autocmd("FileType", {
+		pattern = "diff",
+		command = "setlocal includeexpr=substitute(v:fname,'^[^\\/]*/','','')",
+	})
+	vim.opt.suffixesadd:append({".js", ".mjs", ".ts", ".tsx"})
+
 	vim.api.nvim_create_autocmd("FileType", { pattern = "c", callback = function() vim.g.c_syntax_for_h = true end })
 	vim.api.nvim_create_autocmd("FileType", { pattern = "cpp", callback = function() vim.g.c_syntax_for_h = false end })
 
@@ -154,7 +171,8 @@ local function VANILLA()
 		{ pattern = "*.commit.sl.txt", command = "setfiletype hgcommit" })
 
 	-- don't continue comments on new lines
-	vim.opt.formatoptions:remove({ "r", "o" })
+vim.opt.formatoptions:append({"n", "1" })
+vim.opt.formatoptions:remove({ "r", "o" })
 	-- many plugins overwrite this, so overoverwrite it
 	vim.api.nvim_create_autocmd({ "BufWinEnter", "BufNewFile", "BufRead" },
 		{ pattern = "*", command = "setlocal formatoptions-=ro" })
@@ -173,6 +191,12 @@ if vim.g.neovide then
 	vim.keymap.set("v", "<D-v>", '"+p')
 	vim.keymap.set("c", "<D-v>", "<C-R>+")
 	vim.keymap.set("t", "<D-v>", [[<C-\><C-N>"+pi]])
+
+	vim.keymap.set({"n", "i"}, "<D-s>", "<ESC>:w<CR>")
+	vim.keymap.set({"n", "i"}, "<D-q>", "<ESC>:q<CR>")
+	vim.keymap.set("n", "<D-t>", "<ESC>:tabnew<CR>")
+	vim.keymap.set("t", "<D-t>", [[<C-\><C-N><ESC>:tabnew | terminal<CR>]])
+
 end
 
 -- Require wrapper that returns nil when --noplugin or module not found
@@ -222,12 +246,19 @@ local function PLUGINS()
 			GitHub("justinmk/vim-sneak"),
 			GitHub("nanotee/zoxide.vim"),
 			GitHub("nvim-lua/plenary.nvim"),
+			GitHub("haya14busa/vim-edgemotion"),
 
 			-- tpope's plugins
 			GitHub("tpope/vim-repeat"),
 			GitHub("tpope/vim-sleuth"),
 			GitHub("tpope/vim-unimpaired"),
 			GitHub("tpope/vim-surround"),
+			GitHub("tpope/vim-characterize"),
+			GitHub("tpope/vim-apathy"),
+			GitHub("tpope/vim-eunuch"),
+			GitHub("tpope/vim-rsi"),
+			GitHub("tpope/vim-endwise"),
+			GitHub("tpope/vim-obsession"),
 
 			-- folke's plugins
 			GitHub("folke/snacks.nvim"),
@@ -257,6 +288,8 @@ local function PLUGINS()
 			GitHub("stevearc/oil.nvim"),
 			GitHub("catgoose/nvim-colorizer.lua"),
 			GitHub("dmtrKovalenko/fff.nvim"),
+			GitHub("nvim-mini/mini.align"),
+			GitHub("stevearc/quicker.nvim"),
 		})
 	end
 
@@ -321,6 +354,15 @@ local function PLUGINS()
 	local colorizer = RequireChecked("colorizer"); if colorizer ~= nil then
 		vim.o.termguicolors = true; colorizer.setup({ options = { parsers = { css = true }, display = { mode = { "virtualtext", "foreground" } } } })
 	end
+
+	local quicker = RequireChecked("quicker"); if quicker ~= nil then
+		quicker.setup({
+			keys = {
+				{">", function() quicker.expand({ before=2, after=2, add_to_existing=true}) end, desc = "Expand quickfix content"},
+				{"<", function() quicker.collapse() end, desc = "Collapse quickfix content"}
+			}
+		})
+	end
 end
 
 if PLUGINS() == "FINISH_EARLY" then
@@ -329,6 +371,7 @@ end
 
 local function AUTOCOMPLETE()
 	vim.opt.completeopt:append({ "fuzzy", "menuone", "noinsert", "popup", "nearest" })
+	vim.opt.complete:append({"f", "kspell"}) -- include buffer names and dictionary for autocomplete
 
 	do
 		if not vim.o.loadplugins then
