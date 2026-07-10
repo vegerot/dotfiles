@@ -368,6 +368,12 @@ local function PLUGINS()
 			}
 		})
 	end
+
+	local render_markdown = require("render-markdown"); if render_markdown ~= nil then
+		render_markdown.setup({
+			html = { comment = { conceal = false } }
+		})
+	end
 end
 
 if PLUGINS() == "FINISH_EARLY" then
