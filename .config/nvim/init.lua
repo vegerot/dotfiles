@@ -810,10 +810,10 @@ local function AUTOCOMPLETE()
 			map("n", "<leader>l", function() vim.diagnostic.setloclist({ open = true }) end,
 				"vim.diagnostic.setloclist()")
 			if client:supports_method(LspMethods.textDocument_inlayHint, bufnr) then
-				-- unstable API.  Might break soon
+				vim.diagnostic.config({ virtual_lines = { current_line = true } })
+				vim.lsp.inlay_hint.enable()
 				vim.keymap.set('n', '<bs>', function()
 					vim.diagnostic.config({ virtual_lines = { current_line = not vim.diagnostic.config().virtual_lines.current_line } })
-					vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
 				end, { buffer = 0, desc = 'Toggle verbose diagnostics and inlay_hints.' }
 				)
 			end
@@ -922,9 +922,6 @@ local function AUTOCOMPLETE()
 					end
 				end
 			end
-			vim.diagnostic.config({
-				virtual_lines = { current_line = true }
-			})
 		end
 
 		local bashls_config = {
