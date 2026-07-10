@@ -1021,6 +1021,9 @@ local function AUTOCOMPLETE()
 
 		local jsonls_config = {
 			"jsonls",
+			{
+				filetypes={"json", "jsonc"}
+			}
 		}
 
 		local pythonruff_config = {
@@ -1178,7 +1181,8 @@ local function AUTOCOMPLETE()
 
 		-- Use a loop to conveniently call 'setup' on multiple servers and
 		-- map buffer local keybindings when the language server attaches
-		local servers = { quick_lint_js, tsserver_config, bashls_config, pythonruff_config, pythonty_config,
+		local servers = { quick_lint_js, tsserver_config, jsonls_config, bashls_config, pythonruff_config,
+			pythonty_config,
 			clangd_config, rust_config,
 			zig_config, copilot, lua_ls_config }
 		for _, lsp in ipairs(servers) do
