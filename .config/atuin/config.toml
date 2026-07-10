@@ -1,3 +1,9 @@
+## Base directory for Atuin data files (databases, keys, session, etc.)
+## All data file paths default to being relative to this directory.
+## linux/mac: ~/.local/share/atuin (or XDG_DATA_HOME/atuin)
+## windows: %USERPROFILE%/.local/share/atuin
+# data_dir = "~/.local/share/atuin"
+
 ## where to store your database, default is your system data directory
 ## linux/mac: ~/.local/share/atuin/history.db
 ## windows: %USERPROFILE%/.local/share/atuin/history.db
@@ -34,11 +40,11 @@
 ## how often to sync history. note that this is only triggered when a command
 ## is ran, so sync intervals may well be longer
 ## set it to 0 to sync after every command
-# sync_frequency = "10m"
+# sync_frequency = "5m"
 
 ## which search mode to use
 ## possible values: prefix, fulltext, fuzzy, skim
-search_mode = "daemon-fuzzy"
+# search_mode = "fuzzy"
 
 ## which filter mode to use by default
 ## possible values: "global", "host", "session", "session-preload", "directory", "workspace"
@@ -65,11 +71,11 @@ search_mode = "daemon-fuzzy"
 
 ## which style to use
 ## possible values: auto, full, compact
-# style = "auto"
+# style = "compact"
 
 ## the maximum number of lines the interface should take up
 ## set it to 0 to always go full screen
-# inline_height = 0
+# inline_height = 40
 
 ## the maximum number of lines the interface should take up
 ## when atuin is invoked from a shell up-key binding
@@ -106,6 +112,11 @@ search_mode = "daemon-fuzzy"
 
 ## default history list format - can also be specified with the --format arg
 # history_format = "{time}\t{command}\t{duration}"
+
+## Defaults to true. If enabled, strip trailing spaces and tabs from commands
+## before saving them to history.
+## Escaped trailing spaces (for example `printf foo\\ `) are preserved.
+# strip_trailing_whitespace = true
 
 ## prevent commands matching any of these regexes from being written to history.
 ## Note that these regular expressions are unanchored, i.e. if they don't start
@@ -154,28 +165,30 @@ search_mode = "daemon-fuzzy"
 ## 5. Stripe live/test keys
 # secrets_filter = true
 
-## Defaults to true. If enabled, upon hitting enter Atuin will immediately execute the command. Press tab to return to the shell and edit.
-# This applies for new installs. Old installs will keep the old behaviour unless configured otherwise.
+## Defaults to true. If enabled, upon hitting enter Atuin will immediately execute the command,
+## whereas tab will put the command in the prompt for editing.
+## If set to false, both enter and tab will place the command in the prompt for editing.
+## This applies for new installs. Old installs will keep the old behaviour unless configured otherwise.
 enter_accept = true
+search_mode = "daemon-fuzzy"
 
 ## Defaults to false. If enabled, when triggered after &&, || or |, Atuin will complete commands to chain rather than replace the current line.
 # command_chaining = false
 
-## Defaults to "emacs".  This specifies the keymap on the startup of `atuin
-## search`.  If this is set to "auto", the startup keymap mode in the Atuin
-## search is automatically selected based on the shell's keymap where the
-## keybinding is defined.  If this is set to "emacs", "vim-insert", or
-## "vim-normal", the startup keymap mode in the Atuin search is forced to be
-## the specified one.
-# keymap_mode = "auto"
+## This specifies the keymap on the startup of `atuin search`. If this is set
+## to "auto", the startup keymap mode in the Atuin search is automatically
+## selected based on the shell's keymap where the keybinding is defined. If
+## this is set to "emacs", "vim-insert", or "vim-normal", the startup keymap
+## mode in the Atuin search is forced to be the specified one.
+# keymap_mode = "emacs"
 
-## Cursor style in each keymap mode.  If specified, the cursor style is changed
-## in entering the cursor shape.  Available values are "default" and
+## Cursor style in each keymap mode. If specified, the cursor style is changed
+## in entering the cursor shape. Available values are "default" and
 ## "{blink,steady}-{block,underline,bar}".
 # keymap_cursor = { emacs = "blink-block", vim_insert = "blink-block", vim_normal = "steady-block" }
 
 # network_connect_timeout = 5
-# network_timeout = 5
+# network_timeout = 30
 
 ## Timeout (in seconds) for acquiring a local database connection (sqlite)
 # local_timeout = 5
@@ -223,12 +236,16 @@ enter_accept = true
 [keys]
 # Defaults to true. If disabled, using the up/down key won't exit the TUI when scrolled past the first/last entry.
 # scroll_exits = true
+
 # Defaults to true. The left arrow key will exit the TUI when scrolling before the first character
 # exit_past_line_start = true
+
 # Defaults to true. The right arrow key performs the same functionality as Tab and copies the selected line to the command line to be modified.
 # accept_past_line_end = true
+
 # Defaults to false. The left arrow key performs the same functionality as Tab and copies the selected line to the command line to be modified.
 # accept_past_line_start = false
+
 # Defaults to false. The backspace key performs the same functionality as Tab and copies the selected line to the command line to be modified when at the start of the line.
 # accept_with_backspace = false
 
@@ -249,8 +266,12 @@ records = true
 [daemon]
 enabled = true
 autostart = true
-## Enables using the daemon to sync. Requires the daemon to be running in the background. Start it with `atuin daemon`
+## Enables using the daemon to sync.
 # enabled = false
+
+## Automatically start and manage the daemon when needed.
+## Not compatible with `systemd_socket = true`.
+# autostart = false
 
 ## How often the daemon should sync in seconds
 # sync_frequency = 300
@@ -259,6 +280,10 @@ autostart = true
 ## linux/mac: ~/.local/share/atuin/atuin.sock
 ## windows: Not Supported
 # socket_path = "~/.local/share/atuin/atuin.sock"
+
+## The daemon pidfile used for lifecycle management.
+## Defaults to the Atuin data directory.
+# pidfile_path = "~/.local/share/atuin/atuin-daemon.pid"
 
 ## Use systemd socket activation rather than opening the given path (the path must still be correct for the client)
 ## linux: false
@@ -290,5 +315,62 @@ autostart = true
 ## Default filter mode can be overridden with the filter_mode setting.
 filters = ["session-preload", "global", "host", "session", "workspace", "directory" ]
 
+[tmux]
+## Enable using atuin with tmux popup (requires tmux >= 3.2)
+## When enabled and running inside tmux, Atuin will use a popup window for interactive search.
+## Set to false to disable the popup.
+## This can also be controlled with the ATUIN_TMUX_POPUP environment variable.
+## Note: The tmux popup is currently supported in zsh, bash, and fish shells. This currently doesn't work with iTerm native tmux integration.
+# enabled = false
+
+## Width of the tmux popup window
+## Can be a percentage, or integer (e.g. "100" means 100 characters wide)
+# width = "80%"
+
+## Height of the tmux popup window
+## Can be a percentage, or integer (e.g. "100" means 100 lines tall)
+# height = "60%"
+
+[ui]
+
 [ai]
 enabled = true
+## Columns to display in the interactive search, from left to right.
+## The selection indicator (" > ") is always shown first implicitly.
+##
+## Each column can be specified as a simple string (uses default width)
+## or as an object with type, width, and expand:
+##   { type = "directory", width = 30, expand = true }
+##
+## Available column types (with default widths):
+##   duration  (5)  - Command execution duration (e.g., "123ms")
+##   time      (8)  - Relative time since execution (e.g., "59m ago")
+##   datetime  (16) - Absolute timestamp (e.g., "2025-01-22 14:35")
+##   directory (20) - Working directory (truncated if too long)
+##   host      (15) - Hostname where command was run
+##   user      (10) - Username
+##   exit      (3)  - Exit code (colored by success/failure)
+##   command   (*)  - The command itself (expands by default)
+##
+## The "expand" option (default: true for command, false for others) makes a
+## column fill remaining space. Only one column should have expand = true.
+##
+## Default:
+# columns = ["duration", "time", "command"]
+##
+## Examples:
+##
+## Minimal - more space for commands:
+# columns = ["duration", "command"]
+##
+## With wider directory column:
+# columns = ["duration", { type = "directory", width = 30 }, "command"]
+##
+## Show host for multi-machine sync users:
+# columns = ["duration", "time", "host", "command"]
+##
+## Show exit codes prominently:
+# columns = ["exit", "duration", "command"]
+##
+## Make directory expand instead of command:
+# columns = ["duration", "time", { type = "directory", expand = true }, { type = "command", expand = false }]
