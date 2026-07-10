@@ -21,25 +21,29 @@
       "url": "https://code.byted.org/api/mcp/codebase/mcp",
       "headers": {
         "X-Code-User-JWT": "{env:BYTED_AI_JWT}"
-      }
+      },
+      "enabled": false,
     },
     "Lark": {
       "type": "remote",
       "url": "https://code.byted.org/api/mcp/lark/mcp",
       "headers": {
         "X-Code-User-JWT": "{env:BYTED_AI_JWT}"
-      }
+      },
+      "enabled": false,
     },
     "ByteDance MCP": {
       "type": "remote",
       "url": "https://0r2y3xvu.mcp.bytedance.net/mcp",
       "headers": {
         "X-Code-User-JWT": "{env:BYTED_AI_JWT}"
-      }
+      },
+      "enabled": false,
     },
     "robinhood-trading": {
       "type": "remote",
-      "url": "https://agent.robinhood.com/mcp/trading"
+      "url": "https://agent.robinhood.com/mcp/trading",
+      "enabled": false,
     },
     "Chrome DevTools": {
       "type": "local",
@@ -52,15 +56,17 @@
     "openrouter": {
       "type": "remote",
       "url": "https://mcp.openrouter.ai/mcp",
-    }
-    //"Trae_CLI": {
-    //  "type": "local",
-    //  "command": [
-    //    "traecli",
-    //    "mcp",
-    //    "serve"
-    //  ]
-    //}
+      "enabled": false
+    },
+    "Trae_CLI": {
+     "type": "local",
+     "command": [
+       "traecli",
+       "mcp",
+       "serve"
+     ],
+      "enabled": false,
+    },
   },
   "permission": {
     "Codebase_GetFile": "ask",
