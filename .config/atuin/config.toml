@@ -180,7 +180,7 @@ search_mode = "daemon-fuzzy"
 ## selected based on the shell's keymap where the keybinding is defined. If
 ## this is set to "emacs", "vim-insert", or "vim-normal", the startup keymap
 ## mode in the Atuin search is forced to be the specified one.
-# keymap_mode = "emacs"
+keymap_mode = "auto"
 
 ## Cursor style in each keymap mode. If specified, the cursor style is changed
 ## in entering the cursor shape. Available values are "default" and
