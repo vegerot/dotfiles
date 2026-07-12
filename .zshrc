@@ -203,6 +203,7 @@ load_plugins() {
 	  export FZF_CTRL_T_COMMAND=
 	  export FZF_ALT_C_COMMAND=
 	  eval "$(atuin init zsh)"
+	  eval "$(atuin ai init)"
   else
 	  local zsh_history_substring_search_path=${plugin_paths[zsh-history-substring-search]}/zsh-history-substring-search.zsh
 	  if [[ -r $zsh_history_substring_search_path ]]; then

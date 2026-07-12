@@ -313,7 +313,7 @@ autostart = true
 ## The list of enabled filter modes, in order of priority.
 ## The "workspace" mode is skipped when not in a workspace or workspaces = false.
 ## Default filter mode can be overridden with the filter_mode setting.
-filters = ["session-preload", "global", "host", "session", "workspace", "directory" ]
+# filters = ["global", "host", "session", "workspace", "directory", "session-preload"]
 
 [tmux]
 ## Enable using atuin with tmux popup (requires tmux >= 3.2)
@@ -335,6 +335,10 @@ filters = ["session-preload", "global", "host", "session", "workspace", "directo
 
 [ai]
 enabled = true
+
+[ai.opening]
+send_cwd=true
+send_last_command=true
 ## Columns to display in the interactive search, from left to right.
 ## The selection indicator (" > ") is always shown first implicitly.
 ##
