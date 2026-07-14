@@ -54,4 +54,7 @@ function pick_ai_chatbot {
   }
 }
 
+$secretsFile = "$env:USERPROFILE\.secrets.env.ps1"
+if (Test-Path $secretsFile) { . $secretsFile }
+
 #oh-my-posh init pwsh | Invoke-Expression

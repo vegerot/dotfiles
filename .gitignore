@@ -19,3 +19,4 @@ Thumbs.db
 
 #secret env variables
 .secrets.env
+.secrets.env.ps1
