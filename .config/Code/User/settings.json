@@ -91,6 +91,7 @@
         "tokopedia",
         "TTFB",
         "Unkeyed",
+        "vegerot",
         "volcengine"
     ],
     "better-comments.highlightPlainText": true,
@@ -294,5 +295,11 @@
             ]
         }
     },
+    "gitai.integratedTerminalWrapperEnabled": true,
+    "AI.agent.shellOpenTerminalMode": "background_only",
+    "AI.ide.computerUse.enable": true,
+    "gitai.experiments.aiTabTracking": true,
+    "trae.macos-connector.enable": true,
+    "gitai.blameMode": "line",
 
 }
