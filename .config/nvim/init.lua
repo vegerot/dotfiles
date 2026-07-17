@@ -867,8 +867,8 @@ local function AUTOCOMPLETE()
 					sidekick.setup {
 						cli = {
 							tools = {
-								traecli = {
-									cmd = { "traecli" },
+								traex = {
+									cmd = { "traex" },
 									title = "Trae CLI",
 								}
 							}
