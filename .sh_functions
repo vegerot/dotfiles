@@ -47,6 +47,10 @@ cdp() {
 
 }
 
+repo() {
+	cd $(findrepo ~/code | fzf)
+}
+
 fdNvimRtp() {
 	local search_term="${1:-.}"
 	nvim -e -s -c "set runtimepath?" \
