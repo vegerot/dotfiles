@@ -98,10 +98,10 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/mattpocock/skills.git",
       "skillPath": "skills/engineering/tdd/SKILL.md",
-      "skillFolderHash": "7e6fad2aedf8648f6154af32915eebd12c6d51cc",
+      "skillFolderHash": "0a727bd358b855cbcc1c35cfff21ef31f9ffb8de",
       "pluginName": "mattpocock-skills",
       "installedAt": "2026-06-23T22:54:36.454Z",
-      "updatedAt": "2026-06-23T22:54:36.454Z"
+      "updatedAt": "2026-07-13T23:03:19.192Z"
     },
     "grill-with-docs": {
       "source": "mattpocock/skills",
