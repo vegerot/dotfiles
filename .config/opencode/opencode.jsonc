@@ -81,10 +81,9 @@
 
   "provider": {
     "better_pareto_router": {
-      "name": "Better Pareto Router",
+      "name": "Frontier Router",
       "npm": "@ai-sdk/openai-compatible",
       "options": {
-        "apiKey": "{env:OPENROUTER_API_KEY}",
         "baseURL": "http://localhost:4000/v1"
       },
       "models": {
@@ -98,7 +97,7 @@
               "text"
             ]
           },
-          "name": "Better Pareto Router",
+          "name": "Frontier Router",
           "variants": {
             "💩": {
               "headers": {
