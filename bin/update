@@ -67,13 +67,16 @@ function upgrade_npm() {
 		npm outdated || true
 		echo "npm update --global"
 		if [[ $OSTYPE != "darwin"* ]]; then
+			bun update -g
 			sudo npm install npm --global --force
 			sudo npm update --global
 		else
 			if [[ $USER == bytedance ]]; then
+				bun update -g --registry=https://bnpm.byted.org
 				npm install npm --global --force --registry https://bnpm.byted.org
 				npm update --global --registry https://bnpm.byted.org
 			else
+				bun update -g
 				npm install npm --global --force
 				npm update --global
 			fi
