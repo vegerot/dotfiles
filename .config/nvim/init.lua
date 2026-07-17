@@ -58,6 +58,16 @@ local function VANILLA()
 	vim.keymap.set("n", "N", "Nzz")
 	vim.keymap.set("n", "<leader>n", ":nohl<CR>", { remap = true })
 
+	-- press backspace at the beginning of a `/` search to INVERT the search
+	vim.cmd [[
+    cnoremap <expr> <BS> (getcmdtype() =~ '[/?]' && getcmdline() == '') ? '\v^(()@!.)*$<Left><Left><Left><Left><Left><Left><Left>' : '<BS>'
+    ]]
+
+	-- press `//` in visual mode to only search inside the selected text
+	vim.cmd [[
+		cnoremap <expr> / (getcmdtype() =~ '[/?]' && getcmdline() == '') ? "\<C-c>\<Esc>/\\%V" : '/'
+	]]
+
 	-- Undo break points (cred: Prime)
 	-- TODO: function that takes list of chars and does this remap for them
 	vim.keymap.set("i", ",", ",<c-g>u")
@@ -93,6 +103,9 @@ local function VANILLA()
 	vim.opt.title = true
 
 	vim.o.foldenable = false
+
+	-- Disable default menu.vim to save ~100ms startup time
+	vim.g.did_install_default_menus = 1
 
 	vim.o.termguicolors = true
 	vim.cmd.colorscheme("retrobox")
@@ -179,6 +192,13 @@ local function VANILLA()
 	-- many plugins overwrite this, so overoverwrite it
 	vim.api.nvim_create_autocmd({ "BufWinEnter", "BufNewFile", "BufRead" },
 		{ pattern = "*", command = "setlocal formatoptions-=ro" })
+
+	-- Press tab and s-tab to switch between recent windows
+	vim.keymap.set("n", "<c-i>", "<c-i>") -- makes sure tab and <c-i> are different
+	vim.keymap.set("n", "<Tab>", function()
+		return vim.v.count > 0 and "<C-w>w" or "<C-w>p"
+	end, { expr = true })
+	vim.keymap.set("n", "<S-Tab>", "<C-^>")
 end
 
 VANILLA()
