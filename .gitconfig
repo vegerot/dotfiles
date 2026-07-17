@@ -20,6 +20,12 @@
   untracked = cyan
   branch = yellow bold ul
 
+[diff]
+colorMoved = true
+colorMovedWS = allow-indentation-change
+mnemonicPrefix = true
+# submodule=diff
+
 # These are ignored if you aren't running VSCode
 [difftool "vscode"]
   cmd =  code --wait --diff $LOCAL $REMOTE
@@ -41,6 +47,10 @@
   fastforward = true
   ff = only
   rebase = true
+
+[feature]
+  experimental = true
+  manyFiles = true
 
 [user]
   email = mchcopl@gmail.com
