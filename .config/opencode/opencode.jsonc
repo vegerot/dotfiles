@@ -16,30 +16,6 @@
       ],
       "enabled": true
     },
-    "Codebase": {
-      "type": "remote",
-      "url": "https://code.byted.org/api/mcp/codebase/mcp",
-      "headers": {
-        "X-Code-User-JWT": "{env:BYTED_AI_JWT}"
-      },
-      "enabled": false,
-    },
-    "Lark": {
-      "type": "remote",
-      "url": "https://code.byted.org/api/mcp/lark/mcp",
-      "headers": {
-        "X-Code-User-JWT": "{env:BYTED_AI_JWT}"
-      },
-      "enabled": false,
-    },
-    "ByteDance MCP": {
-      "type": "remote",
-      "url": "https://0r2y3xvu.mcp.bytedance.net/mcp",
-      "headers": {
-        "X-Code-User-JWT": "{env:BYTED_AI_JWT}"
-      },
-      "enabled": false,
-    },
     "robinhood-trading": {
       "type": "remote",
       "url": "https://agent.robinhood.com/mcp/trading",
