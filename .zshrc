@@ -107,8 +107,13 @@ bindkey '^x^e' edit-command-line
 ## 10ms for key sequences.  Makes going to normal mode fast
 KEYTIMEOUT=1
 bindkey -M vicmd "" edit-command-line
-bindkey '^a' beginning-of-line
+bindkey -M viins '^a' beginning-of-line
 bindkey '^e' end-of-line
+
+# Use `C-x C-a` to act like `<C-a>` in vim
+autoload -Uz incarg
+zle -N incarg
+bindkey -M vicmd "^A" incarg
 
 # set up keymap stuff here because it's not working other places
 
@@ -130,6 +135,27 @@ fi
 }
 precmd_functions+=(zle-keymap-select)
 zle -N zle-keymap-select
+
+
+fg-widget() {
+# if you haven't typed anything, then just run `fg`. Otherwise, run a quick temporary command
+	if [[ $#BUFFER -eq 0 ]]; then
+		BUFFER='fg'
+		zle accept-line
+	else
+		zle push-input
+		zle clear-screen
+	fi
+}
+zle -N fg-widget
+bindkey "^Z" fg-widget
+
+change-first-word() {
+	zle beginning-of-line -N
+	zle kill-word
+}
+zle -N change-first-word
+bindkey -M emacs "\ea" change-first-word
 
 setopt correct
 COMPLETION_WAITING_DOTS="true"
@@ -274,7 +300,7 @@ load_plugins() {
       if type apfel > /dev/null; then
           export SMART_SUGGESTION_AI_PROVIDER=deepseek
           export DEEPSEEK_BASE_URL="http://localhost:11434/v1"
-          export DEEPSEEK_API_KEY="not needed because we're using apfel locally"
+          #export DEEPSEEK_API_KEY="not needed because we're using apfel locally"
           export DEEPSEEK_MODEL="apple-foundationmodel"
       else
 		export SMART_SUGGESTION_AI_PROVIDER=deepseek
