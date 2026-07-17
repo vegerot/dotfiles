@@ -324,6 +324,26 @@ local function PLUGINS()
 		})
 	end
 
+	if vim.o.loadplugins then
+		-- sneak
+		vim.keymap.set("", "s", "<Plug>Sneak_s", { remap = true })
+		vim.keymap.set("", "S", "<Plug>Sneak_S", { remap = true })
+
+		-- Open remote
+		vim.keymap.set("n", "<leader>op", ":OpenFile<CR>", { remap = true })
+		vim.keymap.set("v", "<leader>op", ":OpenFile<CR>", { remap = true })
+		vim.keymap.set("n", "<leader>cp", ":CopyFile<CR>", { remap = true })
+		vim.keymap.set("v", "<leader>cp", ":CopyFile<CR>", { remap = true })
+
+		--edgemotion: replace { and } to be indent-based
+		if not vim.o.loadplugins then
+			return
+		end
+		vim.keymap.set({ "n", "o", "x" }, "{", "<Plug>(edgemotion-k)", { remap = true })
+		vim.keymap.set({ "n", "o", "x" }, "}", "<Plug>(edgemotion-j)", { remap = true })
+		vim.g.camelcasemotion_key = "<leader>"
+	end
+
 	if vim.g.vscode then
 		vim.o.scrolloff = 0
 		vim.keymap.set("n", "<c-u>", "<c-u>zzjk")
@@ -346,19 +366,6 @@ local function PLUGINS()
 		vim.cmd.packadd("nvim.undotree")
 	end
 
-	if vim.o.loadplugins then
-		-- sneak
-		vim.keymap.set("", "s", "<Plug>Sneak_s", { remap = true })
-		vim.keymap.set("", "S", "<Plug>Sneak_S", { remap = true })
-
-		-- Open remote
-		vim.keymap.set("n", "<leader>op", ":OpenFile<CR>", { remap = true })
-		vim.keymap.set("v", "<leader>op", ":OpenFile<CR>", { remap = true })
-		vim.keymap.set("n", "<leader>cp", ":CopyFile<CR>", { remap = true })
-		vim.keymap.set("v", "<leader>cp", ":CopyFile<CR>", { remap = true })
-
-		vim.g.camelcasemotion_key = "<leader>"
-	end
 	local function gitsigns_plugin()
 		local gitsigns = RequireChecked("gitsigns");
 		if gitsigns == nil then return end
