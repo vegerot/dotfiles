@@ -136,25 +136,33 @@ local function VANILLA()
 	vim.api.nvim_create_user_command("VEdir", "Ve %:h", {})
 	vim.api.nvim_create_user_command("Cd", "cd %:h", {})
 
-	local function Cdr(path)
+	local function Cdr(path, quiet)
 		local start = vim.fn.expand("%:p:h")
 		if start == "" then
 			start = vim.fn.getcwd()
 		end
 
-		local root = vim.trim(vim.fn.system("git -C " .. vim.fn.shellescape(start) .. " rev-parse --show-toplevel"))
+		local root = vim.trim(vim.fn.system(
+			"git -C " .. vim.fn.shellescape(start) .. " rev-parse --show-toplevel"
+		))
+
 		if vim.v.shell_error ~= 0 or root == "" then
-			vim.api.nvim_echo({ { "Not in a git repo", "ErrorMsg" } }, true, { err = true })
+			if not quiet then
+				vim.api.nvim_echo({ { "Not in a git repo", "ErrorMsg" } }, true, { err = true })
+			end
 			return
 		end
 
-		path = path or ""
-		if path == "" then
-			vim.cmd.cd(vim.fn.fnameescape(root))
-		else
-			vim.cmd.cd(vim.fn.fnameescape(root .. "/" .. path))
-		end
+		vim.cmd.cd(vim.fn.fnameescape(path == "" and root or root .. "/" .. path))
 	end
+
+	vim.api.nvim_create_autocmd("BufEnter", {
+		callback = function()
+			if vim.bo.buftype == "" and vim.api.nvim_buf_get_name(0) ~= "" then
+				Cdr("", true)
+			end
+		end,
+	})
 
 	vim.api.nvim_create_user_command("Cdr", function(o)
 		Cdr(o.fargs[1])
