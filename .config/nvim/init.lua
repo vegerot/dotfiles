@@ -153,7 +153,7 @@ local function VANILLA()
 			return
 		end
 
-		vim.cmd.cd(vim.fn.fnameescape(path == "" and root or root .. "/" .. path))
+		vim.cmd.lcd(vim.fn.fnameescape(path == "" and root or root .. "/" .. path))
 	end
 
 	vim.api.nvim_create_autocmd("BufEnter", {
