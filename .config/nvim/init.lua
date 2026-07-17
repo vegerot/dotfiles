@@ -188,7 +188,8 @@ local function VANILLA()
 	vim.opt.suffixesadd:append({ ".js", ".mjs", ".ts", ".tsx" })
 
 	vim.api.nvim_create_autocmd("FileType", { pattern = "c", callback = function() vim.g.c_syntax_for_h = true end })
-	vim.api.nvim_create_autocmd("FileType", { pattern = "cpp", callback = function() vim.g.c_syntax_for_h = false end })
+	vim.api.nvim_create_autocmd("FileType",
+		{ pattern = "cpp", callback = function() vim.g.c_syntax_for_h = false end })
 
 	vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, { pattern = "*.mdx", command = "setfiletype markdown" })
 	vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" },
@@ -633,7 +634,8 @@ local function AUTOCOMPLETE()
 						end
 						table.insert(breadcrumbs,
 							"%#" ..
-							(icon_hl or "Normal") .. "#" .. (icon or file_icon) .. "%#Normal#" .. " " .. component)
+							(icon_hl or "Normal") ..
+							"#" .. (icon or file_icon) .. "%#Normal#" .. " " .. component)
 					else
 						table.insert(breadcrumbs, folder_icon .. " " .. component)
 					end
@@ -651,7 +653,11 @@ local function AUTOCOMPLETE()
 
 			local function breadcrumbs_trigger_set()
 				local bufnr = vim.api.nvim_get_current_buf()
-				local clients = vim.lsp.get_clients({ bufnr = bufnr, method = LspMethods.textDocument_documentSymbol })
+				local clients = vim.lsp.get_clients({
+					bufnr = bufnr,
+					method = LspMethods
+					    .textDocument_documentSymbol
+				})
 				if #clients == 0 then
 					return
 				end
@@ -667,7 +673,8 @@ local function AUTOCOMPLETE()
 
 				-- I don't know why I can't use `client:request` here, but if I do
 				-- it doesn't work with multiple tabs
-				local result = vim.lsp.buf_request(bufnr, LspMethods.textDocument_documentSymbol, params, breadcrumbs_set)
+				local result = vim.lsp.buf_request(bufnr, LspMethods.textDocument_documentSymbol, params,
+					breadcrumbs_set)
 				if not result then
 					print("Error: Could not get document symbols. Is the LSP server running?")
 					return
@@ -723,7 +730,8 @@ local function AUTOCOMPLETE()
 		-- after the language server attaches to the current buffer
 		local on_attach = function(client, bufnr)
 			local map = function(mode, lhs, rhs, desc, extra)
-				local opts = vim.tbl_extend("force", { buffer = bufnr, silent = false, desc = desc }, extra or {})
+				local opts = vim.tbl_extend("force", { buffer = bufnr, silent = false, desc = desc },
+					extra or {})
 				vim.keymap.set(mode, lhs, rhs, opts)
 			end
 
@@ -841,7 +849,8 @@ local function AUTOCOMPLETE()
 			-- notification, not a ServerCapability, so supports_method() always returns false for it
 			map("n", "<leader>d", function() vim.diagnostic.open_float({ scope = 'line' }) end,
 				"vim.diagnostic.open_float()")
-			map("n", "<leader>q", function() vim.diagnostic.setqflist({ open = true }) end, "vim.diagnostic.setqflist()")
+			map("n", "<leader>q", function() vim.diagnostic.setqflist({ open = true }) end,
+				"vim.diagnostic.setqflist()")
 			map("n", "<leader>l", function() vim.diagnostic.setloclist({ open = true }) end,
 				"vim.diagnostic.setloclist()")
 			if client:supports_method(LspMethods.textDocument_inlayHint, bufnr) then
@@ -949,12 +958,14 @@ local function AUTOCOMPLETE()
 					for _, key in ipairs(keys) do
 						local lhs = key[1] --[[@as string]]
 						local func = key[2] --[[@as string|function]]
-						vim.keymap.set(key.mode or "", lhs, func, { silent = false, desc = key.desc, expr = key.expr })
+						vim.keymap.set(key.mode or "", lhs, func,
+							{ silent = false, desc = key.desc, expr = key.expr })
 					end
 
 					if not vim.g.sidekick_statusline_added then
 						vim.g.sidekick_statusline_added = true
-						vim.o.statusline = vim.o.statusline .. " %{% v:lua.SidekickStatusline() %}"
+						vim.o.statusline = vim.o.statusline ..
+						    " %{% v:lua.SidekickStatusline() %}"
 					end
 				end
 			end
@@ -1026,7 +1037,8 @@ local function AUTOCOMPLETE()
 			"quick_lint_js",
 			{
 				on_attach = function(client, bufnr)
-					vim.diagnostic.config({ update_in_insert = true }, vim.lsp.diagnostic.get_namespace(client.id))
+					vim.diagnostic.config({ update_in_insert = true },
+						vim.lsp.diagnostic.get_namespace(client.id))
 					on_attach(client, bufnr)
 				end,
 				filetypes = {
@@ -1058,7 +1070,7 @@ local function AUTOCOMPLETE()
 		local jsonls_config = {
 			"jsonls",
 			{
-				filetypes={"json", "jsonc"}
+				filetypes = { "json", "jsonc" }
 			}
 		}
 
@@ -1176,31 +1188,33 @@ local function AUTOCOMPLETE()
 					if client.workspace_folders then
 						local path = client.workspace_folders[1].name
 						if
-							path ~= vim.fn.stdpath('config')
-							and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc'))
+						    path ~= vim.fn.stdpath('config')
+						    and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc'))
 						then
 							return
 						end
 					end
 
-					client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
-						runtime = {
-							-- Neovim uses LuaJIT
-							version = 'LuaJIT',
-							-- Find Lua modules the same way Neovim does (see `:h lua-module-load`)
-							path = {
-								'lua/?.lua',
-								'lua/?/init.lua',
+					client.config.settings.Lua = vim.tbl_deep_extend('force',
+						client.config.settings.Lua, {
+							runtime = {
+								-- Neovim uses LuaJIT
+								version = 'LuaJIT',
+								-- Find Lua modules the same way Neovim does (see `:h lua-module-load`)
+								path = {
+									'lua/?.lua',
+									'lua/?/init.lua',
+								},
 							},
-						},
-						workspace = {
-							checkThirdParty = false,
-							library = {
-								vim.env.VIMRUNTIME,
-								vim.api.nvim_get_runtime_file("lua/lspconfig", false)[1],
+							workspace = {
+								checkThirdParty = false,
+								library = {
+									vim.env.VIMRUNTIME,
+									vim.api.nvim_get_runtime_file("lua/lspconfig",
+										false)[1],
+								},
 							},
-						},
-					})
+						})
 				end,
 				settings = {
 					Lua = {},
