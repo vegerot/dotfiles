@@ -849,6 +849,7 @@ local function AUTOCOMPLETE()
 				vim.lsp.inlay_hint.enable()
 				vim.keymap.set('n', '<bs>', function()
 					vim.diagnostic.config({ virtual_lines = { current_line = not vim.diagnostic.config().virtual_lines.current_line } })
+					vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
 				end, { buffer = 0, desc = 'Toggle verbose diagnostics and inlay_hints.' }
 				)
 			end
