@@ -2,6 +2,9 @@
 {
   // standard MCP servers
   "mcpServers": {
+    "fff": {
+      "command": "fff-mcp"
+    },
     "Chrome DevTools MCP": {
       "command": "bunx",
       "args": [
