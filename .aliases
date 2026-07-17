@@ -24,6 +24,11 @@ alias rgt="rg --glob '!*.spec.ts' --glob '!*mx*' --glob '!*mock*'"
 alias ln="ln -v"
 alias mkdir="mkdir -pv"
 
+# careful
+alias rm="rm -i"
+alias mv="mv -i"
+alias cp="cp -i"
+
 #git
 if type git > /dev/null; then
   alias g.="git add -p ."
