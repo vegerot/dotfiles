@@ -404,7 +404,7 @@ local function PLUGINS()
 		})
 	end
 
-	local render_markdown = require("render-markdown"); if render_markdown ~= nil then
+	local render_markdown = RequireChecked("render-markdown"); if render_markdown ~= nil then
 		render_markdown.setup({
 			html = { comment = { conceal = false } }
 		})
