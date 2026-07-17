@@ -31,6 +31,14 @@ alias cp="cp -i"
 
 #git
 if type git > /dev/null; then
+  function git() {
+    if [[ "$PWD" =~ "code.byted.or" ]]; then
+      command git -c 'user.name=Max 🕺 Coplan' -c 'user.email=max.coplan@bytedance.com' "$@"
+    else
+      command git "$@"
+    fi
+  }
+
   alias g.="git add -p ."
   alias ga="git add"
   alias gc="git commit"

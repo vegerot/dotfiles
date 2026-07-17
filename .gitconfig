@@ -71,7 +71,7 @@ mnemonicPrefix = true
 
 [include]
   path = ~/dotfiles/bytedance_private.gitconfig
-[includeIf "gitdir:~/workspace/code.*.org/**/"]
+[includeIf "gitdir:~/code/code.*.org/**/"]
 	path = ~/dotfiles/work.gitconfig
 
 [maintenance]
