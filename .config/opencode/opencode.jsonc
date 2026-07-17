@@ -175,7 +175,7 @@
     },
     "ai_agent_proxy_chat": {
       "npm": "@ai-sdk/openai-compatible",
-      "name": "AI Agent Proxy Chat",
+      "name": "Bytedance AI Agent Proxy Chat",
       "options": {
         "baseURL": "https://ai-coder.bytedance.net",
         "apiKey": "{env:BYTED_AI_CODER_API_KEY}",
@@ -362,13 +362,29 @@
     },
     "ai_agent_proxy_responses": {
       "npm": "@ai-sdk/openai",
-      "name": "AI Agent Proxy Responses",
+      "name": "ByteDance AI Agent Proxy Responses",
       "options": {
         "baseURL": "https://ai-coder.bytedance.net/responses",
         "apiKey": "{env:BYTED_AI_CODER_API_KEY}",
         "headers": {}
       },
       "models": {
+        "doubao-seed-code-preview": {
+          "name": "Doubao Seed Code Preview (Responses)",
+          "limit": {
+            "context": 200000,
+            "output": 64000
+          },
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
         "gpt-5.1-codex-2025-11-13": {
           "name": "GPT-5.1 Codex",
           "limit": {
@@ -512,28 +528,12 @@
               "text"
             ]
           }
-        },
-        "doubao-seed-code-preview": {
-          "name": "Doubao Seed Code Preview (Responses)",
-          "limit": {
-            "context": 200000,
-            "output": 64000
-          },
-          "modalities": {
-            "input": [
-              "text",
-              "image"
-            ],
-            "output": [
-              "text"
-            ]
-          }
         }
       }
     },
     "ai_agent_proxy_google": {
       "npm": "@ai-sdk/google",
-      "name": "AI Agent Proxy Google",
+      "name": "ByteDance AI Agent Proxy Google",
       "options": {
         "baseURL": "https://ai-coder.bytedance.net/gemini/v1beta",
         "apiKey": "{env:BYTED_AI_CODER_API_KEY}",
@@ -576,10 +576,10 @@
     },
     "ai_agent_proxy_ark_chat": {
       "npm": "@ai-sdk/openai-compatible",
-      "name": "AI Agent Proxy ARK Chat",
+      "name": "ByteDance AI Agent Proxy ARK Chat",
       "options": {
         "baseURL": "https://ai-coder.bytedance.net",
-        "apiKey": "{env:BYTED_AI_CODER_API_KEY}",
+        "apiKey": "d864b2c6-28cf-46de-a832-8cc04e57b5c4",
         "headers": {}
       },
       "models": {
