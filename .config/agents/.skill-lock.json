@@ -112,6 +112,14 @@
       "pluginName": "mattpocock-skills",
       "installedAt": "2026-06-23T22:54:48.231Z",
       "updatedAt": "2026-06-23T22:54:48.231Z"
+    },
+    "lark-note": {
+      "source": "open.feishu.cn",
+      "sourceType": "well-known",
+      "sourceUrl": "https://open.feishu.cn/.well-known/skills/lark-note/SKILL.md",
+      "skillFolderHash": "",
+      "installedAt": "2026-07-07T01:26:26.067Z",
+      "updatedAt": "2026-07-07T01:26:26.067Z"
     }
   },
   "dismissed": {
@@ -135,6 +143,7 @@
     "openclaw",
     "crush",
     "trae",
-    "trae-cn"
+    "trae-cn",
+    "pi"
   ]
 }

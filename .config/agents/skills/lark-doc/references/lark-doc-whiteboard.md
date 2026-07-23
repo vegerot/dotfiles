@@ -9,11 +9,11 @@
 | `lark-doc`        | 识别画板机会、使用 Mermaid/SVG 创建图表、调度 SubAgent、插入简单 SVG 画板或复杂空白画板 | 主 Agent 不直接创作画板内容；              |
 | `lark-whiteboard` | 查询/导出已有画板；复杂图表生成（Mermaid/DSL/SVG 路由、场景选型、渲染验证）；写入已有/空白画板  | 仅特别复杂的图表或已有画板更新时由独立 SubAgent 读取 |
 
-## 画板优先规则
+## 画板适用规则
 
-写文档时，重要信息优先画板化。遇到核心流程、系统架构、方案对比、风险链路、里程碑、指标趋势、因果归因、组织关系、能力分层等内容，不要只用段落或表格承载；除非内容只是一次性补充说明，否则应规划为画板。
+写文档时，核心流程、系统架构、方案对比、风险链路、里程碑、指标趋势、因果归因、组织关系、能力分层等内容，如果图示能明显降低理解成本，可以规划为画板；结构简单或文字更清楚的内容不必强行画板化。
 
-同一篇文档可以有多个画板。优先设计多个聚焦画板，而不是把所有信息塞进一张大图。
+同一篇文档可以有多个画板。确有多个独立图示点时，可拆成多个聚焦画板，而不是把所有信息塞进一张大图。
 
 ## 文档与画板协同流程
 
@@ -23,7 +23,7 @@
 |-------------------------|-----------------------------------------------------------|
 | 文档中需要思维导图、时序图、类图、饼图、甘特图 | 步骤 2A:使用 mermaid 插入图表                                     |
 | 文档中需要插入其他图表/自定义图形       | 步骤 2B: 使用 SVG 插入图表                                        |
-| 已有画板需要更新内容              | 先 `docs +fetch --api-version v2` 获取 `board_token`，跳至步骤 3B |
+| 已有画板需要更新内容              | 先 `docs +fetch` 获取 `board_token`，跳至步骤 3B |
 | 只查看 / 下载已有画板            | 切换至 `lark-whiteboard`，不走本流程                               |
 
 > [!IMPORTANT]
@@ -44,9 +44,11 @@ SubAgent 插入 SVG。
 </whiteboard>
 ```
 
+如果 Mermaid 已在本地文件中，可写成 `<whiteboard type="mermaid" path="@diagram.mmd"></whiteboard>`；CLI 会在写入前读取文件并展开为内联内容。
+
 ### 步骤 2B: SubAgent 使用 SVG 插入图表
 
-主 Agent 启动 SubAgent，让它用 `docs +create --api-version v2` / `docs +update --api-version v2` 插入：
+主 Agent 启动 SubAgent，让它用 `docs +create` / `docs +update` 插入：
 
 ```xml
 
@@ -55,6 +57,8 @@ SubAgent 插入 SVG。
     </svg>
 </whiteboard>
 ```
+
+如果 SVG 已在本地文件中，可写成 `<whiteboard type="svg" path="@diagram.svg"></whiteboard>`；PlantUML 文件同理使用 `<whiteboard type="plantuml" path="@sequence.puml"></whiteboard>`。
 
 Sub Agent 需要携带以下的最小上下文，以及后续的 [SVG 设计 Workflow] 章节指南：
 
@@ -94,8 +98,8 @@ Sub Agent 需要携带以下的最小上下文，以及后续的 [SVG 设计 Wor
 
 ###### 画板怎么处理 SVG
 
-画板的 svg-parser 把可识别元素转成可编辑节点, 其余降级为内嵌图片(渲染没问题, 虽然不可编辑, 但是可以正常显示)；但
-`<radialGradient>` / `<filter>` / `<clipPath>` 等装饰特性画板完全不支持，会导致渲染问题（见下方⚠️）
+画板的 svg-parser 把可识别元素转成可编辑节点, 其余降级为内嵌图片(渲染没问题, 虽然不可编辑, 但是可以正常显示)；但非阴影用途的
+`<filter>` / `<pattern>` / `<clipPath>` / `<mask>` 等装饰特性画板不支持（见下方⚠️）
 **不需要所有元素都可编辑, 但必须避免使用不支持的装饰特性, 且要兼顾可编辑和美观漂亮**
 
 **可识别的元素**
@@ -105,12 +109,14 @@ Sub Agent 需要携带以下的最小上下文，以及后续的 [SVG 设计 Wor
 - 文本：`<text>` / `<tspan>` 画板硬编码 Noto Sans SC **文字必须用 `<text>`**
 - 分组：`<g>` / `<a>` / `<use>` 引用 `<symbol>`
 - 变换：`translate` / `rotate` / `scale` 正常；`skewX` / `skewY` / `matrix(...)` 降级
+- 阴影：`<filter>` 里放 `<feDropShadow>` 或标准 drop/inner primitive 链 (`<feGaussianBlur in="SourceAlpha">` + `<feOffset>` + `<feFlood>` + `<feComposite>` + `<feMerge>`), 会被识别成节点阴影, drop 至多 1 个, inner 至多 1 个; 其余 filter 效果不识别
+- 渐变：`<linearGradient>` / `<radialGradient>` 在 `<defs>` 中定义, 通过 `fill="url(#id)"` 引用 (载体限 `<rect>` / `<circle>` / `<ellipse>` / `<polygon>` / `<path>`), 需要至少 2 个 `<stop>`, `gradientUnits` 只支持默认的 `objectBoundingBox` (不写即可)
 
 > [!IMPORTANT]
-> ⚠️ ** 不支持的装饰特性**
+> ⚠️ **不支持的装饰特性**
 
-- `<radialGradient>` / `<filter>` / `<pattern>` / `<clipPath>` / `<mask>` → 画板都不支持，**请避免使用，否则会导致画板渲染问题
-  **
+- `<pattern>` / `<clipPath>` / `<mask>` / 非阴影用途的 `<filter>` (blur / hue-rotate / 复合合成 / `flood-color=url(...)` / 多个 `<feDropShadow>` 等) → 画板不支持，**请避免使用，否则会导致画板渲染问题**
+- 渐变边界：`gradientUnits="userSpaceOnUse"` / `spreadMethod="reflect|repeat"` / stops 少于 2 个 / 复杂 `gradientTransform` 会变成不可编辑图片, 视觉正确但失去可编辑性, 若无必要请沿用默认 `objectBoundingBox`
 
 ###### 3.插入后审查
 
@@ -145,7 +151,6 @@ lark-cli whiteboard +query \
 - 不保留空白占位画板；复杂路径只有空白画板而无内容视为任务未完成
 
 ---
-
 
 ---
 

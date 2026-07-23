@@ -4,13 +4,12 @@
 
 ## 何时用
 
-用于把妙搭全栈应用源码拉到本地并准备开发环境。用户只是要云端 Agent 生成应用时，不要初始化本地仓库。
+用于把妙搭应用源码拉到本地并准备开发环境。用户只是要云端 Agent 生成应用时，不要初始化本地仓库。
 
 ## 命令骨架
 
 - 必填：`--app-id`。
 - 可选：`--dir`，clone 目标目录；省略时默认 `./<app-id>`。
-- 可选：`--template`，空仓库脚手架模板；省略时当前回退 `nestjs-react-fullstack`。
 - 固定 checkout 分支：`sprint/default`。
 - `+init` 会初始化 Git 凭证、clone 仓库、切到工作分支并生成/同步本地项目。
 
@@ -18,7 +17,7 @@
 
 ```bash
 lark-cli apps +init --app-id app_xxx --dir ./my-app
-lark-cli apps +init --app-id app_xxx --dir /absolute/path/my-app --template nestjs-react-fullstack
+lark-cli apps +init --app-id app_xxx --dir /absolute/path/my-app
 lark-cli apps +init --app-id app_xxx --dir ./my-app --dry-run
 ```
 
@@ -31,6 +30,7 @@ lark-cli apps +init --app-id app_xxx --dir ./my-app --dry-run
 
 ## Agent 规则
 
-- 目标目录必须不存在、为空目录，或已含 `.spark/meta.json` 的已初始化仓库。
+- 目标目录必须不存在、为空目录，或已含 `.spark/meta.json` 且其 app_id 与 `--app-id` 一致的已初始化仓库。
 - 目标目录已含 `.spark/meta.json` 时，`+init` 会跳过 clone/scaffold，但仍执行一次 env-pull 刷新本地环境变量；告知用户“仓库已初始化，本地环境变量已刷新，可直接开发”，不要误报失败或重复 clone。
 - `+init` 输出没有必要原样复述；告诉用户 clone path、分支和下一步即可。
+- 新建应用做本地初始化时，若选定的目标目录已存在，不要复用，改用一个不冲突的目录名（已预授权”放手做”时自动追加后缀如 `-2`；否则向用户确认目录名）。
