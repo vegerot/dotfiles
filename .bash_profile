@@ -50,10 +50,8 @@ shopt -s histverify
 shopt -s lithist
 export PROMPT_COMMAND="history -a"
 
-if type randomcowcommand >/dev/null 2>&1; then
-  if type manpath >/dev/null 2>&1; then
-    randomcowcommand --async
-  fi
+if [[ -z "$SKIP_COW_COMMAND" ]] && type randomcowcommand >/dev/null 2>&1 && type manpath >/dev/null 2>&1; then
+  randomcowcommand --async
 fi
 
 # Compute time taken
