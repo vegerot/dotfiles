@@ -48,6 +48,15 @@ X-Code-User-JWT = "BYTED_AI_JWT"
 [mcp_servers.fff]
 command = "fff-mcp"
 
+[mcp_servers.fff.tools.find_files]
+approval_mode = "approve"
+
+[mcp_servers.fff.tools.multi_grep]
+approval_mode = "approve"
+
+[mcp_servers.fff.tools.grep]
+approval_mode = "approve"
+
 [features]
 js_repl = true
 
