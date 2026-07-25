@@ -55,6 +55,9 @@
         "--enable-privileged-context",
         "--marionette"
       ]
+    },
+    "fff": {
+      "command": "fff-mcp"
     }
   }
 }
