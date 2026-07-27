@@ -211,7 +211,7 @@ load_plugins() {
   fi
 
   if type cloudide-cli > /dev/null; then
-	  source <(cloudide-cli completion zsh)
+	  #source <(cloudide-cli completion zsh) # 80-100ms, infrequently used
   fi
   if type traecli > /dev/null; then
     # FIXME: re-enable when slow bug fixed
