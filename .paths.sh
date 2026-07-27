@@ -1,99 +1,102 @@
 #Path stuff
 
-#if [[ "$PATH" == *$HOME/.cargo/bin* && -z $ALWAYS_SOURCE_PATHS ]]; then
+#case ":$PATH:" in *":$HOME/.cargo/bin:"*) [ -z "${ALWAYS_SOURCE_PATHS:-}" ] && return ;; esac
 #	#echo "skipping path stuff"
 #	return
-#fi
+#esac
 
-#[[ -f /etc/zprofile ]] && source /etc/zprofile
+#[ -f /etc/zprofile ] && . /etc/zprofile
 ## important stuff goes first
 
-[[ "$OSTYPE" == "darwin"* ]] && export PATH="/usr/local/bin$HOME/.cargo/bin:/usr/local/opt/ruby/bin:$PATH"
+case "$(uname -s)" in
+	Darwin) export PATH="/usr/local/bin$HOME/.cargo/bin:/usr/local/opt/ruby/bin:$PATH" ;;
+esac
 
-if [[ -d /opt/homebrew ]]; then
+if [ -d /opt/homebrew ]; then
 	export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:/opt/homebrew/opt/coreutils/libexec/gnubin:/opt/homebrew/opt/curl/bin:$PATH"
 fi
 # use self-built Go if present
-[[ -x $HOME/workspace/googlesource.com/go/bin/go ]] && export PATH="$HOME/workspace/googlesource.com/go/bin:$PATH"
+[ -x "$HOME/workspace/googlesource.com/go/bin/go" ] && export PATH="$HOME/workspace/googlesource.com/go/bin:$PATH"
 
 export PATH="$HOME/bin:$HOME/.local/bin:/sbin:$PATH"
 
 
 ### -----------------------------------
 ## Unimportant stuff goes at the end
-[[ -d /usr/games ]] && export PATH="$PATH:/usr/games"
-[[ -d $HOME/.cargo/bin ]] && export PATH="$PATH:$HOME/.cargo/bin"
-[[ -d /opt/homebrew/opt/rustup ]] && export PATH="$PATH:/opt/homebrew/opt/rustup"
+[ -d /usr/games ] && export PATH="$PATH:/usr/games"
+[ -d "$HOME/.cargo/bin" ] && export PATH="$PATH:$HOME/.cargo/bin"
+[ -d /opt/homebrew/opt/rustup ] && export PATH="$PATH:/opt/homebrew/opt/rustup"
 
 export DENO_INSTALL="$HOME/.deno"
-[[ -d $DENO_INSTALL ]] && export PATH="$PATH:$DENO_INSTALL/bin"
+[ -d "$DENO_INSTALL" ] && export PATH="$PATH:$DENO_INSTALL/bin"
 
 export GOPATH="$HOME/go"
 export PATH="$PATH:/usr/local/lib:$GOPATH/bin:$HOME/dotfiles/bin"
 
 CISCO_BIN="/opt/cisco/anyconnect/bin"
-[[ -d $CISCO_BIN ]] && export PATH="$PATH:$CISCO_BIN"
+[ -d "$CISCO_BIN" ] && export PATH="$PATH:$CISCO_BIN"
 
 export FZF_BASE="$HOME/workspace/github.com/junegunn/fzf/"
-if [[ ! "$PATH" == *$FZF_BASE/bin* ]]; then
-	PATH="${PATH:+${PATH}:}$FZF_BASE/bin"
-fi
+case ":$PATH:" in
+	*":$FZF_BASE/bin:"*) ;;
+	*) PATH="${PATH:+${PATH}:}$FZF_BASE/bin" ;;
+esac
 
 ZIGTOOLS="$HOME/workspace/github.com/zigtools"
-if [[ -f $ZIGTOOLS/zls/zig-out/bin/zls ]]; then
+if [ -f "$ZIGTOOLS/zls/zig-out/bin/zls" ]; then
 	export PATH="$PATH:$ZIGTOOLS/zls/zig-out/bin"
 fi
 ZIG_14="/opt/homebrew/opt/zig@0.14/bin"
-[[ -d $ZIG_14 ]] && export PATH="$PATH:$ZIG_14"
+[ -d "$ZIG_14" ] && export PATH="$PATH:$ZIG_14"
 
 
 ## macOS' toolchain doesn't come with tools like clang-format and clang-tidy
 ## instead, use LLVM for those tools but stick with the builtin ones otherwise
 llvm=/opt/homebrew/opt/llvm/bin
 llvm2=/usr/local/opt/llvm/bin
-if [[ -d ${llvm} ]]; then
+if [ -d "$llvm" ]; then
 	export PATH="$PATH:${llvm}"
-elif [[ -d ${llvm2} ]]; then
+elif [ -d "$llvm2" ]; then
 	export PATH="$PATH:${llvm2}"
 fi
 
 # zig
 ZIG="$HOME/.local/zig"
-[[ -d $ZIG ]] && export PATH="$PATH:$ZIG"
+[ -d "$ZIG" ] && export PATH="$PATH:$ZIG"
 # Walmart iOS dev stuff
 MINT_PATH=$HOME/.mint
-[[ -d $MINT_PATH ]] && export PATH="$PATH:$MINT_PATH/bin"
+[ -d "$MINT_PATH" ] && export PATH="$PATH:$MINT_PATH/bin"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$PATH:$BUN_INSTALL/bin"
 
 # adb
-if [[ -d "$HOME/Library/Android/sdk/platform-tools/" ]]; then
+if [ -d "$HOME/Library/Android/sdk/platform-tools/" ]; then
 	export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools"
-elif [[ -d "$HOME/Android/Sdk/platform-tools/" ]]; then
+elif [ -d "$HOME/Android/Sdk/platform-tools/" ]; then
 	export PATH="$PATH:$HOME/Android/Sdk/platform-tools"
-elif [[ -d "$HOME/.local/bin/android-platform-tools/" ]]; then
+elif [ -d "$HOME/.local/bin/android-platform-tools/" ]; then
 	export PATH="$PATH:$HOME/.local/bin/android-platform-tools"
 fi
 
-if [[ -d "/opt/google/android-studio/bin/" ]]; then
+if [ -d "/opt/google/android-studio/bin/" ]; then
 	export PATH="$PATH:/opt/google/android-studio/bin"
 fi
 
-if [[ -d "/opt/google/antigravity/" ]]; then
+if [ -d "/opt/google/antigravity/" ]; then
 	export PATH="$PATH:/opt/google/antigravity"
 fi
 
-[[ -d "$HOME/.atuin/bin/" ]] && export PATH="$HOME/.atuin/bin:$PATH"
+[ -d "$HOME/.atuin/bin/" ] && export PATH="$HOME/.atuin/bin:$PATH"
 
 # Nvidia CUDA stuff
-if [[ -d /usr/local/cuda/bin ]]; then
+if [ -d /usr/local/cuda/bin ]; then
 	export PATH="$PATH:/usr/local/cuda/bin"
 fi
 
 # Invoke AI image generation
-if [[ -d $HOME/Invoke ]]; then
+if [ -d "$HOME/Invoke" ]; then
 	export PATH="$PATH:$HOME/Invoke"
 fi
 
@@ -112,7 +115,7 @@ esac
 # cargo
 #. "$HOME/.cargo/env"
 
-if [[ -d "$HOME/.npm-global/bin" ]]; then
+if [ -d "$HOME/.npm-global/bin" ]; then
 	export PATH="$PATH:$HOME/.npm-global/bin"
 fi
 
@@ -123,19 +126,25 @@ export PATH="$PATH:./node_modules/.bin:."
 ### -----------------------------------
 ### MAN path
 
-export MANPATH="/usr/local/share/man:$MANPATH:"
-if [[ $OSTYPE == "darwin"* ]]; then
+export MANPATH="/usr/local/share/man:${MANPATH:-}:"
+case "$(uname -s)" in
+Darwin)
 	export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
 	export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
-fi
-if [[ -d "$HOME/.local/share/man/" ]]; then
+	;;
+esac
+if [ -d "$HOME/.local/share/man/" ]; then
 	export MANPATH="$MANPATH:$HOME/.local/share/man"
 fi
 
 ### fpath stuff for zsh on macOS
-if [[ $SHELL == *"zsh"* && $OSTYPE == "darwin"* && -d /opt/homebrew/share/zsh/site-functions ]]; then
-	fpath=(/opt/homebrew/share/zsh/site-functions $fpath)
-fi
+case "${SHELL:-}:$(uname -s)" in
+	*zsh:Darwin)
+		if [ -d /opt/homebrew/share/zsh/site-functions ]; then
+			FPATH="/opt/homebrew/share/zsh/site-functions${FPATH:+:$FPATH}"
+		fi
+		;;
+esac
 
 #if command -v pyenv 1>/dev/null 2>&1; then
 if false; then
@@ -144,24 +153,24 @@ if false; then
   eval "$(pyenv init --path)"
   eval "$(pyenv init -)"
 fi
-if [[ -n ${PYTHONPATH:-} ]] ; then
+if [ -n "${PYTHONPATH:-}" ] ; then
 	export PYTHONPATH="$PYTHONPATH:."
 else
 	export PYTHONPATH="."
 fi
 
-if [[ -d /usr/lib/wsl/lib ]]; then
-	if [[ -z ${LD_LIBRARY_PATH:-} ]]; then
+if [ -d /usr/lib/wsl/lib ]; then
+	if [ -z "${LD_LIBRARY_PATH:-}" ]; then
 		export LD_LIBRARY_PATH="/usr/lib/wsl/lib"
 	else
 		export LD_LIBRARY_PATH="/usr/lib/wsl/lib:$LD_LIBRARY_PATH"
 	fi
 fi
 
-if [[ -d /opt/homebrew/include ]]; then
+if [ -d /opt/homebrew/include ]; then
 	export CPATH="/opt/homebrew/include:${CPATH:-}"
 fi
-if [[ -d /opt/homebrew/lib ]]; then
+if [ -d /opt/homebrew/lib ]; then
 	export LIBRARY_PATH="/opt/homebrew/lib:${LIBRARY_PATH:-}"
 fi
 
