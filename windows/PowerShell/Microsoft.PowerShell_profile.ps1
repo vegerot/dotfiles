@@ -46,11 +46,12 @@ function pick_ai_cli {
 
 function pick_ai_chatbot {
   Get-WeightedRandom @{
-    github_copilot    = 4; gemini            = 3; grok              = 2
-    chatgpt           = 2; codex             = 1; claude            = 1
-    perplexity        = 1; google_ai         = 1; microsoft_copilot = 5 # Microsoft Copilot should be preferred on Windows
-    meta              = 1; deepseek          = 1; "tako(phone)"     = 1
-    openrouter_chat   = 1; hf_inference      = 1
+    gemini            = 4; github_copilot    = 2; grok              = 2
+    chatgpt           = 2; openwebui         = 2; claude            = 2
+    codex             = 1; perplexity        = 1; google_ai         = 1
+    microsoft_copilot = 5; meta              = 1; deepseek          = 1
+    "tako(phone)"     = 1; openrouter_chat   = 1; chatboxai         = 1
+    hf_inference      = 1; kimi              = 1
   }
 }
 
