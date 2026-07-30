@@ -42,14 +42,24 @@
 ## set it to 0 to sync after every command
 # sync_frequency = "5m"
 
-## which search mode to use
+## which search mode to use for interactive search
 ## possible values: prefix, fulltext, fuzzy, skim
 # search_mode = "fuzzy"
 
-## which filter mode to use by default
+## which search mode to use when atuin is invoked from a shell up-key binding
+## the accepted values are identical to those of "search_mode"
+## leave unspecified to use same mode set in "search_mode"
+# search_mode_shell_up_key_binding = "fuzzy"
+
+## which filter mode to use for interactive search
 ## possible values: "global", "host", "session", "session-preload", "directory", "workspace"
 ## consider using search.filters to customize the enablement and order of filter modes
 # filter_mode = "global"
+
+## which filter mode to use when atuin is invoked from a shell up-key binding
+## the accepted values are identical to those of "filter_mode"
+## leave unspecified to use same mode set in "filter_mode"
+# filter_mode_shell_up_key_binding = "global"
 
 ## With workspace filtering enabled, Atuin will filter for commands executed
 ## in any directory within a git repository tree (default: false).
@@ -59,17 +69,7 @@
 ## set search.filters to include "workspace" before other filter modes.
 # workspaces = false
 
-## which filter mode to use when atuin is invoked from a shell up-key binding
-## the accepted values are identical to those of "filter_mode"
-## leave unspecified to use same mode set in "filter_mode"
-# filter_mode_shell_up_key_binding = "global"
-
-## which search mode to use when atuin is invoked from a shell up-key binding
-## the accepted values are identical to those of "search_mode"
-## leave unspecified to use same mode set in "search_mode"
-# search_mode_shell_up_key_binding = "fuzzy"
-
-## which style to use
+## which display style to use
 ## possible values: auto, full, compact
 # style = "compact"
 
@@ -170,7 +170,6 @@
 ## If set to false, both enter and tab will place the command in the prompt for editing.
 ## This applies for new installs. Old installs will keep the old behaviour unless configured otherwise.
 enter_accept = true
-search_mode = "daemon-fuzzy"
 
 ## Defaults to false. If enabled, when triggered after &&, || or |, Atuin will complete commands to chain rather than replace the current line.
 # command_chaining = false
@@ -190,12 +189,22 @@ keymap_mode = "auto"
 # network_connect_timeout = 5
 # network_timeout = 30
 
+## Extra HTTP headers to send on every request to the sync server. Useful when
+## a self-hosted server sits behind a proxy that requires its own auth header,
+## e.g. Cloudflare Access. Headers that Atuin sets itself (e.g. Authorization)
+## cannot be overridden. When set, cross-origin redirects are refused so these
+## headers are never sent to a different origin.
+# extra_headers = { "CF-Access-Client-Id" = "...", "CF-Access-Client-Secret" = "..." }
+
 ## Timeout (in seconds) for acquiring a local database connection (sqlite)
 # local_timeout = 5
 
 ## Set this to true and Atuin will minimize motion in the UI - timers will not update live, etc.
 ## Alternatively, set env NO_MOTION=true
 # prefers_reduced_motion = false
+
+## Defaults to true. Configures whether to store commands that failed (those with non-zero exit status) or not.
+# store_failed = true
 
 [stats]
 ## Set commands where we should consider the subcommand for statistics. Eg, kubectl get vs just kubectl
@@ -248,12 +257,6 @@ keymap_mode = "auto"
 
 # Defaults to false. The backspace key performs the same functionality as Tab and copies the selected line to the command line to be modified when at the start of the line.
 # accept_with_backspace = false
-
-[sync]
-# Enable sync v2 by default
-# This ensures that sync v2 is enabled for new installs only
-# In a later release it will become the default across the board
-records = true
 
 [preview]
 ## which preview strategy to use to calculate the preview height (respects max_preview_height).
@@ -314,6 +317,17 @@ autostart = true
 ## The "workspace" mode is skipped when not in a workspace or workspaces = false.
 ## Default filter mode can be overridden with the filter_mode setting.
 # filters = ["global", "host", "session", "workspace", "directory", "session-preload"]
+
+## Filter interactive search results by the shell used to run the command:
+##
+## - "all": show all commands
+##
+## - "auto": show commands run by the current type of shell, or commands that
+##   have no shell recorded (for example, from before Atuin started tracking it)
+##
+## - array of strings: show commands run by any shell in the array; "" includes
+##   commands that have no recorded shell
+# shells = "auto"
 
 [tmux]
 ## Enable using atuin with tmux popup (requires tmux >= 3.2)
@@ -378,3 +392,7 @@ send_last_command=true
 ##
 ## Make directory expand instead of command:
 # columns = ["duration", "time", { type = "directory", expand = true }, { type = "command", expand = false }]
+
+## Syntax highlight commands in the search results, using the theme's colors.
+## Not available on all platforms (e.g. Windows).
+# syntax_highlight = true
