@@ -69,6 +69,10 @@ local function VANILLA()
 		cnoremap <expr> / (getcmdtype() =~ '[/?]' && getcmdline() == '') ? "\<C-c>\<Esc>/\\%V" : '/'
 	]]
 
+	-- Don't leave visual mode when indenting
+	vim.keymap.set("v", "<", "<gv")
+	vim.keymap.set("v", ">", ">gv")
+
 	-- Undo break points (cred: Prime)
 	-- TODO: function that takes list of chars and does this remap for them
 	vim.keymap.set("i", ",", ",<c-g>u")
