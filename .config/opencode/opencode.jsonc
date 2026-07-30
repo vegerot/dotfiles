@@ -104,6 +104,48 @@
               "reasoning": { "effort": "xhigh" },
             },
           }
+        },
+        "throughput": {
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          },
+          "name": "Frontier Router(fast)",
+          "variants": {
+            "💩": {
+              "headers": {
+                "X-Pareto-P": "0"
+              },
+              "reasoning": { "effort": "none" },
+            },
+            "low": {
+              "headers": {
+                "X-Pareto-P": "0.6"
+              },
+              "reasoning": { "effort": "low" },
+            },
+            "medium": {
+              "headers": {
+                "X-Pareto-P": "0.8"
+              }
+            },
+            "high": {
+              "headers": {
+                "X-Pareto-P": "0.9"
+              }
+            },
+            "🤩": {
+              "headers": {
+                "X-Pareto-P": "1"
+              },
+              "reasoning": { "effort": "xhigh" },
+            },
+          }
         }
       },
     },
