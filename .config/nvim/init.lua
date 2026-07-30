@@ -159,6 +159,7 @@ local function VANILLA()
 		vim.cmd.lcd(vim.fn.fnameescape(path == "" and root or root .. "/" .. path))
 	end
 
+	-- When opening a file, automatically cd to the git root
 	vim.api.nvim_create_autocmd("BufEnter", {
 		callback = function()
 			if vim.bo.buftype == "" and vim.api.nvim_buf_get_name(0) ~= "" then
@@ -348,6 +349,9 @@ local function PLUGINS()
 		vim.keymap.set({ "n", "o", "x" }, "{", "<Plug>(edgemotion-k)", { remap = true })
 		vim.keymap.set({ "n", "o", "x" }, "}", "<Plug>(edgemotion-j)", { remap = true })
 		vim.g.camelcasemotion_key = "<leader>"
+
+		RequireChecked("mini.align").setup()
+
 	end
 
 	if vim.g.vscode then
