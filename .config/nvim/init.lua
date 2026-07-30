@@ -115,8 +115,6 @@ local function VANILLA()
 	vim.o.termguicolors = true
 	vim.cmd.colorscheme("retrobox")
 
-	-- Font for Neovide (GUI).
-	vim.o.guifont = "SFMono Nerd Font,JetBrainsMono Nerd Font,JetBrains Mono,Menlo,Monaco,Courier New,monospace:h14"
 	vim.keymap.set('t', '<C-[>', [[<C-\><C-N>]])
 	-- Map ESC to ESC, so we have a way to send literal ESC.
 	vim.keymap.set('t', '<Esc>', '<Esc>')
@@ -218,6 +216,8 @@ end
 VANILLA()
 
 if vim.g.neovide then
+	vim.o.guifont = "SFMono Nerd Font,JetBrainsMono Nerd Font,JetBrains Mono,Menlo,Monaco,Courier New,monospace:h14"
+
 	vim.env.PATH = vim.fn.system([[/bin/sh -lc 'printf "%s" "$PATH"']])
 
 	-- Neovide Cmd key mappings (Cmd+C/V/S like a normal app)
