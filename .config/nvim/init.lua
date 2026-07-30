@@ -56,7 +56,8 @@ local function VANILLA()
 	-- center search results
 	vim.keymap.set("n", "n", "nzz")
 	vim.keymap.set("n", "N", "Nzz")
-	vim.keymap.set("n", "<leader>n", ":nohl<CR>", { remap = true })
+
+	vim.keymap.set("n", "<ESC>", ":nohl<CR>", { remap = true })
 
 	-- press backspace at the beginning of a `/` search to INVERT the search
 	vim.cmd [[
