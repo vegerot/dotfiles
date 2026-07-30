@@ -1,6 +1,6 @@
 ---
 name: mdn-md
-description: Read MDN docs from mdn/content source markdown instead of fetching rendered pages. Use for any task that needs MDN article content, macro interpretation, front matter metadata, or URL-to-source translation.
+description: Read MDN docs from mdn/content source markdown instead of fetching rendered pages. Use for any task that needs MDN articles.
 references:
   - mdn-content
   - mdn-markdown
