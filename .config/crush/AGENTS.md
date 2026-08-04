@@ -1,1 +1,1 @@
-../copilot/AGENTS.md
+../opencode/AGENTS.md

@@ -1,1 +1,1 @@
-../.config/copilot/AGENTS.md
+../.config/opencode/AGENTS.md
