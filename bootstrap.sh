@@ -20,7 +20,7 @@ function doIt() {
 
 function dry_run() {
         find . \
-                -type f \
+                \( -type f -o -type l \) \
                 ! -path "*/.git/*" \
                 ! -path "*/.sl/*" \
                 ! -path "./.DS_Store" \
@@ -34,7 +34,7 @@ function dry_run() {
 
 function force() {
         find . \
-                -type f \
+                \( -type f -o -type l \) \
                 ! -path "*/.git/*" \
                 ! -path "*/.sl/*" \
                 ! -path "./.DS_Store" \
@@ -47,7 +47,7 @@ function force() {
 
 function normal() {
         find . \
-                -type f \
+                \( -type f -o -type l \) \
                 ! -path "*/.git/*" \
                 ! -path "*/.sl/*" \
                 ! -path "./.DS_Store" \
