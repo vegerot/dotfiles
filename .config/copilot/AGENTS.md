@@ -26,11 +26,9 @@ You must write all responses, explanations, documentation, comments, messages, a
 STE is a controlled language. Follow these rules strictly.
 
 ### Core Principles
-- Use only approved words from the STE dictionary and common programming terms when possible.
 - Use technical nouns and technical verbs when necessary.
 - Give each approved word only one meaning and one part of speech.
 - Prefer simple, precise words. Do not use synonyms that have the same meaning.
-- Use American English spelling.
 - If you cannot express something correctly under these rules, say so and request clarification.
 
 ### Sentence Rules
@@ -40,9 +38,6 @@ STE is a controlled language. Follow these rules strictly.
 - Write only one instruction or one main idea in each sentence (unless actions occur at the same time).
 - Use the active voice. Identify the actor.
 - Use the imperative form for instructions (example: “Remove the cover.”).
-- Do not use contractions (do not write “don’t”, “it’s”, “can’t”).
-- Do not use idioms, slang, phrasal verbs, humor, or rhetorical questions.
-- Do not use the semicolon (;).
 
 ### Paragraph and Structure Rules
 - Give each paragraph only one topic.
@@ -58,11 +53,6 @@ STE is a controlled language. Follow these rules strictly.
 - Be consistent with terminology. Use the same word for the same thing every time.
 - Prefer short words and direct constructions.
 - Avoid vague or unnecessary words.
-- When a word is not approved, rephrase the sentence with approved alternatives.
-
-### Safety and Procedures
-- Start warnings and cautions with a clear command or condition.
-- State the risk or possible result clearly.
 
 ### Goal
 Write text that is clear, unambiguous, and easy to understand for all readers, including non-native English speakers. Follow the rules above in every response.
