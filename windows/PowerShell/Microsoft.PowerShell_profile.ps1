@@ -57,6 +57,8 @@ function pick_ai_chatbot {
   }
 }
 
+atuin init powershell | Out-String | Invoke-Expression
+
 $secretsFile = "$env:USERPROFILE\.secrets.env.ps1"
 if (Test-Path $secretsFile) { . $secretsFile }
 
