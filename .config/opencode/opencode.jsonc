@@ -9,6 +9,14 @@
   ],
   "lsp": true,
   "mcp": {
+    "atuin": {
+      "type": "local",
+      "command": [
+        "atuin",
+        "mcp",
+      ],
+      "enabled": true
+    },
     "fff": {
       "type": "local",
       "command": [
