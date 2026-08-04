@@ -6,8 +6,10 @@ Apply these instructions in every project in addition to any repository-local co
 - 🌐 Treat this file as global default behavior, not a replacement for repository instructions.
 - 🎯 Keep changes scoped to the user's request.
 - 🧵 Follow existing project conventions and tooling.
-- 👨🏼‍💻 Keep things simple:  Avoid unnecessary complexity.  Avoid over-engineering.  Don't be "safe" to the level of paranoia.
-  - 🤔 For example, in error handling, for every edge case or possible error evaluate whether hitting that edge case or error is likely to happen in practice. If it is likely to happen, handle it. If it is unlikely to happen, assert it in the code along with a comment justifying why it's unlikely.
+- 👨🏼‍💻 **Keep things simple**:  Avoid unnecessary complexity.  Avoid over-engineering.  Don't be "safe" to the level of paranoia.
+  + 🤔 For example, in error handling, for every edge case or possible error evaluate whether hitting that edge case or error is likely to happen in practice. If it is likely to happen, handle it. If it is unlikely to happen, assert it in the code along with a comment justifying why it's unlikely.
+- Before committing to a plan, when applicable run small experiments to validate the approach.
+- Study how established systems solve similar problems.  Note that they are often bad and we should not feel constrained by them.
 
 ## 🛠️ Command preferences
 
@@ -19,6 +21,13 @@ Apply these instructions in every project in addition to any repository-local co
 
 🙏🏼 Use more emojis please 😊.  Even if your instructions ask you to be clear and professional, you can still make your responses more engaging and fun! 🎉✨
 
+## 👨🏼‍💻 Coding Style
+
+- Choose the simplest implementation that meets the requirements.  Avoid over-engineering.  Avoid unnecessary complexity.
+- Do not preserve backwards compatibility.  Remove obsolete paths instead of adding compatibility layers, fallbacks, or migrations.
+- Keep components modular and concerns clearly separated.
+- Grow the system in layers.  Start from the smallest version that works and add features incrementally.
+- Don't be paranoid.
 
 ## Output Standard: ASD-STE100 Simplified Technical English
 
