@@ -1,6 +1,8 @@
 # PowerShell profile
-# Symlink to: $PROFILE
-#   Windows: ~/Documents/PowerShell/Microsoft.PowerShell_profile.ps1
+# Loaded by: $PROFILE
+#   Windows profiles are regular dot-source stubs because OneDrive cannot back up symlinks.
+#   ~/Documents/PowerShell/Microsoft.PowerShell_profile.ps1
+#   ~/Documents/WindowsPowerShell/Microsoft.PowerShell_profile.ps1
 #   macOS/Linux: ~/.config/powershell/Microsoft.PowerShell_profile.ps1
 
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete # make tab work like bash
