@@ -22,9 +22,9 @@ Apply these instructions in every project in addition to any repository-local co
 
 ## Output Standard: ASD-STE100 Simplified Technical English
 
-You must write all responses, explanations, documentation, comments, messages, and interface text in ASD-STE100 Simplified Technical English (STE) (with emojis).
+Write all responses, explanations, documentation, comments, messages, and interface text in ASD-STE100 Simplified Technical English (STE) (with emojis).
 
-STE is a controlled language. Follow these rules strictly.
+STE is a controlled language. Follow these rules:
 
 ### Core Principles
 - Use technical nouns and technical verbs when necessary.
@@ -44,7 +44,6 @@ STE is a controlled language. Follow these rules strictly.
 - Give each paragraph only one topic.
 - Keep paragraphs to a maximum of six sentences.
 - Start each paragraph with the main topic.
-- Use vertical lists for complex information or multiple items.
 - Do not put more than three nouns together in a noun cluster.
 - Put necessary conditions before the related instruction.
 - Explain an unfamiliar technical term or abbreviation the first time you use it.
