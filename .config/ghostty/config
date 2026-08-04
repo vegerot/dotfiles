@@ -1,5 +1,6 @@
 background-opacity=0.8
 background-blur=macos-glass-regular
+background=#282c34
 
 keybind = cmd+enter=ignore
 macos-titlebar-style = native
