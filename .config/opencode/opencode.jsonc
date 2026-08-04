@@ -198,6 +198,18 @@
         }
       }
     },
+    "my_ark": {
+      "name": "My Ark",
+      "options": {
+        "baseURL": "https://ark-cn-beijing.bytedance.net/api/v3",
+        "apiKey": "{env:BYTED_ARK_API_KEY}"
+      },
+      "models": {
+        "ep-20260714042235-ggblx": {
+          "name": "Doubao old"
+        }
+      }
+    },
     "ai_agent_proxy_chat": {
       "npm": "@ai-sdk/openai-compatible",
       "name": "Bytedance AI Agent Proxy Chat",
@@ -596,7 +608,7 @@
               "text"
             ]
           }
-        },
+        }
       }
     },
     "ai_agent_proxy_ark_chat": {
@@ -640,8 +652,8 @@
             ]
           }
         },
-        "doubao-seed-code-preview": {
-          "name": "Doubao Seed Code Preview",
+        "doubao-seed-code": {
+          "name": "Doubao Seed Code",
           "limit": {
             "context": 200000,
             "output": 64000
