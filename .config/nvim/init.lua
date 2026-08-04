@@ -351,9 +351,6 @@ local function PLUGINS()
 		vim.keymap.set({ "n", "o", "x" }, "{", "<Plug>(edgemotion-k)", { remap = true })
 		vim.keymap.set({ "n", "o", "x" }, "}", "<Plug>(edgemotion-j)", { remap = true })
 		vim.g.camelcasemotion_key = "<leader>"
-
-		RequireChecked("mini.align").setup()
-
 	end
 
 	if vim.g.vscode then
@@ -368,6 +365,7 @@ local function PLUGINS()
 			GitHub("tpope/vim-surround"),
 			GitHub("justinmk/vim-sneak"),
 			GitHub("folke/snacks.nvim"),
+			GitHub("nvim-mini/mini.align"),
 		}, { load = true })
 		vim.o.spell = false
 		vim.o.loadplugins = false
@@ -421,6 +419,7 @@ local function PLUGINS()
 			html = { comment = { conceal = false } }
 		})
 	end
+	RequireChecked("mini.align").setup()
 end
 
 if PLUGINS() == "FINISH_EARLY" then
