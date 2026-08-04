@@ -19,25 +19,53 @@ function doIt() {
 }
 
 function dry_run() {
-        find . -type f -not -path "*/.git/*" -not -path "./.DS_Store" -not -path "./.osx" -not -path "./bootstrap.sh" -not -path "./brew.sh" -not -path "./README.md" -not -path "./LICENSE-MIT.txt" -exec echo ~/dotfiles/'{}' "->" ~/'{}' \;
+        find . \
+                -type f \
+                ! -path "*/.git/*" \
+                ! -path "*/.sl/*" \
+                ! -path "./.DS_Store" \
+                ! -path "./.osx" \
+                ! -path "./bootstrap.sh" \
+                ! -path "./brew.sh" \
+                ! -path "./README.md" \
+                ! -path "./LICENSE-MIT.txt" \
+                -exec bash -c 'file=$1; printf "%s -> %s\n" "$HOME/dotfiles/$file" "$HOME/$file"' bash {} \;
 }
 
 function force() {
-        find . -type f -not -path "*/.git/*" -not -path "*/.sl/*" -not -path "./.DS_Store" -not -path "./.osx" -not -path "./bootstrap.sh" -not -path "./README.md" -not -path "./LICENSE-MIT.txt" | xargs -I{} bash -xc 'cd $HOME; mkdir -pv $(dirname {}) ; ln -svf ~/dotfiles/{} ~/{};'
+        find . \
+                -type f \
+                ! -path "*/.git/*" \
+                ! -path "*/.sl/*" \
+                ! -path "./.DS_Store" \
+                ! -path "./.osx" \
+                ! -path "./bootstrap.sh" \
+                ! -path "./README.md" \
+                ! -path "./LICENSE-MIT.txt" \
+                -exec bash -xc 'file=$1; cd "$HOME"; mkdir -pv "$(dirname "$file")"; ln -svf "$HOME/dotfiles/$file" "$HOME/$file"' bash {} \;
 }
 
 function normal() {
-        find . -type f -not -path "*/.git/*" -not -path "*/.sl/*" -not -path "./.DS_Store" -not -path "./.osx" -not -path "./bootstrap.sh" -not -path "./README.md" -not -path "./LICENSE-MIT.txt" | xargs -I{} bash -xc 'cd $HOME; mkdir -pv $(dirname {}) ; ln --symbolic --verbose ~/dotfiles/{} ~/{};'
+        find . \
+                -type f \
+                ! -path "*/.git/*" \
+                ! -path "*/.sl/*" \
+                ! -path "./.DS_Store" \
+                ! -path "./.osx" \
+                ! -path "./bootstrap.sh" \
+                ! -path "./README.md" \
+                ! -path "./LICENSE-MIT.txt" \
+                -exec bash -xc 'file=$1; cd "$HOME"; mkdir -pv "$(dirname "$file")"; ln -sv "$HOME/dotfiles/$file" "$HOME/$file"' bash {} \;
 }
 
-force=${1:-""}
-if [[ $force == "--force" ]]; then
-		doIt $force;
+mode=${1:-""}
+if [[ $mode == "--force" || $mode == "--dry-run" ]]; then
+	doIt "$mode"
 else
 	read -p "This may overwrite existing files in your home directory. Are you sure? (y/n) " REPLY
 	if [[ $REPLY =~ ^[Yy]$ ]]; then
-		doIt $force;
-	fi;
-fi;
-unset doIt;
+		doIt "$mode"
+	fi
+fi
+unset doIt
 set +x
