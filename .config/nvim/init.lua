@@ -219,7 +219,9 @@ VANILLA()
 if vim.g.neovide then
 	vim.o.guifont = "SFMono Nerd Font,JetBrainsMono Nerd Font,JetBrains Mono,Menlo,Monaco,Courier New,monospace:h14"
 
-	vim.env.PATH = vim.fn.system([[/bin/sh -lc 'printf "%s" "$PATH"']])
+	if vim.fn.has("unix") == 1 then
+		vim.env.PATH = vim.trim(vim.fn.system([[/bin/sh -lc 'printf "%s" "$PATH"']]))
+	end
 
 	-- Neovide Cmd key mappings (Cmd+C/V/S like a normal app)
 	vim.keymap.set("v", "<D-c>", '"+y')
