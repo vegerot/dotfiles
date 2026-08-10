@@ -1,10 +1,10 @@
-model = "gpt-5.5"
+model = "gpt-5.6-sol"
 model_reasoning_effort = "medium"
 developer_instructions = "For introspection questions about Codex, inspect `~/code/github.com/openai/codex`."
 
 [mcp_servers.chrome_devtools]
 command = "bunx"
-args = ["chrome-devtools-mcp", "--channel=dev"]
+args = [ "chrome-devtools-mcp", "--channel=dev" ]
 
 [mcp_servers.chrome_devtools.tools.click]
 approval_mode = "approve"
@@ -30,20 +30,20 @@ approval_mode = "approve"
 [mcp_servers.codebase]
 url = "https://code.byted.org/api/mcp/codebase/mcp"
 
-[mcp_servers.codebase.env_http_headers]
-X-Code-User-JWT = "BYTED_AI_JWT"
+  [mcp_servers.codebase.env_http_headers]
+  X-Code-User-JWT = "BYTED_AI_JWT"
 
 [mcp_servers.lark]
 url = "https://code.byted.org/api/mcp/lark/mcp"
 
-[mcp_servers.lark.env_http_headers]
-X-Code-User-JWT = "BYTED_AI_JWT"
+  [mcp_servers.lark.env_http_headers]
+  X-Code-User-JWT = "BYTED_AI_JWT"
 
 [mcp_servers.bytedance]
 url = "https://0r2y3xvu.mcp.bytedance.net/mcp"
 
-[mcp_servers.bytedance.env_http_headers]
-X-Code-User-JWT = "BYTED_AI_JWT"
+  [mcp_servers.bytedance.env_http_headers]
+  X-Code-User-JWT = "BYTED_AI_JWT"
 
 [mcp_servers.fff]
 command = "fff-mcp"
@@ -58,10 +58,16 @@ approval_mode = "approve"
 approval_mode = "approve"
 
 [features]
+hooks = true
+codex_hooks = true
 js_repl = true
 
-[tui.model_availability_nux]
-"gpt-5.5" = 4
+[tui]
+terminal_resize_reflow_max_rows = 0
+
+  [tui.model_availability_nux]
+  "gpt-5.5" = 4
+  "gpt-5.6-sol" = 3
 
 [projects."/Users/bytedance/workspace/github.com/openai/codex"]
 trust_level = "trusted"
@@ -85,3 +91,5 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 
+[hooks.state."/Users/bytedance/.codex/hooks.json:user_prompt_submit:0:0"]
+trusted_hash = "sha256:4365d26eab04ab86afb3a21b30dfa267a333f9dfd1d3c1e88c1dcfc1af0dea2c"
