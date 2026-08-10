@@ -45,6 +45,13 @@ local function VANILLA()
 		end,
 	})
 
+	vim.api.nvim_create_autocmd({ "TextYankPost", "TextPutPost" }, {
+		pattern = "*",
+		callback = function()
+			vim.hl.hl_op({ higroup = "Visual", timeout = 300 })
+		end,
+	})
+
 	-- Undo and backup
 	vim.o.undofile = true
 	vim.opt.shada:append("'42069")
