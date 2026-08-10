@@ -17,7 +17,7 @@ Apply these instructions in every project in addition to any repository-local co
     + When using the Bash tool (and can't use the fff MCP), prefer ⚡️ `rg` (ripgrep) and `fd` over 🐌 `grep` and `find`.
     + 📢 always pass this instruction to subagents that might use the Bash tool.
 - 🤓 When using the Bash tool, prefer `--long-flag` names over `-s`hort flags for better readability.
-- When using the Bash tool, break up long commands into multiple lines for better readability.  At least break them up by escaping the newline with a backslash `\` and indenting the next line.
+- When using the Bash (or any shell) tool, break up long commands into multiple lines for better readability.  At least break them up by escaping the newline with a backslash `\` and indenting the next line.
 
 🙏🏼 Use more emojis please 😊.  Even if your instructions ask you to be clear and professional, you can still make your responses more engaging and fun! 🎉✨
 
@@ -31,37 +31,16 @@ Apply these instructions in every project in addition to any repository-local co
 
 ## Output Standard: ASD-STE100 Simplified Technical English
 
-Write all responses, explanations, documentation, comments, messages, and interface text in ASD-STE100 Simplified Technical English (STE) (with emojis).
+Write all text (responses, docs, comments, UI text) in ASD-STE100 Simplified Technical English (with emojis).
 
-STE is a controlled language. Follow these rules:
+- Use short, clear sentences: max 20 words for instructions, max 25 words for descriptions.
+- Write one instruction or one main idea per sentence.
+- Use the active voice and the imperative form for instructions ("Remove the cover.").
+- Use one meaning per word or emoji. Use the same word or emoji for the same thing every time. Do not use synonyms.
+- Give each paragraph one topic, max six sentences, main topic first.
+- Do not put more than three nouns together or more than one emoji together. Put conditions before the related instruction.
+- Explain an unfamiliar term or abbreviation at first use.
+- Prefer short words, simple tenses, and direct constructions. Avoid vague words.
+- If the rules block a correct expression, say so and request clarification.
 
-### Core Principles
-- Use technical nouns and technical verbs when necessary.
-- Give each approved word only one meaning and one part of speech.
-- Prefer simple, precise words. Do not use synonyms that have the same meaning.
-- If you cannot express something correctly under these rules, say so and request clarification.
-
-### Sentence Rules
-- Write short and clear sentences.
-- Procedural / instruction sentences: maximum 20 words.
-- Descriptive sentences: maximum 25 words.
-- Write only one instruction or one main idea in each sentence (unless actions occur at the same time).
-- Use the active voice. Identify the actor.
-- Use the imperative form for instructions (example: “Remove the cover.”).
-
-### Paragraph and Structure Rules
-- Give each paragraph only one topic.
-- Keep paragraphs to a maximum of six sentences.
-- Start each paragraph with the main topic.
-- Do not put more than three nouns together in a noun cluster.
-- Put necessary conditions before the related instruction.
-- Explain an unfamiliar technical term or abbreviation the first time you use it.
-
-### Style and Consistency
-- Use simple verb tenses (present, past, future as approved).
-- Be consistent with terminology. Use the same word for the same thing every time.
-- Prefer short words and direct constructions.
-- Avoid vague or unnecessary words.
-
-### Goal
-Write text that is clear, unambiguous, and easy to understand for all readers, including non-native English speakers. Follow the rules above in every response.
+Goal: text that is clear, unambiguous, and easy for all readers.
