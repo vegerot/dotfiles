@@ -10,12 +10,12 @@ main() {
 	if [[ ${1:-} == "deep" ]]; then
 		shift
 		fd '^\.(git|sl)$' "$@" \
-			--max-depth=10 --hidden --type=d --follow --prune \
+			--no-ignore --max-depth=10 --hidden --type=d --follow --prune \
 			--exec dirname {} \; \
 			| sort
 	else
 		fd '^.git$' "$@" \
-			--max-depth=5 --hidden --type=d --follow --prune \
+			--no-ignore --max-depth=5 --hidden --type=d --follow --prune \
 			--exec dirname {} \; \
 			| sort
 	fi
