@@ -1,7 +1,12 @@
 [core]
-  pager = "eval ${GITPAGER}"
+  pager = "eval ${GITPAGER:-less -RFX}"
   fsmonitor = true
   untrackedCache = true
+  # Windows defaults this to false and its init/clone "probe" can never say
+  # otherwise: mingw's symlink() returns ENOSYS unless this is already true, so
+  # every fresh clone writes core.symlinks=false and checks symlinks out as
+  # text stubs. Setting it globally opts in. Needs Developer Mode (or admin).
+  symlinks = true
 
 [color "branch"]
   current = yellow reverse
@@ -38,7 +43,7 @@ mnemonicPrefix = true
   verbose = true
 
 [interactive]
-  diffFilter = "eval $GITPAGER"
+  diffFilter = "eval ${GITPAGER:-cat}"
 
 [rebase]
   instructionFormat = (%al) %s
