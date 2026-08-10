@@ -15,7 +15,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source claude"
+            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source claude",
+            "async": true
           }
         ],
         "matcher": "*"
@@ -47,7 +48,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source claude"
+            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source claude",
+            "async": true
           }
         ],
         "matcher": "*"
@@ -79,7 +81,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source claude"
+            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source claude",
+            "async": true
           }
         ],
         "matcher": "*"
@@ -90,7 +93,8 @@
           {
             "type": "command",
             "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; TEA_APP_ID=1013111 TEA_CHANNEL=cn TEA_APP_NAME_FOR_BITS=@fluxisland@0.1.30@0.4.8 ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-bits-report' claude-code preToolUse",
-            "timeout": 30
+            "timeout": 30,
+            "async": true
           }
         ]
       }
@@ -100,7 +104,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source claude"
+            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source claude",
+            "async": true
           }
         ]
       }
@@ -110,7 +115,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source claude"
+            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source claude",
+            "async": true
           }
         ]
       },
@@ -120,7 +126,8 @@
           {
             "type": "command",
             "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; TEA_APP_ID=1013111 TEA_CHANNEL=cn TEA_APP_NAME_FOR_BITS=@fluxisland@0.1.30@0.4.8 ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-bits-report' claude-code sessionStart",
-            "timeout": 30
+            "timeout": 30,
+            "async": true
           }
         ]
       }
@@ -130,7 +137,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source claude"
+            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source claude",
+            "async": true
           }
         ]
       }
@@ -140,7 +148,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source claude"
+            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source claude",
+            "async": true
           }
         ]
       },
@@ -161,7 +170,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source claude"
+            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source claude",
+            "async": true
           }
         ]
       }
@@ -171,7 +181,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source claude"
+            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source claude",
+            "async": true
           }
         ]
       }
@@ -181,7 +192,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source claude"
+            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source claude",
+            "async": true
           }
         ]
       },
@@ -202,7 +214,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source claude"
+            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source claude",
+            "async": true
           }
         ],
         "matcher": "*"
@@ -225,7 +238,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source claude"
+            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source claude",
+            "async": true
           }
         ]
       }
