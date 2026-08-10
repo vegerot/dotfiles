@@ -50,7 +50,7 @@ shopt -s histverify
 shopt -s lithist
 export PROMPT_COMMAND="history -a"
 
-if [[ -z "$SKIP_COW_COMMAND" ]] && type randomcowcommand >/dev/null 2>&1 && type manpath >/dev/null 2>&1; then
+if [[ $- == *i* ]] && [[ -z "$SKIP_COW_COMMAND" ]] && type randomcowcommand >/dev/null 2>&1 && type manpath >/dev/null 2>&1; then
   randomcowcommand --async
 fi
 

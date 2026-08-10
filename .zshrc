@@ -19,10 +19,12 @@ fi
 
 [[ -r ~/.profile ]] && source ~/.profile
 
-if [[ -z ${ZSH_SKIP_LOADING_PLUGINS:-} && $OSTYPE == "darwin"* || $isWSL == true ]]; then
-	~/dotfiles/bin/randomcowcommand --async
-elif [[ -z ${ZSH_SKIP_LOADING_PLUGINS:-} ]]; then
-	~/dotfiles/bin/randomcowcommand
+if [[ -o interactive ]]; then
+	if [[ -z ${ZSH_SKIP_LOADING_PLUGINS:-} && $OSTYPE == "darwin"* || $isWSL == true ]]; then
+		~/dotfiles/bin/randomcowcommand --async
+	elif [[ -z ${ZSH_SKIP_LOADING_PLUGINS:-} ]]; then
+		~/dotfiles/bin/randomcowcommand
+	fi;
 fi;
 
 local use_fancy_prompt
