@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-
 function debug() {
 	if [[ -z ${VERBOSE:-} ]]; then return; fi
 	echo "$@"
