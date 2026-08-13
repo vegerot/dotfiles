@@ -1,4 +1,7 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
+# zsh 5.9+ only. Sourced by `source_max_scripts` in .zshrc.
+# Do not use bare glob qualifiers like `*(NOn)` here: some zsh instances run
+# with `nobareglobqual`, which turns them into literal filename characters.
 
 function debug() {
 	if [[ -z ${VERBOSE:-} ]]; then return; fi
@@ -10,7 +13,7 @@ function vanilla_nvm_use() {
 	export NVM_DIR="$HOME/.nvm"
 	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 	[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-	nvm use $@
+	nvm use "$@"
 }
 
 function get_nvmrc() {
@@ -31,22 +34,30 @@ function get_nvmrc() {
 
 function fast_nvm_use() {
 	local nvmrc=$(get_nvmrc)
-	local has_nvmrc=$([[ -f $nvmrc ]] && true || false)
+	local has_nvmrc=$([[ -f $nvmrc ]] && echo true || echo false)
 
 	if [[ $has_nvmrc == false ]]; then
 		debug "not setting up fast nvm because no nvmrc is found"
-		debug "make sure you have a .nvmrc file in the current directory"
-		debug "TODO: soon we will support searching upwards for the file"
+		debug "make sure you have a .nvmrc file in this directory or a parent"
 		vanilla_nvm_use "$@"
 		return 1
 	fi
 	export NVM_DIR="$HOME/.nvm/"
 
 	local nvm_versions_dir="$NVM_DIR/versions/node/"
-	# TODO: search upwards for `.nvmrc`
 	local node_version="$(<$nvmrc)"
-	local node_paths=($(eval echo "$nvm_versions_dir/?$node_version*" | tr ' ' '\n' | sort --version-sort --reverse))
-	local node_path="${node_paths[1]:-''}"
+	if [[ -z $node_version ]]; then
+		# else the pattern below degrades to `?*` and silently picks the newest
+		debug "not setting up fast nvm because .nvmrc is empty"
+		vanilla_nvm_use "$@"
+		return 1
+	fi
+
+	# `find` rather than a glob, for three reasons: no `eval` (`.nvmrc` is
+	# untrusted input), an unmatched glob is fatal in zsh, and glob qualifiers
+	# need `bareglobqual`, which is off in some zsh instances.
+	local node_paths=($(find "$nvm_versions_dir" -mindepth 1 -maxdepth 1 -type d -name "?$node_version*" 2>/dev/null | sort --version-sort --reverse))
+	local node_path="${node_paths[1]:-}"
 
 	if [[ ! -d $node_path ]]; then
 		debug "not setting up fast nvm because can't find the requested node version"
@@ -56,7 +67,7 @@ function fast_nvm_use() {
 	fi
 
 	export PATH="$node_path/bin:$PATH"
-	export MANPATH="$node_path/share/man:$MANPATH"
+	export MANPATH="$node_path/share/man:${MANPATH:-}"
 }
 
 function nvmuse() {
@@ -71,6 +82,8 @@ function setUpNvmIfNotSetUp() {
 		return
 	fi
 
+	# this starts Node only to read its version. That is ~29ms of the ~36ms
+	# wrapper overhead. See the benchmark note below for why we keep it.
 	local got_version=$(command node --version 2>/dev/null)
 	local want_version=$(<$(get_nvmrc))
 
@@ -99,35 +112,58 @@ function setUpNvmIfNotSetUp() {
 #     1.54 ± 0.15 times faster than source ../../max_scripts_source_on_cd.sh && node --version
 #```
 
+# Measured again 2026-08-12, in a repo with `.nvmrc` = 18.20.8. ⏱️
+#
+#   command node --version   (no wrapper)   31 ms
+#   node --version           (wrapped)      67 ms   = 2.16x
+#
+# Cost per call: the Node version probe ~29ms, `find` + `sort` ~10ms, the
+# subshell fork ~1ms, and each `get_nvmrc` tree walk ~1ms. So the probe is
+# almost all of it. The wrapper starts Node twice: once to ask the version,
+# once to do the work.
+#
+# You can delete the probe and gate on PATH instead, which cuts the overhead
+# from ~36ms to ~7ms:
+#
+#   case ":$PATH:" in *"/versions/node/v$want_version/bin:"*) return ;; esac
+#
+# We chose NOT to do this. Only direct shell calls pay the cost. A child
+# process of a wrapped command inherits the fixed PATH, so `pnpm test` pays
+# ~30ms once, not once per Node process. 30ms is below what a human notices,
+# and it disappears next to pnpm's own startup. The extra gate is more code
+# and one more thing to get wrong.
+#
+# Revisit this only if you call `node` in a shell loop. There the cost
+# multiplies: 500 iterations pays ~15s.
+
 function node_nvm_wrapper() {
 	(
 		set -o nounset
 		set -o pipefail
 		setUpNvmIfNotSetUp
-		set +o errexit
 		set +o nounset
 		set +o pipefail
 
-		command $*
+		command "$@"
 	)
 }
 
 function node() {
-	node_nvm_wrapper node $*
+	node_nvm_wrapper node "$@"
 }
 
 function pnpm() {
-	node_nvm_wrapper $0 $*
+	node_nvm_wrapper pnpm "$@"
 }
 
 function yarn() {
-	node_nvm_wrapper $0 $*
+	node_nvm_wrapper yarn "$@"
 }
 
 function pnpx() {
-	node_nvm_wrapper $0 $*
+	node_nvm_wrapper pnpx "$@"
 }
 
 function emo() {
-	node_nvm_wrapper $0 $*
+	node_nvm_wrapper emo "$@"
 }
