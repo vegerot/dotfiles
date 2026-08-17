@@ -157,12 +157,12 @@ pick_ide() {
 function pick_ai_cli() {
 	if is_bytedance_machine; then
 		printf '%s\n' \
-			"pi 1" "crush 1" "gemini 1" "coco 1" "traeIDE 2" "codex 2" "copilot 2" "antigravity 3" "claude 3" "opencode 4" "traex 20" |
+			"muse 1" "pi 1" "crush 1" "gemini 1" "coco 1" "traeIDE 2" "codex 2" "copilot 2" "antigravity 3" "claude 3" "opencode 4" "traex 20" |
 			awk '{for (i = 0; i < $2; i++) print $1}' |
 			shuf -n 1
 	else
 		printf '%s\n' \
-			"pi 1" "crush 1" "gemini 1" "traeIDE 1" "codex 2" "copilot 2" "antigravity 3" "claude 3" "opencode 4" |
+			"muse 1" "pi 1" "crush 1" "gemini 1" "traeIDE 1" "codex 2" "copilot 2" "antigravity 3" "claude 3" "opencode 4" |
 			awk '{for (i = 0; i < $2; i++) print $1}' |
 			shuf -n 1
 	fi
