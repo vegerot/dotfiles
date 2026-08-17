@@ -12,14 +12,14 @@
         ]
       },
       {
+        "matcher": "*",
         "hooks": [
           {
             "type": "command",
             "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source claude",
             "async": true
           }
-        ],
-        "matcher": "*"
+        ]
       },
       {
         "matcher": "Write|Edit|MultiEdit|Bash|NotebookEdit|mcp__.*",
@@ -45,14 +45,14 @@
         ]
       },
       {
+        "matcher": "*",
         "hooks": [
           {
             "type": "command",
             "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source claude",
             "async": true
           }
-        ],
-        "matcher": "*"
+        ]
       },
       {
         "matcher": "Write|Edit|MultiEdit|Bash|NotebookEdit|mcp__.*",
@@ -78,14 +78,14 @@
         ]
       },
       {
+        "matcher": "*",
         "hooks": [
           {
             "type": "command",
             "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source claude",
             "async": true
           }
-        ],
-        "matcher": "*"
+        ]
       },
       {
         "matcher": "Write|Edit|MultiEdit|Bash|NotebookEdit|mcp__.*",
@@ -211,26 +211,26 @@
     ],
     "Notification": [
       {
+        "matcher": "*",
         "hooks": [
           {
             "type": "command",
             "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source claude",
             "async": true
           }
-        ],
-        "matcher": "*"
+        ]
       }
     ],
     "PermissionRequest": [
       {
+        "matcher": "*",
         "hooks": [
           {
             "type": "command",
             "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source claude",
             "timeout": 86400
           }
-        ],
-        "matcher": "*"
+        ]
       }
     ],
     "PreCompact": [
