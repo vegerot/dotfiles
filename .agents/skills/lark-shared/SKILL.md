@@ -8,6 +8,8 @@ description: "Use for lark-cli setup/auth tasks: auth login/status/logout, user 
 
 本技能指导你如何通过lark-cli操作飞书资源, 以及有哪些注意事项。
 
+Note: For meta-questions about lark-cli itself, or for tasks which you're struggling with, refer to ~/code/github.com/larksuite/cli/
+
 ## 配置初始化
 
 首次使用需运行 `lark-cli config init` 完成应用配置。
@@ -209,3 +211,5 @@ lark-cli 对高风险写操作（`risk: "high-risk-write"`）有强制确认门�
 
 - shortcut：`lark-cli <service> +<cmd> --help` 顶部会显示 `Risk: high-risk-write`
 - service 命令：`lark-cli schema <service>.<resource>.<method> --format json` 的返回值里 `"risk": "high-risk-write"`
+
+If these docs are not sufficient, refer to ~/code/github.com/larksuite/cli/
