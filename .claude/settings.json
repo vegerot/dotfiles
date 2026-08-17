@@ -260,6 +260,12 @@
   },
   "effortLevel": "high",
   "tui": "default",
+  "askUserQuestionTimeout": "10m",
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "auto",
+  "editorMode": "vim",
+  "verbose": true,
+  "remoteControlAtStartup": true,
   "inputNeededNotifEnabled": true,
   "agentPushNotifEnabled": true
 }
