@@ -250,7 +250,7 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "/Users/bytedance/.flux/bin/flux-statusline"
+    "command": "bash ~/.claude/statusline-command.sh"
   },
   "enabledPlugins": {
     "clangd-lsp@claude-plugins-official": true,
