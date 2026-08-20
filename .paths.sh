@@ -128,11 +128,6 @@ fi
 # stock ~/.bashrc exports this, but ~/.bashrc returns early for non-interactive
 # shells, so ssh's ProxyCommand never saw it. Setting it here covers login
 # shells too. No-op on machines without ~/.aime.
-#
-# On a glob with no matches, bash keeps the pattern, so the -d test drops it.
-# zsh prints an error instead (NOMATCH), which aborts this file. NULL_GLOB
-# removes the pattern and overrides NOMATCH. LOCAL_OPTIONS restores both when
-# the function returns, so neither option leaks into the shell.
 _aime_socat_path() {
 	[ -n "${ZSH_VERSION:-}" ] && setopt local_options null_glob
 
