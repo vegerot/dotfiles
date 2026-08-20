@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+# cc — one Claude Code Remote Control server per repo, one tmux window each.
+#
+#   cc <repo>        jump to (or start) the server for a repo already cloned
+#   cc <git-url>     clone into ~/code/<host>/<org>/<repo>, then start
+#   cc clone <url>   clone only
+#   cc reindex       rebuild the repo index
+#
+# See README.md next to this script.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+CC_ROOT="$HOME/code"
+CC_INDEX="$HOME/.cache/cc-repos"
+
+reindex() {
+	mkdir --parents "$(dirname "$CC_INDEX")"
+	fd --hidden --no-ignore --max-depth=4 --type=directory '^\.git$' "$CC_ROOT" \
+		| sed 's:/\.git/$::' | sort > "$CC_INDEX"
+	echo "cc: indexed $(wc --lines < "$CC_INDEX") repos" >&2
+}
+
+# Turn a git URL into ~/code/<host>/<org>/<repo> and clone it there.
+clone() {
+	local url=${1:?usage: cc clone <git-url>}
+	local path=${url#*://}
+	path=${path#*@}
+	path=${path/://}
+	path=${path%.git}
+	path=${path%/}
+	local dir="$CC_ROOT/$path"
+	if [ ! -d "$dir/.git" ]; then
+		git clone "$url" "$dir" >&2
+		reindex
+	fi
+	printf '%s\n' "$dir"
+}
+
+# Print the path of a cloned repo, by its directory name.
+find_repo() {
+	local repo=$1 dir
+	[ -s "$CC_INDEX" ] || reindex
+	dir=$(awk -F/ -v r="$repo" '$NF == r' "$CC_INDEX" | head --lines=1)
+	if [ -z "$dir" ]; then
+		reindex
+		dir=$(awk -F/ -v r="$repo" '$NF == r' "$CC_INDEX" | head --lines=1)
+	fi
+	[ -n "$dir" ] || return 1
+	printf '%s\n' "$dir"
+}
+
+serve() {
+	local repo=$1 dir=$2
+	local win=${repo//[.:]/_}
+
+	tmux has-session -t cc 2>/dev/null || tmux new-session -d -s cc -n home
+
+	tmux list-windows -t cc -F '#W' | grep --quiet --line-regexp "$win" ||
+		tmux new-window -t cc -n "$win" -c "$dir" \
+			"$HOME/.local/bin/claude remote-control --name=devbox-$repo --spawn=worktree; exec bash"
+
+	tmux select-window -t "cc:$win"
+	[ -n "${TMUX:-}" ] || tmux attach -t cc
+}
+
+main() {
+	local repo=${1:?usage: cc <repo-name|git-url> | cc clone <url> | cc reindex}
+	local dir
+
+	case $repo in
+	reindex)
+		reindex
+		return
+		;;
+	clone)
+		shift
+		clone "$@"
+		return
+		;;
+	*://* | *@*:* | */*)
+		dir=$(clone "$repo")
+		repo=${dir##*/}
+		;;
+	*)
+		if ! dir=$(find_repo "$repo"); then
+			echo "cc: no repo named '$repo'. Give a git URL to clone it." >&2
+			return 1
+		fi
+		;;
+	esac
+
+	serve "$repo" "$dir"
+}
+
+main "$@"
