@@ -9,7 +9,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "atuin hook claude-code",
+            "command": "command -v atuin >/dev/null || exit 0; atuin hook claude-code",
             "timeout": 5
           }
         ]
@@ -42,7 +42,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "atuin hook claude-code",
+            "command": "command -v atuin >/dev/null || exit 0; atuin hook claude-code",
             "timeout": 10
           }
         ]
@@ -75,7 +75,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "atuin hook claude-code",
+            "command": "command -v atuin >/dev/null || exit 0; atuin hook claude-code",
             "timeout": 5
           }
         ]
