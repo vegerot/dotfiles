@@ -4,17 +4,17 @@ Written **2026-08-21**. This box is `n251-236-182.byted.org` / `10.251.236.182`,
 veLinux 2, x86_64. Claude Code here is **2.1.237** at `~/.local/bin/claude`.
 
 This directory holds my own scripts. `.paths.sh` puts it on `PATH`. It contains one
-script today: [`cc`](./cc).
+script today: [`cl`](./cl).
 
 ---
 
 ## ⚡ Cheat sheet — Remote Control
 
 ```sh
-cc dotfiles          # start or jump to the server for a repo
-cc <git-url>         # clone into ~/code/<host>/<org>/<repo>, then start
-cc reindex           # rebuild the repo index after cloning by hand
-tmux attach -t cc    # see all running servers, one window each
+cl dotfiles          # start or jump to the server for a repo
+cl <git-url>         # clone into ~/code/<host>/<org>/<repo>, then start
+cl reindex           # rebuild the repo index after cloning by hand
+tmux attach -t cl    # see all running servers, one window each
 ```
 
 Then open **<https://claude.ai/code>** or the app's **Code** tab, and pick
@@ -25,7 +25,7 @@ Then open **<https://claude.ai/code>** or the app's **Code** tab, and pick
 | Fresh clone refuses to start | `cd <repo> && claude`, accept the trust dialog, quit |
 | Show a QR code | <kbd>space</kbd> in the server window |
 | Switch worktree ↔ same-dir | <kbd>w</kbd> in the server window |
-| Server row gone from the app | `cc <repo>` again |
+| Server row gone from the app | `cl <repo>` again |
 | Been down over ~4 hours | `claude --resume <id>`, then `/remote-control` |
 
 Full detail in [section 1](#1--remote-control--the-main-way).
@@ -61,28 +61,28 @@ chats never fight over files. Default capacity is 32 sessions per server.
 ### Start a server — one per repo
 
 ```sh
-cc dotfiles                                      # repo already cloned
-cc git@github.com:anthropics/claude-code.git     # clones it first
+cl dotfiles                                      # repo already cloned
+cl git@github.com:anthropics/claude-code.git     # clones it first
 ```
 
-`cc` is the script next to this file, `~/.claude/my-scripts/cc`. `~/dotfiles/.paths.sh`
+`cl` is the script next to this file, `~/.claude/my-scripts/cl`. `~/dotfiles/.paths.sh`
 puts that directory on `PATH`, so every shell has it. It does four things:
 
-1. Finds the repo in `~/.cache/cc-repos`, or clones a URL into
+1. Finds the repo in `~/.cache/cl-repos`, or clones a URL into
    `~/code/<host>/<org>/<repo>`.
-2. Makes a `tmux` window in session `cc`, one per repo.
+2. Makes a `tmux` window in session `cl`, one per repo.
 3. Runs `claude remote-control --name=devbox-<repo> --spawn=worktree` there.
 4. Jumps you to that window.
 
-Subcommands: `cc reindex` rebuilds the repo index. `cc clone <url>` clones only.
+Subcommands: `cl reindex` rebuilds the repo index. `cl clone <url>` clones only.
 
-### ⚠️ Gotcha: `cc` is also the C compiler
+### Why `cl` and not `cc`
 
-`/usr/bin/cc` is the system C compiler. This script shadows it, because
+`cc` was the first name. But `/usr/bin/cc` is the system C compiler, and
 `~/.claude/my-scripts` goes **before** `/usr/bin` on `PATH`. `make` and `configure`
-default to `cc`, so they will find this script instead.
+default to `cc`, so every build on this box would have run the helper instead.
 
-Build with `gcc`, or set `CC=gcc`, on this box. Use `/usr/bin/cc` for the compiler.
+`cl` is free on Linux, so it takes no name that a build needs.
 
 ### Why one server per repo
 
@@ -106,7 +106,7 @@ Press <kbd>space</kbd> for a QR code. Press <kbd>w</kbd> to toggle spawn mode be
 > `Error: Workspace not trusted. Please run` `claude` `in <dir> first to review and
 > accept the workspace trust dialog.`
 
-There is **no CLI flag** for this. So `cc <new-repo>` fails the first time on every
+There is **no CLI flag** for this. So `cl <new-repo>` fails the first time on every
 fresh clone. Fix it once per repo:
 
 ```sh
@@ -134,7 +134,7 @@ sessions.
 ### Live right now
 
 `devbox-dotfiles`, rooted at `~/code/github.com/vegerot/dotfiles`, in `tmux` window
-`cc:dotfiles`.
+`cl:dotfiles`.
 
 ---
 
@@ -248,7 +248,7 @@ delete `ccd-cli`; Desktop re-downloads 314 MB on the next connect.
 ## 4. ⌨️ Plain `ssh` — rare
 
 ```sh
-ssh -t max.coplan@10.251.236.182 'bash -lc "tmux attach -t cc"'
+ssh -t max.coplan@10.251.236.182 'bash -lc "tmux attach -t cl"'
 ```
 
 Always use `bash -lc`. A **login** shell is what puts `claude`, `fd`, and the
@@ -275,7 +275,7 @@ tmux prefix here is the default **`C-b`**.
 ### Repo layout
 
 Go style: `~/code/<host>/<org>/<repo>`. `~/code` itself is **not** a git repo. Repos are
-cloned **on demand** — use `cc <git-url>`.
+cloned **on demand** — use `cl <git-url>`.
 
 Git work identity is automatic. Inside `~/code/code.byted.org/**`, git reports
 `max.coplan@ByteDance.com` via `includeIf` in `~/.gitconfig`.
@@ -292,11 +292,11 @@ Git work identity is automatic. Inside `~/code/code.byted.org/**`, git reports
 ### Useful commands here
 
 ```sh
-cc <repo|url>          # start or jump to a Remote Control server
-cc reindex             # rebuild ~/.cache/cc-repos
+cl <repo|url>          # start or jump to a Remote Control server
+cl reindex             # rebuild ~/.cache/cl-repos
 claude rc              # same as `claude remote-control` (hidden alias)
 claude doctor          # version, commit, update channel
-tmux attach -t cc      # the server windows
+tmux attach -t cl      # the server windows
 ```
 
 ---
@@ -309,5 +309,5 @@ tmux attach -t cc      # the server windows
 | Desktop asks for an SSH password | The `Match` block was reverted | Re-apply it, `sshd -t`, `systemctl reload ssh` |
 | `claude: command not found` over ssh | Not a login shell | Use `bash -lc "..."` |
 | `--continue` says nothing recorded | Past the 4-hour window | `claude --resume <id>`, then `/remote-control` |
-| Server row missing at claude.ai/code | Process stopped | `cc <repo>` again |
+| Server row missing at claude.ai/code | Process stopped | `cl <repo>` again |
 | Mouse scroll dead in tmux | Server started before the config existed | `tmux source-file ~/.config/tmux/tmux.conf` |

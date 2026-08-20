@@ -20,8 +20,7 @@ fi
 
 export PATH="$HOME/bin:$HOME/.local/bin:/sbin:$PATH"
 
-# My own scripts. This goes before /usr/bin on purpose: `cc` here is the Claude
-# Code helper, and it must win over /usr/bin/cc, the C compiler.
+# My own scripts. They go before the system directories, so they win.
 [ -d "$HOME/.claude/my-scripts" ] && export PATH="$HOME/.claude/my-scripts:$PATH"
 
 
