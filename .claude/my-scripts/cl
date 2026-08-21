@@ -65,12 +65,18 @@ find_repo() {
 serve() {
 	local repo=$1 dir=$2
 	local win=${repo//[.:]/_}
+	local cmd="$HOME/.local/bin/claude remote-control --name=devbox-$repo --spawn=worktree --permission-mode=bypassPermissions"
 
 	tmux has-session -t cl 2>/dev/null || tmux new-session -d -s cl -n home
 
-	tmux has-session -t "cl:$win" 2>/dev/null ||
-		tmux new-window -t cl -n "$win" -c "$dir" \
-			"$HOME/.local/bin/claude remote-control --name=devbox-$repo --spawn=worktree --permission-mode=bypassPermissions; exec bash"
+	if ! tmux has-session -t "cl:$win" 2>/dev/null; then
+		tmux new-window -t cl -n "$win" -c "$dir" "$cmd"
+		# Keep the window (and the error output) after claude exits, so the next
+		# `cl` can tell a dead server from a live one and restart it.
+		tmux set-option -w -t "cl:$win" remain-on-exit on
+	elif [[ $(tmux display-message -p -t "cl:$win" '#{pane_dead}') == 1 ]]; then
+		tmux respawn-window -t "cl:$win" -c "$dir" "$cmd"
+	fi
 
 	tmux select-window -t "cl:$win"
 	[[ -n ${TMUX:-} ]] || tmux attach -t cl
