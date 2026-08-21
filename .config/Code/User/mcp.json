@@ -18,23 +18,29 @@
       "url": "https://code.byted.org/api/mcp/codebase/mcp",
       "headers": {
         "X-Code-User-JWT": "${env:BYTED_AI_JWT}",
-      }
+      },
+      "disabled": true
     },
     "Lark": {
       "url": "https://code.byted.org/api/mcp/lark/mcp",
       "headers": {
         "X-Code-User-JWT": "${env:BYTED_AI_JWT}",
-      }
+      },
+      "disabled": true
     },
     "ByteDance MCP": {
       "url": "https://0r2y3xvu.mcp.bytedance.net/mcp",
       "headers": {
         "X-Code-User-JWT": "${env:BYTED_AI_JWT}",
-      }
+      },
+      "disabled": true
     },
     "HTTP Toolkit": {
       "command": "${env:HOME}/.local/share/httptoolkit-server/client/bin/httptoolkit-server",
-      "args": ["mcp"]
+      "args": [
+        "mcp"
+      ],
+      "disabled": true
     }
   },
   // for VSCode MCP
