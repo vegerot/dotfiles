@@ -70,7 +70,7 @@ serve() {
 
 	tmux has-session -t "cl:$win" 2>/dev/null ||
 		tmux new-window -t cl -n "$win" -c "$dir" \
-			"$HOME/.local/bin/claude remote-control --name=devbox-$repo --spawn=worktree; exec bash"
+			"$HOME/.local/bin/claude remote-control --name=devbox-$repo --spawn=worktree --permission-mode=bypassPermissions; exec bash"
 
 	tmux select-window -t "cl:$win"
 	[[ -n ${TMUX:-} ]] || tmux attach -t cl
