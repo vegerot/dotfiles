@@ -32,10 +32,10 @@ Must use this skill:
 
 ### Step 1. Search Use Cases
 
-Search with an action-oriented query summarizing what you want to achieve using the `search` command. Run `modern-web-guidance` directly with `bunx`.
+Search with an action-oriented query summarizing what you want to achieve using the `search` command. Run `modern-web-guidance` directly with `npx`.
 
 ```sh
-bunx -y modern-web-guidance@latest search "<query>" --skill-version 2026_05_16-c5e7870
+npx -y modern-web-guidance@latest search "<query>" --skill-version 2026_05_16-c5e78707
 ```
 
 **Example Output**:
@@ -62,7 +62,7 @@ bunx -y modern-web-guidance@latest search "<query>" --skill-version 2026_05_16-c
 
 > **Note**: If search results are vague, return no matches, or show low similarity scores, run the `list` command to browse all guides:
 > ```sh
-> bunx -y modern-web-guidance@latest list
+> npx -y modern-web-guidance@latest list
 > ```
 
 ---
@@ -72,18 +72,18 @@ bunx -y modern-web-guidance@latest search "<query>" --skill-version 2026_05_16-c
 Once you have a relevant `id` from the search results, call this script using the `retrieve` command to get the full guide. You can pass multiple IDs separated by commas.
 
 ```sh
-bunx -y modern-web-guidance@latest retrieve "<id>"
+npx -y modern-web-guidance@latest retrieve "<id>"
 ```
 
 
 **Example Output**:
 `The markdown content of the guide describing implementation steps...`
 
-## Using bunx
+## Using npx
 
--   IMPORTANT: on Windows, using `bunx` may fail. Use `bunx.cmd ...` or `npx.cmd ...` instead.
+-   IMPORTANT: on Windows, using `npx` may fail. Use `npx.cmd ...` instead.
 -   Network access is required for fetching npm packages needed by the task.
--   If the `bunx -y modern-web-guidance…` command hangs, you may be offline. Try running again in offline
+-   If the `npx -y modern-web-guidance…` command hangs, you may be offline. Try running again in offline
     mode: `npx --offline …`.
 -   The `--skill-version` flag is used to determine if this SKILL.md is out of date. If it is, a warning
     message is logged to stderr.

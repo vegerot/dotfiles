@@ -6,18 +6,18 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/GoogleChrome/modern-web-guidance.git",
       "skillPath": "skills/modern-web-guidance/SKILL.md",
-      "skillFolderHash": "6a556d0fcee54f2fa419c30147a90d8b55b5b777",
+      "skillFolderHash": "e669b462e786f7f1551aff1deb0a1e5d42cdf553",
       "installedAt": "2026-05-30T00:52:40.267Z",
-      "updatedAt": "2026-06-23T22:48:16.214Z"
+      "updatedAt": "2026-08-13T00:18:54.364Z"
     },
     "find-skills": {
       "source": "vercel-labs/skills",
       "sourceType": "github",
       "sourceUrl": "https://github.com/vercel-labs/skills.git",
       "skillPath": "skills/find-skills/SKILL.md",
-      "skillFolderHash": "eb6a23305aea6e340d14b9de3766e721f9f4861b",
+      "skillFolderHash": "76a98a285cb0434f3d39e1a873823556330e398b",
       "installedAt": "2026-05-30T00:52:44.033Z",
-      "updatedAt": "2026-06-23T22:48:17.951Z"
+      "updatedAt": "2026-08-13T00:18:55.932Z"
     },
     "lark-apps": {
       "source": "open.feishu.cn",
@@ -88,30 +88,27 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/mattpocock/skills.git",
       "skillPath": "skills/productivity/grill-me/SKILL.md",
-      "skillFolderHash": "8320e7b87f7b208f50ce165b1dd43d1e93c8e801",
-      "pluginName": "mattpocock-skills",
+      "skillFolderHash": "c817f6f36acd483294144694a935a76d3e3eb101",
       "installedAt": "2026-06-23T22:52:35.561Z",
-      "updatedAt": "2026-06-23T22:52:35.561Z"
+      "updatedAt": "2026-08-13T00:18:57.860Z"
     },
     "tdd": {
       "source": "mattpocock/skills",
       "sourceType": "github",
       "sourceUrl": "https://github.com/mattpocock/skills.git",
       "skillPath": "skills/engineering/tdd/SKILL.md",
-      "skillFolderHash": "0a727bd358b855cbcc1c35cfff21ef31f9ffb8de",
-      "pluginName": "mattpocock-skills",
+      "skillFolderHash": "423f3cc2bccf3b0ed426fb35eeb4b38d9188a343",
       "installedAt": "2026-06-23T22:54:36.454Z",
-      "updatedAt": "2026-07-13T23:03:19.192Z"
+      "updatedAt": "2026-08-13T00:18:59.575Z"
     },
     "grill-with-docs": {
       "source": "mattpocock/skills",
       "sourceType": "github",
       "sourceUrl": "https://github.com/mattpocock/skills.git",
       "skillPath": "skills/engineering/grill-with-docs/SKILL.md",
-      "skillFolderHash": "21adba95de7d93065d9fec725ddf37f871e01d05",
-      "pluginName": "mattpocock-skills",
+      "skillFolderHash": "5fdcdeedf2d0c73b3ecb1da0a464dd885590f8d6",
       "installedAt": "2026-06-23T22:54:48.231Z",
-      "updatedAt": "2026-06-23T22:54:48.231Z"
+      "updatedAt": "2026-08-13T00:19:01.590Z"
     },
     "lark-note": {
       "source": "open.feishu.cn",
