@@ -5,15 +5,15 @@
       "src": "https://github.com/bkad/CamelCaseMotion.git"
     },
     "copilot.lua": {
-      "rev": "d521d3959f81f4fa58870ed329754f1dd5057511",
+      "rev": "7e6723aabea044519462958ffcea68d7985c5ed0",
       "src": "https://github.com/zbirenbaum/copilot.lua.git"
     },
     "fff.nvim": {
-      "rev": "18f546a4fe8939d884b495a7d761f4905ad205a3",
+      "rev": "d5b4abd2ac22ba42a787c07b6c5d21b76918262f",
       "src": "https://github.com/dmtrKovalenko/fff.nvim.git"
     },
     "fzf": {
-      "rev": "6765f464a60e39afc20775f54f7ba40896bf1b81",
+      "rev": "15f64c492a08f0840b81540c7d1de35737448086",
       "src": "https://github.com/junegunn/fzf.git"
     },
     "fzf.vim": {
@@ -21,7 +21,7 @@
       "src": "https://github.com/junegunn/fzf.vim.git"
     },
     "gitsigns.nvim": {
-      "rev": "eb60cc7b94c46005237fd34170d76f3a089a90aa",
+      "rev": "5be654f2232c10ddcad19c1607a67b6b4b78fc29",
       "src": "https://github.com/lewis6991/gitsigns.nvim.git"
     },
     "go.nvim": {
@@ -45,11 +45,11 @@
       "src": "https://github.com/catgoose/nvim-colorizer.lua.git"
     },
     "nvim-lspconfig": {
-      "rev": "d224a1920728ba129880efc700d4a0180ac4ecbb",
+      "rev": "bff1bd61cb1455040533201ca1edf1e84efa578f",
       "src": "https://github.com/neovim/nvim-lspconfig.git"
     },
     "nvim-treesitter": {
-      "rev": "4916d6592ede8c07973490d9322f187e07dfefac",
+      "rev": "074aa4422bf029908338e855d0c0f71470a971bb",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter.git"
     },
     "nvim-treesitter-context": {
@@ -81,7 +81,7 @@
       "src": "https://github.com/stevearc/quicker.nvim.git"
     },
     "render-markdown.nvim": {
-      "rev": "f422cb5c6855f150e2ddcfaf44e7157b98b34f6a",
+      "rev": "4663eb3ecd538bd5062628fb6d95bbe6bdca78f6",
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim.git"
     },
     "sidekick.nvim": {
@@ -109,7 +109,7 @@
       "src": "https://github.com/tpope/vim-endwise.git"
     },
     "vim-eunuch": {
-      "rev": "e86bb794a1c10a2edac130feb0ea590a00d03f1e",
+      "rev": "929490937745cd96130d3e7948f762f0aa403314",
       "src": "https://github.com/tpope/vim-eunuch.git"
     },
     "vim-fetch": {
@@ -153,7 +153,7 @@
       "src": "https://codeberg.org/ziglang/zig.vim.git"
     },
     "zoxide.vim": {
-      "rev": "520d1abeb71ba42989a842251f8ba5c46be89aab",
+      "rev": "d4c3d088a70a4edae9def6209644c092f4221fe5",
       "src": "https://github.com/nanotee/zoxide.vim.git"
     }
   }
