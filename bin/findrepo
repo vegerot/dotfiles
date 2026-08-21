@@ -4,9 +4,27 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-# List all repositories in the current directory
-
 main() {
+	local root_dir
+	local filter
+	if [[ -d "${1:-}" ]]; then
+		root_dir="$1"
+		shift
+	else
+		root_dir=~/code
+	fi
+	if [[ -n ${1:-} ]]; then
+		filter="$1"
+		shift
+		findrepo "$root_dir" | rg -i "$filter"
+	else
+		findrepo "$root_dir"
+	fi
+}
+
+
+# List all repositories in the given directory
+findrepo() {
 	if [[ ${1:-} == "deep" ]]; then
 		shift
 		fd '^\.(git|sl)$' "$@" \

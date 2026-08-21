@@ -48,7 +48,11 @@ cdp() {
 }
 
 repo() {
-	cd $(findrepo ~/code | fzf)
+	if [[ -n ${1:-} ]]; then
+		cd $(findrepo "$1" | fzf)
+	else
+		cd $(findrepo | fzf)
+	fi
 }
 
 fdNvimRtp() {
