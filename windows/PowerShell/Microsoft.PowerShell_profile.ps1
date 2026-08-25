@@ -28,9 +28,12 @@ function prompt {
 Set-Alias sap sl.exe
 Set-Alias filepilot "$env:LOCALAPPDATA\Voidstar\FilePilot\FPilot.exe"
 
-$randomCowCommand = Join-Path $HOME 'dotfiles\bin\randomcowcommand.ps1'
-if (Test-Path -LiteralPath $randomCowCommand) {
-  & $randomCowCommand
+# Printing anything here corrupts scp/sftp, which need a silent shell.
+if (-not [Console]::IsOutputRedirected) {
+  $randomCowCommand = Join-Path $HOME 'dotfiles\bin\randomcowcommand.ps1'
+  if (Test-Path -LiteralPath $randomCowCommand) {
+    & $randomCowCommand
+  }
 }
 
 function Get-WeightedRandom {
@@ -58,6 +61,7 @@ function pick_ai_chatbot {
 }
 
 atuin init powershell | Out-String | Invoke-Expression
+Invoke-Expression (& { (zoxide init powershell | Out-String) })
 
 $secretsFile = "$env:USERPROFILE\.secrets.env.ps1"
 if (Test-Path $secretsFile) { . $secretsFile }
