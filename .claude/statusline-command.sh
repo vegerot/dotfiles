@@ -13,11 +13,13 @@ _rl=$(echo "$input" | jq -c '.rate_limits // empty' 2>/dev/null)
 # --- Claude context info ---
 model=$(echo "$input" | jq -r '.model.display_name // empty')
 cwd=$(echo "$input" | jq -r '.workspace.current_dir // .cwd // empty')
+# Windows gives C:\Users\Max\x. Make it /c/Users/Max/x so $HOME and awk match.
+cwd=$(echo "$cwd" | tr '\\' '/' | sed 's|^\([A-Za-z]\):/|/\L\1/|')
 used_pct=$(echo "$input" | jq -r '.context_window.used_percentage // empty')
 
 # --- Identity (mirrors 🪪%n 💻%m) ---
 user=$(whoami)
-host=$(hostname -s)
+host=$(hostname | cut -d. -f1)
 
 # --- Directory (mirrors 📁%3~/) ---
 if [ -n "$cwd" ]; then
