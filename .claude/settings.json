@@ -262,6 +262,13 @@
     "typescript-lsp@claude-plugins-official": true
   },
   "effortLevel": "high",
+  "modelSettings": {
+    "claude-fable-5": {
+      "effortLevel": "xhigh"
+    }
+  },
+  "autoUpdatesChannel": "latest",
+  "syntaxHighlightingDisabled": false,
   "tui": "default",
   "askUserQuestionTimeout": "10m",
   "skipDangerousModePermissionPrompt": true,
