@@ -25,9 +25,12 @@ alias ln="ln -v"
 alias mkdir="mkdir -pv"
 
 # careful
-alias rm="rm -i"
-alias mv="mv -i"
-alias cp="cp -i"
+# Claude Code sets CLAUDECODE=1. Its Bash tool has no TTY, so a -i prompt hangs it.
+if [ -z "${CLAUDECODE:-}" ]; then
+	alias rm="rm -i"
+	alias mv="mv -i"
+	alias cp="cp -i"
+fi
 
 #git
 if type git > /dev/null; then
