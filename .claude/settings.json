@@ -277,5 +277,14 @@
   "remoteControlAtStartup": true,
   "inputNeededNotifEnabled": true,
   "agentPushNotifEnabled": true,
-  "syntaxHighlightingDisabled": false
+  "syntaxHighlightingDisabled": false,
+  "env": {
+    "CLAUDE_CODE_ENABLE_CFC": "1",
+    "CLAUDE_CODE_AUTO_BACKGROUND_TIMEOUT_MS": "30000",
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "CLAUDE_CODE_FORK_SUBAGENT": "1",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "opus",
+    "ANTHROPIC_DEFAULT_MODEL": "claude-opus-5[1m]"
+  },
+  "claudeInChromeDefaultEnabled": true
 }
