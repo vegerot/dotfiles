@@ -39,8 +39,8 @@ if [[ $use_fancy_prompt == "true" \
 	]]; then
 	source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 else
-	if [[ -f ~/workspace/github.com/facebook/sapling/eden/scm/contrib/scm-prompt.sh ]]; then
-		source ~/workspace/github.com/facebook/sapling/eden/scm/contrib/scm-prompt.sh
+	if [[ -f ~/code/github.com/facebook/sapling/eden/scm/contrib/scm-prompt.sh ]]; then
+		source ~/code/github.com/facebook/sapling/eden/scm/contrib/scm-prompt.sh
 	fi
 	maybe_scm_prompt() {
 		if type _scm_prompt >/dev/null 2>&1; then
@@ -180,13 +180,13 @@ compinit -C
 # PLUGINS
 typeset -A plugin_paths=(
 	[dotfiles]="$HOME/dotfiles"
-	[powerlevel10k]="$HOME/workspace/github.com/romkatv/powerlevel10k"
-	[sapling]="$HOME/workspace/github.com/facebook/sapling"
-	[zsh-syntax-highlighting]="$HOME/workspace/github.com/zdharma-continuum/fast-syntax-highlighting"
-	[zsh-autosuggestions]="$HOME/workspace/github.com/zsh-users/zsh-autosuggestions"
-	[smart-suggestion]="$HOME/workspace/github.com/yetone/smart-suggestion"
-	[zsh-history-substring-search]="$HOME/workspace/github.com/zsh-users/zsh-history-substring-search"
-	[zig-shell-complete]="$HOME/workspace/github.com/ziglang/shell-completions"
+	[powerlevel10k]="$HOME/code/github.com/romkatv/powerlevel10k"
+	[sapling]="$HOME/code/github.com/facebook/sapling"
+	[zsh-syntax-highlighting]="$HOME/code/github.com/zdharma-continuum/fast-syntax-highlighting"
+	[zsh-autosuggestions]="$HOME/code/github.com/zsh-users/zsh-autosuggestions"
+	[smart-suggestion]="$HOME/code/github.com/yetone/smart-suggestion"
+	[zsh-history-substring-search]="$HOME/code/github.com/zsh-users/zsh-history-substring-search"
+	[zig-shell-complete]="$HOME/code/github.com/ziglang/shell-completions"
 )
 load_plugins() {
   if type zoxide > /dev/null; then
