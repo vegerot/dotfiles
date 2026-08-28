@@ -23,6 +23,7 @@ function dry_run() {
                 \( -type f -o -type l \) \
                 ! -path "*/.git/*" \
                 ! -path "*/.sl/*" \
+                ! -path "./.claude/worktrees/*" \
                 ! -path "./.DS_Store" \
                 ! -path "./.osx" \
                 ! -path "./bootstrap.sh" \
@@ -37,6 +38,7 @@ function force() {
                 \( -type f -o -type l \) \
                 ! -path "*/.git/*" \
                 ! -path "*/.sl/*" \
+                ! -path "./.claude/worktrees/*" \
                 ! -path "./.DS_Store" \
                 ! -path "./.osx" \
                 ! -path "./bootstrap.sh" \
@@ -50,6 +52,7 @@ function normal() {
                 \( -type f -o -type l \) \
                 ! -path "*/.git/*" \
                 ! -path "*/.sl/*" \
+                ! -path "./.claude/worktrees/*" \
                 ! -path "./.DS_Store" \
                 ! -path "./.osx" \
                 ! -path "./bootstrap.sh" \
