@@ -5,6 +5,7 @@
 #   cl <git-url>     clone into ~/code/<host>/<org>/<repo>, then start
 #   cl clone <url>   clone only
 #   cl reindex       rebuild the repo index
+#   cl update        update claude, then restart every server on the new binary
 #
 # See README.md next to this script.
 
@@ -62,10 +63,34 @@ find_repo() {
 	printf '%s\n' "$dir"
 }
 
+server_cmd() {
+	printf 'CLAUDE_CODE_ENABLE_CFC=1 %s remote-control --name=devbox-%s --spawn=worktree --permission-mode=bypassPermissions' \
+		"$HOME/.local/bin/claude" "$1"
+}
+
+# A running server keeps the claude binary it started with, and so does every
+# chat it spawns.  Update the binary, then restart the servers onto it.  This
+# interrupts the chats.  It does not lose them: their transcripts live on
+# Anthropic's servers.
+update() {
+	"$HOME/.local/bin/claude" update
+
+	# `-f` keeps the servers and drops the plain shell windows.  It also keeps
+	# every field non-empty, which `read` needs: a tab is IFS whitespace, so an
+	# empty field would collapse and shift the others.
+	local win repo dir
+	while IFS=$'\t' read -r win repo dir; do
+		tmux respawn-window -k -t "cl:$win" -c "$dir" "$(server_cmd "$repo")"
+		printf 'cl: restarted %s\n' "$repo" >&2
+	done < <(tmux list-windows -t cl -f '#{@cl_repo}' \
+		-F $'#{window_name}\t#{@cl_repo}\t#{pane_current_path}' 2>/dev/null)
+}
+
 serve() {
 	local repo=$1 dir=$2
 	local win=${repo//[.:]/_}
-	local cmd="CLAUDE_CODE_ENABLE_CFC=1 $HOME/.local/bin/claude remote-control --name=devbox-$repo --spawn=worktree --permission-mode=bypassPermissions"
+	local cmd
+	cmd=$(server_cmd "$repo")
 
 	tmux has-session -t cl 2>/dev/null || tmux new-session -d -s cl -n home
 
@@ -78,12 +103,16 @@ serve() {
 		tmux respawn-window -t "cl:$win" -c "$dir" "$cmd"
 	fi
 
+	# Mark the window as a server, and with which repo.  `cl update` restarts
+	# exactly these, and skips the plain shell windows in the same session.
+	tmux set-option -w -t "cl:$win" @cl_repo "$repo"
+
 	tmux select-window -t "cl:$win"
 	[[ -n ${TMUX:-} ]] || tmux attach -t cl
 }
 
 main() {
-	local repo=${1:?usage: cl <repo-name|git-url> | cl clone <url> | cl reindex}
+	local repo=${1:?usage: cl <repo-name|git-url> | cl clone <url> | cl reindex | cl update}
 	local dir
 
 	case $repo in
@@ -94,6 +123,10 @@ main() {
 	clone)
 		shift
 		clone "$@"
+		return
+		;;
+	update)
+		update
 		return
 		;;
 	*://* | *@*:* | */*)

@@ -14,6 +14,7 @@ script today: [`cl`](./cl).
 cl dotfiles          # start or jump to the server for a repo
 cl <git-url>         # clone into ~/code/<host>/<org>/<repo>, then start
 cl reindex           # rebuild the repo index after cloning by hand
+cl update            # update claude, then restart the servers on it
 tmux attach -t cl    # see all running servers, one window each
 ```
 
@@ -75,6 +76,7 @@ puts that directory on `PATH`, so every shell has it. It does four things:
 4. Jumps you to that window.
 
 Subcommands: `cl reindex` rebuilds the repo index. `cl clone <url>` clones only.
+`cl update` updates Claude Code and restarts every server on the new binary.
 
 ### Why `cl` and not `cc`
 
@@ -130,6 +132,24 @@ claude --resume <session-id>     # then run /remote-control
 
 Bare `claude --resume` will **not** list server-mode sessions. They run as `--print`
 sessions.
+
+### 📌 Gotcha: a server pins its claude version
+
+`claude` updates in place, but a **running** server keeps the binary it started with.
+Every chat it spawns is a child of that binary, so the chats run the old version too.
+A server left up for days silently runs an old Claude Code.
+
+`cl update` fixes it in one step: it runs `claude update`, then restarts every server.
+
+`cl` marks each of its tmux windows with a `@cl_repo` option, which is how `cl update`
+finds the servers and leaves the plain shell windows alone. A server started by hand
+carries no mark, so `cl update` skips it.
+
+⚠️ A restart interrupts the chats in that server. It does not lose them: the transcript
+lives on Anthropic's servers.
+
+⚠️ `claude respawn` is a different thing. It restarts **background jobs** — the
+`claude --bg` / `claude agents` family — and never sees these tmux servers.
 
 ### Live right now
 
@@ -294,6 +314,7 @@ Git work identity is automatic. Inside `~/code/code.byted.org/**`, git reports
 ```sh
 cl <repo|url>          # start or jump to a Remote Control server
 cl reindex             # rebuild ~/.cache/cl-repos
+cl update              # update claude, then restart the servers
 claude rc              # same as `claude remote-control` (hidden alias)
 claude doctor          # version, commit, update channel
 tmux attach -t cl      # the server windows
@@ -310,4 +331,5 @@ tmux attach -t cl      # the server windows
 | `claude: command not found` over ssh | Not a login shell | Use `bash -lc "..."` |
 | `--continue` says nothing recorded | Past the 4-hour window | `claude --resume <id>`, then `/remote-control` |
 | Server row missing at claude.ai/code | Process stopped | `cl <repo>` again |
+| Chats run an old Claude Code | The server pins the binary it started with | `cl update` |
 | Mouse scroll dead in tmux | Server started before the config existed | `tmux source-file ~/.config/tmux/tmux.conf` |
