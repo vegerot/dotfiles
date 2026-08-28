@@ -20,3 +20,6 @@ Thumbs.db
 #secret env variables
 .secrets.env
 .secrets.env.ps1
+
+# Claude Code bridge worktrees
+.claude/worktrees/
