@@ -41,7 +41,7 @@ clone() {
 
 	local dir="$CL_ROOT/$path"
 	if [[ ! -d $dir/.git ]]; then
-		git clone "$url" "$dir" >&2
+		git clone "$url" "$dir" >&2 || return $?
 		reindex
 	fi
 	printf '%s\n' "$dir"
@@ -65,7 +65,7 @@ find_repo() {
 serve() {
 	local repo=$1 dir=$2
 	local win=${repo//[.:]/_}
-	local cmd="$HOME/.local/bin/claude remote-control --name=devbox-$repo --spawn=worktree --permission-mode=bypassPermissions"
+	local cmd="CLAUDE_CODE_ENABLE_CFC=1 $HOME/.local/bin/claude remote-control --name=devbox-$repo --spawn=worktree --permission-mode=bypassPermissions"
 
 	tmux has-session -t cl 2>/dev/null || tmux new-session -d -s cl -n home
 
@@ -97,7 +97,7 @@ main() {
 		return
 		;;
 	*://* | *@*:* | */*)
-		dir=$(clone "$repo")
+		dir=$(clone "$repo") || return $?
 		repo=${dir##*/}
 		;;
 	*)
