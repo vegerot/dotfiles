@@ -13,7 +13,7 @@
       {
         "hooks": [
           {
-            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source codex",
+            "command": "~/bin/flux-hook relay codex",
             "type": "command",
             "timeout": 5
           }
@@ -23,7 +23,7 @@
         "matcher": ".*",
         "hooks": [
           {
-            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; TEA_APP_ID=1013111 TEA_CHANNEL=cn TEA_APP_NAME_FOR_BITS=@fluxisland@0.1.30@0.4.8 ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-bits-report' codex postToolUse",
+            "command": "~/bin/flux-hook bits codex postToolUse",
             "type": "command",
             "timeout": 30
           }
@@ -54,7 +54,7 @@
       {
         "hooks": [
           {
-            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source codex",
+            "command": "~/bin/flux-hook relay codex",
             "type": "command",
             "timeout": 5
           }
@@ -64,7 +64,7 @@
         "matcher": ".*",
         "hooks": [
           {
-            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; TEA_APP_ID=1013111 TEA_CHANNEL=cn TEA_APP_NAME_FOR_BITS=@fluxisland@0.1.30@0.4.8 ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-bits-report' codex preToolUse",
+            "command": "~/bin/flux-hook bits codex preToolUse",
             "type": "command",
             "timeout": 30
           }
@@ -75,7 +75,7 @@
       {
         "hooks": [
           {
-            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source codex",
+            "command": "~/bin/flux-hook relay codex",
             "type": "command",
             "timeout": 5
           }
@@ -84,7 +84,7 @@
       {
         "hooks": [
           {
-            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; TEA_APP_ID=1013111 TEA_CHANNEL=cn TEA_APP_NAME_FOR_BITS=@fluxisland@0.1.30@0.4.8 ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-bits-report' codex sessionStart",
+            "command": "~/bin/flux-hook bits codex sessionStart",
             "type": "command",
             "timeout": 30
           }
@@ -95,7 +95,7 @@
       {
         "hooks": [
           {
-            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source codex",
+            "command": "~/bin/flux-hook relay codex",
             "type": "command",
             "timeout": 5
           }
@@ -106,7 +106,7 @@
       {
         "hooks": [
           {
-            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source codex",
+            "command": "~/bin/flux-hook relay codex",
             "type": "command",
             "timeout": 86400
           }
@@ -118,7 +118,7 @@
       {
         "hooks": [
           {
-            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source codex",
+            "command": "~/bin/flux-hook relay codex",
             "type": "command",
             "timeout": 5
           }
@@ -127,7 +127,7 @@
       {
         "hooks": [
           {
-            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; TEA_APP_ID=1013111 TEA_CHANNEL=cn TEA_APP_NAME_FOR_BITS=@fluxisland@0.1.30@0.4.8 ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-bits-report' codex stop",
+            "command": "~/bin/flux-hook bits codex stop",
             "type": "command",
             "timeout": 30
           }
@@ -138,7 +138,7 @@
       {
         "hooks": [
           {
-            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source codex",
+            "command": "~/bin/flux-hook relay codex",
             "type": "command",
             "timeout": 5
           }
@@ -147,7 +147,7 @@
       {
         "hooks": [
           {
-            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; TEA_APP_ID=1013111 TEA_CHANNEL=cn TEA_APP_NAME_FOR_BITS=@fluxisland@0.1.30@0.4.8 ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-bits-report' codex subagentStop",
+            "command": "~/bin/flux-hook bits codex subagentStop",
             "type": "command",
             "timeout": 30
           }

@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# One Flux Island hook entry point for macOS and Linux, so the agent config
+# files can be the same on both machines.
+#
+#   flux-hook relay <agent>          claude | gemini | codex | ...
+#   flux-hook bits <agent> <event>   claude-code postToolUse, codex stop, ...
+#
+# Flux Island is a macOS app. It installs Linux helpers under ~/.flux/bin on a
+# dev box when you connect to that box from its Remote SSH pane. The two live
+# at different paths, so pick by OS. Exit 0 without output when Flux is absent,
+# so the hook never blocks the agent. Windows falls through and does nothing.
+set -u
+
+mac_app='/Applications/Flux Island.app'
+mac_bin="$mac_app/Contents/MacOS/Flux Island"
+linux_bin="$HOME/.flux/bin"
+
+# Flux stamps its own version into these hooks. Update it after a Flux upgrade.
+tea_env=(TEA_APP_ID=1013111 TEA_CHANNEL=cn TEA_APP_NAME_FOR_BITS=@fluxisland@0.1.33@0.4.14)
+
+case "${1}:$(uname -s)" in
+relay:Darwin)
+	[ -e "$mac_bin" ] || exit 0
+	exec env ELECTRON_RUN_AS_NODE=1 "$mac_bin" \
+		"$mac_app/Contents/Resources/bin/flux-hooks-relay" --source "$2"
+	;;
+relay:Linux)
+	# This wrapper exits 0 by itself when the Flux daemon is not running.
+	[ -x "$linux_bin/flux-hooks-$2" ] || exit 0
+	exec "$linux_bin/flux-hooks-$2"
+	;;
+bits:Darwin)
+	[ -e "$mac_bin" ] || exit 0
+	exec env "${tea_env[@]}" ELECTRON_RUN_AS_NODE=1 "$mac_bin" \
+		"$mac_app/Contents/Resources/bin/flux-bits-report" "$2" "$3"
+	;;
+bits:Linux)
+	[ -x "$linux_bin/flux-bits-report-wrapper" ] || exit 0
+	exec env "${tea_env[@]}" "$linux_bin/flux-bits-report-wrapper" "$2" "$3"
+	;;
+esac
+exit 0

@@ -18,7 +18,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/my-scripts/flux-hook relay",
+            "command": "~/bin/flux-hook relay claude",
             "async": true
           }
         ],
@@ -29,7 +29,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/my-scripts/flux-hook bits postToolUse",
+            "command": "~/bin/flux-hook bits claude-code postToolUse",
             "timeout": 30,
             "async": true
           }
@@ -51,7 +51,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/my-scripts/flux-hook relay",
+            "command": "~/bin/flux-hook relay claude",
             "async": true
           }
         ],
@@ -62,7 +62,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/my-scripts/flux-hook bits postToolUseFailure",
+            "command": "~/bin/flux-hook bits claude-code postToolUseFailure",
             "timeout": 30,
             "async": true
           }
@@ -84,7 +84,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/my-scripts/flux-hook relay",
+            "command": "~/bin/flux-hook relay claude",
             "async": true
           }
         ],
@@ -95,7 +95,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/my-scripts/flux-hook bits preToolUse",
+            "command": "~/bin/flux-hook bits claude-code preToolUse",
             "timeout": 30,
             "async": true
           }
@@ -107,7 +107,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/my-scripts/flux-hook relay",
+            "command": "~/bin/flux-hook relay claude",
             "async": true
           }
         ]
@@ -118,7 +118,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/my-scripts/flux-hook relay",
+            "command": "~/bin/flux-hook relay claude",
             "async": true
           }
         ]
@@ -128,7 +128,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/my-scripts/flux-hook bits sessionStart",
+            "command": "~/bin/flux-hook bits claude-code sessionStart",
             "timeout": 30,
             "async": true
           }
@@ -140,7 +140,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/my-scripts/flux-hook relay",
+            "command": "~/bin/flux-hook relay claude",
             "async": true
           }
         ]
@@ -151,7 +151,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/my-scripts/flux-hook relay",
+            "command": "~/bin/flux-hook relay claude",
             "async": true
           }
         ]
@@ -161,7 +161,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/my-scripts/flux-hook bits stop",
+            "command": "~/bin/flux-hook bits claude-code stop",
             "timeout": 30,
             "async": true
           }
@@ -173,7 +173,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/my-scripts/flux-hook relay",
+            "command": "~/bin/flux-hook relay claude",
             "async": true
           }
         ]
@@ -184,7 +184,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/my-scripts/flux-hook relay",
+            "command": "~/bin/flux-hook relay claude",
             "async": true
           }
         ]
@@ -195,7 +195,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/my-scripts/flux-hook relay",
+            "command": "~/bin/flux-hook relay claude",
             "async": true
           }
         ]
@@ -205,7 +205,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/my-scripts/flux-hook bits subagentStop",
+            "command": "~/bin/flux-hook bits claude-code subagentStop",
             "timeout": 30,
             "async": true
           }
@@ -217,7 +217,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/my-scripts/flux-hook relay",
+            "command": "~/bin/flux-hook relay claude",
             "async": true
           }
         ],
@@ -229,7 +229,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/my-scripts/flux-hook relay",
+            "command": "~/bin/flux-hook relay claude",
             "timeout": 86400
           }
         ],
@@ -241,7 +241,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/my-scripts/flux-hook relay",
+            "command": "~/bin/flux-hook relay claude",
             "async": true
           }
         ]
