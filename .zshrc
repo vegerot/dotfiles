@@ -184,7 +184,6 @@ typeset -A plugin_paths=(
 	[sapling]="$HOME/code/github.com/facebook/sapling"
 	[zsh-syntax-highlighting]="$HOME/code/github.com/zdharma-continuum/fast-syntax-highlighting"
 	[zsh-autosuggestions]="$HOME/code/github.com/zsh-users/zsh-autosuggestions"
-	[smart-suggestion]="$HOME/code/github.com/yetone/smart-suggestion"
 	[zsh-history-substring-search]="$HOME/code/github.com/zsh-users/zsh-history-substring-search"
 	[zig-shell-complete]="$HOME/code/github.com/ziglang/shell-completions"
 )
@@ -292,29 +291,6 @@ load_plugins() {
   if [[ -r $zsh_autosuggestions_path ]]; then
 	  source $zsh_autosuggestions_path
   fi
-
-  local smart_suggestions_path=${plugin_paths[smart-suggestion]}/smart-suggestion.plugin.zsh
-  if [[ -r $smart_suggestions_path ]]; then
-	if [[ -z "${TMUX:-}" ]]; then
-		export SMART_SUGGESTION_PROXY_MODE=false
-	fi
-      if type apfel > /dev/null; then
-          export SMART_SUGGESTION_AI_PROVIDER=deepseek
-          export DEEPSEEK_BASE_URL="http://localhost:11434/v1"
-          #export DEEPSEEK_API_KEY="not needed because we're using apfel locally"
-          export DEEPSEEK_MODEL="apple-foundationmodel"
-      else
-		export SMART_SUGGESTION_AI_PROVIDER=deepseek
-		export DEEPSEEK_BASE_URL="https://api.x.ai/v1/"
-		if [[ -z "${DEEPSEEK_API_KEY:-}" ]]; then
-			 echo "DEEPSEEK_API_KEY is not set. Please set it to use smart-suggestion plugin."
-		fi
-		export DEEPSEEK_MODEL="grok-4-1-fast-non-reasoning"
-      fi
-      export SMART_SUGGESTION_AUTO_UPDATE=false
-	  source $smart_suggestions_path
-  fi
-
 }
 if [[ -z ${ZSH_SKIP_LOADING_PLUGINS:-} ]]; then
 	load_plugins
