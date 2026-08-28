@@ -44,7 +44,7 @@ function force() {
                 ! -path "./bootstrap.sh" \
                 ! -path "./README.md" \
                 ! -path "./LICENSE-MIT.txt" \
-                -exec bash -xc 'file=$1; cd "$HOME"; mkdir -pv "$(dirname "$file")"; ln -svf "$HOME/dotfiles/$file" "$HOME/$file"' bash {} \;
+                -exec bash -xc 'file=$1; cd "$HOME"; mkdir -pv "$(dirname "$file")"; ln -svfn "$HOME/dotfiles/$file" "$HOME/$file"' bash {} \;
 }
 
 function normal() {
@@ -58,7 +58,7 @@ function normal() {
                 ! -path "./bootstrap.sh" \
                 ! -path "./README.md" \
                 ! -path "./LICENSE-MIT.txt" \
-                -exec bash -xc 'file=$1; cd "$HOME"; mkdir -pv "$(dirname "$file")"; ln -sv "$HOME/dotfiles/$file" "$HOME/$file"' bash {} \;
+                -exec bash -xc 'file=$1; cd "$HOME"; mkdir -pv "$(dirname "$file")"; ln -svn "$HOME/dotfiles/$file" "$HOME/$file"' bash {} \;
 }
 
 mode=${1:-""}
