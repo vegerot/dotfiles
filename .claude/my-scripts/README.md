@@ -28,6 +28,7 @@ Then open **<https://claude.ai/code>** or the app's **Code** tab, and pick
 | Switch worktree ↔ same-dir | <kbd>w</kbd> in the server window |
 | Server row gone from the app | `cl <repo>` again |
 | Been down over ~4 hours | `claude --resume <id>`, then `/remote-control` |
+| Row says **Remote Control disconnected** after `cl update` | It was a bare `claude`, not a server. `claude --resume <id>` in that repo. See [the gotcha](#-gotcha-a-bare-claude-is-also-a-remote-control-session) |
 
 Full detail in [section 1](#1--remote-control--the-main-way).
 
@@ -132,6 +133,34 @@ claude --resume <session-id>     # then run /remote-control
 
 Bare `claude --resume` will **not** list server-mode sessions. They run as `--print`
 sessions.
+
+### 🪞 Gotcha: a bare `claude` is also a Remote Control session
+
+`~/.claude/settings.json` sets `remoteControlAtStartup: true`. So every interactive
+`claude` you run in a repo also shows up at claude.ai/code, next to the `cl` servers. The
+rows look the same. They are not:
+
+| Kind | Started by | Its transcript says | Comes back with |
+|---|---|---|---|
+| Server session | `cl <repo>` | `"entrypoint":"sdk-cli"` | `cl <repo>` again |
+| REPL session | bare `claude` | `"entrypoint":"cli"` | `claude --resume <id>` |
+
+Each kind registers its own environment. A restarted server re-adopts only its own
+sessions. So after `cl update`, or after you quit that `claude`, the REPL session shows
+**Remote Control disconnected**, and no `cl` command can bring it back.
+
+Fix: find the transcript, then resume it in a plain shell window:
+
+```sh
+cd ~/code/<host>/<org>/<repo>
+ls -t ~/.claude/projects/$(pwd | sed 's/[^a-zA-Z0-9]/-/g')/*.jsonl | head -3
+CLAUDE_CODE_ENABLE_CFC=1 claude --resume <session-id>
+```
+
+`remoteControlAtStartup` reconnects it. If the server has forgotten the old session, a
+replacement appears with the full history. `--continue` and `--session-id` cannot go
+through `cl`: they refuse `--spawn`. Background: `claude-code-source/how-claude-works.md`,
+"Two kinds of bridge session". Found 2026-09-02.
 
 ### 📌 Gotcha: a server pins its claude version
 
@@ -330,6 +359,7 @@ tmux attach -t cl      # the server windows
 | Desktop asks for an SSH password | The `Match` block was reverted | Re-apply it, `sshd -t`, `systemctl reload ssh` |
 | `claude: command not found` over ssh | Not a login shell | Use `bash -lc "..."` |
 | `--continue` says nothing recorded | Past the 4-hour window | `claude --resume <id>`, then `/remote-control` |
+| A row says **Remote Control disconnected** after `cl update` | It was a bare `claude`, not a server | `claude --resume <id>` in that repo |
 | Server row missing at claude.ai/code | Process stopped | `cl <repo>` again |
 | Chats run an old Claude Code | The server pins the binary it started with | `cl update` |
 | Mouse scroll dead in tmux | Server started before the config existed | `tmux source-file ~/.config/tmux/tmux.conf` |
