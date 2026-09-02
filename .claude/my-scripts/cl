@@ -92,10 +92,13 @@ serve() {
 	local cmd
 	cmd=$(server_cmd "$repo")
 
-	tmux has-session -t cl 2>/dev/null || tmux new-session -d -s cl -n home
+	# `=cl` is exactly the session `cl`.  A bare `cl` also matches, by prefix, a
+	# window or session named `claude`, and new-window then fails with
+	# "create window failed: index N in use".
+	tmux has-session -t '=cl' 2>/dev/null || tmux new-session -d -s cl -n home
 
 	if ! tmux has-session -t "cl:$win" 2>/dev/null; then
-		tmux new-window -t cl -n "$win" -c "$dir" "$cmd"
+		tmux new-window -t '=cl:' -n "$win" -c "$dir" "$cmd"
 		# Keep the window (and the error output) after claude exits, so the next
 		# `cl` can tell a dead server from a live one and restart it.
 		tmux set-option -w -t "cl:$win" remain-on-exit on
