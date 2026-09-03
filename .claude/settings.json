@@ -8,6 +8,8 @@
   "permissions": {
     "defaultMode": "bypassPermissions"
   },
+  "// defaultShell": "Applies on Windows only. It makes input-box ! commands run `pwsh -NoProfile -Command`. On GNU+Linux and macOS Claude Code changes this back to bash, because the PowerShell tool is Windows-only. So this key is safe in shared dotfiles. JSON has no comments, but the settings schema is .passthrough(), so this key is kept and ignored.",
+  "defaultShell": "powershell",
   "model": "sonnet",
   "hooks": {
     "PostToolUse": [
