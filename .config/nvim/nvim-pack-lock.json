@@ -9,11 +9,11 @@
       "src": "https://github.com/zbirenbaum/copilot.lua.git"
     },
     "fff.nvim": {
-      "rev": "d5b4abd2ac22ba42a787c07b6c5d21b76918262f",
+      "rev": "c642d0743da5b830e22b3aefa2977c366604950e",
       "src": "https://github.com/dmtrKovalenko/fff.nvim.git"
     },
     "fzf": {
-      "rev": "15f64c492a08f0840b81540c7d1de35737448086",
+      "rev": "f7ae439ff5b2f8298716d39783a546db793b0625",
       "src": "https://github.com/junegunn/fzf.git"
     },
     "fzf.vim": {
@@ -45,11 +45,11 @@
       "src": "https://github.com/catgoose/nvim-colorizer.lua.git"
     },
     "nvim-lspconfig": {
-      "rev": "bff1bd61cb1455040533201ca1edf1e84efa578f",
+      "rev": "af9adce488c75ca0a81017945c2b7fa7b461bc23",
       "src": "https://github.com/neovim/nvim-lspconfig.git"
     },
     "nvim-treesitter": {
-      "rev": "074aa4422bf029908338e855d0c0f71470a971bb",
+      "rev": "8b98b4470eb326f1c7b50dae79f8c963568e5720",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter.git"
     },
     "nvim-treesitter-context": {
