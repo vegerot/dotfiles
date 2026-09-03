@@ -28,8 +28,15 @@ function prompt {
 Set-Alias sap sl.exe
 Set-Alias filepilot "$env:LOCALAPPDATA\Voidstar\FilePilot\FPilot.exe"
 
-# Printing anything here corrupts scp/sftp, which need a silent shell.
-if (-not [Console]::IsOutputRedirected) {
+# Printing anything here corrupts scp/sftp and one-shot shells, which must stay silent.
+# -NonInteractive, -Command, -File and -EncodedCommand all mean "run and exit".
+$oneShotSwitch = [Environment]::GetCommandLineArgs() |
+  Where-Object { $_ -match '^-(?:noni\w*|c(?:ommand)?|f(?:ile)?|e(?:c|ncodedcommand)?)$' }
+$isInteractive = -not $oneShotSwitch -and
+  -not [Console]::IsInputRedirected -and
+  -not [Console]::IsOutputRedirected
+
+if ($isInteractive) {
   $randomCowCommand = Join-Path $HOME 'dotfiles\bin\randomcowcommand.ps1'
   if (Test-Path -LiteralPath $randomCowCommand) {
     & $randomCowCommand
