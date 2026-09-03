@@ -1,7 +1,14 @@
 {
+  "env": {
+    "CLAUDE_CODE_ENABLE_CFC": "1",
+    "CLAUDE_CODE_AUTO_BACKGROUND_TIMEOUT_MS": "30000",
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "CLAUDE_CODE_FORK_SUBAGENT": "1"
+  },
   "permissions": {
     "defaultMode": "bypassPermissions"
   },
+  "model": "sonnet",
   "hooks": {
     "PostToolUse": [
       {
@@ -15,14 +22,14 @@
         ]
       },
       {
+        "matcher": "*",
         "hooks": [
           {
             "type": "command",
             "command": "~/bin/flux-hook relay claude",
             "async": true
           }
-        ],
-        "matcher": "*"
+        ]
       },
       {
         "matcher": "Write|Edit|MultiEdit|Bash|NotebookEdit|mcp__.*",
@@ -48,14 +55,14 @@
         ]
       },
       {
+        "matcher": "*",
         "hooks": [
           {
             "type": "command",
             "command": "~/bin/flux-hook relay claude",
             "async": true
           }
-        ],
-        "matcher": "*"
+        ]
       },
       {
         "matcher": "Write|Edit|MultiEdit|Bash|NotebookEdit|mcp__.*",
@@ -81,14 +88,14 @@
         ]
       },
       {
+        "matcher": "*",
         "hooks": [
           {
             "type": "command",
             "command": "~/bin/flux-hook relay claude",
             "async": true
           }
-        ],
-        "matcher": "*"
+        ]
       },
       {
         "matcher": "Write|Edit|MultiEdit|Bash|NotebookEdit|mcp__.*",
@@ -214,26 +221,26 @@
     ],
     "Notification": [
       {
+        "matcher": "*",
         "hooks": [
           {
             "type": "command",
             "command": "~/bin/flux-hook relay claude",
             "async": true
           }
-        ],
-        "matcher": "*"
+        ]
       }
     ],
     "PermissionRequest": [
       {
+        "matcher": "*",
         "hooks": [
           {
             "type": "command",
             "command": "~/bin/flux-hook relay claude",
             "timeout": 86400
           }
-        ],
-        "matcher": "*"
+        ]
       }
     ],
     "PreCompact": [
@@ -261,9 +268,16 @@
     "swift-lsp@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true
   },
+  "syntaxHighlightingDisabled": false,
   "effortLevel": "high",
   "modelSettings": {
     "claude-fable-5": {
+      "effortLevel": "medium"
+    },
+    "claude-opus-5": {
+      "effortLevel": "xhigh"
+    },
+    "claude-fable-5-1": {
       "effortLevel": "xhigh"
     }
   },
@@ -277,14 +291,5 @@
   "remoteControlAtStartup": true,
   "inputNeededNotifEnabled": true,
   "agentPushNotifEnabled": true,
-  "syntaxHighlightingDisabled": false,
-  "env": {
-    "CLAUDE_CODE_ENABLE_CFC": "1",
-    "CLAUDE_CODE_AUTO_BACKGROUND_TIMEOUT_MS": "30000",
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
-    "CLAUDE_CODE_FORK_SUBAGENT": "1",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "opus",
-    "ANTHROPIC_DEFAULT_MODEL": "claude-opus-5[1m]"
-  },
   "claudeInChromeDefaultEnabled": true
 }
