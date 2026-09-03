@@ -307,5 +307,7 @@
     "AI.ide.computerUse.enable": true,
     "gitai.experiments.aiTabTracking": true,
     "gitai.blameMode": "line",
+    "AI.agent.v2.browserChromeEnabled": "auto",
+    "gitai.enabled": true,
 
 }
