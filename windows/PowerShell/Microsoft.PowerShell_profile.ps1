@@ -68,7 +68,7 @@ function pick_ai_chatbot {
 }
 
 atuin init powershell | Out-String | Invoke-Expression
-Invoke-Expression (& { (zoxide init powershell | Out-String) })
+Invoke-Expression (& { (zoxide init powershell --cmd cd | Out-String) })
 
 $secretsFile = "$env:USERPROFILE\.secrets.env.ps1"
 if (Test-Path $secretsFile) { . $secretsFile }
