@@ -8,9 +8,6 @@
   "permissions": {
     "defaultMode": "bypassPermissions"
   },
-  "// defaultShell": "Applies on Windows only. It makes input-box ! commands run `pwsh -NoProfile -Command`. On GNU+Linux and macOS Claude Code changes this back to bash, because the PowerShell tool is Windows-only. So this key is safe in shared dotfiles. JSON has no comments, but the settings schema is .passthrough(), so this key is kept and ignored.",
-  "defaultShell": "powershell",
-  "model": "sonnet",
   "hooks": {
     "PostToolUse": [
       {
@@ -28,7 +25,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/bin/flux-hook relay claude",
+            "command": "~/dotfiles/bin/flux-hook relay claude",
             "async": true
           }
         ]
@@ -38,7 +35,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/bin/flux-hook bits claude-code postToolUse",
+            "command": "~/dotfiles/bin/flux-hook bits claude-code postToolUse",
             "timeout": 30,
             "async": true
           }
@@ -61,7 +58,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/bin/flux-hook relay claude",
+            "command": "~/dotfiles/bin/flux-hook relay claude",
             "async": true
           }
         ]
@@ -71,7 +68,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/bin/flux-hook bits claude-code postToolUseFailure",
+            "command": "~/dotfiles/bin/flux-hook bits claude-code postToolUseFailure",
             "timeout": 30,
             "async": true
           }
@@ -94,7 +91,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/bin/flux-hook relay claude",
+            "command": "~/dotfiles/bin/flux-hook relay claude",
             "async": true
           }
         ]
@@ -104,7 +101,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/bin/flux-hook bits claude-code preToolUse",
+            "command": "~/dotfiles/bin/flux-hook bits claude-code preToolUse",
             "timeout": 30,
             "async": true
           }
@@ -116,7 +113,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/bin/flux-hook relay claude",
+            "command": "~/dotfiles/bin/flux-hook relay claude",
             "async": true
           }
         ]
@@ -127,7 +124,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/bin/flux-hook relay claude",
+            "command": "~/dotfiles/bin/flux-hook relay claude",
             "async": true
           }
         ]
@@ -137,7 +134,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/bin/flux-hook bits claude-code sessionStart",
+            "command": "~/dotfiles/bin/flux-hook bits claude-code sessionStart",
             "timeout": 30,
             "async": true
           }
@@ -149,7 +146,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/bin/flux-hook relay claude",
+            "command": "~/dotfiles/bin/flux-hook relay claude",
             "async": true
           }
         ]
@@ -160,7 +157,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/bin/flux-hook relay claude",
+            "command": "~/dotfiles/bin/flux-hook relay claude",
             "async": true
           }
         ]
@@ -170,7 +167,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/bin/flux-hook bits claude-code stop",
+            "command": "~/dotfiles/bin/flux-hook bits claude-code stop",
             "timeout": 30,
             "async": true
           }
@@ -182,8 +179,13 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/bin/flux-hook relay claude",
+            "command": "~/dotfiles/bin/flux-hook relay claude",
             "async": true
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/my-scripts/auto-continue-on-drop.sh",
+            "timeout": 10
           }
         ]
       }
@@ -193,7 +195,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/bin/flux-hook relay claude",
+            "command": "~/dotfiles/bin/flux-hook relay claude",
             "async": true
           }
         ]
@@ -204,7 +206,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/bin/flux-hook relay claude",
+            "command": "~/dotfiles/bin/flux-hook relay claude",
             "async": true
           }
         ]
@@ -214,7 +216,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/bin/flux-hook bits claude-code subagentStop",
+            "command": "~/dotfiles/bin/flux-hook bits claude-code subagentStop",
             "timeout": 30,
             "async": true
           }
@@ -227,7 +229,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/bin/flux-hook relay claude",
+            "command": "~/dotfiles/bin/flux-hook relay claude",
             "async": true
           }
         ]
@@ -239,7 +241,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/bin/flux-hook relay claude",
+            "command": "~/dotfiles/bin/flux-hook relay claude",
             "timeout": 86400
           }
         ]
@@ -250,13 +252,15 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/bin/flux-hook relay claude",
+            "command": "~/dotfiles/bin/flux-hook relay claude",
             "async": true
           }
         ]
       }
     ]
   },
+  "// defaultShell": "Applies on Windows only. It makes input-box ! commands run `pwsh -NoProfile -Command`. On GNU+Linux and macOS Claude Code changes this back to bash, because the PowerShell tool is Windows-only. So this key is safe in shared dotfiles. JSON has no comments, but the settings schema is .passthrough(), so this key is kept and ignored.",
+  "defaultShell": "powershell",
   "statusLine": {
     "type": "command",
     "command": "bash ~/.claude/statusline-command.sh"
@@ -277,7 +281,7 @@
       "effortLevel": "medium"
     },
     "claude-opus-5": {
-      "effortLevel": "xhigh"
+      "effortLevel": "high"
     },
     "claude-fable-5-1": {
       "effortLevel": "xhigh"
@@ -285,7 +289,7 @@
   },
   "askUserQuestionTimeout": "10m",
   "autoUpdatesChannel": "latest",
-  "tui": "default",
+  "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
   "theme": "auto",
   "editorMode": "vim",

@@ -36,14 +36,9 @@ Apply these instructions in every project in addition to any repository-local co
 
 ✍️ Write all text (responses, docs, comments, UI text) in ASD-STE100 Simplified Technical English (with emojis).
 
-- ⏱️ Use short, clear sentences: max 20 words for instructions, max 25 words for descriptions.
 - 1️⃣ Write one instruction or one main idea per sentence.
-- ➡️ Use the active voice and the imperative form for instructions ("Remove the cover.").
 - 🔁 Use one meaning per word or emoji. Use the same word or emoji for the same thing every time. Do not use synonyms.
-- 📝 Give each paragraph one topic, max six sentences, main topic first.
 - 3️⃣ Do not put more than three nouns together or more than one emoji together. Put conditions before the related instruction.
 - ❓ Explain an unfamiliar term or abbreviation at first use.
-- ✂️ Prefer short words, simple tenses, and direct constructions. Avoid vague words.
-- 🛑 If the rules block a correct expression, say so and request clarification.
 
 🏁 Goal: text that is clear, unambiguous, and easy for all readers.

@@ -16,7 +16,12 @@ mac_bin="$mac_app/Contents/MacOS/Flux Island"
 linux_bin="$HOME/.flux/bin"
 
 # Flux stamps its own version into these hooks. Update it after a Flux upgrade.
-tea_env=(TEA_APP_ID=1013111 TEA_CHANNEL=cn TEA_APP_NAME_FOR_BITS=@fluxisland@0.1.33@0.4.14)
+tea_env=(TEA_APP_ID=1013111 TEA_CHANNEL=cn TEA_APP_NAME_FOR_BITS=@fluxisland@0.1.34@0.4.16)
+
+# Skip reporting when Flux already owns the agent environment.
+if [ "${1}" = bits ] && [ -n "${FLUX_AGENT_ENV:-}" ]; then
+	exit 0
+fi
 
 case "${1}:$(uname -s)" in
 relay:Darwin)

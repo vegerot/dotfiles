@@ -1,10 +1,13 @@
-model = "gpt-5.6-sol"
+model = "gpt-6-astra"
 model_reasoning_effort = "medium"
 developer_instructions = "For introspection questions about Codex, inspect `~/code/github.com/openai/codex`."
+notify = [ "/Users/bytedance/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended" ]
+service_tier = "priority"
+approvals_reviewer = "auto_review"
 
 [mcp_servers.chrome_devtools]
-command = "bunx"
-args = [ "chrome-devtools-mcp", "--channel=dev" ]
+command = "/opt/homebrew/bin/node"
+args = ["/Users/bytedance/.local/share/codex-chrome-devtools/node_modules/chrome-devtools-mcp/build/src/bin/chrome-devtools-mcp.js", "--channel=dev"]
 
 [mcp_servers.chrome_devtools.tools.click]
 approval_mode = "approve"
@@ -27,24 +30,6 @@ approval_mode = "approve"
 [mcp_servers.chrome_devtools.tools.take_snapshot]
 approval_mode = "approve"
 
-[mcp_servers.codebase]
-url = "https://code.byted.org/api/mcp/codebase/mcp"
-
-  [mcp_servers.codebase.env_http_headers]
-  X-Code-User-JWT = "BYTED_AI_JWT"
-
-[mcp_servers.lark]
-url = "https://code.byted.org/api/mcp/lark/mcp"
-
-  [mcp_servers.lark.env_http_headers]
-  X-Code-User-JWT = "BYTED_AI_JWT"
-
-[mcp_servers.bytedance]
-url = "https://0r2y3xvu.mcp.bytedance.net/mcp"
-
-  [mcp_servers.bytedance.env_http_headers]
-  X-Code-User-JWT = "BYTED_AI_JWT"
-
 [mcp_servers.fff]
 command = "fff-mcp"
 
@@ -57,17 +42,63 @@ approval_mode = "approve"
 [mcp_servers.fff.tools.grep]
 approval_mode = "approve"
 
+[mcp_servers.node_repl]
+args = []
+command = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl"
+startup_timeout_sec = 120
+
+[mcp_servers.node_repl.env]
+NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
+NODE_REPL_NODE_MODULE_DIRS = "/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
+NODE_REPL_NODE_PATH = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node"
+NODE_REPL_TRUSTED_CODE_PATHS = "/Users/bytedance/.codex:/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
+CODEX_HOME = "/Users/bytedance/.codex"
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
+BROWSER_USE_TINYSKY_ENABLED = "1"
+NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
+NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
+NODE_REPL_INSTRUCTIONS_USE_CASE_COMPUTER_USE = ""
+BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
+BROWSER_USE_CODEX_APP_VERSION = "26.901.41123"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/bytedance/.codex/plugins/cache/openai-bundled/browser/26.901.41123/scripts/browser-service.mjs","sky":"@oai/sky/service"}'
+SKY_CUA_SERVICE_PATH = "/Users/bytedance/.codex/computer-use/Codex Computer Use.app"
+CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex"
+
+[mcp_servers.computer-use]
+command = "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient"
+args = ["mcp"]
+cwd = "."
+enabled = false
+
+[mcp_servers.Chrome-DevTools]
+command = "/opt/homebrew/bin/node"
+args = ["/Users/bytedance/.local/share/codex-chrome-devtools/node_modules/chrome-devtools-mcp/build/src/bin/chrome-devtools-mcp.js", "--channel=dev", "--user-data-dir=/Users/bytedance/.cache/chrome-devtools-mcp/chrome-profile-dev", "--log-file=/tmp/chrome-devtools-mcp.log", "--experimental-devtools=true", "--experimental-vision=true", "--experimental-structured-content=true", "--experimental-include-all-pages=true", "--experimental-screencast=true", "--category-experimental-webmcp=true", "--category-experimental-third-party=true", "--category-extensions=true"]
+
+[mcp_servers.Chrome-DevTools-Attached]
+command = "/opt/homebrew/bin/node"
+args = ["/Users/bytedance/.local/share/codex-chrome-devtools/node_modules/chrome-devtools-mcp/build/src/bin/chrome-devtools-mcp.js", "--autoConnect", "--channel=dev", "--log-file=/tmp/chrome-devtools-mcp-attached.log"]
+
+[mcp_servers.bytedcli]
+command = "bytedcli"
+args = [ "mcp" ]
+
+[mcp_servers.dayflow]
+command = "/Applications/Dayflow.app/Contents/Helpers/dayflow"
+args = [ "mcp" ]
+
 [features]
 hooks = true
-codex_hooks = true
 js_repl = true
+memories = true
+chronicle = true
 
 [tui]
 terminal_resize_reflow_max_rows = 0
 
-  [tui.model_availability_nux]
-  "gpt-5.5" = 4
-  "gpt-5.6-sol" = 3
+[tui.model_availability_nux]
+"gpt-5.5" = 4
+"gpt-5.6-sol" = 3
+gpt-6-astra = 2
 
 [projects."/Users/bytedance/workspace/github.com/openai/codex"]
 trust_level = "trusted"
@@ -90,6 +121,165 @@ trust_level = "trusted"
 [projects."/Users/bytedance/code/github.com/vegerot/dotfiles"]
 trust_level = "trusted"
 
+[projects."/Users/bytedance/Documents/Codex/2026-09-04/if-x20"]
+trust_level = "trusted"
 
-[hooks.state."/Users/bytedance/.codex/hooks.json:user_prompt_submit:0:0"]
+[projects."/Users/bytedance/Documents/Codex/2026-09-04/if-i-log-ou"]
+trust_level = "trusted"
+
+[projects."/Users/bytedance/code/github.com/vegerot/ai-conversations"]
+trust_level = "trusted"
+
+[hooks.state]
+
+[hooks.state."/Users/bytedance/.codex/hooks.json:permission_request:1:0"]
+trusted_hash = "sha256:7c9384a3da1bba5478022d8d9194f4a112d3ed619d8e0baf3d082d81b20efc3e"
+
+[hooks.state."/Users/bytedance/.codex/hooks.json:post_tool_use:3:0"]
+trusted_hash = "sha256:be79c1e5b344ba66d4dcadd2cf70cbc06461ee228fdd9f46fa5e24cf09a4b785"
+
+[hooks.state."/Users/bytedance/.codex/hooks.json:post_tool_use:4:0"]
+trusted_hash = "sha256:20f681c588391b681793faf786822eba836e75c48d2e25ea29b03110b5f379f8"
+
+[hooks.state."/Users/bytedance/.codex/hooks.json:pre_tool_use:3:0"]
+trusted_hash = "sha256:347e34d2d79d4eb15414ccd4a4bdbd716709e8dffc8d1c202cb126c5a3dc2472"
+
+[hooks.state."/Users/bytedance/.codex/hooks.json:pre_tool_use:4:0"]
+trusted_hash = "sha256:6ace4f8d9c6191fe015a4e9801ac7f609714c0b2418e45f09c19dc74f3bc2d3f"
+
+[hooks.state."/Users/bytedance/.codex/hooks.json:session_start:2:0"]
+trusted_hash = "sha256:2f344bf360ab84017e05eecdb3d28af2845dea287ae19456e627e0dd319ef2b8"
+
+[hooks.state."/Users/bytedance/.codex/hooks.json:session_start:3:0"]
+trusted_hash = "sha256:b75bbb88fda1d8d56ba388c0dd0cc3dee31c2b761e688c45efae9f327e0d01c2"
+
+[hooks.state."/Users/bytedance/.codex/hooks.json:stop:2:0"]
+trusted_hash = "sha256:c55fac10617f4e75ccaf1ae8bf459ecdf1e1ad52e9a2e8add99b7eb6977ef32f"
+
+[hooks.state."/Users/bytedance/.codex/hooks.json:stop:3:0"]
+trusted_hash = "sha256:71c9b90f1acf4b810ed40b7930e4825620198b0a8a33ed2be587f023bbfd1e07"
+
+[hooks.state."/Users/bytedance/.codex/hooks.json:subagent_stop:2:0"]
+trusted_hash = "sha256:997e48aaf1ff652dd28414d5513bffee768e9772a7c2cfac92226004929eddf7"
+
+[hooks.state."/Users/bytedance/.codex/hooks.json:subagent_stop:3:0"]
+trusted_hash = "sha256:3c00257cc2de597c4a66c1b7d7c40d59794abb8aabc8aa35947f2dd7f6026bdf"
+
+[hooks.state."/Users/bytedance/.codex/hooks.json:user_prompt_submit:1:0"]
 trusted_hash = "sha256:4365d26eab04ab86afb3a21b30dfa267a333f9dfd1d3c1e88c1dcfc1af0dea2c"
+
+[hooks.state."/Users/bytedance/.codex/hooks.json:pre_tool_use:0:0"]
+trusted_hash = "sha256:fc87dbee1cb8a9be4f78ba094c4fa8d5e2fd38cb800854e3717f9b6a52fe2a47"
+
+[hooks.state."/Users/bytedance/.codex/hooks.json:post_tool_use:0:0"]
+trusted_hash = "sha256:ac371f260e4b23ba1d1b7a4ad68a44a323a8470b61f38471a47aceac1b7a5a7c"
+
+[desktop]
+followUpQueueMode = "steer"
+conversationDetailMode = "STEPS_COMMANDS"
+ambient-suggestions-enabled = true
+show-context-window-usage = true
+toys-confetti-enabled = true
+toys-audio-visualizer-enabled = true
+external-agent-import-sync-enabled = true
+external-agent-import-sync-item-types = "all"
+appearanceTheme = "system"
+appearanceLightCodeThemeId = "codex"
+dock-icon-preference = "codex-system"
+usePointerCursors = true
+sansFontSize = 16
+codeFontSize = 14
+appearanceDiffMarkerStyle = "color"
+browser-show-full-url = true
+
+[desktop.open-in-target-preferences]
+global = "systemDefault"
+
+[desktop.appearanceLightChromeTheme]
+accent = "#0169cc"
+accentSource = "chatgpt"
+contrast = 45
+ink = "#0d0d0d"
+opaqueWindows = false
+surface = "#ffffff"
+
+[desktop.appearanceLightChromeTheme.fonts]
+
+[desktop.appearanceLightChromeTheme.semanticColors]
+diffAdded = "#00a240"
+diffRemoved = "#e02e2a"
+skill = "#751ed9"
+
+[marketplaces.openai-bundled]
+source_type = "local"
+source = "/Users/bytedance/.codex/.tmp/bundled-marketplaces/openai-bundled"
+
+[marketplaces.openai-primary-runtime]
+source_type = "local"
+source = "/Users/bytedance/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
+
+[marketplaces.claude-plugins-official]
+source_type = "git"
+source = "https://github.com/anthropics/claude-plugins-official.git"
+
+[marketplaces.claude-cowork]
+source_type = "local"
+source = "/Users/bytedance/.codex/plugins/cache/claude-cowork"
+
+[plugins."codex-app-tools@openai-bundled"]
+enabled = true
+
+[plugins."browser@openai-bundled"]
+enabled = true
+
+[plugins."unified-computer-use@openai-bundled"]
+enabled = true
+
+[plugins."visualize@openai-bundled"]
+enabled = true
+
+[plugins."computer-use@openai-bundled"]
+enabled = true
+
+[plugins."documents@openai-primary-runtime"]
+enabled = true
+
+[plugins."pdf@openai-primary-runtime"]
+enabled = true
+
+[plugins."spreadsheets@openai-primary-runtime"]
+enabled = true
+
+[plugins."presentations@openai-primary-runtime"]
+enabled = true
+
+[plugins."template-creator@openai-primary-runtime"]
+enabled = true
+
+[plugins."sites@openai-bundled"]
+enabled = true
+
+[plugins."lua-lsp@claude-plugins-official"]
+enabled = true
+
+[plugins."swift-lsp@claude-plugins-official"]
+enabled = true
+
+[plugins."typescript-lsp@claude-plugins-official"]
+enabled = true
+
+[plugins."computer-history@openai-bundled"]
+enabled = true
+
+[shell_environment_policy]
+inherit = "core"
+
+[shell_environment_policy.set]
+CLAUDE_CODE_ENABLE_CFC = "1"
+CLAUDE_CODE_AUTO_BACKGROUND_TIMEOUT_MS = "30000"
+CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = "1"
+CLAUDE_CODE_FORK_SUBAGENT = "1"
+
+[memories]
+generate_memories = true
+use_memories = true

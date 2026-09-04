@@ -13,7 +13,7 @@
       {
         "hooks": [
           {
-            "command": "~/bin/flux-hook relay codex",
+            "command": "~/dotfiles/bin/flux-hook relay codex",
             "type": "command",
             "timeout": 5
           }
@@ -23,7 +23,7 @@
         "matcher": ".*",
         "hooks": [
           {
-            "command": "~/bin/flux-hook bits codex postToolUse",
+            "command": "~/dotfiles/bin/flux-hook bits codex postToolUse",
             "type": "command",
             "timeout": 30
           }
@@ -54,7 +54,7 @@
       {
         "hooks": [
           {
-            "command": "~/bin/flux-hook relay codex",
+            "command": "~/dotfiles/bin/flux-hook relay codex",
             "type": "command",
             "timeout": 5
           }
@@ -64,7 +64,7 @@
         "matcher": ".*",
         "hooks": [
           {
-            "command": "~/bin/flux-hook bits codex preToolUse",
+            "command": "~/dotfiles/bin/flux-hook bits codex preToolUse",
             "type": "command",
             "timeout": 30
           }
@@ -75,7 +75,7 @@
       {
         "hooks": [
           {
-            "command": "~/bin/flux-hook relay codex",
+            "command": "~/dotfiles/bin/flux-hook relay codex",
             "type": "command",
             "timeout": 5
           }
@@ -84,7 +84,7 @@
       {
         "hooks": [
           {
-            "command": "~/bin/flux-hook bits codex sessionStart",
+            "command": "~/dotfiles/bin/flux-hook bits codex sessionStart",
             "type": "command",
             "timeout": 30
           }
@@ -95,7 +95,7 @@
       {
         "hooks": [
           {
-            "command": "~/bin/flux-hook relay codex",
+            "command": "~/dotfiles/bin/flux-hook relay codex",
             "type": "command",
             "timeout": 5
           }
@@ -106,7 +106,7 @@
       {
         "hooks": [
           {
-            "command": "~/bin/flux-hook relay codex",
+            "command": "~/dotfiles/bin/flux-hook relay codex",
             "type": "command",
             "timeout": 86400
           }
@@ -118,7 +118,7 @@
       {
         "hooks": [
           {
-            "command": "~/bin/flux-hook relay codex",
+            "command": "~/dotfiles/bin/flux-hook relay codex",
             "type": "command",
             "timeout": 5
           }
@@ -127,7 +127,7 @@
       {
         "hooks": [
           {
-            "command": "~/bin/flux-hook bits codex stop",
+            "command": "~/dotfiles/bin/flux-hook bits codex stop",
             "type": "command",
             "timeout": 30
           }
@@ -138,7 +138,7 @@
       {
         "hooks": [
           {
-            "command": "~/bin/flux-hook relay codex",
+            "command": "~/dotfiles/bin/flux-hook relay codex",
             "type": "command",
             "timeout": 5
           }
@@ -147,7 +147,7 @@
       {
         "hooks": [
           {
-            "command": "~/bin/flux-hook bits codex subagentStop",
+            "command": "~/dotfiles/bin/flux-hook bits codex subagentStop",
             "type": "command",
             "timeout": 30
           }
