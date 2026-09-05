@@ -184,7 +184,7 @@ ambient-suggestions-enabled = true
 show-context-window-usage = true
 toys-confetti-enabled = true
 toys-audio-visualizer-enabled = true
-external-agent-import-sync-enabled = true
+external-agent-import-sync-enabled = false
 external-agent-import-sync-item-types = "all"
 appearanceTheme = "system"
 appearanceLightCodeThemeId = "codex"
@@ -221,14 +221,6 @@ source = "/Users/bytedance/.codex/.tmp/bundled-marketplaces/openai-bundled"
 source_type = "local"
 source = "/Users/bytedance/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
 
-[marketplaces.claude-plugins-official]
-source_type = "git"
-source = "https://github.com/anthropics/claude-plugins-official.git"
-
-[marketplaces.claude-cowork]
-source_type = "local"
-source = "/Users/bytedance/.codex/plugins/cache/claude-cowork"
-
 [plugins."codex-app-tools@openai-bundled"]
 enabled = true
 
@@ -262,15 +254,6 @@ enabled = true
 [plugins."sites@openai-bundled"]
 enabled = true
 
-[plugins."lua-lsp@claude-plugins-official"]
-enabled = true
-
-[plugins."swift-lsp@claude-plugins-official"]
-enabled = true
-
-[plugins."typescript-lsp@claude-plugins-official"]
-enabled = true
-
 [plugins."computer-history@openai-bundled"]
 enabled = true
 
@@ -280,11 +263,6 @@ enabled = true
 [shell_environment_policy]
 inherit = "core"
 
-[shell_environment_policy.set]
-CLAUDE_CODE_ENABLE_CFC = "1"
-CLAUDE_CODE_AUTO_BACKGROUND_TIMEOUT_MS = "30000"
-CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = "1"
-CLAUDE_CODE_FORK_SUBAGENT = "1"
 
 [memories]
 generate_memories = true

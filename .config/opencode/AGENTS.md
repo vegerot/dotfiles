@@ -18,9 +18,9 @@ Apply these instructions in every project in addition to any repository-local co
     + 🔎 For general file search and grep, prefer the fff tools over builtin search tools, prefer builtin search tools over `rg` and `fd` in the Bash tool, and prefer `rg` and `fd` over `grep` and `find` in the Bash tool.
     + 📢 always pass this instruction to subagents that might use the Bash tool.
 - 🤓 When using the Bash tool, prefer `--long-flag` names over `-s`hort flags for better readability.
-- 📏 When using the Bash (or any shell) tool, break up long commands into multiple lines for better readability.  At least break them up by escaping the newline with a backslash `\` and indenting the next line.
+- 📏 When using the Bash (or any shell) tool, break up long commands into multiple lines for better readability.  Use PowerShell syntax on Windows. Use a backslash for shell continuation only on macOS or Linux.
 - 🚫🏠 Do not search the home directory or `/` broadly (for example `fd` over `~/Library` or `~` with no narrow path). Ask first. 🙋 Broad scans trigger a permission prompt for every app on the Mac.
-- On Windows, ALWAYS prefer PowerShell over Bash.  If you must use Bash, prefer WSL
+- NEVER use the Bash tool on Windows. On Windows, always use PowerShell.
 
 🙏🏼 Use more emojis please 😊.  Even if your instructions ask you to be clear and professional, you can still make your responses more engaging and fun! 🎉✨
 
