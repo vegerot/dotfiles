@@ -6,8 +6,8 @@ service_tier = "priority"
 approvals_reviewer = "auto_review"
 
 [mcp_servers.chrome_devtools]
-command = "/opt/homebrew/bin/node"
-args = ["/Users/bytedance/.local/share/codex-chrome-devtools/node_modules/chrome-devtools-mcp/build/src/bin/chrome-devtools-mcp.js", "--channel=dev"]
+command = "bunx"
+args = ["--no-install", "chrome-devtools-mcp@1.8.0", "--channel=dev"]
 
 [mcp_servers.chrome_devtools.tools.click]
 approval_mode = "approve"
@@ -71,12 +71,12 @@ cwd = "."
 enabled = false
 
 [mcp_servers.Chrome-DevTools]
-command = "/opt/homebrew/bin/node"
-args = ["/Users/bytedance/.local/share/codex-chrome-devtools/node_modules/chrome-devtools-mcp/build/src/bin/chrome-devtools-mcp.js", "--channel=dev", "--user-data-dir=/Users/bytedance/.cache/chrome-devtools-mcp/chrome-profile-dev", "--log-file=/tmp/chrome-devtools-mcp.log", "--experimental-devtools=true", "--experimental-vision=true", "--experimental-structured-content=true", "--experimental-include-all-pages=true", "--experimental-screencast=true", "--category-experimental-webmcp=true", "--category-experimental-third-party=true", "--category-extensions=true"]
+command = "bunx"
+args = ["--no-install", "chrome-devtools-mcp@1.8.0", "--channel=dev", "--user-data-dir=/Users/bytedance/.cache/chrome-devtools-mcp/chrome-profile-dev", "--log-file=/tmp/chrome-devtools-mcp.log", "--experimental-devtools=true", "--experimental-vision=true", "--experimental-structured-content=true", "--experimental-include-all-pages=true", "--experimental-screencast=true", "--category-experimental-webmcp=true", "--category-experimental-third-party=true", "--category-extensions=true"]
 
 [mcp_servers.Chrome-DevTools-Attached]
-command = "/opt/homebrew/bin/node"
-args = ["/Users/bytedance/.local/share/codex-chrome-devtools/node_modules/chrome-devtools-mcp/build/src/bin/chrome-devtools-mcp.js", "--autoConnect", "--channel=dev", "--log-file=/tmp/chrome-devtools-mcp-attached.log"]
+command = "bunx"
+args = ["--no-install", "chrome-devtools-mcp@1.8.0", "--autoConnect", "--channel=dev", "--log-file=/tmp/chrome-devtools-mcp-attached.log"]
 
 [mcp_servers.bytedcli]
 command = "bytedcli"
@@ -98,7 +98,7 @@ terminal_resize_reflow_max_rows = 0
 [tui.model_availability_nux]
 "gpt-5.5" = 4
 "gpt-5.6-sol" = 3
-gpt-6-astra = 2
+gpt-6-astra = 4
 
 [projects."/Users/bytedance/workspace/github.com/openai/codex"]
 trust_level = "trusted"
@@ -128,6 +128,9 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/Users/bytedance/code/github.com/vegerot/ai-conversations"]
+trust_level = "trusted"
+
+[projects."/Users/bytedance/Library/Caches/pnpm"]
 trust_level = "trusted"
 
 [hooks.state]
@@ -269,6 +272,9 @@ enabled = true
 enabled = true
 
 [plugins."computer-history@openai-bundled"]
+enabled = true
+
+[plugins."chrome@openai-bundled"]
 enabled = true
 
 [shell_environment_policy]
