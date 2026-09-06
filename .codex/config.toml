@@ -121,6 +121,9 @@ trust_level = "trusted"
 [projects."/Users/bytedance/code/github.com/vegerot/dotfiles"]
 trust_level = "trusted"
 
+[projects."/home/max/ai-chat/unifi"]
+trust_level = "trusted"
+
 [projects."/Users/bytedance/Documents/Codex/2026-09-04/if-x20"]
 trust_level = "trusted"
 
