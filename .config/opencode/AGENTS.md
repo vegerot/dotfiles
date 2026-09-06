@@ -40,6 +40,7 @@ Apply these instructions in every project in addition to any repository-local co
 
 ## 📖 Output Standard: Clarity, precision, and accessibility for all readers.
 
+* 🏁 Goal: text that is clear, unambiguous, and easy for all readers.
 - 🔁 Use one meaning per word or emoji. Use the same word or emoji for the same thing every time. Do not use synonyms.
 - ❓ Explain an unfamiliar term or abbreviation at first use.
 
