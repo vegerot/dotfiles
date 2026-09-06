@@ -4,6 +4,37 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+KEYD_CONFIG=/etc/keyd/default.conf
+KEYD_CONFIG_SRC="$(dirname "$(readlink --canonicalize "$0")")/keyd.conf"
+
+is_wayland() {
+	[[ -n ${WAYLAND_DISPLAY:-} || ${XDG_SESSION_TYPE:-} == wayland ]]
+}
+
+# A Wayland compositor owns the input devices. xmodmap and xcape use the X11
+# RECORD and XTEST extensions, which only see the events that reach XWayland
+# clients. So xcape never sees the capslock tap, and a synthetic Escape never
+# reaches a Wayland client. keyd remaps at the evdev layer, below the
+# compositor, so it works on Wayland, X11 and the TTY.
+#
+# keyd needs root. This links the config and starts the service with sudo.
+# It does not install the package. Install it with: sudo apt install keyd
+setup_keyd() {
+	if ! type keyd.rvaiya &>/dev/null && ! type keyd &>/dev/null; then
+		echo "Wayland session, but keyd is not installed. Run: sudo apt install keyd"
+		return 1
+	fi
+	if [[ $(readlink "$KEYD_CONFIG") != "$KEYD_CONFIG_SRC" ]]; then
+		echo "Linking $KEYD_CONFIG to $KEYD_CONFIG_SRC"
+		sudo ln --symbolic --force "$KEYD_CONFIG_SRC" "$KEYD_CONFIG"
+		sudo systemctl enable --now keyd.service
+		sudo keyd.rvaiya reload
+	elif ! systemctl is-active --quiet keyd.service; then
+		echo "Starting keyd.service"
+		sudo systemctl enable --now keyd.service
+	fi
+}
+
 should_map_caps_to_control() {
 	if ! type xmodmap &>/dev/null || ! type xcape &>/dev/null || ! type setxkbmap &>/dev/null; then
 		echo "xmodmap, xcape, or setxkbmap not found, skipping"
@@ -37,17 +68,17 @@ reset() {
 }
 
 main() {
-	should_map_caps_to_control
-	if [[ $? != 0 ]]; then
-		return $?;
+	if is_wayland; then
+		setup_keyd
+		return
 	fi
+	should_map_caps_to_control || return 0
 	map_capslock
 }
 
 if type notify-send &>/dev/null; then
-	should_map_caps_to_control
-	msg=$(main 2>&1)
+	msg=$(main 2>&1) || true
 	[[ -n $msg ]] && notify-send -a "remapCapslock" "$msg" || true
 else
-	return main
+	main
 fi
