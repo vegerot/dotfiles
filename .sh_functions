@@ -193,6 +193,14 @@ function pick_browser() {
 		shuf -n 1
 }
 
+# run a command, then desktop-notify with its exit status
+function notify() {
+	"$@"
+	local exit_code=$?
+	command -v notify-send >/dev/null && notify-send "Command finished" "$* — exit $exit_code"
+	return $exit_code
+}
+
 [[ -r ~/dotfiles/bin/clone ]] && source ~/dotfiles/bin/clone
 
 [[ -r ~/dotfiles/wmt.sh ]] && source ~/dotfiles/wmt.sh
