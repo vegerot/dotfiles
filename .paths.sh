@@ -22,6 +22,7 @@ export PATH="$HOME/bin:$HOME/.local/bin:/sbin:$PATH"
 
 # My own scripts. They go before the system directories, so they win.
 [ -d "$HOME/.claude/my-scripts" ] && export PATH="$HOME/.claude/my-scripts:$PATH"
+[ -d "$HOME/.codex/my-scripts" ] && export PATH="$HOME/.codex/my-scripts:$PATH"
 
 
 ### -----------------------------------

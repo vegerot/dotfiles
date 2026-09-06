@@ -1,0 +1,8 @@
+#!/bin/sh
+# Run an installed MCP command with its arguments, or expose no tools.
+set -eu
+
+if command -v "$1" >/dev/null 2>&1; then
+    exec "$@"
+fi
+exec bun "$HOME/.codex/my-scripts/empty-mcp.mjs"
