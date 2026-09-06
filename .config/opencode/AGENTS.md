@@ -32,13 +32,14 @@ Apply these instructions in every project in addition to any repository-local co
 - 🌱 Grow the system in layers.  Start from the smallest version that works and add features incrementally.
 - 😌 Don't be paranoid.
 
-## 📖 Output Standard: ASD-STE100 Simplified Technical English
+## 🤖 AI attribution
 
-✍️ Write all text (responses, docs, comments, UI text) in ASD-STE100 Simplified Technical English (with emojis).
+- ✍️ Append the `Co-Authored-By` trailer to every pull request description or comment that is 💯% AI-written. Example: `Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>`.
+- 🧑‍🤝‍🧑 Do not add the trailer when the user wrote or rewrote the text. Ask the user when the split is unclear.
+- 📋 Repository rules still apply in addition. Example: neovim wants an `AI-assisted: <tool>` trailer in commit messages.
 
-- 1️⃣ Write one instruction or one main idea per sentence.
+## 📖 Output Standard: Clarity, precision, and accessibility for all readers.
+
 - 🔁 Use one meaning per word or emoji. Use the same word or emoji for the same thing every time. Do not use synonyms.
-- 3️⃣ Do not put more than three nouns together or more than one emoji together. Put conditions before the related instruction.
 - ❓ Explain an unfamiliar term or abbreviation at first use.
 
-🏁 Goal: text that is clear, unambiguous, and easy for all readers.
