@@ -4,7 +4,8 @@
       {
         "hooks": [
           {
-            "command": "atuin hook codex",
+            "command": "command -v atuin >/dev/null || exit 0; atuin hook codex",
+            "timeout": 5,
             "type": "command",
             "commandWindows": "pwsh -NoProfile -Command \"& (Join-Path ~ '.codex/hooks/atuin-codex.ps1')\""
           }
@@ -37,7 +38,8 @@
       {
         "hooks": [
           {
-            "command": "atuin hook codex",
+            "command": "command -v atuin >/dev/null || exit 0; atuin hook codex",
+            "timeout": 5,
             "type": "command",
             "commandWindows": "pwsh -NoProfile -Command \"& (Join-Path ~ '.codex/hooks/atuin-codex.ps1')\""
           }
@@ -49,7 +51,8 @@
       {
         "hooks": [
           {
-            "command": "atuin hook codex",
+            "command": "command -v atuin >/dev/null || exit 0; atuin hook codex",
+            "timeout": 5,
             "type": "command",
             "commandWindows": "pwsh -NoProfile -Command \"& (Join-Path ~ '.codex/hooks/atuin-codex.ps1')\""
           }

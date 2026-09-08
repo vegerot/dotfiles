@@ -23,3 +23,6 @@ Thumbs.db
 
 # Claude Code bridge worktrees
 .claude/worktrees/
+
+# Generated Codex configuration for this machine.
+.codex/local/

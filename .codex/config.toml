@@ -1,4 +1,5 @@
-# Shared user config, symlinked from ~/.codex/config.toml by bootstrap.sh.
+# Shared preferences. Run: uv run bin/sync-codex-config.py
+# The sync script resolves {cache_dir} and {temp_dir} for this machine.
 model = "gpt-6-astra"
 model_reasoning_effort = "medium"
 developer_instructions = "For introspection questions about Codex, inspect `~/code/github.com/openai/codex`."
@@ -6,8 +7,9 @@ service_tier = "priority"
 approvals_reviewer = "auto_review"
 
 [mcp_servers.chrome_devtools]
-command = "bunx"
-args = ["chrome-devtools-mcp@1.8.0", "--channel=dev"]
+command = "bun"
+args = ["x", "chrome-devtools-mcp@1.8.0", "--channel=dev"]
+startup_timeout_sec = 60
 
 [mcp_servers.chrome_devtools.tools.click]
 approval_mode = "approve"
@@ -42,205 +44,28 @@ approval_mode = "approve"
 [mcp_servers.fff.tools.grep]
 approval_mode = "approve"
 
-# --channel=dev selects ~/.cache/chrome-devtools-mcp/chrome-profile-dev.
 [mcp_servers.Chrome-DevTools]
-command = "bunx"
-args = ["chrome-devtools-mcp@1.8.0", "--channel=dev", "--log-file=/tmp/chrome-devtools-mcp.log", "--experimental-devtools=true", "--experimental-vision=true", "--experimental-structured-content=true", "--experimental-include-all-pages=true", "--experimental-screencast=true", "--category-experimental-webmcp=true", "--category-experimental-third-party=true", "--category-extensions=true"]
+command = "bun"
+args = ["x", "chrome-devtools-mcp@1.8.0", "--channel=dev", "--user-data-dir={cache_dir}/chrome-devtools-mcp/chrome-profile-dev", "--log-file={temp_dir}/chrome-devtools-mcp.log", "--experimental-devtools=true", "--experimental-vision=true", "--experimental-structured-content=true", "--experimental-include-all-pages=true", "--experimental-screencast=true", "--category-experimental-webmcp=true", "--category-experimental-third-party=true", "--category-extensions=true"]
+startup_timeout_sec = 60
 
 [mcp_servers.Chrome-DevTools-Attached]
-command = "bunx"
-args = ["chrome-devtools-mcp@1.8.0", "--autoConnect", "--channel=dev", "--log-file=/tmp/chrome-devtools-mcp-attached.log"]
+command = "bun"
+args = ["x", "chrome-devtools-mcp@1.8.0", "--autoConnect", "--channel=dev", "--log-file={temp_dir}/chrome-devtools-mcp-attached.log"]
+startup_timeout_sec = 60
 
-# Missing optional programs use a real MCP handshake with an empty tool list.
-# An installed program's failure is still reported; only absence uses the fallback.
 [mcp_servers.bytedcli]
-command = "start-mcp-else-empty"
-args = ["bytedcli", "mcp"]
+command = "bytedcli"
+args = [ "mcp" ]
 
 [mcp_servers.dayflow]
-command = "start-mcp-else-empty"
-args = ["/Applications/Dayflow.app/Contents/Helpers/dayflow", "mcp"]
+command = "dayflow"
+args = [ "mcp" ]
 
 [features]
 hooks = true
-js_repl = true
 memories = true
 chronicle = true
-
-[tui]
-terminal_resize_reflow_max_rows = 0
-
-[tui.model_availability_nux]
-"gpt-5.5" = 4
-"gpt-5.6-sol" = 3
-gpt-6-astra = 4
-
-[projects."/Users/bytedance/workspace/github.com/openai/codex"]
-trust_level = "trusted"
-
-[projects."/Users/bytedance/workspace/github.com/vegerot/dotfiles"]
-trust_level = "trusted"
-
-[projects."/Users/bytedance/code/github.com/openai/codex"]
-trust_level = "trusted"
-
-[projects."/Users/bytedance/code/github.com/google-gemini/gemini-cli"]
-trust_level = "trusted"
-
-[projects."/Users/bytedance/code/github.com/neovim/neovim"]
-trust_level = "trusted"
-
-[projects."/Users/bytedance/.local/share/nvim/site/pack/core/opt"]
-trust_level = "trusted"
-
-[projects."/Users/bytedance/code/github.com/vegerot/dotfiles"]
-trust_level = "trusted"
-
-[projects."/home/max/ai-chat/unifi"]
-trust_level = "trusted"
-
-[projects."/Users/bytedance/Documents/Codex/2026-09-04/if-x20"]
-trust_level = "trusted"
-
-[projects."/Users/bytedance/Documents/Codex/2026-09-04/if-i-log-ou"]
-trust_level = "trusted"
-
-[projects."/Users/bytedance/code/github.com/vegerot/ai-conversations"]
-trust_level = "trusted"
-
-[projects."/Users/bytedance/Library/Caches/pnpm"]
-trust_level = "trusted"
-
-[projects."/home/max/workspace/github.com/vegerot/dotfiles"]
-trust_level = "trusted"
-
-[hooks.state]
-
-[hooks.state."/Users/bytedance/.codex/hooks.json:permission_request:1:0"]
-trusted_hash = "sha256:7c9384a3da1bba5478022d8d9194f4a112d3ed619d8e0baf3d082d81b20efc3e"
-
-[hooks.state."/Users/bytedance/.codex/hooks.json:post_tool_use:3:0"]
-trusted_hash = "sha256:be79c1e5b344ba66d4dcadd2cf70cbc06461ee228fdd9f46fa5e24cf09a4b785"
-
-[hooks.state."/Users/bytedance/.codex/hooks.json:post_tool_use:4:0"]
-trusted_hash = "sha256:20f681c588391b681793faf786822eba836e75c48d2e25ea29b03110b5f379f8"
-
-[hooks.state."/Users/bytedance/.codex/hooks.json:pre_tool_use:3:0"]
-trusted_hash = "sha256:347e34d2d79d4eb15414ccd4a4bdbd716709e8dffc8d1c202cb126c5a3dc2472"
-
-[hooks.state."/Users/bytedance/.codex/hooks.json:pre_tool_use:4:0"]
-trusted_hash = "sha256:6ace4f8d9c6191fe015a4e9801ac7f609714c0b2418e45f09c19dc74f3bc2d3f"
-
-[hooks.state."/Users/bytedance/.codex/hooks.json:session_start:2:0"]
-trusted_hash = "sha256:2f344bf360ab84017e05eecdb3d28af2845dea287ae19456e627e0dd319ef2b8"
-
-[hooks.state."/Users/bytedance/.codex/hooks.json:session_start:3:0"]
-trusted_hash = "sha256:b75bbb88fda1d8d56ba388c0dd0cc3dee31c2b761e688c45efae9f327e0d01c2"
-
-[hooks.state."/Users/bytedance/.codex/hooks.json:stop:2:0"]
-trusted_hash = "sha256:c55fac10617f4e75ccaf1ae8bf459ecdf1e1ad52e9a2e8add99b7eb6977ef32f"
-
-[hooks.state."/Users/bytedance/.codex/hooks.json:stop:3:0"]
-trusted_hash = "sha256:71c9b90f1acf4b810ed40b7930e4825620198b0a8a33ed2be587f023bbfd1e07"
-
-[hooks.state."/Users/bytedance/.codex/hooks.json:subagent_stop:2:0"]
-trusted_hash = "sha256:997e48aaf1ff652dd28414d5513bffee768e9772a7c2cfac92226004929eddf7"
-
-[hooks.state."/Users/bytedance/.codex/hooks.json:subagent_stop:3:0"]
-trusted_hash = "sha256:3c00257cc2de597c4a66c1b7d7c40d59794abb8aabc8aa35947f2dd7f6026bdf"
-
-[hooks.state."/Users/bytedance/.codex/hooks.json:user_prompt_submit:1:0"]
-trusted_hash = "sha256:4365d26eab04ab86afb3a21b30dfa267a333f9dfd1d3c1e88c1dcfc1af0dea2c"
-
-[hooks.state."/Users/bytedance/.codex/hooks.json:pre_tool_use:0:0"]
-trusted_hash = "sha256:fc87dbee1cb8a9be4f78ba094c4fa8d5e2fd38cb800854e3717f9b6a52fe2a47"
-
-[hooks.state."/Users/bytedance/.codex/hooks.json:post_tool_use:0:0"]
-trusted_hash = "sha256:ac371f260e4b23ba1d1b7a4ad68a44a323a8470b61f38471a47aceac1b7a5a7c"
-
-[hooks.state."/home/max/.codex/hooks.json:pre_tool_use:0:0"]
-trusted_hash = "sha256:fc87dbee1cb8a9be4f78ba094c4fa8d5e2fd38cb800854e3717f9b6a52fe2a47"
-
-[hooks.state."/home/max/.codex/hooks.json:pre_tool_use:1:0"]
-trusted_hash = "sha256:1a69bf396fd2f0763c1678484487d229dd55b6482601117068172c41dfb343cb"
-
-[hooks.state."/home/max/.codex/hooks.json:pre_tool_use:2:0"]
-trusted_hash = "sha256:c546740df9e7236823595e43ec75d8f08d4a627a25410196531c1dbfc55fd3c1"
-
-[hooks.state."/home/max/.codex/hooks.json:permission_request:0:0"]
-trusted_hash = "sha256:059c0e0c0efa36c2de3535e75e3f223e70eef9f2165497e4bd82e4c7333242aa"
-
-[hooks.state."/home/max/.codex/hooks.json:post_tool_use:0:0"]
-trusted_hash = "sha256:ac371f260e4b23ba1d1b7a4ad68a44a323a8470b61f38471a47aceac1b7a5a7c"
-
-[hooks.state."/home/max/.codex/hooks.json:post_tool_use:1:0"]
-trusted_hash = "sha256:68c8ffd47bfc445960fc6c0e0ce0f32e4dcf0cf33b162ce443e04713dff22d01"
-
-[hooks.state."/home/max/.codex/hooks.json:post_tool_use:2:0"]
-trusted_hash = "sha256:99fb45b62894b45a5fc06e961ad7d767e8503e02549d0704735e276aec827938"
-
-[hooks.state."/home/max/.codex/hooks.json:session_start:0:0"]
-trusted_hash = "sha256:b4fb8d9f4fd941c501210aeac417f0bd7a077c67f5e58b0e2da849123da982bf"
-
-[hooks.state."/home/max/.codex/hooks.json:session_start:1:0"]
-trusted_hash = "sha256:7ba9782e4514e3d0e0ae36b2134469dfa8f52a95596966ba1d22bffbfd72ea99"
-
-[hooks.state."/home/max/.codex/hooks.json:user_prompt_submit:0:0"]
-trusted_hash = "sha256:1d27de97fbbbf2c9b8ee64526bb82f11c6432b7df08010e845b8f7ab21c25a33"
-
-[hooks.state."/home/max/.codex/hooks.json:subagent_stop:0:0"]
-trusted_hash = "sha256:7a238806b1c9c67bcfd7b1fd810144064cd14325c24d83bdd21217a118028410"
-
-[hooks.state."/home/max/.codex/hooks.json:subagent_stop:1:0"]
-trusted_hash = "sha256:3216747400128dad4ab1cad6f1596b0d49f3092e96df7677c370ef5fe409e921"
-
-[hooks.state."/home/max/.codex/hooks.json:stop:0:0"]
-trusted_hash = "sha256:c4eada95c265c9b685a0638738757482ff1912fa238cdc5ca3d287169365d4f9"
-
-[hooks.state."/home/max/.codex/hooks.json:stop:1:0"]
-trusted_hash = "sha256:bab4f0d24b0c9c01c395d6979f1989eac87e986089dc96b12d223deceba5ed1f"
-
-[hooks.state."/home/max/workspace/github.com/vegerot/dotfiles/.codex/hooks.json:pre_tool_use:0:0"]
-trusted_hash = "sha256:fc87dbee1cb8a9be4f78ba094c4fa8d5e2fd38cb800854e3717f9b6a52fe2a47"
-
-[hooks.state."/home/max/workspace/github.com/vegerot/dotfiles/.codex/hooks.json:pre_tool_use:1:0"]
-trusted_hash = "sha256:1a69bf396fd2f0763c1678484487d229dd55b6482601117068172c41dfb343cb"
-
-[hooks.state."/home/max/workspace/github.com/vegerot/dotfiles/.codex/hooks.json:pre_tool_use:2:0"]
-trusted_hash = "sha256:c546740df9e7236823595e43ec75d8f08d4a627a25410196531c1dbfc55fd3c1"
-
-[hooks.state."/home/max/workspace/github.com/vegerot/dotfiles/.codex/hooks.json:permission_request:0:0"]
-trusted_hash = "sha256:059c0e0c0efa36c2de3535e75e3f223e70eef9f2165497e4bd82e4c7333242aa"
-
-[hooks.state."/home/max/workspace/github.com/vegerot/dotfiles/.codex/hooks.json:post_tool_use:0:0"]
-trusted_hash = "sha256:ac371f260e4b23ba1d1b7a4ad68a44a323a8470b61f38471a47aceac1b7a5a7c"
-
-[hooks.state."/home/max/workspace/github.com/vegerot/dotfiles/.codex/hooks.json:post_tool_use:1:0"]
-trusted_hash = "sha256:68c8ffd47bfc445960fc6c0e0ce0f32e4dcf0cf33b162ce443e04713dff22d01"
-
-[hooks.state."/home/max/workspace/github.com/vegerot/dotfiles/.codex/hooks.json:post_tool_use:2:0"]
-trusted_hash = "sha256:99fb45b62894b45a5fc06e961ad7d767e8503e02549d0704735e276aec827938"
-
-[hooks.state."/home/max/workspace/github.com/vegerot/dotfiles/.codex/hooks.json:session_start:0:0"]
-trusted_hash = "sha256:b4fb8d9f4fd941c501210aeac417f0bd7a077c67f5e58b0e2da849123da982bf"
-
-[hooks.state."/home/max/workspace/github.com/vegerot/dotfiles/.codex/hooks.json:session_start:1:0"]
-trusted_hash = "sha256:7ba9782e4514e3d0e0ae36b2134469dfa8f52a95596966ba1d22bffbfd72ea99"
-
-[hooks.state."/home/max/workspace/github.com/vegerot/dotfiles/.codex/hooks.json:user_prompt_submit:0:0"]
-trusted_hash = "sha256:1d27de97fbbbf2c9b8ee64526bb82f11c6432b7df08010e845b8f7ab21c25a33"
-
-[hooks.state."/home/max/workspace/github.com/vegerot/dotfiles/.codex/hooks.json:subagent_stop:0:0"]
-trusted_hash = "sha256:7a238806b1c9c67bcfd7b1fd810144064cd14325c24d83bdd21217a118028410"
-
-[hooks.state."/home/max/workspace/github.com/vegerot/dotfiles/.codex/hooks.json:subagent_stop:1:0"]
-trusted_hash = "sha256:3216747400128dad4ab1cad6f1596b0d49f3092e96df7677c370ef5fe409e921"
-
-[hooks.state."/home/max/workspace/github.com/vegerot/dotfiles/.codex/hooks.json:stop:0:0"]
-trusted_hash = "sha256:c4eada95c265c9b685a0638738757482ff1912fa238cdc5ca3d287169365d4f9"
-
-[hooks.state."/home/max/workspace/github.com/vegerot/dotfiles/.codex/hooks.json:stop:1:0"]
-trusted_hash = "sha256:bab4f0d24b0c9c01c395d6979f1989eac87e986089dc96b12d223deceba5ed1f"
 
 [desktop]
 followUpQueueMode = "steer"
@@ -324,3 +149,7 @@ inherit = "core"
 [memories]
 generate_memories = true
 use_memories = true
+
+[[skills.config]]
+name = "coco-export-location"
+enabled = false
