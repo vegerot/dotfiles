@@ -25,8 +25,9 @@ Other local tool servers remain unchanged.
 Executable detection enables installed tools and disables absent tools.
 Dayflow also supports its standard macOS application location.
 
-The script expands `{cache_dir}` and `{temp_dir}` in shared tool arguments.
-These are sync placeholders, not Codex configuration variables.
+The script expands `{temp_dir}` in shared tool arguments.
+This is a sync placeholder, not a Codex configuration variable.
+Chrome DevTools selects its default browser profile for the configured channel.
 Chrome launch and attach modes keep separate definitions.
 The existing `chrome_devtools` entry also remains available.
 

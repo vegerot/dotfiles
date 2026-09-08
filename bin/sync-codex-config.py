@@ -24,7 +24,7 @@ def merge(target, source):
             target[key] = value
 
 
-def build_config(shared, local, *, platform, home, environ, which, temp_dir):
+def build_config(shared, local, *, platform, which, temp_dir):
     result = tomlkit.parse(tomlkit.dumps(local))
     preferences = tomlkit.parse(tomlkit.dumps(shared))
     servers = preferences.pop("mcp_servers", {})
@@ -41,13 +41,7 @@ def build_config(shared, local, *, platform, home, environ, which, temp_dir):
         and "coco-export-location" not in str(entry.get("path", "")).replace("\\", "/").split("/")
     ] + list(skill_overrides)
 
-    if platform == "win32":
-        cache = Path(environ.get("LOCALAPPDATA", home / "AppData/Local"))
-    elif platform == "darwin":
-        cache = home / "Library/Caches"
-    else:
-        cache = Path(environ.get("XDG_CACHE_HOME", home / ".cache"))
-    paths = {"cache_dir": cache.as_posix(), "temp_dir": Path(temp_dir).as_posix()}
+    paths = {"temp_dir": Path(temp_dir).as_posix()}
     local_servers = result.setdefault("mcp_servers", {})
     for name, server in servers.items():
         command = server["command"]
@@ -75,8 +69,8 @@ def main():
     shared = tomlkit.parse(shared_path.read_text(encoding="utf-8-sig"))
     old_text = local_path.read_text(encoding="utf-8-sig") if local_path.exists() else ""
     updated = build_config(
-        shared, tomlkit.parse(old_text), platform=sys.platform, home=Path.home(),
-        environ=os.environ, which=shutil.which, temp_dir=tempfile.gettempdir(),
+        shared, tomlkit.parse(old_text), platform=sys.platform,
+        which=shutil.which, temp_dir=tempfile.gettempdir(),
     )
     new_text = tomlkit.dumps(updated)
     linked = local_path.is_symlink() and local_path.resolve() == generated_path.resolve()

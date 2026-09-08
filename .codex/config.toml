@@ -1,5 +1,5 @@
 # Shared preferences. Run: uv run bin/sync-codex-config.py
-# The sync script resolves {cache_dir} and {temp_dir} for this machine.
+# The sync script resolves {temp_dir} for this machine.
 model = "gpt-6-astra"
 model_reasoning_effort = "medium"
 developer_instructions = "For introspection questions about Codex, inspect `~/code/github.com/openai/codex`."
@@ -46,7 +46,7 @@ approval_mode = "approve"
 
 [mcp_servers.Chrome-DevTools]
 command = "bun"
-args = ["x", "chrome-devtools-mcp@1.8.0", "--channel=dev", "--user-data-dir={cache_dir}/chrome-devtools-mcp/chrome-profile-dev", "--log-file={temp_dir}/chrome-devtools-mcp.log", "--experimental-devtools=true", "--experimental-vision=true", "--experimental-structured-content=true", "--experimental-include-all-pages=true", "--experimental-screencast=true", "--category-experimental-webmcp=true", "--category-experimental-third-party=true", "--category-extensions=true"]
+args = ["x", "chrome-devtools-mcp@1.8.0", "--channel=dev", "--log-file={temp_dir}/chrome-devtools-mcp.log", "--experimental-devtools=true", "--experimental-vision=true", "--experimental-structured-content=true", "--experimental-include-all-pages=true", "--experimental-screencast=true", "--category-experimental-webmcp=true", "--category-experimental-third-party=true", "--category-extensions=true"]
 startup_timeout_sec = 60
 
 [mcp_servers.Chrome-DevTools-Attached]
