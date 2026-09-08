@@ -1,39 +1,20 @@
 # Codex configuration
 
-🔧 `config.toml` stores shared preferences for macOS, Windows, and GNU+Linux.
-The active `~/.codex/config.toml` links to `dotfiles/.codex/local/config.toml`.
-This generated file is untracked and contains this machine's runtime settings.
+🔧 `~/.codex/config.toml` links directly to this directory's `config.toml` on
+macOS, Windows, and GNU+Linux. Edit either path; no generation or sync command
+is needed. Restart Codex to load configuration changes.
 
-After changing the shared preferences or installing an optional tool, run:
+The Unix bootstrap links this file like the other dotfiles. Existing machines
+using a generated config need a one-time switch: save the current config,
+carry over settings to keep, and replace the active link with a link to
+`dotfiles/.codex/config.toml`. The old generated file is then unused.
 
-```text
-uv run bin/sync-codex-config.py
-```
+Codex can write preferences, project trust records, and application settings
+into this shared file. Review those changes before committing them.
 
-Run this command from the dotfiles repository. Install `uv` first.
-Use `--check` to check whether a sync is needed without writing files.
-The Unix bootstrap runs the sync after installing links.
+Tool commands are resolved from `PATH`. All configured tools remain enabled;
+computers without a command may show a startup warning. Chrome launch and
+attach modes keep separate entries and use the default Chrome Dev profile.
+Chrome file logging is disabled by omitting `--log-file`.
 
-The sync preserves existing local runtime settings, notification helpers,
-plugin cache locations, project trust, and hook approval state.
-It saves a backup before each change.
-It creates the active symlink and preserves it during later syncs.
-
-Shared preferences override matching local preferences.
-Each shared tool server replaces its local definition.
-Other local tool servers remain unchanged.
-Executable detection enables installed tools and disables absent tools.
-Dayflow also supports its standard macOS application location.
-
-The script expands `{temp_dir}` in shared tool arguments.
-This is a sync placeholder, not a Codex configuration variable.
-Chrome DevTools selects its default browser profile for the configured channel.
-Chrome launch and attach modes keep separate definitions.
-The existing `chrome_devtools` entry also remains available.
-
-Application runtime settings are supplied locally by the Codex application.
-On a new machine, start the application to configure its runtime integrations.
-Before updating an older installation that links directly to dotfiles,
-save its active configuration locally so its runtime settings remain available.
-
-Keybindings and `hooks.json` remain shared through symlinks.
+Agent instructions and `hooks.json` remain shared through symlinks.

@@ -11,11 +11,9 @@ function doIt() {
     elif [ "$1" "==" "--force" ]; then
         echo "forced"
 	force
-        uv run "$HOME/dotfiles/bin/sync-codex-config.py"
     else
         echo "NOTE: This will not overwrite any existing files.  Rerun with --force to overwrite existing dotfiles"
 	normal
-        uv run "$HOME/dotfiles/bin/sync-codex-config.py"
     fi
     set +x
 }
@@ -26,8 +24,6 @@ function dry_run() {
                 ! -path "*/.git/*" \
                 ! -path "*/.sl/*" \
                 ! -path "./.claude/worktrees/*" \
-                ! -path "./.codex/config.toml" \
-                ! -path "./.codex/local/*" \
                 ! -path "./.DS_Store" \
                 ! -path "./.osx" \
                 ! -path "./bootstrap.sh" \
@@ -43,8 +39,6 @@ function force() {
                 ! -path "*/.git/*" \
                 ! -path "*/.sl/*" \
                 ! -path "./.claude/worktrees/*" \
-                ! -path "./.codex/config.toml" \
-                ! -path "./.codex/local/*" \
                 ! -path "./.DS_Store" \
                 ! -path "./.osx" \
                 ! -path "./bootstrap.sh" \
@@ -59,8 +53,6 @@ function normal() {
                 ! -path "*/.git/*" \
                 ! -path "*/.sl/*" \
                 ! -path "./.claude/worktrees/*" \
-                ! -path "./.codex/config.toml" \
-                ! -path "./.codex/local/*" \
                 ! -path "./.DS_Store" \
                 ! -path "./.osx" \
                 ! -path "./bootstrap.sh" \

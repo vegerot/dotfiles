@@ -1,38 +1,11 @@
 approval_policy = "never"
 sandbox_mode = "danger-full-access"
-# Shared preferences. Run: uv run bin/sync-codex-config.py
-# The sync script resolves {temp_dir} for this machine.
+# Shared config linked directly from ~/.codex/config.toml.
 model = "gpt-6-astra"
-model_reasoning_effort = "medium"
+model_reasoning_effort = "xhigh"
 developer_instructions = "For introspection questions about Codex, inspect `~/code/github.com/openai/codex`."
 service_tier = "priority"
 approvals_reviewer = "auto_review"
-
-[mcp_servers.chrome_devtools]
-command = "bun"
-args = ["x", "chrome-devtools-mcp@1.8.0", "--channel=dev"]
-startup_timeout_sec = 60
-
-[mcp_servers.chrome_devtools.tools.click]
-approval_mode = "approve"
-
-[mcp_servers.chrome_devtools.tools.hover]
-approval_mode = "approve"
-
-[mcp_servers.chrome_devtools.tools.navigate_page]
-approval_mode = "approve"
-
-[mcp_servers.chrome_devtools.tools.new_page]
-approval_mode = "approve"
-
-[mcp_servers.chrome_devtools.tools.resize_page]
-approval_mode = "approve"
-
-[mcp_servers.chrome_devtools.tools.take_screenshot]
-approval_mode = "approve"
-
-[mcp_servers.chrome_devtools.tools.take_snapshot]
-approval_mode = "approve"
 
 [mcp_servers.fff]
 command = "fff-mcp"
@@ -48,12 +21,12 @@ approval_mode = "approve"
 
 [mcp_servers.Chrome-DevTools]
 command = "bun"
-args = ["x", "chrome-devtools-mcp@1.8.0", "--channel=dev", "--log-file={temp_dir}/chrome-devtools-mcp.log", "--experimental-devtools=true", "--experimental-vision=true", "--experimental-structured-content=true", "--experimental-include-all-pages=true", "--experimental-screencast=true", "--category-experimental-webmcp=true", "--category-experimental-third-party=true", "--category-extensions=true"]
+args = ["x", "chrome-devtools-mcp@1.9.0", "--channel=dev", "--experimental-devtools=true", "--experimental-vision=true", "--experimental-structured-content=true", "--experimental-include-all-pages=true", "--experimental-screencast=true", "--category-experimental-webmcp=true", "--category-experimental-third-party=true", "--category-extensions=true"]
 startup_timeout_sec = 60
 
 [mcp_servers.Chrome-DevTools-Attached]
 command = "bun"
-args = ["x", "chrome-devtools-mcp@1.8.0", "--autoConnect", "--channel=dev", "--log-file={temp_dir}/chrome-devtools-mcp-attached.log"]
+args = ["x", "chrome-devtools-mcp@1.9.0", "--autoConnect", "--channel=dev"]
 startup_timeout_sec = 60
 
 [mcp_servers.bytedcli]
@@ -155,3 +128,18 @@ use_memories = true
 [[skills.config]]
 name = "coco-export-location"
 enabled = false
+
+[projects."/Users/bytedance/code/github.com/anomalyco/opencode"]
+trust_level = "trusted"
+
+[projects."/Users/bytedance/code/github.com/vegerot/ai-conversations"]
+trust_level = "trusted"
+
+[projects."/Users/bytedance/Documents/Codex/2026-09-08/ex"]
+trust_level = "trusted"
+
+[projects."/Users/bytedance/code/github.com/vegerot/dotfiles"]
+trust_level = "trusted"
+
+[tui.model_availability_nux]
+gpt-6-astra = 4
