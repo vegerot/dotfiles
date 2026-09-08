@@ -18,7 +18,8 @@
             "command": "~/dotfiles/bin/flux-hook relay codex",
             "type": "command",
             "timeout": 5,
-            "commandWindows": "pwsh -NoProfile -Command \"exit 0\""
+            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
+            "async": true
           }
         ]
       },
@@ -29,22 +30,10 @@
             "command": "~/dotfiles/bin/flux-hook bits codex postToolUse",
             "type": "command",
             "timeout": 30,
-            "commandWindows": "pwsh -NoProfile -Command \"exit 0\""
+            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
+            "async": true
           }
         ]
-      }
-    ],
-    "PostToolUseFailure": [
-      {
-        "hooks": [
-          {
-            "command": "command -v atuin >/dev/null || exit 0; atuin hook codex",
-            "timeout": 5,
-            "type": "command",
-            "commandWindows": "pwsh -NoProfile -Command \"& (Join-Path ~ '.codex/hooks/atuin-codex.ps1')\""
-          }
-        ],
-        "matcher": "^Bash$"
       }
     ],
     "PreToolUse": [
@@ -65,7 +54,8 @@
             "command": "~/dotfiles/bin/flux-hook relay codex",
             "type": "command",
             "timeout": 5,
-            "commandWindows": "pwsh -NoProfile -Command \"exit 0\""
+            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
+            "async": true
           }
         ]
       },
@@ -76,7 +66,8 @@
             "command": "~/dotfiles/bin/flux-hook bits codex preToolUse",
             "type": "command",
             "timeout": 30,
-            "commandWindows": "pwsh -NoProfile -Command \"exit 0\""
+            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
+            "async": true
           }
         ]
       }
@@ -88,7 +79,8 @@
             "command": "~/dotfiles/bin/flux-hook relay codex",
             "type": "command",
             "timeout": 5,
-            "commandWindows": "pwsh -NoProfile -Command \"exit 0\""
+            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
+            "async": true
           }
         ]
       },
@@ -98,7 +90,8 @@
             "command": "~/dotfiles/bin/flux-hook bits codex sessionStart",
             "type": "command",
             "timeout": 30,
-            "commandWindows": "pwsh -NoProfile -Command \"exit 0\""
+            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
+            "async": true
           }
         ]
       }
@@ -110,7 +103,8 @@
             "command": "~/dotfiles/bin/flux-hook relay codex",
             "type": "command",
             "timeout": 5,
-            "commandWindows": "pwsh -NoProfile -Command \"exit 0\""
+            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
+            "async": true
           }
         ]
       }
@@ -135,7 +129,8 @@
             "command": "~/dotfiles/bin/flux-hook relay codex",
             "type": "command",
             "timeout": 5,
-            "commandWindows": "pwsh -NoProfile -Command \"exit 0\""
+            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
+            "async": true
           }
         ]
       },
@@ -145,7 +140,8 @@
             "command": "~/dotfiles/bin/flux-hook bits codex stop",
             "type": "command",
             "timeout": 30,
-            "commandWindows": "pwsh -NoProfile -Command \"exit 0\""
+            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
+            "async": true
           }
         ]
       }
@@ -157,7 +153,8 @@
             "command": "~/dotfiles/bin/flux-hook relay codex",
             "type": "command",
             "timeout": 5,
-            "commandWindows": "pwsh -NoProfile -Command \"exit 0\""
+            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
+            "async": true
           }
         ]
       },
@@ -167,7 +164,8 @@
             "command": "~/dotfiles/bin/flux-hook bits codex subagentStop",
             "type": "command",
             "timeout": 30,
-            "commandWindows": "pwsh -NoProfile -Command \"exit 0\""
+            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
+            "async": true
           }
         ]
       }
