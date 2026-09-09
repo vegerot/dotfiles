@@ -155,5 +155,9 @@ trust_level = "trusted"
 [projects."/Users/bytedance/code/github.com/vegerot/dotfiles"]
 trust_level = "trusted"
 
+[tui]
+status_line = ["model-with-reasoning", "current-dir", "pull-request-number", "run-state", "permissions", "context-used", "five-hour-limit", "weekly-limit"]
+status_line_use_colors = true
+
 [tui.model_availability_nux]
 gpt-6-astra = 4
