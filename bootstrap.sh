@@ -44,7 +44,19 @@ function force() {
                 ! -path "./bootstrap.sh" \
                 ! -path "./README.md" \
                 ! -path "./LICENSE-MIT.txt" \
-                -exec bash -xc 'file=$1; cd "$HOME"; mkdir -pv "$(dirname "$file")"; ln -svfn "$HOME/dotfiles/$file" "$HOME/$file"' bash {} \;
+                -exec bash -xc '
+                    file=$1
+                    cd "$HOME"
+                    directory=$(dirname "$file")
+                    mkdir -pv "$directory"
+                    # A linked parent directory can make the destination the source itself.
+                    # Compare parents so this also protects dangling source symlinks.
+                    if [[ "$HOME/dotfiles/$directory" -ef "$HOME/$directory" ]]; then
+                        printf "Already linked: %s\n" "$HOME/$file"
+                        exit 0
+                    fi
+                    ln -svfn "$HOME/dotfiles/$file" "$HOME/$file"
+                ' bash {} \;
 }
 
 function normal() {
