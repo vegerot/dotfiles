@@ -6,6 +6,10 @@ developer_instructions = "For introspection questions about Codex, inspect `~/co
 service_tier = "priority"
 approvals_reviewer = "auto_review"
 
+
+[mcp_servers.atuin]
+command = "atuin"
+args = ["mcp"]
 [mcp_servers.fff]
 command = "fff-mcp"
 
