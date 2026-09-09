@@ -1,6 +1,5 @@
 approval_policy = "never"
 sandbox_mode = "danger-full-access"
-# Shared config linked directly from ~/.codex/config.toml.
 model = "gpt-6-astra"
 model_reasoning_effort = "xhigh"
 developer_instructions = "For introspection questions about Codex, inspect `~/code/github.com/openai/codex`."
@@ -21,12 +20,29 @@ approval_mode = "approve"
 
 [mcp_servers.Chrome-DevTools]
 command = "bun"
-args = ["x", "chrome-devtools-mcp@1.9.0", "--channel=dev", "--experimental-devtools=true", "--experimental-vision=true", "--experimental-structured-content=true", "--experimental-include-all-pages=true", "--experimental-screencast=true", "--category-experimental-webmcp=true", "--category-experimental-third-party=true", "--category-extensions=true"]
+args = [
+  "x",
+  "chrome-devtools-mcp@1.9.0",
+  "--channel=dev",
+  "--experimental-devtools=true",
+  "--experimental-vision=true",
+  "--experimental-structured-content=true",
+  "--experimental-include-all-pages=true",
+  "--experimental-screencast=true",
+  "--category-experimental-webmcp=true",
+  "--category-experimental-third-party=true",
+  "--category-extensions=true"
+]
 startup_timeout_sec = 60
 
 [mcp_servers.Chrome-DevTools-Attached]
 command = "bun"
-args = ["x", "chrome-devtools-mcp@1.9.0", "--autoConnect", "--channel=dev"]
+args = [
+  "x",
+  "chrome-devtools-mcp@1.9.0",
+  "--autoConnect",
+  "--channel=dev"
+]
 startup_timeout_sec = 60
 
 [mcp_servers.bytedcli]
@@ -60,23 +76,22 @@ codeFontSize = 14
 appearanceDiffMarkerStyle = "color"
 browser-show-full-url = true
 
-[desktop.open-in-target-preferences]
-global = "systemDefault"
+  [desktop.open-in-target-preferences]
+  global = "systemDefault"
 
-[desktop.appearanceLightChromeTheme]
-accent = "#0169cc"
-accentSource = "chatgpt"
-contrast = 45
-ink = "#0d0d0d"
-opaqueWindows = false
-surface = "#ffffff"
+  [desktop.appearanceLightChromeTheme]
+  accent = "#0169cc"
+  accentSource = "chatgpt"
+  contrast = 45
+  ink = "#0d0d0d"
+  opaqueWindows = false
+  surface = "#ffffff"
+  fonts = { }
 
-[desktop.appearanceLightChromeTheme.fonts]
-
-[desktop.appearanceLightChromeTheme.semanticColors]
-diffAdded = "#00a240"
-diffRemoved = "#e02e2a"
-skill = "#751ed9"
+    [desktop.appearanceLightChromeTheme.semanticColors]
+    diffAdded = "#00a240"
+    diffRemoved = "#e02e2a"
+    skill = "#751ed9"
 
 [plugins."codex-app-tools@openai-bundled"]
 enabled = true
@@ -119,7 +134,6 @@ enabled = true
 
 [shell_environment_policy]
 inherit = "core"
-
 
 [memories]
 generate_memories = true
