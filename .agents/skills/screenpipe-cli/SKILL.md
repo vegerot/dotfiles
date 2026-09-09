@@ -1,31 +1,121 @@
 ---
 name: screenpipe-cli
-description: Manage screenpipe pipes (scheduled AI automations) and connections (Telegram, Slack, Discord, etc.) via the CLI. Use when the user asks to create, list, enable, disable, run, or debug pipes, or manage service connections from the command line.
+description: Set up and operate screenpipe from the terminal, including always-on recording, service modes, capture health, storage, local search, pipes, and connections. Use when the user asks to install, run, inspect, query, automate, or debug screenpipe without relying on the desktop app.
 ---
 
 # Screenpipe CLI
 
-Use `bun x screenpipe@latest` to run CLI commands from a fresh temporary directory.
-Use PowerShell on Windows. Use the platform shell on macOS and Linux.
-Keep `@latest` and use absolute file paths.
+Run every CLI command exactly like this, from a clean temp directory so `bun x` cannot collide with a project's `node_modules`:
 
-On Windows, use this pattern:
-
-```powershell
-$screenpipeTemp = New-Item -ItemType Directory -Path (Join-Path $env:TEMP ([guid]::NewGuid().ToString()))
-Push-Location $screenpipeTemp.FullName
-try {
-    bun x screenpipe@latest pipe list
-} finally {
-    Pop-Location
-}
+```bash
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} <command>
 ```
 
-Replace `pipe list` with the required command from the examples below.
-On macOS and Linux, use `cd "$(mktemp -d)"` before those commands.
-Translate shell syntax in the examples to PowerShell on Windows.
-Use `Select-String` to filter text and `Select-Object -First` to limit output on Windows.
-If a sandbox blocks required access, request the available approval or use a connected Screenpipe tool.
+`$SCREENPIPE_CLI` is an already-resolved native binary that screenpipe publishes and refreshes for you. When it is set, a call costs **~0.15s**. The `bun x screenpipe@latest` fallback runs when it is not (a plain terminal, a fresh install, an offline machine) and costs **~4s**, because `@latest` re-resolves the npm registry every single time. Never replace the whole expression with just `bun x screenpipe@latest` — you would give up the fast path for no reason.
+
+**Rules:** every invocation is `cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} …` · keep the `${SCREENPIPE_CLI:-…}` form intact · never drop the `cd` prefix · copy the examples below verbatim rather than shortening them · because the `cd` changes your working directory, **any path you pass must be absolute** (`~/...` or `/...`), never relative (`./my-pipe`).
+
+Works on macOS, Linux, and Windows: the CLI always runs under bash, and `mktemp` is present on all three (on Windows via the bundled git-portable `usr/bin`).
+
+Use `status`, `search`, and state-changing commands as the terminal surface. For repeated or SQL reads, use MCP or the local API (see `screenpipe-api`). Never use an external SQLite client on the live database.
+
+> **Sandboxed shells:** some agents (e.g. Codex) block all shell network access, so `bun x` cannot fetch the package and CLI calls to `localhost:3030` fail instantly. If that happens, use the screenpipe MCP tools instead of the CLI.
+
+## Recorder quickstart
+
+For a CLI-only user who wants this computer recorded continuously, use this sequence:
+
+```bash
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} doctor
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} service install
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} status
+```
+
+`service install` defaults to **recorder mode**: screen + audio capture, local indexing, and the API, launched at boot/login and restarted after failures. On macOS, resolve Screen Recording, Microphone, and Accessibility permission warnings reported by `doctor`; a background service cannot bypass OS consent.
+
+Use the foreground process only for an interactive session or live debugging:
+
+```bash
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} record
+```
+
+Use API-only server mode only when the machine should serve existing or synced data without recording itself:
+
+```bash
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} service install --mode server
+```
+
+Running `service install` again switches modes and restarts the service immediately. `service uninstall` stops and removes it.
+
+## Status and diagnostics
+
+Start every investigation with:
+
+```bash
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} status
+```
+
+This reports the distinction that matters:
+
+- `recording normally`: the API is healthy and at least one capture stream is active
+- `serving normally`: intentional server mode; the API is healthy and local capture is disabled
+- `not capturing`: the process is up but no capture stream is active
+- `needs attention`: the health endpoint reports degraded/unhealthy capture
+- `stopped`: no screenpipe health endpoint answered on the selected port
+
+It also prints screen/audio freshness, active devices, history counts, total storage, and the exact SQLite path. Do not infer recording from a PID, an open port, or `service status`; those prove a process exists, not that new data is arriving.
+
+For scripts and agents, use structured output:
+
+```bash
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} status --json
+```
+
+Important fields are `running`, `health.status`, `health.frame_status`, `health.audio_status`, `last_capture`, `last_audio_capture`, `storage_size_bytes`, and `database_path`. Treat `running: true` as API availability only; inspect capture status and timestamps before claiming recording is healthy.
+
+Useful follow-ups:
+
+```bash
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} service status
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} doctor
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} diagnose --dry-run
+```
+
+`diagnose --dry-run` saves a support bundle locally and does not upload it. Do not run `diagnose` without `--dry-run` unless the user explicitly wants to send diagnostics to screenpipe support.
+
+## Query local history
+
+`search` is Screenpipe's supported daemon-free fallback. Prefer JSON Lines; never replace it with a direct database command:
+
+```bash
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} search --start "30m ago" --json
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} search "project alpha" --start "7d ago" --json
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} search --content-type audio --start "2h ago" --json
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} search --app "Code" --focused --start "1d ago" --json
+```
+
+Use `--limit`, `--offset`, `--end`, `--window`, `--browser-url`, `--speaker`, and `--max-content-length` to bound output. An empty result is not evidence that capture is healthy; check `status` and freshness separately.
+
+### SQL analysis through Screenpipe
+
+When the daemon is running, use the MCP `query_recordings` tool. If MCP is unavailable but authenticated localhost requests work, use the daemon's read-only SQL endpoint:
+
+```bash
+curl -sS -X POST "${SCREENPIPE_LOCAL_API_URL:-http://localhost:3030}/raw_sql" \
+  -H "Authorization: Bearer $SCREENPIPE_LOCAL_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"query":"SELECT COUNT(*) AS frame_count FROM frames LIMIT 1"}'
+```
+
+Never access live `db.sqlite`, `db.sqlite-wal`, or `db.sqlite-shm` directly. If MCP, API, and CLI are unavailable, report it. Run database checks or recovery only through Screenpipe with the recorder stopped.
+
+## Shell
+
+- **All platforms** → `bash` (on Windows, the bundled git-portable bash is used automatically)
+
+> **Note:** the bash tool truncates output around ~50 KB. Long listings (`connection list`, `pipe list`, etc.) are sorted with connected/enabled rows first, but if you need a specific row, pipe through `grep` or `head` rather than scanning the full output — e.g. `cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} connection list | grep -E 'browser|connected'`.
+
+---
 
 ## Pipe Management
 
@@ -34,14 +124,14 @@ Pipes are markdown-based AI automations that run on schedule. Each pipe lives at
 ### Commands
 
 ```bash
-bun x screenpipe@latest pipe list                    # List all pipes (compact table)
-bun x screenpipe@latest pipe enable <name>           # Enable a pipe
-bun x screenpipe@latest pipe disable <name>          # Disable a pipe
-bun x screenpipe@latest pipe run <name>              # Run once immediately (for testing)
-bun x screenpipe@latest pipe logs <name>             # View execution logs
-bun x screenpipe@latest pipe install <url-or-abs-path>  # Install from GitHub or an absolute local path
-bun x screenpipe@latest pipe delete <name>           # Delete a pipe
-bun x screenpipe@latest pipe models list             # View AI model presets
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} pipe list                    # List all pipes (compact table)
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} pipe enable <name>           # Enable a pipe
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} pipe disable <name>          # Disable a pipe
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} pipe run <name>              # Run once immediately (for testing)
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} pipe logs <name>             # View execution logs
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} pipe install <url-or-abs-path>  # Install from GitHub or an absolute local path
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} pipe delete <name>           # Delete a pipe
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} pipe models list             # View AI model presets
 ```
 
 ### Creating a Pipe
@@ -92,9 +182,9 @@ Screenpipe prepends a context header with time range, timezone, OS, and API URL 
 
 After creating:
 ```bash
-bun x screenpipe@latest pipe install ~/.screenpipe/pipes/my-pipe
-bun x screenpipe@latest pipe enable my-pipe
-bun x screenpipe@latest pipe run my-pipe   # terminal-only; in-app chat uses the workflow below
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} pipe install ~/.screenpipe/pipes/my-pipe
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} pipe enable my-pipe
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} pipe run my-pipe   # terminal-only; in-app chat uses the workflow below
 ```
 
 ### Testing from in-app chat
@@ -158,29 +248,29 @@ Manage integrations (Telegram, Slack, Discord, Email, Todoist, Teams) from the C
 ### Commands
 
 ```bash
-bun x screenpipe@latest connection list              # List all connections + status
-bun x screenpipe@latest connection list --json       # JSON output
-bun x screenpipe@latest connection get <id>          # Show status + non-secret settings
-bun x screenpipe@latest connection get <id> --json   # JSON output
-bun x screenpipe@latest connection set <id> key=val  # Save credentials
-bun x screenpipe@latest connection test <id>         # Test a connection
-bun x screenpipe@latest connection remove <id>       # Remove credentials
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} connection list              # List all connections + status
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} connection list --json       # JSON output
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} connection get <id>          # Show status + non-secret settings
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} connection get <id> --json   # JSON output
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} connection set <id> key=val  # Save credentials
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} connection test <id>         # Test a connection
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} connection remove <id>       # Remove credentials
 ```
 
 ### Examples
 
 ```bash
 # Set up Telegram
-bun x screenpipe@latest connection set telegram bot_token=123456:ABC-DEF chat_id=5776185278
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} connection set telegram bot_token=123456:ABC-DEF chat_id=5776185278
 
 # Set up Slack webhook
-bun x screenpipe@latest connection set slack webhook_url=https://hooks.slack.com/services/...
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} connection set slack webhook_url=https://hooks.slack.com/services/...
 
 # Verify it works
-bun x screenpipe@latest connection test telegram
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} connection test telegram
 
 # Check what's connected
-bun x screenpipe@latest connection list
+cd "$(mktemp -d)" && ${SCREENPIPE_CLI:-bun x screenpipe@latest} connection list
 ```
 
 Connection IDs: `telegram`, `slack`, `discord`, `email`, `todoist`, `teams`, `google-calendar`, `openclaw`
