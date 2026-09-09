@@ -67,7 +67,10 @@ function pick_ai_chatbot {
   }
 }
 
-atuin init powershell | Out-String | Invoke-Expression
+# Shell history hooks are only needed in interactive terminals.
+if ($isInteractive) {
+  atuin init powershell | Out-String | Invoke-Expression
+}
 Invoke-Expression (& { (zoxide init powershell --cmd cd | Out-String) })
 
 $secretsFile = "$env:USERPROFILE\.secrets.env.ps1"
