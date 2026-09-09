@@ -46,12 +46,12 @@ args = [
 startup_timeout_sec = 60
 
 [mcp_servers.bytedcli]
-command = "bytedcli"
-args = [ "mcp" ]
+command = "start-mcp-else-empty"
+args = [ "bytedcli", "mcp" ]
 
 [mcp_servers.dayflow]
-command = "dayflow"
-args = [ "mcp" ]
+command = "start-mcp-else-empty"
+args = [ "/Applications/Dayflow.app/Contents/Helpers/dayflow", "mcp" ]
 
 [features]
 hooks = true
