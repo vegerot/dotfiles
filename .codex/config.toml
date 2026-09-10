@@ -1,6 +1,7 @@
 approval_policy = "never"
 sandbox_mode = "danger-full-access"
 model = "gpt-6-astra"
+model_context_window = 872000
 model_reasoning_effort = "medium"
 developer_instructions = "For introspection questions about Codex, inspect `~/code/github.com/openai/`."
 service_tier = "priority"
