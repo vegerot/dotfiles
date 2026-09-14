@@ -105,3 +105,5 @@ mnemonicPrefix = true
 	helper = !gh auth git-credential
 [gpg "ssh"]
 	allowedSignersFile = ~/.ssh/allowed_signers
+[safe]
+	directory = *
