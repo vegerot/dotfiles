@@ -61,6 +61,9 @@ args = [ "bytedcli", "mcp" ]
 command = "start-mcp-else-empty"
 args = [ "/Applications/Dayflow.app/Contents/Helpers/dayflow", "mcp" ]
 
+[mcp_servers.computer-use]
+args = [ "mcp" ]
+cwd = "."
 [features]
 hooks = true
 memories = true
@@ -83,6 +86,11 @@ sansFontSize = 16
 codeFontSize = 14
 appearanceDiffMarkerStyle = "color"
 browser-show-full-url = true
+notifications-permissions-enabled = true
+mac-menu-bar-enabled = true
+realtimeVoiceScreenContextEnabled = true
+worktree-upstream-refresh-mode = "best-effort"
+git-pr-watch-auto-merge = true
 
   [desktop.open-in-target-preferences]
   global = "systemDefault"
