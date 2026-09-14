@@ -2,8 +2,9 @@ approval_policy = "never"
 sandbox_mode = "danger-full-access"
 model = "gpt-6-astra"
 model_context_window = 872000
-model_reasoning_effort = "medium"
-developer_instructions = "For introspection questions about Codex, inspect `~/code/github.com/openai/`."
+model_reasoning_effort = "xhigh"
+model = "gpt-reserve"
+developer_instructions = "For introspection questions about Codex, inspect `~/code/github.com/openai/codex`."
 service_tier = "priority"
 approvals_reviewer = "auto_review"
 personality = "friendly"
@@ -11,7 +12,8 @@ personality = "friendly"
 
 [mcp_servers.atuin]
 command = "atuin"
-args = ["mcp"]
+args = [ "mcp" ]
+
 [mcp_servers.fff]
 command = "fff-mcp"
 
@@ -162,7 +164,16 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [tui]
-status_line = ["model-with-reasoning", "current-dir", "pull-request-number", "run-state", "permissions", "context-used", "five-hour-limit", "weekly-limit"]
+status_line = [
+  "model-with-reasoning",
+  "current-dir",
+  "pull-request-number",
+  "run-state",
+  "permissions",
+  "context-used",
+  "five-hour-limit",
+  "weekly-limit"
+]
 status_line_use_colors = true
 
 [tui.model_availability_nux]
