@@ -201,6 +201,10 @@ load_plugins() {
 	source <(TCELL_MINIMIZE=1 gh completion -s zsh)
   fi
 
+  if type codex > /dev/null; then
+	  source <(codex completion zsh)
+  fi
+
   if type fd > /dev/null; then
 	  source <(fd --gen-completions)
   fi
