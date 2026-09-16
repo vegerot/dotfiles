@@ -48,14 +48,19 @@ function force() {
                     file=$1
                     cd "$HOME"
                     directory=$(dirname "$file")
+                    destination="$HOME/$file"
                     mkdir -pv "$directory"
                     # A linked parent directory can make the destination the source itself.
                     # Compare parents so this also protects dangling source symlinks.
                     if [[ "$HOME/dotfiles/$directory" -ef "$HOME/$directory" ]]; then
-                        printf "Already linked: %s\n" "$HOME/$file"
+                        printf "Already linked: %s\n" "$destination"
                         exit 0
                     fi
-                    ln -svfn "$HOME/dotfiles/$file" "$HOME/$file"
+                    if [[ -d "$destination" && ! -L "$destination" ]]; then
+                        printf "Refusing to replace directory: %s\n" "$destination" >&2
+                        exit 1
+                    fi
+                    ln -svfn "$HOME/dotfiles/$file" "$destination"
                 ' bash {} \;
 }
 
@@ -70,7 +75,17 @@ function normal() {
                 ! -path "./bootstrap.sh" \
                 ! -path "./README.md" \
                 ! -path "./LICENSE-MIT.txt" \
-                -exec bash -xc 'file=$1; cd "$HOME"; mkdir -pv "$(dirname "$file")"; ln -svn "$HOME/dotfiles/$file" "$HOME/$file"' bash {} \;
+                -exec bash -xc '
+                    file=$1
+                    cd "$HOME"
+                    destination="$HOME/$file"
+                    mkdir -pv "$(dirname "$file")"
+                    if [[ -d "$destination" && ! -L "$destination" ]]; then
+                        printf "Skipping existing directory: %s\n" "$destination"
+                        exit 0
+                    fi
+                    ln -svn "$HOME/dotfiles/$file" "$destination"
+                ' bash {} \;
 }
 
 mode=${1:-""}
