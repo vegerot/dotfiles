@@ -104,6 +104,11 @@ if [ -d "$HOME/Invoke" ]; then
 	export PATH="$PATH:$HOME/Invoke"
 fi
 
+
+if [ -d "$HOME/.railway/bin" ]; then
+	export PATH="$PATH:$HOME/.railway/bin"
+fi
+
 # pnpm
 export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
