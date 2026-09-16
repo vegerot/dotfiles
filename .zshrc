@@ -1,10 +1,6 @@
 set -o nounset
 set -o pipefail
 
-# remove duplicates from PATH
-typeset -aU path
-typeset -U PATH
-
 if command -v cmd.exe &>/dev/null; then
 	local isWSL=true
 else
@@ -16,8 +12,6 @@ if [[ -n "${XDG_CURRENT_SESSION:-}" || -n "${XDG_CURRENT_DESKTOP:-}" ]]; then
 else
 	local has_gnulinux_window_manager=false
 fi
-
-[[ -r ~/.profile ]] && source ~/.profile
 
 if [[ -o interactive ]]; then
 	if [[ -z ${ZSH_SKIP_LOADING_PLUGINS:-} && $OSTYPE == "darwin"* || $isWSL == true ]]; then

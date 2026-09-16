@@ -9,7 +9,7 @@
 ## important stuff goes first
 
 case "$(uname -s)" in
-	Darwin) export PATH="/usr/local/bin$HOME/.cargo/bin:/usr/local/opt/ruby/bin:$PATH" ;;
+	Darwin) export PATH="/usr/local/bin:$HOME/.cargo/bin:/usr/local/opt/ruby/bin:$PATH" ;;
 esac
 
 if [ -d /opt/homebrew ]; then
