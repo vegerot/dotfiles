@@ -1,14 +1,12 @@
 approval_policy = "never"
 sandbox_mode = "danger-full-access"
-model = "gpt-6-astra"
 model_context_window = 872000
-model_reasoning_effort = "xhigh"
-model = "gpt-reserve"
+model = "gpt-5.6-sol"
+model_reasoning_effort = "high"
 developer_instructions = "For introspection questions about Codex, inspect `~/code/github.com/openai/codex`."
-service_tier = "priority"
+service_tier = "default"
 approvals_reviewer = "auto_review"
 personality = "friendly"
-
 
 [mcp_servers.atuin]
 command = "atuin"
@@ -60,6 +58,22 @@ args = [ "bytedcli", "mcp" ]
 [mcp_servers.dayflow]
 command = "start-mcp-else-empty"
 args = [ "/Applications/Dayflow.app/Contents/Helpers/dayflow", "mcp" ]
+
+[tui]
+status_line = [
+  "model-with-reasoning",
+  "current-dir",
+  "pull-request-number",
+  "run-state",
+  "permissions",
+  "context-used",
+  "five-hour-limit",
+  "weekly-limit"
+]
+status_line_use_colors = true
+
+  [tui.model_availability_nux]
+  gpt-6-astra = 4
 
 [features]
 hooks = true
@@ -155,6 +169,8 @@ use_memories = true
 [[skills.config]]
 name = "coco-export-location"
 enabled = false
+
+# Machine-specific config goes on the bottom
 
 [projects."/Users/bytedance/code/github.com/anomalyco/opencode"]
 trust_level = "trusted"
