@@ -17,6 +17,7 @@ if [ -d /opt/homebrew ]; then
 fi
 # use self-built Go if present
 [ -x "$HOME/workspace/googlesource.com/go/bin/go" ] && export PATH="$HOME/workspace/googlesource.com/go/bin:$PATH"
+[ -d /usr/local/go/bin ] && export PATH="$PATH:/usr/local/go/bin"
 
 export PATH="$HOME/bin:$HOME/.local/bin:/sbin:$PATH"
 
@@ -198,4 +199,3 @@ fi
 if [ -d /opt/homebrew/lib ]; then
 	export LIBRARY_PATH="/opt/homebrew/lib:${LIBRARY_PATH:-}"
 fi
-
