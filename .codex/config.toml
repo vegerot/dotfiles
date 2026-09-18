@@ -1,10 +1,10 @@
 approval_policy = "never"
 sandbox_mode = "danger-full-access"
-model_context_window = 872000
 model = "gpt-5.6-sol"
 model_reasoning_effort = "medium"
 developer_instructions = "For introspection questions about Codex, inspect `~/code/github.com/openai/codex`."
 service_tier = "default"
+model_context_window = 900000
 approvals_reviewer = "auto_review"
 personality = "friendly"
 
