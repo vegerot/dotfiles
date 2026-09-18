@@ -1,6 +1,13 @@
 set -o nounset
 set -o pipefail
 
+# Interactive login shells reach .zshrc after macOS's /etc/zprofile/path_helper.
+# Load the shared environment here so its PATH order wins; non-login shells
+# load it from .zshenv instead.
+if [[ -o login && -r ~/.profile ]]; then
+	source ~/.profile
+fi
+
 if command -v cmd.exe &>/dev/null; then
 	local isWSL=true
 else
