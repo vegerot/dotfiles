@@ -7,19 +7,45 @@ import select
 import subprocess
 import sys
 import time
+import unittest
 from pathlib import Path
 
 
-# Each range names the model to use while remaining quota is in that range.
+PARETO_MODELS = [
+    "Astra max",
+    "Astra xhigh",
+    "Astra high",
+    "Astra medium",
+    "Astra low",
+    "Sol medium",
+    "Luna max",
+    "Luna xhigh",
+    "Luna high",
+    "Luna medium",
+    "Luna low",
+]
+ORIGINAL_BANDS = [
+    (100, 87.5),
+    (87.5, 75),
+    (75, 62.5),
+    (62.5, 50),
+    (50, 37.5),
+    (37.5, 25),
+    (25, 20),
+    (20, 15),
+    (15, 10),
+    (10, 5),
+    (5, 0),
+]
 FALLBACK = [
-    (100, 75, "Astra fast"),
-    (75, 50, "Astra"),
-    (50, 25, "Sol fast"),
-    (25, 10, "Sol"),
-    (10, 5, "Terra fast"),
-    (5, 2, "Terra"),
-    (2, 1, "Luna fast"),
-    (1, 0, "Luna"),
+    (
+        mode,
+        round(offset + high / 2, 6),
+        round(offset + low / 2, 6),
+        model,
+    )
+    for mode, offset in (("Fast", 50), ("Standard", 0))
+    for (high, low), model in zip(ORIGINAL_BANDS, PARETO_MODELS)
 ]
 STATE_PATH = Path("~/.codex/model-switch-reminder-state.json").expanduser()
 CODEX = os.environ.get("CODEX_BIN", "/Users/bytedance/.local/bin/codex")
@@ -95,16 +121,25 @@ def remaining_percent(result: dict[str, object]) -> tuple[float, str]:
         ((float(window["usedPercent"]), window) for window in windows),
         key=lambda item: item[0],
     )
-    duration = window.get("windowDurationMins", "quota")
-    return 100 - used, f"{duration}-minute window"
+    duration = window.get("windowDurationMins")
+    return 100 - used, f"{format_duration(duration)} window"
 
 
-def target_model(remaining: float) -> tuple[str, int] | None:
-    for high, low, model in FALLBACK[1:]:
+def format_duration(minutes: object) -> str:
+    if not isinstance(minutes, (int, float)):
+        return "quota"
+    days, remainder = divmod(int(minutes), 24 * 60)
+    hours, minutes = divmod(remainder, 60)
+    return f"{days}d{hours}h{minutes}m"
+
+
+def target_model(remaining: float) -> tuple[str, float] | None:
+    for mode, high, low, model in FALLBACK[1:]:
         if low < remaining <= high:
-            return model, high
+            return f"{mode}: {model}", high
     if remaining <= FALLBACK[-1][1]:
-        return FALLBACK[-1][2], FALLBACK[-1][0]
+        mode, high, _, model = FALLBACK[-1]
+        return f"{mode}: {model}", high
     return None
 
 
@@ -124,7 +159,6 @@ def notify(message: str) -> None:
 
 
 def main() -> None:
-    hook_input = json.load(sys.stdin)
     remaining, window = remaining_percent(read_rate_limits())
     target = target_model(remaining)
     if target is None:
@@ -139,19 +173,75 @@ def main() -> None:
         previous = {}
 
     if previous.get("model") != model:
-        current = hook_input.get("model", "the current model")
         notify(
             f"{remaining:.0f}% remaining in {window}. "
-            f"Switch from {current} to {model}."
+            f"Switch to {model}."
         )
 
     STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
     STATE_PATH.write_text(json.dumps({"model": model, "threshold": threshold}))
 
 
-try:
-    main()
-except Exception as error:
-    # A reminder must never disrupt a Codex turn.
-    if os.environ.get("CODEX_MODEL_REMINDER_DEBUG") == "1":
-        print(f"model-switch-reminder: {error}", file=sys.stderr)
+class ScheduleTests(unittest.TestCase):
+    def test_each_mode_repeats_the_pareto_sequence(self) -> None:
+        self.assertEqual(
+            [stage[3] for stage in FALLBACK[: len(PARETO_MODELS)]], PARETO_MODELS
+        )
+        self.assertEqual(
+            [stage[3] for stage in FALLBACK[len(PARETO_MODELS) :]], PARETO_MODELS
+        )
+
+    def test_modes_meet_at_fifty_percent(self) -> None:
+        self.assertEqual(FALLBACK[10][2], 50)
+        self.assertEqual(FALLBACK[11][1], 50)
+        self.assertEqual(FALLBACK[0][1], 100)
+        self.assertEqual(FALLBACK[-1][2], 0)
+
+    def test_luna_stays_in_each_half_bottom_quarter(self) -> None:
+        self.assertEqual(FALLBACK[6][1:3], (62.5, 60.0))
+        self.assertEqual(FALLBACK[17][1:3], (12.5, 10.0))
+
+    def test_scaled_band_widths(self) -> None:
+        fast_widths = [high - low for _, high, low, _ in FALLBACK[:6]]
+        fast_luna_widths = [high - low for _, high, low, _ in FALLBACK[6:11]]
+        standard_widths = [high - low for _, high, low, _ in FALLBACK[11:17]]
+        standard_luna_widths = [high - low for _, high, low, _ in FALLBACK[17:]]
+        self.assertEqual(fast_widths, [6.25] * 6)
+        self.assertEqual(fast_luna_widths, [2.5] * 5)
+        self.assertEqual(standard_widths, [6.25] * 6)
+        self.assertEqual(standard_luna_widths, [2.5] * 5)
+
+    def test_transition_targets(self) -> None:
+        self.assertIsNone(target_model(100))
+        self.assertEqual(target_model(93.75), ("Fast: Astra xhigh", 93.75))
+        self.assertEqual(target_model(62.5), ("Fast: Luna max", 62.5))
+        self.assertEqual(target_model(50), ("Standard: Astra max", 50.0))
+        self.assertEqual(target_model(12.5), ("Standard: Luna max", 12.5))
+        self.assertEqual(target_model(0), ("Standard: Luna low", 2.5))
+
+    def test_remaining_uses_the_most_constrained_window(self) -> None:
+        result = {
+            "rateLimits": {
+                "primary": {"usedPercent": 30, "windowDurationMins": 15},
+                "secondary": {"usedPercent": 70, "windowDurationMins": 10080},
+            }
+        }
+        self.assertEqual(remaining_percent(result), (30.0, "7d0h0m window"))
+
+    def test_formats_quota_window_duration(self) -> None:
+        self.assertEqual(format_duration(15), "0d0h15m")
+        self.assertEqual(format_duration(90), "0d1h30m")
+        self.assertEqual(format_duration(1500), "1d1h0m")
+        self.assertEqual(format_duration(10080), "7d0h0m")
+
+
+if __name__ == "__main__":
+    if "--test" in sys.argv:
+        unittest.main(argv=[sys.argv[0]])
+    else:
+        try:
+            main()
+        except Exception as error:
+            # A reminder must never disrupt a Codex turn.
+            if os.environ.get("CODEX_MODEL_REMINDER_DEBUG") == "1":
+                print(f"model-switch-reminder: {error}", file=sys.stderr)
