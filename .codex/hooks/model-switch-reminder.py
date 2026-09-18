@@ -24,6 +24,7 @@ PARETO_MODELS = [
     "Luna medium",
     "Luna low",
 ]
+MODEL_EMOJIS = {"Astra": "✨", "Sol": "☀️", "Luna": "🌙"}
 ORIGINAL_BANDS = [
     (100, 87.5),
     (87.5, 75),
@@ -136,11 +137,17 @@ def format_duration(minutes: object) -> str:
 def target_model(remaining: float) -> tuple[str, float] | None:
     for mode, high, low, model in FALLBACK[1:]:
         if low < remaining <= high:
-            return f"{mode}: {model}", high
+            return display_model(model, mode), high
     if remaining <= FALLBACK[-1][1]:
         mode, high, _, model = FALLBACK[-1]
-        return f"{mode}: {model}", high
+        return display_model(model, mode), high
     return None
+
+
+def display_model(model: str, mode: str) -> str:
+    family = model.split(maxsplit=1)[0]
+    label = f"{model} {MODEL_EMOJIS[family]}"
+    return f"{label} (fast)" if mode == "Fast" else label
 
 
 def notify(message: str) -> None:
@@ -213,11 +220,14 @@ class ScheduleTests(unittest.TestCase):
 
     def test_transition_targets(self) -> None:
         self.assertIsNone(target_model(100))
-        self.assertEqual(target_model(93.75), ("Fast: Astra xhigh", 93.75))
-        self.assertEqual(target_model(62.5), ("Fast: Luna max", 62.5))
-        self.assertEqual(target_model(50), ("Standard: Astra max", 50.0))
-        self.assertEqual(target_model(12.5), ("Standard: Luna max", 12.5))
-        self.assertEqual(target_model(0), ("Standard: Luna low", 2.5))
+        self.assertEqual(target_model(93.75), ("Astra xhigh ✨ (fast)", 93.75))
+        self.assertEqual(target_model(62.5), ("Luna max 🌙 (fast)", 62.5))
+        self.assertEqual(target_model(50), ("Astra max ✨", 50.0))
+        self.assertEqual(target_model(12.5), ("Luna max 🌙", 12.5))
+        self.assertEqual(target_model(0), ("Luna low 🌙", 2.5))
+
+    def test_sol_gets_a_sun_emoji(self) -> None:
+        self.assertEqual(display_model("Sol medium", "Standard"), "Sol medium ☀️")
 
     def test_remaining_uses_the_most_constrained_window(self) -> None:
         result = {
