@@ -5,6 +5,8 @@ description: Explain Codex and Claude Code connections to Max's ByteDance Linux 
 
 # Devbox connection context
 
+To learn more information about the devbox and to manage it, visit https://cloud-boe.bytedance.net/devbox/home?x-resource-account=boe&x-bc-region-id=bytedance
+
 ## Choose the active agent
 
 Use the identity of the agent running this session, as given by the session

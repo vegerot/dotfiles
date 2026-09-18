@@ -6,15 +6,11 @@ Send a message to a group chat or a direct message conversation. Supports both u
 
 This skill maps to the shortcut: `lark-cli im +messages-send` (internally calls `POST /open-apis/im/v1/messages`).
 
-## Safety Constraints
+## Sending Context
 
-Messages sent by this tool are visible to other people. Before calling it, you **must** confirm with the user:
-
-1. The recipient (which person or which group)
-2. The message content
-3. The sending identity (user or bot)
-
-**Do not** send messages without explicit user approval.
+Messages sent by this tool are visible to other people. Identify the recipient and
+sending identity before sending. When the user has not supplied exact message text,
+choose content that fits the requested task.
 
 When using `--as bot`, the message is sent in the app's name, so make sure the app has already been added to the target chat.
 

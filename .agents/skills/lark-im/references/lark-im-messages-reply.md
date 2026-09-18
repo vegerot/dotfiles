@@ -6,15 +6,11 @@ Reply to a specific message. Supports both user identity (`--as user`) and bot i
 
 This skill maps to the shortcut: `lark-cli im +messages-reply` (internally calls `POST /open-apis/im/v1/messages/:message_id/reply`).
 
-## Safety Constraints
+## Reply Context
 
-Replies sent by this tool are visible to other people. Before calling it, you **must** confirm with the user:
-
-1. Which message to reply to
-2. The reply content
-3. Which identity to use (user or bot)
-
-**Do not** send a reply without explicit user approval.
+Replies sent by this tool are visible to other people. Identify the target message
+and sending identity before replying. When the user has not supplied exact reply
+text, choose content that fits the requested task.
 
 When using `--as bot`, the reply is sent in the app's name, so make sure the app has already been added to the target chat.
 
