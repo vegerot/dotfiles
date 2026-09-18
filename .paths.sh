@@ -19,7 +19,7 @@ fi
 [ -x "$HOME/workspace/googlesource.com/go/bin/go" ] && export PATH="$HOME/workspace/googlesource.com/go/bin:$PATH"
 [ -d /usr/local/go/bin ] && export PATH="$PATH:/usr/local/go/bin"
 
-export PATH="$HOME/bin:$HOME/.local/bin:/sbin:$PATH"
+export PATH="$HOME/.local/bin:/sbin:$PATH"
 
 # My own scripts. They go before the system directories, so they win.
 [ -d "$HOME/.claude/my-scripts" ] && export PATH="$HOME/.claude/my-scripts:$PATH"
