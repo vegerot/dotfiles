@@ -175,7 +175,7 @@ def main() -> None:
     if previous.get("model") != model:
         notify(
             f"{remaining:.0f}% remaining in {window}. "
-            f"Switch to {model}."
+            f"Do not use any models better than {model}."
         )
 
     STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
