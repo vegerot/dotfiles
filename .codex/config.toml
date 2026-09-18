@@ -1,10 +1,10 @@
 approval_policy = "never"
 sandbox_mode = "danger-full-access"
-model = "gpt-5.6-sol"
-model_reasoning_effort = "medium"
-service_tier = "default"
 model_context_window = 900000
+model = "gpt-reserve"
+model_reasoning_effort = "xhigh"
 developer_instructions = "For introspection questions about Codex, inspect `~/code/github.com/openai/`."
+service_tier = "priority"
 approvals_reviewer = "auto_review"
 personality = "friendly"
 
