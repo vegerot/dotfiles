@@ -144,6 +144,16 @@
             "async": true
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "command": "~/.codex/hooks/model-switch-reminder.py",
+            "type": "command",
+            "timeout": 10,
+            "async": true
+          }
+        ]
       }
     ],
     "SubagentStop": [
