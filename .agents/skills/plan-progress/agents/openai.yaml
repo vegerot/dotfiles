@@ -1,0 +1,3 @@
+interface:
+  display_name: "Plan Progress"
+  short_description: "Set up plan and progress documents in a project"
