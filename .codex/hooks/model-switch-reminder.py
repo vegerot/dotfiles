@@ -49,7 +49,7 @@ FALLBACK = [
     for (high, low), model in zip(ORIGINAL_BANDS, PARETO_MODELS)
 ]
 STATE_PATH = Path("~/.codex/model-switch-reminder-state.json").expanduser()
-CODEX = os.environ.get("CODEX_BIN", "/Users/bytedance/.local/bin/codex")
+CODEX = os.environ.get("CODEX_BIN", str(Path.home() / ".local/bin/codex"))
 
 
 def read_rate_limits() -> dict[str, object]:
@@ -151,13 +151,17 @@ def display_model(model: str, mode: str) -> str:
 
 
 def notify(message: str) -> None:
-    escaped = message.replace("\\", "\\\\").replace('"', '\\"')
-    subprocess.run(
-        [
+    if sys.platform == "darwin":
+        escaped = message.replace("\\", "\\\\").replace('"', '\\"')
+        command = [
             "/usr/bin/osascript",
             "-e",
             f'display notification "{escaped}" with title "Codex model reminder"',
-        ],
+        ]
+    else:
+        command = ["/usr/bin/notify-send", "Codex model reminder", message]
+    subprocess.run(
+        command,
         check=False,
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
