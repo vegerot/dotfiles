@@ -60,6 +60,7 @@ command = "start-mcp-else-empty"
 args = [ "/Applications/Dayflow.app/Contents/Helpers/dayflow", "mcp" ]
 
 [tui]
+terminal_title = ["project-name", "activity", "thread-title"]
 status_line = [
   "model-with-reasoning",
   "current-dir",
@@ -79,6 +80,16 @@ status_line_use_colors = true
 hooks = true
 memories = true
 chronicle = true
+prevent_idle_sleep = true
+multi_agent_v2 = true
+code_mode = true
+code_mode_interrupt = true
+runtime_metrics = true
+step_model_switching = true
+external_agent_memory_import = true
+
+[features.context_management]
+experimental_mode = true
 
 [desktop]
 followUpQueueMode = "steer"
@@ -103,6 +114,7 @@ mac-menu-bar-enabled = true
 realtimeVoiceScreenContextEnabled = true
 worktree-upstream-refresh-mode = "best-effort"
 git-pr-watch-auto-merge = true
+preventSleepWhileRunning = true
 
   [desktop.open-in-target-preferences]
   global = "systemDefault"
