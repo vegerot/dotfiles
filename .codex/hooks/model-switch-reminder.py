@@ -21,8 +21,6 @@ PARETO_MODELS = [
     "Luna max",
     "Luna xhigh",
     "Luna high",
-    "Luna medium",
-    "Luna low",
 ]
 MODEL_EMOJIS = {"Astra": "✨", "Sol": "☀️", "Luna": "🌙"}
 ORIGINAL_BANDS = [
@@ -32,11 +30,9 @@ ORIGINAL_BANDS = [
     (62.5, 50),
     (50, 37.5),
     (37.5, 25),
-    (25, 20),
-    (20, 15),
-    (15, 10),
-    (10, 5),
-    (5, 0),
+    (25, 50 / 3),
+    (50 / 3, 25 / 3),
+    (25 / 3, 0),
 ]
 FALLBACK = [
     (
@@ -203,24 +199,26 @@ class ScheduleTests(unittest.TestCase):
         )
 
     def test_modes_meet_at_fifty_percent(self) -> None:
-        self.assertEqual(FALLBACK[10][2], 50)
-        self.assertEqual(FALLBACK[11][1], 50)
+        self.assertEqual(FALLBACK[8][2], 50)
+        self.assertEqual(FALLBACK[9][1], 50)
         self.assertEqual(FALLBACK[0][1], 100)
         self.assertEqual(FALLBACK[-1][2], 0)
 
     def test_luna_stays_in_each_half_bottom_quarter(self) -> None:
-        self.assertEqual(FALLBACK[6][1:3], (62.5, 60.0))
-        self.assertEqual(FALLBACK[17][1:3], (12.5, 10.0))
+        self.assertEqual((FALLBACK[6][1], FALLBACK[8][2]), (62.5, 50.0))
+        self.assertEqual((FALLBACK[15][1], FALLBACK[17][2]), (12.5, 0.0))
 
     def test_scaled_band_widths(self) -> None:
         fast_widths = [high - low for _, high, low, _ in FALLBACK[:6]]
-        fast_luna_widths = [high - low for _, high, low, _ in FALLBACK[6:11]]
-        standard_widths = [high - low for _, high, low, _ in FALLBACK[11:17]]
-        standard_luna_widths = [high - low for _, high, low, _ in FALLBACK[17:]]
+        fast_luna_widths = [high - low for _, high, low, _ in FALLBACK[6:9]]
+        standard_widths = [high - low for _, high, low, _ in FALLBACK[9:15]]
+        standard_luna_widths = [high - low for _, high, low, _ in FALLBACK[15:]]
         self.assertEqual(fast_widths, [6.25] * 6)
-        self.assertEqual(fast_luna_widths, [2.5] * 5)
         self.assertEqual(standard_widths, [6.25] * 6)
-        self.assertEqual(standard_luna_widths, [2.5] * 5)
+        for widths in (fast_luna_widths, standard_luna_widths):
+            self.assertEqual(len(widths), 3)
+            for width in widths:
+                self.assertAlmostEqual(width, 12.5 / 3, places=5)
 
     def test_transition_targets(self) -> None:
         self.assertIsNone(target_model(100))
@@ -228,7 +226,11 @@ class ScheduleTests(unittest.TestCase):
         self.assertEqual(target_model(62.5), ("Luna max 🌙 (fast)", 62.5))
         self.assertEqual(target_model(50), ("Astra max ✨", 50.0))
         self.assertEqual(target_model(12.5), ("Luna max 🌙", 12.5))
-        self.assertEqual(target_model(0), ("Luna low 🌙", 2.5))
+        self.assertEqual(target_model(58.333333), ("Luna xhigh 🌙 (fast)", 58.333333))
+        self.assertEqual(target_model(54.166667), ("Luna high 🌙 (fast)", 54.166667))
+        self.assertEqual(target_model(8.333333), ("Luna xhigh 🌙", 8.333333))
+        self.assertEqual(target_model(4.166667), ("Luna high 🌙", 4.166667))
+        self.assertEqual(target_model(0), ("Luna high 🌙", 4.166667))
 
     def test_sol_gets_a_sun_emoji(self) -> None:
         self.assertEqual(display_model("Sol medium", "Standard"), "Sol medium ☀️")
