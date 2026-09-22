@@ -83,6 +83,7 @@ mnemonicPrefix = true
   repo = ~/workspace/github.com/vegerot/APODesktop
   repo = ~/code/github.com/vegerot/dotfiles
   repo = ~/code/github.com/vegerot/ai-conversations
+  repo = ~/code/github.com/openai/codex
 
 [gpg]
   format = ssh
