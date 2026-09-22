@@ -62,6 +62,7 @@ function force() {
                     fi
                     ln -svfn "$HOME/dotfiles/$file" "$destination"
                 ' bash {} \;
+        rm -f ~/AGENTS.md
 }
 
 function normal() {
@@ -86,6 +87,7 @@ function normal() {
                     fi
                     ln -svn "$HOME/dotfiles/$file" "$destination"
                 ' bash {} \;
+        rm -f ~/AGENTS.md
 }
 
 mode=${1:-""}
