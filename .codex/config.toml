@@ -76,6 +76,7 @@ status_line_use_colors = true
   gpt-6-astra = 4
 
 [features]
+reasoning_effort_override = true
 hooks = true
 memories = true
 chronicle = true
