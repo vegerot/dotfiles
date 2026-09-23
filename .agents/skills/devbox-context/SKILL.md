@@ -53,6 +53,51 @@ history, see `devbox/connect-from-mac.md`. Treat dated observations as
 history; verify live state before describing versions, process ownership,
 or connectivity as current.
 
+### Android phone over SSH
+
+The Android Debug Bridge (ADB) path is: devbox ADB client → SSH reverse
+forward on `127.0.0.1:5037` → Mac ADB server → USB-connected Pixel 4a.
+The Mac's `devbox` SSH configuration supplies
+`RemoteForward 5037 localhost:5037`. This connection requires the Mac,
+its ADB server, and the forwarding SSH session to remain available,
+independently of the agent's SSH or Remote Control connection.
+
+Include a live tunnel and phone check whenever gathering devbox context:
+
+```bash
+ss --listening --tcp --numeric --processes 'sport = :5037'
+# If ownership is hidden and passwordless sudo is available:
+sudo -n ss --listening --tcp --numeric --processes 'sport = :5037'
+# After confirming the SSH listener, query the forwarded Mac server:
+timeout 10s adb -H 127.0.0.1 -P 5037 devices -l
+```
+
+Report the tunnel and phone separately:
+
+- An `sshd` listener establishes the SSH forward; a successful ADB query
+  establishes that the Mac ADB server is reachable through it. A listening
+  port alone does not establish end-to-end connectivity. If ownership
+  cannot be inspected, report that uncertainty.
+- The Pixel 4a's recorded serial is `08041JEC218600`; verify the current
+  listing. State `device` means connected and authorized; `offline` or
+  `unauthorized` means not ready. A successful query with an empty list
+  means the server is reachable but no phone is connected to it.
+- If no listener exists, report the tunnel as down. If `adb` owns the
+  devbox port, report a local-server collision rather than a working
+  tunnel. Do not run bare `adb devices` or start a local ADB server to
+  diagnose a missing forward: it can occupy the tunnel's port.
+
+When recovery is requested, the dedicated tunnel command runs **on the
+Mac**: `ssh -N -o ExitOnForwardFailure=yes devbox`. Check the Mac's effective
+configuration with `ssh -G devbox`; do not add another `-R` when the forward
+is already configured. A forwarding failure can mean an existing working
+tunnel or a local-server collision; inspect ownership before restarting
+or killing anything. Gathering context alone should not change connections.
+
+See `devbox/adb-tunnel-from-mac.md` and
+`devbox/adb-port-owner-and-devtools-origin.md` in the archive for setup and
+the previously observed port collision.
+
 ## Codex only
 
 ### Three main Codex connection paths
