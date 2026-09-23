@@ -70,67 +70,109 @@ status_line = [
   "five-hour-limit",
   "weekly-limit"
 ]
+# Colors terminal status-line items using the active syntax theme.
 status_line_use_colors = true
 
   [tui.model_availability_nux]
   gpt-6-astra = 4
 
 [features]
+# Preserves the request-level reasoning baseline and appends effort updates on supported OpenAI models to retain cache reuse.
 reasoning_effort_override = true
 hooks = true
 memories = true
+# Enables the Chronicle sidecar for passive screen-context memories.
 chronicle = true
 prevent_idle_sleep = true
+# Enables task-path-based routing for cooperating agents.
 multi_agent_v2 = true
 code_mode = true
+# Terminates active code-mode cells when their turn is interrupted.
 code_mode_interrupt = true
+# Enables runtime metric snapshots for inspection by a metrics reader.
 runtime_metrics = true
+# Allows explicitly requested model changes to take effect in later steps of a turn.
 step_model_switching = true
+# Enables importing project-scoped memories from other agents.
 external_agent_memory_import = true
 
 [features.context_management]
 experimental_mode = true
 
 [desktop]
+# Controls whether follow-up messages steer, queue behind, or interrupt the active turn.
 followUpQueueMode = "steer"
+# Selects how much step, command, and execution detail appears in conversations.
 conversationDetailMode = "STEPS_COMMANDS"
+# Enables ambient task suggestions on the home page.
 ambient-suggestions-enabled = true
+# Shows context-window usage in the message composer.
 show-context-window-usage = true
+# Allows the app to display confetti celebrations.
 toys-confetti-enabled = true
+# Makes conversation navigation rails react to system playback audio.
 toys-audio-visualizer-enabled = true
+# Automatically keeps imported content from other agents in sync.
 external-agent-import-sync-enabled = false
+# Chooses which imported content categories stay in sync, with all including categories discovered later.
 external-agent-import-sync-item-types = "all"
+# Selects system, light, or dark app appearance.
 appearanceTheme = "system"
+# Selects the code syntax theme used in light mode.
 appearanceLightCodeThemeId = "codex"
+# Selects the preferred macOS Dock icon.
 dock-icon-preference = "codex-system"
+# Uses pointer cursors over interactive controls.
 usePointerCursors = true
+# Sets the base user-interface font size.
 sansFontSize = 16
+# Sets the code font size.
 codeFontSize = 14
+# Chooses colored or symbolic change markers in code review views.
 appearanceDiffMarkerStyle = "color"
+# Shows the full URL in the in-app browser address bar.
 browser-show-full-url = true
+# Enables notifications for permission requests.
 notifications-permissions-enabled = true
+# Chooses the default panel location for terminal tabs.
 defaultTerminalLocation = "bottom"
+# Shows the app in the macOS menu bar.
 mac-menu-bar-enabled = true
+# Allows realtime voice to inspect the foreground app when the user refers to screen content.
 realtimeVoiceScreenContextEnabled = true
+# Controls whether upstream branches are refreshed before creating a worktree.
 worktree-upstream-refresh-mode = "best-effort"
+# Controls whether watched pull requests are merged when ready.
 git-pr-watch-auto-merge = true
+# Keeps the machine awake while Codex is running.
 preventSleepWhileRunning = true
 
   [desktop.open-in-target-preferences]
+  # Selects the default application target for opening filesystem paths.
   global = "systemDefault"
 
   [desktop.appearanceLightChromeTheme]
+  # Sets the accent color for the light-mode app interface.
   accent = "#0169cc"
+  # Selects whether the accent comes from ChatGPT or a custom color.
   accentSource = "chatgpt"
+  # Sets light-mode interface contrast on a scale from 0 to 100.
   contrast = 45
+  # Sets the foreground ink color for the light-mode interface.
   ink = "#0d0d0d"
+  # Controls whether light-mode windows use opaque surfaces.
   opaqueWindows = false
+  # Sets the surface background color for the light-mode interface.
   surface = "#ffffff"
+  # Stores font overrides for the light-mode interface.
   fonts = { }
 
     [desktop.appearanceLightChromeTheme.semanticColors]
+    # Sets the light-mode color for added code.
     diffAdded = "#00a240"
+    # Sets the light-mode color for removed code.
     diffRemoved = "#e02e2a"
+    # Sets the light-mode color used for skills.
     skill = "#751ed9"
 
 [plugins."codex-app-tools@openai-bundled"]
@@ -180,6 +222,7 @@ generate_memories = true
 use_memories = true
 
 [[skills.config]]
+# Selects the skill by name rather than by its filesystem path.
 name = "coco-export-location"
 enabled = false
 
