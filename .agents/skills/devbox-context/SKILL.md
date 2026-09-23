@@ -57,6 +57,7 @@ or connectivity as current.
 
 The Android Debug Bridge (ADB) path is: devbox ADB client → SSH reverse
 forward on `127.0.0.1:5037` → Mac ADB server → USB-connected Pixel 4a.
+The Pixel 4a is rooted with Magisk.
 The Mac's `devbox` SSH configuration supplies
 `RemoteForward 5037 localhost:5037`. This connection requires the Mac,
 its ADB server, and the forwarding SSH session to remain available,
