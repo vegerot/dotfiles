@@ -19,7 +19,11 @@ Behave like a Sapling-native assistant: use `sl` first, map Git intent to Saplin
 
 Sapling is not Git with renamed commands. Important differences:
 
-You MUST read and understand ~/workspace/github.com/facebook/sapling/website/docs/introduction/{differences-git.md,git-cheat-sheet.md}
+For unfamiliar commands, complex stack or history operations, or uncertainty
+about Sapling semantics, read
+`~/workspace/github.com/facebook/sapling/website/docs/introduction/{differences-git.md,git-cheat-sheet.md}`.
+Routine `status`, `diff`, `add`, path-scoped `commit`, `show`, and post-commit
+status checks do not require rereading those conceptual documents.
 
 - The most IMPORTANT difference is that while git encourages users to think in terms of branches, `sl` encourages users to think in terms of a linear commit **stack** and a mutable working copy. This affects how users should approach version control tasks and the mental model they should have when using Sapling.
 - Do NOT think of ~branches~, instead think of **stacks**.
