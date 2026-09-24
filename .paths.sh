@@ -19,7 +19,7 @@ fi
 [ -x "$HOME/workspace/googlesource.com/go/bin/go" ] && export PATH="$HOME/workspace/googlesource.com/go/bin:$PATH"
 [ -d /usr/local/go/bin ] && export PATH="$PATH:/usr/local/go/bin"
 
-export PATH="$HOME/.local/bin:/sbin:$PATH"
+export PATH="$HOME/.local/bin:$HOME/dotfiles/bin:/sbin:$PATH"
 
 # My own scripts. They go before the system directories, so they win.
 [ -d "$HOME/.claude/my-scripts" ] && export PATH="$HOME/.claude/my-scripts:$PATH"
@@ -36,7 +36,7 @@ export DENO_INSTALL="$HOME/.deno"
 [ -d "$DENO_INSTALL" ] && export PATH="$PATH:$DENO_INSTALL/bin"
 
 export GOPATH="$HOME/go"
-export PATH="$PATH:/usr/local/lib:$GOPATH/bin:$HOME/dotfiles/bin"
+export PATH="$PATH:/usr/local/lib:$GOPATH/bin"
 
 CISCO_BIN="/opt/cisco/anyconnect/bin"
 [ -d "$CISCO_BIN" ] && export PATH="$PATH:$CISCO_BIN"
