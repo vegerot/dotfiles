@@ -149,6 +149,7 @@
         "hooks": [
           {
             "command": "~/.codex/hooks/model-switch-reminder.py",
+            "commandWindows": "pwsh -NoProfile -Command \"py -3 (Join-Path ~ '.codex/hooks/model-switch-reminder.py')\"",
             "type": "command",
             "timeout": 10,
             "async": true

@@ -2,10 +2,13 @@
 """Remind me to switch models as Codex quota is consumed."""
 
 import json
+import base64
 import os
-import select
+import queue
+import shutil
 import subprocess
 import sys
+import threading
 import time
 import unittest
 from pathlib import Path
@@ -45,25 +48,12 @@ FALLBACK = [
     for (high, low), model in zip(ORIGINAL_BANDS, PARETO_MODELS)
 ]
 STATE_PATH = Path("~/.codex/model-switch-reminder-state.json").expanduser()
-CODEX = os.environ.get("CODEX_BIN", str(Path.home() / ".local/bin/codex"))
+CODEX = os.environ.get("CODEX_BIN") or shutil.which("codex") or str(
+    Path.home() / ".local/bin/codex"
+)
 
 
 def read_rate_limits() -> dict[str, object]:
-    messages = [
-        {
-            "method": "initialize",
-            "id": 1,
-            "params": {
-                "clientInfo": {
-                    "name": "model_switch_reminder",
-                    "title": "Codex model switch reminder",
-                    "version": "1.0.0",
-                }
-            },
-        },
-        {"method": "initialized", "params": {}},
-        {"method": "account/rateLimits/read", "id": 2},
-    ]
     process = subprocess.Popen(
         [CODEX, "app-server"],
         stdin=subprocess.PIPE,
@@ -77,24 +67,53 @@ def read_rate_limits() -> dict[str, object]:
             ),
         },
     )
-    try:
-        process.stdin.write(
-            "\n".join(json.dumps(message) for message in messages) + "\n"
-        )
+    messages: queue.Queue[str] = queue.Queue()
+
+    def read_stdout() -> None:
+        for line in process.stdout:
+            messages.put(line)
+
+    threading.Thread(target=read_stdout, daemon=True).start()
+
+    def send(message: dict[str, object]) -> None:
+        process.stdin.write(json.dumps(message) + "\n")
         process.stdin.flush()
+
+    def receive(response_id: int, deadline: float) -> dict[str, object]:
+        while True:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise RuntimeError(
+                    f"app-server returned no response for request {response_id}"
+                )
+            try:
+                message = json.loads(messages.get(timeout=remaining))
+            except queue.Empty as error:
+                raise RuntimeError(
+                    f"app-server returned no response for request {response_id}"
+                ) from error
+            if message.get("id") == response_id:
+                return message
+
+    try:
         deadline = time.monotonic() + 4
-        while time.monotonic() < deadline:
-            ready, _, _ = select.select(
-                [process.stdout], [], [], max(0, deadline - time.monotonic())
-            )
-            if not ready:
-                break
-            line = process.stdout.readline()
-            if not line:
-                break
-            message = json.loads(line)
-            if message.get("id") == 2:
-                return message["result"]
+        send(
+            {
+                "method": "initialize",
+                "id": 1,
+                "params": {
+                    "clientInfo": {
+                        "name": "model_switch_reminder",
+                        "title": "Codex model switch reminder",
+                        "version": "1.0.0",
+                    }
+                },
+            }
+        )
+        receive(1, deadline)
+        send({"method": "initialized", "params": {}})
+        send({"method": "account/rateLimits/read", "id": 2})
+        return receive(2, deadline)["result"]
     finally:
         if process.poll() is None:
             process.terminate()
@@ -103,7 +122,6 @@ def read_rate_limits() -> dict[str, object]:
             except subprocess.TimeoutExpired:
                 process.kill()
                 process.wait()
-    raise RuntimeError("account/rateLimits/read returned no result")
 
 
 def remaining_percent(result: dict[str, object]) -> tuple[float, str]:
@@ -154,6 +172,35 @@ def notify(message: str) -> None:
             "-e",
             f'display notification "{escaped}" with title "Codex model reminder"',
         ]
+    elif sys.platform == "win32":
+        escaped = message.replace("'", "''")
+        script = (
+            "$ErrorActionPreference = 'Stop'; "
+            "[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] > $null; "
+            "[Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] > $null; "
+            "$xml = [Windows.Data.Xml.Dom.XmlDocument]::new(); "
+            "$xml.LoadXml('<toast><visual><binding template=\"ToastGeneric\"><text>Codex model reminder</text><text /></binding></visual></toast>'); "
+            f"$xml.GetElementsByTagName('text').Item(1).InnerText = '{escaped}'; "
+            "$notifier = [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier('OpenAI.Codex_2p2nqsd0c76g0!App'); "
+            "if ($notifier.Setting -ne 'Enabled') { throw ('Notifications: ' + $notifier.Setting) }; "
+            "$notifier.Show([Windows.UI.Notifications.ToastNotification]::new($xml))"
+        )
+        subprocess.run(
+            [
+                "powershell.exe",
+                "-NoProfile",
+                "-NonInteractive",
+                "-WindowStyle",
+                "Hidden",
+                "-EncodedCommand",
+                base64.b64encode(script.encode('utf-16le')).decode('ascii'),
+            ],
+            creationflags=subprocess.CREATE_NO_WINDOW,
+            check=True,
+            capture_output=True,
+            timeout=5,
+        )
+        return
     else:
         command = ["/usr/bin/notify-send", "Codex model reminder", message]
     subprocess.run(
