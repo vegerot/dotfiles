@@ -49,6 +49,13 @@ if [ -n "$used_pct" ]; then
   ctx_part=" ctx:${used_int}%"
 fi
 
+# --- Session cost (list-price estimate; on a subscription nothing is billed) ---
+cost_part=""
+cost=$(echo "$input" | jq -r '.cost.total_cost_usd // empty')
+if [ -n "$cost" ]; then
+  cost_part=" 💸\$$(printf '%.2f' "$cost")"
+fi
+
 # --- Rate limits (Claude.ai subscribers only) ---
 rate_part=""
 five=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
@@ -68,5 +75,6 @@ printf '\033[32m🪪 %s\033[0m 💻\033[32m%s\033[0m: \033[34m📁 %s\033[0m' \
 [ -n "$branch" ] && printf ' \033[35m%s\033[0m' "$branch"
 [ -n "$model"  ] && printf ' \033[36m[%s]\033[0m' "$model"
 [ -n "$ctx_part"  ] && printf '\033[33m%s\033[0m' "$ctx_part"
+[ -n "$cost_part" ] && printf '\033[33m%s\033[0m' "$cost_part"
 [ -n "$rate_part" ] && printf '\033[33m%s\033[0m' "$rate_part"
 printf '\n'
