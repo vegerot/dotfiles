@@ -23,3 +23,7 @@ Thumbs.db
 
 # Claude Code bridge worktrees
 .claude/worktrees/
+
+# Codex-generated bundled skill caches
+.codex/skills/.system/
+.agents/skills/.system/
