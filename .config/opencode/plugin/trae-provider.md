@@ -8,7 +8,7 @@
 - Trae owns model discovery in `$TRAECLI_HOME/models_cache.json` and refreshes it through `traex debug models --remote`.
 - The plugin owns only protocol translation and OpenCode model registration.
 
-The catalog is loaded from cache before one process-wide background refresh. This is intentional: local parsing was measured in milliseconds, while a remote refresh took about four seconds. Standard and Max routes are separate OpenCode models because their backend keys and context limits differ.
+The catalog is loaded from cache before one process-wide background refresh. This is intentional: local parsing was measured in milliseconds, while a remote refresh took about four seconds. An isolated stale-cache test proved that the refresh can restore a missing model without restarting OpenCode. A later three-run probe took 4.78, 3.78, and 3.94 seconds and changed only `fetched_at`, not the normalized routes. That short same-minute sample is not enough to discard live refresh; revisit it only after observing normal launches over a longer period. Standard and Max routes are separate OpenCode models because their backend keys and context limits differ.
 
 ## Verified protocol assumptions
 
