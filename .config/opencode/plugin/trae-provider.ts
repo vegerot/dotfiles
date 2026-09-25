@@ -31,7 +31,7 @@ type CachedModel = Readonly<{
   }>
 }>
 
-type ModelRoute = Readonly<{
+export type ModelRoute = Readonly<{
   name: string
   sourceSlug: string
   mode: "standard" | "max"
@@ -41,7 +41,7 @@ type ModelRoute = Readonly<{
   output: number
 }>
 
-type ChatMessage = Readonly<{
+export type ChatMessage = Readonly<{
   role: string
   content?: string | null | ReadonlyArray<Readonly<Record<string, unknown>>>
   tool_calls?: ReadonlyArray<
@@ -54,7 +54,7 @@ type ChatMessage = Readonly<{
   tool_call_id?: string
 }>
 
-type ChatRequest = Readonly<{
+export type ChatRequest = Readonly<{
   model: string
   messages: ReadonlyArray<ChatMessage>
   tools?: ReadonlyArray<Readonly<Record<string, unknown>>>
@@ -300,7 +300,7 @@ function contentParts(content: ChatMessage["content"]) {
   return content
 }
 
-function messages(input: ReadonlyArray<ChatMessage>) {
+export function translateMessages(input: ReadonlyArray<ChatMessage>) {
   return input.map((message) => ({
     role: message.role,
     content: contentParts(message.content),
@@ -318,7 +318,7 @@ function messages(input: ReadonlyArray<ChatMessage>) {
   }))
 }
 
-function userInput(input: ReadonlyArray<ChatMessage>) {
+export function latestUserInput(input: ReadonlyArray<ChatMessage>) {
   const content = input.findLast((message) => message.role === "user")?.content
   if (typeof content === "string") return content
   if (!Array.isArray(content)) return ""
@@ -328,7 +328,7 @@ function userInput(input: ReadonlyArray<ChatMessage>) {
     .join("\n")
 }
 
-function tools(input: ReadonlyArray<Readonly<Record<string, unknown>>>) {
+export function translateTools(input: ReadonlyArray<Readonly<Record<string, unknown>>>) {
   return input.map((tool) => {
     if (tool.type !== "function" || typeof tool.function !== "object" || !tool.function) return tool
     const { strict: _, parameters, ...definition } = tool.function as Readonly<Record<string, unknown>>
@@ -347,23 +347,26 @@ async function refreshAuth() {
   await process.exited
 }
 
-async function requestTrae(body: ChatRequest, signal: AbortSignal, state: RequestState, attempt = 1): Promise<Response> {
-  const model = models[body.model]
-  const id = crypto.randomUUID()
-  const payload = {
+export function buildTraePayload(body: ChatRequest, model: ModelRoute, id: string) {
+  return {
     access_type: 4,
     config_name: model.config,
     conversation_id: id,
     extra_info: "",
     is_preset: true,
     max_tokens: body.max_tokens ?? body.max_completion_tokens ?? 32_768,
-    messages: messages(body.messages),
+    messages: translateMessages(body.messages),
     model_name: model.backend,
     parallel_tool_calls: body.parallel_tool_calls ?? true,
     session_id: id,
-    tools: tools(body.tools ?? []),
-    user_input: userInput(body.messages),
+    tools: translateTools(body.tools ?? []),
+    user_input: latestUserInput(body.messages),
   }
+}
+
+async function requestTrae(body: ChatRequest, signal: AbortSignal, state: RequestState, attempt = 1): Promise<Response> {
+  const model = models[body.model]
+  const payload = buildTraePayload(body, model, crypto.randomUUID())
   const encoded = JSON.stringify(payload)
   state.requestBytes = Buffer.byteLength(encoded)
   log("info", "request.start", {
@@ -450,7 +453,7 @@ function chunk(model: string, delta: Readonly<Record<string, unknown>>, finishRe
   })
 }
 
-function finishReason(reason: string | undefined) {
+export function translateFinishReason(reason: string | undefined) {
   if (reason === "tool_use" || reason === "function_call") return "tool_calls"
   if (reason === "max_tokens") return "length"
   return reason ?? "stop"
@@ -503,7 +506,7 @@ function translate(eventName: string, event: TraeEvent, model: string, state: Re
     })}\n\n`
   }
   if (eventName === "done") {
-    return `data: ${chunk(model, {}, finishReason(event.finish_reason))}\n\ndata: [DONE]\n\n`
+    return `data: ${chunk(model, {}, translateFinishReason(event.finish_reason))}\n\ndata: [DONE]\n\n`
   }
   if (eventName === "error") {
     const message = typeof event.message === "string" ? event.message : JSON.stringify(event)
@@ -512,7 +515,7 @@ function translate(eventName: string, event: TraeEvent, model: string, state: Re
   return ""
 }
 
-function translatedStream(response: Response, model: string, state: RequestState) {
+export function translatedStream(response: Response, model: string, state: RequestState) {
   const reader = response.body!.getReader()
   const decoder = new TextDecoder()
   const encoder = new TextEncoder()
