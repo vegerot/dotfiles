@@ -11,6 +11,7 @@ type CachedModel = Readonly<{
   output_tokens_hard_limit?: number
   visibility?: string
   supported_in_api?: boolean
+  supported_reasoning_levels?: ReadonlyArray<Readonly<{ effort: string }>>
   business_metadata?: Readonly<{
     variants?: Readonly<{
       standard_key?: string
@@ -30,6 +31,7 @@ export type ModelRoute = Readonly<{
   backend: string
   context: number
   output: number
+  reasoning: ReadonlyArray<string>
 }>
 
 export type ChatMessage = Readonly<{
@@ -53,6 +55,7 @@ export type ChatRequest = Readonly<{
   parallel_tool_calls?: boolean
   max_tokens?: number
   max_completion_tokens?: number
+  reasoning_effort?: string
 }>
 
 type TraeEvent = Readonly<Record<string, unknown>> &
@@ -80,6 +83,10 @@ function cachePath() {
   return `${traeHome()}/models_cache.json`
 }
 
+export function reasoningVariants(efforts: ReadonlyArray<string>) {
+  return efforts.map((effort) => ({ id: effort, settings: { reasoningEffort: effort } }))
+}
+
 export function translateCatalog(catalog: CachedCatalog, path: string) {
   if (!Array.isArray(catalog.models)) throw new Error(`Invalid Trae model cache: ${path}`)
 
@@ -93,12 +100,14 @@ export function translateCatalog(catalog: CachedCatalog, path: string) {
     const backend = variants.standard_key
     const context = variants.standard_context_window
     const output = variants.backend_token_limits?.[backend]?.output_tokens ?? model.output_tokens_hard_limit ?? 32_768
+    const reasoning = model.supported_reasoning_levels?.map((level) => level.effort) ?? []
     loaded[model.slug] = {
       name: model.slug,
       config,
       backend,
       context,
       output,
+      reasoning,
     }
 
     if (variants.max_key && variants.max_context_window) {
@@ -110,6 +119,7 @@ export function translateCatalog(catalog: CachedCatalog, path: string) {
         context: variants.max_context_window,
         output:
           variants.backend_token_limits?.[variants.max_key]?.output_tokens ?? model.output_tokens_hard_limit ?? 32_768,
+        reasoning,
       }
     }
   }
@@ -257,6 +267,7 @@ export function buildTraePayload(body: ChatRequest, model: ModelRoute, id: strin
     messages: translateMessages(body.messages),
     model_name: model.backend,
     parallel_tool_calls: body.parallel_tool_calls ?? true,
+    ...(body.reasoning_effort ? { reasoning_effort: body.reasoning_effort } : {}),
     session_id: id,
     tools: translateTools(body.tools ?? []),
     user_input: latestUserInput(body.messages),
@@ -417,6 +428,7 @@ export default {
           }
           model.capabilities = { tools: true, input: ["text"], output: ["text"] }
           model.limit = { context: info.context, output: info.output }
+          model.variants = reasoningVariants(info.reasoning)
         })
       }
     })

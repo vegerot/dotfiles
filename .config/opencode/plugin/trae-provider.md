@@ -8,7 +8,7 @@
 - Trae owns model discovery in `$TRAECLI_HOME/models_cache.json` and refreshes it through `traex debug models --remote`.
 - The plugin owns only protocol translation and OpenCode model registration.
 
-The catalog is loaded from cache before one process-wide background refresh. This is intentional: local parsing was measured in milliseconds, while a remote refresh took about four seconds. An isolated stale-cache test proved that the refresh can restore a missing model without restarting OpenCode. A later three-run probe took 4.78, 3.78, and 3.94 seconds and changed only `fetched_at`, not the normalized routes. That short same-minute sample is not enough to discard live refresh; revisit it only after observing normal launches over a longer period. Standard and Max routes are separate OpenCode models because their backend keys and context limits differ.
+The catalog is loaded from cache before one process-wide background refresh. This is intentional: local parsing was measured in milliseconds, while a remote refresh took about four seconds. An isolated stale-cache test proved that the refresh can restore a missing model without restarting OpenCode. A later three-run probe took 4.78, 3.78, and 3.94 seconds and changed only `fetched_at`, not the normalized routes. That short same-minute sample is not enough to discard live refresh; revisit it only after observing normal launches over a longer period. Standard and Max routes are separate OpenCode models because their backend keys and context limits differ. Trae's model-level `supported_reasoning_levels` become OpenCode variants on both routes. Selecting a variant such as `trae/GPT-5.6-Sol#high` sends that effort to Trae as `reasoning_effort`.
 
 ## Verified protocol assumptions
 
@@ -36,6 +36,14 @@ Run live text, tool, and long-context checks:
 
 ```sh
 ./.config/opencode/plugin/trae-provider-smoke.sh
+```
+
+Verify a reasoning variant without restarting or interrupting the shared service:
+
+```sh
+opencode run --standalone \
+  --model 'trae/GPT-5.6-Sol#high' \
+  'Reply with exactly: TRAE_REASONING_VARIANT_OK'
 ```
 
 Protocol and refresh failures flow through OpenCode's service log. The provider intentionally does not maintain a second append-only log.

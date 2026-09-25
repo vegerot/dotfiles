@@ -17,6 +17,7 @@ describe("Trae model catalog", () => {
             slug: "Visible",
             config_name: "visible",
             visibility: "list",
+            supported_reasoning_levels: [{ effort: "low" }, { effort: "high" }],
             business_metadata: {
               variants: {
                 standard_key: "visible__dev",
@@ -53,15 +54,30 @@ describe("Trae model catalog", () => {
     )
 
     expect(snapshot.models).toEqual({
-      Visible: { name: "Visible", config: "visible", backend: "visible__dev", context: 100_000, output: 8_192 },
+      Visible: {
+        name: "Visible",
+        config: "visible",
+        backend: "visible__dev",
+        context: 100_000,
+        output: 8_192,
+        reasoning: ["low", "high"],
+      },
       "Visible-Max": {
         name: "Visible / Max",
         config: "visible",
         backend: "visible__max",
         context: 800_000,
         output: 64_000,
+        reasoning: ["low", "high"],
       },
     })
+  })
+
+  test("exposes Trae reasoning efforts as OpenCode variants", () => {
+    expect(provider.reasoningVariants(["low", "high"])).toEqual([
+      { id: "low", settings: { reasoningEffort: "low" } },
+      { id: "high", settings: { reasoningEffort: "high" } },
+    ])
   })
 
   test("rejects a visible model without an explicit standard route", () => {
@@ -82,12 +98,14 @@ describe("OpenAI Chat request to Trae raw chat", () => {
       backend: "gpt-5.6-sol__dev",
       context: 272_000,
       output: 32_768,
+      reasoning: ["low", "medium", "high", "xhigh"],
     }
     const payload = provider.buildTraePayload(
       {
         model: "GPT-5.6-Sol",
         max_tokens: 4_096,
         parallel_tool_calls: false,
+        reasoning_effort: "high",
         messages: [
           { role: "system", content: "Be concise" },
           {
@@ -142,6 +160,7 @@ describe("OpenAI Chat request to Trae raw chat", () => {
       ],
       model_name: "gpt-5.6-sol__dev",
       parallel_tool_calls: false,
+      reasoning_effort: "high",
       session_id: "conversation-1",
       tools: [
         {
@@ -168,6 +187,7 @@ describe("OpenAI Chat request to Trae raw chat", () => {
       backend: "small-model__dev",
       context: 100_000,
       output: 8_192,
+      reasoning: [],
     }
 
     const payload = provider.buildTraePayload(
