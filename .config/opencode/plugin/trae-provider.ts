@@ -1,14 +1,15 @@
-import { createWriteStream, mkdirSync } from "node:fs"
-import { homedir } from "node:os"
-import { dirname, join } from "node:path"
+import { createWriteStream } from "node:fs"
 
 const HOST = "127.0.0.1"
 const PORT = 43821
 const TRAE_URL = "https://copilot-cn.bytedance.net/api/ide/v2/llm_raw_chat"
 const TRAE_APP_ID = "6eefa01c-1036-4c7e-9ca5-d891f63bfcd8"
-const DEBUG = ["1", "true", "yes"].includes((process.env.OPENCODE_TRAE_DEBUG ?? "").toLowerCase())
+const REFRESH_TIMEOUT_MS = 15_000
+const USER_HOME = Bun.env.HOME
+if (!USER_HOME) throw new Error("HOME is not set")
+const DEBUG = ["1", "true", "yes"].includes((Bun.env.OPENCODE_TRAE_DEBUG ?? "").toLowerCase())
 const LOG_PATH =
-  process.env.OPENCODE_TRAE_LOG ?? join(homedir(), ".local", "share", "opencode", "log", "trae-provider.log")
+  Bun.env.OPENCODE_TRAE_LOG ?? `${USER_HOME}/.local/share/opencode/log/trae-provider.log`
 
 type CachedModel = Readonly<{
   slug: string
@@ -39,9 +40,6 @@ type ModelRoute = Readonly<{
   context: number
   output: number
 }>
-
-let models: Readonly<Record<string, ModelRoute>> = {}
-let catalogInfo: Readonly<Record<string, unknown>> = {}
 
 type ChatMessage = Readonly<{
   role: string
@@ -109,8 +107,30 @@ type CachedCatalog = Readonly<{
   models?: ReadonlyArray<CachedModel>
 }>
 
+type CatalogInfo = Readonly<{
+  path: string
+  cacheSchemaVersion?: number
+  clientVersion?: string
+  fetchedAt?: string
+  providerMode?: string
+  sourceModelCount: number
+  registeredModelCount: number
+  maxModelCount: number
+}>
+
+type CatalogSnapshot = Readonly<{
+  models: Readonly<Record<string, ModelRoute>>
+  info: CatalogInfo
+}>
+
 let lastRequest: RequestState | undefined
 let logStream: ReturnType<typeof createWriteStream> | undefined
+let models: Readonly<Record<string, ModelRoute>> = {}
+let catalogInfo: CatalogInfo | undefined
+let initializePromise: Promise<void> | undefined
+let refreshPromise: Promise<void> | undefined
+let refreshedDuringInitialization = false
+const providerReloads = new Set<() => Promise<void>>()
 
 function errorInfo(
   error: unknown,
@@ -127,20 +147,17 @@ function errorInfo(
 
 function log(level: "debug" | "info" | "error", event: string, data: Readonly<Record<string, unknown>> = {}) {
   if (level === "debug" && !DEBUG) return
-  if (!logStream) {
-    mkdirSync(dirname(LOG_PATH), { recursive: true })
-    logStream = createWriteStream(LOG_PATH, { flags: "a" })
-  }
+  if (!logStream) logStream = createWriteStream(LOG_PATH, { flags: "a" })
   logStream.write(`${JSON.stringify({ ...data, timestamp: new Date().toISOString(), level, event, pid: process.pid })}\n`)
 }
 
 function cachePath() {
-  return join(traeHome(), "models_cache.json")
+  return `${traeHome()}/models_cache.json`
 }
 
-async function loadModels() {
+async function readCatalog(): Promise<CatalogSnapshot> {
   const path = cachePath()
-  const catalog = (await Bun.file(path).json()) as CachedCatalog
+  const catalog: CachedCatalog = (await Bun.file(path).json())
   if (!Array.isArray(catalog.models)) throw new Error(`Invalid Trae model cache: ${path}`)
 
   const loaded: Record<string, ModelRoute> = {}
@@ -178,27 +195,100 @@ async function loadModels() {
   }
   if (!Object.keys(loaded).length) throw new Error(`Trae model cache has no visible API models: ${path}`)
 
-  catalogInfo = {
-    path,
-    cacheSchemaVersion: catalog.cache_schema_version,
-    clientVersion: catalog.client_version,
-    fetchedAt: catalog.fetched_at,
-    providerMode: catalog.provider_mode,
-    sourceModelCount: catalog.models.length,
-    registeredModelCount: Object.keys(loaded).length,
-    maxModelCount: Object.values(loaded).filter((model) => model.mode === "max").length,
+  return {
+    models: loaded,
+    info: {
+      path,
+      cacheSchemaVersion: catalog.cache_schema_version,
+      clientVersion: catalog.client_version,
+      fetchedAt: catalog.fetched_at,
+      providerMode: catalog.provider_mode,
+      sourceModelCount: catalog.models.length,
+      registeredModelCount: Object.keys(loaded).length,
+      maxModelCount: Object.values(loaded).filter((model) => model.mode === "max").length,
+    },
   }
-  log("info", "catalog.loaded", catalogInfo)
-  return loaded
+}
+
+function catalogFingerprint(catalog: Readonly<Record<string, ModelRoute>>) {
+  return JSON.stringify(Object.entries(catalog).sort(([left], [right]) => left.localeCompare(right)))
+}
+
+async function refreshCache(reason: "cache-miss" | "startup") {
+  const executable = Bun.which("traex")
+  if (!executable) throw new Error("Cannot refresh Trae models because `traex` is not on PATH")
+
+  log("info", "catalog.refresh.start", { reason, timeoutMs: REFRESH_TIMEOUT_MS })
+  const started = performance.now()
+  const process = Bun.spawn([executable, "debug", "models", "--remote"], {
+    stdout: "ignore",
+    stderr: "pipe",
+  })
+  const stderr = new Response(process.stderr).text()
+  let timedOut = false
+  const timeout = setTimeout(() => {
+    timedOut = true
+    process.kill()
+  }, REFRESH_TIMEOUT_MS)
+  const [exitCode, errorOutput] = await Promise.all([process.exited, stderr])
+  clearTimeout(timeout)
+  const elapsedMs = performance.now() - started
+  if (timedOut) throw new Error(`Trae model refresh timed out after ${REFRESH_TIMEOUT_MS} ms`)
+  if (exitCode !== 0) throw new Error(`Trae model refresh failed (${exitCode}): ${errorOutput.trim().slice(0, 2_000)}`)
+  log("info", "catalog.refresh.complete", { reason, elapsedMs })
+}
+
+async function initializeCatalog() {
+  initializePromise ??= (async () => {
+    const snapshot = await readCatalog().catch(async (error) => {
+      log("error", "catalog.cache.error", { error: errorInfo(error) })
+      await refreshCache("cache-miss")
+      refreshedDuringInitialization = true
+      return readCatalog()
+    })
+    models = snapshot.models
+    catalogInfo = snapshot.info
+    log("info", "catalog.loaded", { source: "cache", ...catalogInfo })
+  })()
+  return initializePromise
+}
+
+async function refreshCatalog() {
+  const previousFingerprint = catalogFingerprint(models)
+  const previousFetchedAt = catalogInfo?.fetchedAt
+  await refreshCache("startup")
+  const snapshot = await readCatalog()
+  const changed = catalogFingerprint(snapshot.models) !== previousFingerprint
+  models = snapshot.models
+  catalogInfo = snapshot.info
+  log("info", changed ? "catalog.updated" : "catalog.unchanged", {
+    previousFetchedAt,
+    ...catalogInfo,
+  })
+  if (!changed) return
+
+  const results = await Promise.allSettled([...providerReloads].map((reload) => reload()))
+  const failures = results.filter((result) => result.status === "rejected")
+  log(failures.length ? "error" : "info", "catalog.reload.complete", {
+    reloadCount: results.length,
+    failureCount: failures.length,
+    failures: failures.map((result) => errorInfo(result.reason)),
+  })
+}
+
+function startCatalogRefresh() {
+  refreshPromise ??= refreshCatalog().catch((error) => {
+    log("error", "catalog.refresh.error", { error: errorInfo(error), retainedCachedCatalog: true })
+  })
 }
 
 function traeHome() {
-  if (process.env.TRAECLI_HOME) return process.env.TRAECLI_HOME
-  return join(process.env.TRAE_HOME ?? join(homedir(), ".trae"), "cli")
+  if (Bun.env.TRAECLI_HOME) return Bun.env.TRAECLI_HOME
+  return `${Bun.env.TRAE_HOME ?? `${USER_HOME}/.trae`}/cli`
 }
 
 async function accessToken() {
-  const auth = await Bun.file(join(traeHome(), "auth.json")).json()
+  const auth = await Bun.file(`${traeHome()}/auth.json`).json() as Readonly<{ trae?: { access_token?: string } }>
   const token = auth.trae?.access_token
   if (typeof token !== "string" || !token) throw new Error("Trae is not logged in; run `traex login`")
   return token
@@ -550,7 +640,7 @@ async function handle(request: Request) {
   if (request.method === "GET" && url.pathname === "/health") return new Response("ok")
   if (request.method === "GET" && url.pathname === "/debug/last") return Response.json(lastRequest ?? null)
   if (request.method === "GET" && url.pathname === "/debug/catalog")
-    return Response.json({ catalog: catalogInfo, models })
+    return Response.json({ catalog: catalogInfo ?? null, models })
   if (request.method !== "POST" || url.pathname !== "/v1/chat/completions") return new Response("Not found", { status: 404 })
   const traceID = crypto.randomUUID()
   try {
@@ -626,7 +716,7 @@ export default {
   id: "trae.provider",
   async setup(context) {
     log("info", "plugin.setup", { directory: context.location.directory })
-    models = await loadModels()
+    await initializeCatalog()
     const adapter = startAdapter()
     await context.provider.transform((providers) => {
       providers.update("trae", (provider) => {
@@ -648,7 +738,11 @@ export default {
         })
       }
     })
+    const reload = () => context.provider.reload()
+    providerReloads.add(reload)
+    if (!refreshedDuringInitialization) startCatalogRefresh()
     return () => {
+      providerReloads.delete(reload)
       log("info", "plugin.cleanup", { directory: context.location.directory, ownsAdapter: Boolean(adapter) })
       adapter?.stop()
     }
