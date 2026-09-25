@@ -163,3 +163,12 @@ describe("Trae raw-chat stream to OpenAI Chat SSE", () => {
     })
   })
 })
+
+describe("OpenCode retry policy", () => {
+  test("refreshes authentication only after the first unauthorized attempt", () => {
+    expect(provider.shouldRefreshAuth(1, 401)).toBeTrue()
+    expect(provider.shouldRefreshAuth(1, 403)).toBeTrue()
+    expect(provider.shouldRefreshAuth(2, 401)).toBeFalse()
+    expect(provider.shouldRefreshAuth(1, 500)).toBeFalse()
+  })
+})

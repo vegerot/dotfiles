@@ -1,7 +1,5 @@
 import { createWriteStream } from "node:fs"
 
-const HOST = "127.0.0.1"
-const PORT = 43821
 const TRAE_URL = "https://copilot-cn.bytedance.net/api/ide/v2/llm_raw_chat"
 const TRAE_APP_ID = "6eefa01c-1036-4c7e-9ca5-d891f63bfcd8"
 const REFRESH_TIMEOUT_MS = 15_000
@@ -123,7 +121,6 @@ type CatalogSnapshot = Readonly<{
   info: CatalogInfo
 }>
 
-let lastRequest: RequestState | undefined
 let logStream: ReturnType<typeof createWriteStream> | undefined
 let models: Readonly<Record<string, ModelRoute>> = {}
 let catalogInfo: CatalogInfo | undefined
@@ -347,6 +344,10 @@ async function refreshAuth() {
   await process.exited
 }
 
+export function shouldRefreshAuth(attempt: number, status: number | undefined) {
+  return attempt === 1 && (status === 401 || status === 403)
+}
+
 export function buildTraePayload(body: ChatRequest, model: ModelRoute, id: string) {
   return {
     access_type: 4,
@@ -364,14 +365,36 @@ export function buildTraePayload(body: ChatRequest, model: ModelRoute, id: strin
   }
 }
 
-async function requestTrae(body: ChatRequest, signal: AbortSignal, state: RequestState, attempt = 1): Promise<Response> {
+function requestState(body: ChatRequest, model: ModelRoute): RequestState {
+  return {
+    traceID: crypto.randomUUID(),
+    requestedModel: body.model,
+    sourceSlug: model.sourceSlug,
+    mode: model.mode,
+    configName: model.config,
+    backendModel: model.backend,
+    contextWindow: model.context,
+    upstreamURL: TRAE_URL,
+    requestBytes: 0,
+    upstreamBytes: 0,
+    downstreamBytes: 0,
+    eventCount: 0,
+    progressNoticeCount: 0,
+    outputEventCount: 0,
+    startedAt: new Date().toISOString(),
+  }
+}
+
+export async function translateRequest(request: Request) {
+  const body = (await request.json()) as ChatRequest
   const model = models[body.model]
+  if (!model) throw new Error(`Unknown Trae model: ${body.model}`)
+  const state = requestState(body, model)
   const payload = buildTraePayload(body, model, crypto.randomUUID())
   const encoded = JSON.stringify(payload)
   state.requestBytes = Buffer.byteLength(encoded)
   log("info", "request.start", {
     traceID: state.traceID,
-    attempt,
     model: body.model,
     sourceSlug: model.sourceSlug,
     mode: model.mode,
@@ -395,12 +418,10 @@ async function requestTrae(body: ChatRequest, signal: AbortSignal, state: Reques
       bytes: Buffer.byteLength(JSON.stringify(tool)),
     })),
   })
-  const fetchStarted = performance.now()
-  const response = await fetch(
-    TRAE_URL,
-    {
+  return {
+    request: new Request(TRAE_URL, {
       method: "POST",
-      signal,
+      signal: request.signal,
       headers: {
         accept: "text/event-stream",
         authorization: `Cloud-CLI-JWT ${await accessToken()}`,
@@ -413,34 +434,9 @@ async function requestTrae(body: ChatRequest, signal: AbortSignal, state: Reques
         "x-ide-version-code": new Date().toISOString().slice(0, 10).replaceAll("-", ""),
       },
       body: encoded,
-      verbose: DEBUG,
-    } as RequestInit & { verbose: boolean },
-  ).catch((error) => {
-    state.elapsedMs = performance.now() - fetchStarted
-    state.error = errorInfo(error)
-    log("error", "request.fetch.error", { traceID: state.traceID, attempt, elapsedMs: state.elapsedMs, error: state.error })
-    throw error
-  })
-  state.upstreamStatus = response.status
-  log("info", "request.headers", {
-    traceID: state.traceID,
-    attempt,
-    elapsedMs: performance.now() - fetchStarted,
-    status: response.status,
-    contentType: response.headers.get("content-type"),
-    contentLength: response.headers.get("content-length"),
-    requestID: response.headers.get("x-request-id") ?? response.headers.get("x-tt-logid"),
-  })
-  if (attempt === 1 && (response.status === 401 || response.status === 403)) {
-    await response.body?.cancel()
-    log("info", "request.auth.refresh", { traceID: state.traceID, status: response.status })
-    await refreshAuth()
-    return requestTrae(body, signal, state, attempt + 1)
+    }),
+    state,
   }
-  if (!response.ok) {
-    log("error", "request.rejected", { traceID: state.traceID, attempt, status: response.status })
-  }
-  return response
 }
 
 function chunk(model: string, delta: Readonly<Record<string, unknown>>, finishReason: string | null = null) {
@@ -638,81 +634,19 @@ export function translatedStream(response: Response, model: string, state: Reque
   })
 }
 
-async function handle(request: Request) {
-  const url = new URL(request.url)
-  if (request.method === "GET" && url.pathname === "/health") return new Response("ok")
-  if (request.method === "GET" && url.pathname === "/debug/last") return Response.json(lastRequest ?? null)
-  if (request.method === "GET" && url.pathname === "/debug/catalog")
-    return Response.json({ catalog: catalogInfo ?? null, models })
-  if (request.method !== "POST" || url.pathname !== "/v1/chat/completions") return new Response("Not found", { status: 404 })
-  const traceID = crypto.randomUUID()
-  try {
-    const body = (await request.json()) as ChatRequest
-    const model = models[body.model]
-    if (!model) return Response.json({ error: { message: `Unknown Trae model: ${body.model}` } }, { status: 400 })
-    const state: RequestState = {
-      traceID,
-      requestedModel: body.model,
-      sourceSlug: model.sourceSlug,
-      mode: model.mode,
-      configName: model.config,
-      backendModel: model.backend,
-      contextWindow: model.context,
-      upstreamURL: TRAE_URL,
-      requestBytes: 0,
-      upstreamBytes: 0,
-      downstreamBytes: 0,
-      eventCount: 0,
-      progressNoticeCount: 0,
-      outputEventCount: 0,
-      startedAt: new Date().toISOString(),
-    }
-    lastRequest = state
-    log("debug", "adapter.request", {
-      traceID,
-      method: request.method,
-      path: url.pathname,
-      contentLength: request.headers.get("content-length"),
-      headerNames: [...request.headers.keys()].sort(),
-    })
-    const response = await requestTrae(body, request.signal, state)
-    if (!response.ok || !response.body) {
-      const responseBody = await response.text()
-      state.elapsedMs = Date.now() - Date.parse(state.startedAt)
-      state.completed = false
-      log("error", "adapter.response.rejected", {
-        traceID,
-        status: response.status,
-        elapsedMs: state.elapsedMs,
-        responseBytes: Buffer.byteLength(responseBody),
-        responseBody: DEBUG ? responseBody : undefined,
-      })
-      return Response.json(
-        { error: { message: `Trae returned HTTP ${response.status}: ${responseBody}` } },
-        { status: response.status },
-      )
-    }
-    return new Response(translatedStream(response, body.model, state), {
-      headers: { "cache-control": "no-cache", "content-type": "text/event-stream" },
-    })
-  } catch (error) {
-    log("error", "adapter.error", { traceID, error: errorInfo(error) })
-    return Response.json({ error: { message: error instanceof Error ? error.message : String(error) } }, { status: 502 })
-  }
-}
-
-function startAdapter() {
-  try {
-    const server = Bun.serve({ hostname: HOST, port: PORT, idleTimeout: 255, fetch: handle })
-    log("info", "adapter.listen", { host: HOST, port: PORT, debug: DEBUG })
-    return server
-  } catch (error) {
-    if (!(error instanceof Error) || (!error.message.includes("EADDRINUSE") && !error.message.includes(`port ${PORT}`))) {
-      log("error", "adapter.listen.error", { host: HOST, port: PORT, error: errorInfo(error) })
-      throw error
-    }
-    log("info", "adapter.reuse", { host: HOST, port: PORT })
-  }
+export function translateResponse(response: Response, model: string, state: RequestState) {
+  state.upstreamStatus = response.status
+  log(response.ok ? "info" : "error", "request.response", {
+    traceID: state.traceID,
+    status: response.status,
+    contentType: response.headers.get("content-type"),
+    requestID: response.headers.get("x-request-id") ?? response.headers.get("x-tt-logid"),
+  })
+  if (!response.ok || !response.body) return response
+  return new Response(translatedStream(response, model, state), {
+    status: response.status,
+    headers: { "cache-control": "no-cache", "content-type": "text/event-stream" },
+  })
 }
 
 export default {
@@ -720,13 +654,13 @@ export default {
   async setup(context) {
     log("info", "plugin.setup", { directory: context.location.directory })
     await initializeCatalog()
-    const adapter = startAdapter()
+    const requests = new WeakMap<Request, RequestState>()
     await context.provider.transform((providers) => {
       providers.update("trae", (provider) => {
         provider.name = "Trae"
         provider.activation = "enabled"
-        provider.package = "aisdk:@ai-sdk/openai-compatible"
-        provider.settings = { apiKey: "local", baseURL: `http://${HOST}:${PORT}/v1` }
+        provider.package = "@opencode/ai/providers/openai-compatible"
+        provider.settings = { baseURL: "https://trae.invalid/v1" }
       })
       for (const [id, info] of Object.entries(models)) {
         providers.models.update("trae", id, (model) => {
@@ -741,13 +675,41 @@ export default {
         })
       }
     })
+    await context.session.hook(
+      "http.request",
+      async (event) => {
+        const translated = await translateRequest(event.request.clone())
+        requests.set(translated.request, translated.state)
+        event.request = translated.request
+      },
+      { providerID: "trae" },
+    )
+    await context.session.hook(
+      "http.response",
+      (event) => {
+        const state = requests.get(event.request)
+        if (!state) throw new Error(`Missing Trae request state for session ${event.sessionID}`)
+        requests.delete(event.request)
+        event.response = translateResponse(event.response, event.model.id, state)
+      },
+      { providerID: "trae" },
+    )
+    await context.session.hook(
+      "retry",
+      async (event) => {
+        if (!shouldRefreshAuth(event.attempt, event.error.status)) return
+        log("info", "request.auth.refresh", { sessionID: event.sessionID, status: event.error.status })
+        await refreshAuth()
+        event.decision = { retry: true, delay: 0 }
+      },
+      { providerID: "trae" },
+    )
     const reload = () => context.provider.reload()
     providerReloads.add(reload)
     if (!refreshedDuringInitialization) startCatalogRefresh()
     return () => {
       providerReloads.delete(reload)
-      log("info", "plugin.cleanup", { directory: context.location.directory, ownsAdapter: Boolean(adapter) })
-      adapter?.stop()
+      log("info", "plugin.cleanup", { directory: context.location.directory })
     }
   },
 }
