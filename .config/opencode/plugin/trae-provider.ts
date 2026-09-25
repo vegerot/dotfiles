@@ -10,61 +10,82 @@ const DEBUG = ["1", "true", "yes"].includes((process.env.OPENCODE_TRAE_DEBUG ?? 
 const LOG_PATH =
   process.env.OPENCODE_TRAE_LOG ?? join(homedir(), ".local", "share", "opencode", "log", "trae-provider.log")
 
-const models = {
-  "Seed-Evolving": { config: "Doubao-Seed-Evolving", backend: "Doubao-Seed-Evolving__dev", context: 1_000_000 },
-  "Seed-2.1-Pro-0915": { config: "Doubao-Seed-2.1-Pro", backend: "Doubao-Seed-2.1-Pro__dev", context: 200_000 },
-  "Seed-2.1-Turbo": { config: "Doubao-Seed-2.1-Turbo", backend: "Doubao-Seed-2.1-Turbo__dev", context: 200_000 },
-  "openrouter-2o": { config: "openrouter-2o", backend: "openrouter-2o__dev", context: 200_000 },
-  "GPT-6-Astra": { config: "gpt-6-astra", backend: "gpt-6-astra__dev", context: 272_000 },
-  "GPT-5.6-Sol": { config: "gpt-5.6-sol", backend: "gpt-5.6-sol__dev", context: 272_000 },
-  "GPT-5.6-Terra": { config: "gpt-5.6-terra", backend: "gpt-5.6-terra__dev", context: 272_000 },
-  "GPT-5.6-Luna": { config: "gpt-5.6-luna", backend: "gpt-5.6-luna__dev", context: 272_000 },
-  "GPT-5.5": { config: "gpt-5.5", backend: "gpt-5.5__dev", context: 272_000 },
-  "GPT-5.4": { config: "gpt-5.4", backend: "gpt-5.4__dev", context: 272_000 },
-  "DeepSeek-V4-Pro": { config: "DeepSeek-V4-Pro", backend: "DeepSeek-V4-Pro__dev", context: 216_000 },
-  "DeepSeek-V4-Flash": { config: "DeepSeek-V4-Flash", backend: "DeepSeek-V4-Flash__dev", context: 216_000 },
-  "Seed-Dogfooding-2.0": { config: "Seed-Dogfooding-2.0", backend: "Seed-Dogfooding-2.0__dev", context: 200_000 },
-  "Seed-Code": { config: "Doubao-Seed-Code", backend: "Doubao-Seed-Code__dev", context: 116_000 },
-  "openrouter-1o": { config: "openrouter-1o", backend: "openrouter-1o__dev", context: 200_000 },
-  "openrouter-1": { config: "openrouter-1", backend: "openrouter-1__dev", context: 200_000 },
-  "GPT-5.2": { config: "gpt-5.2", backend: "gpt-5.2__dev", context: 272_000 },
-  "Gemini-3.1-Pro-Preview": { config: "gemini-3.1-pro", backend: "gemini-3.1-pro__dev", context: 200_000 },
-  "Gemini-3-Flash-Preview": { config: "gemini-3-flash", backend: "gemini-3-flash__dev", context: 200_000 },
-} as const
-
-type ChatMessage = {
-  role: string
-  content?: string | null | Array<Record<string, unknown>>
-  tool_calls?: Array<{
-    id?: string
-    type?: string
-    function?: { name?: string; arguments?: string }
+type CachedModel = Readonly<{
+  slug: string
+  config_name?: string
+  context_window?: number
+  output_tokens_hard_limit?: number
+  visibility?: string
+  supported_in_api?: boolean
+  business_metadata?: Readonly<{
+    variants?: Readonly<{
+      standard_key?: string
+      standard_context_window?: number
+      max_key?: string | null
+      max_context_window?: number | null
+      backend_token_limits?: Readonly<
+        Record<string, Readonly<{ input_tokens?: number; output_tokens?: number }>>
+      >
+    }>
   }>
-  tool_call_id?: string
-}
+}>
 
-type ChatRequest = {
-  model: keyof typeof models
-  messages: ChatMessage[]
-  tools?: Array<Record<string, unknown>>
+type ModelRoute = Readonly<{
+  name: string
+  sourceSlug: string
+  mode: "standard" | "max"
+  config: string
+  backend: string
+  context: number
+  output: number
+}>
+
+let models: Readonly<Record<string, ModelRoute>> = {}
+let catalogInfo: Readonly<Record<string, unknown>> = {}
+
+type ChatMessage = Readonly<{
+  role: string
+  content?: string | null | ReadonlyArray<Readonly<Record<string, unknown>>>
+  tool_calls?: ReadonlyArray<
+    Readonly<{
+      id?: string
+      type?: string
+      function?: Readonly<{ name?: string; arguments?: string }>
+    }>
+  >
+  tool_call_id?: string
+}>
+
+type ChatRequest = Readonly<{
+  model: string
+  messages: ReadonlyArray<ChatMessage>
+  tools?: ReadonlyArray<Readonly<Record<string, unknown>>>
   parallel_tool_calls?: boolean
   max_tokens?: number
   max_completion_tokens?: number
-}
+}>
 
-type TraeEvent = Record<string, unknown> & {
-  response?: string | null
-  reasoning_content?: string | null
-  tool_calls?: Array<Record<string, unknown> & { function_call?: Record<string, unknown> }>
-  finish_reason?: string
-}
+type TraeEvent = Readonly<Record<string, unknown>> &
+  Readonly<{
+    response?: string | null
+    reasoning_content?: string | null
+    tool_calls?: ReadonlyArray<
+      Readonly<Record<string, unknown>> & Readonly<{ function_call?: Readonly<Record<string, unknown>> }>
+    >
+    finish_reason?: string
+  }>
 
-type RequestState = {
+type RequestState = Readonly<{
   traceID: string
   requestedModel: string
+  sourceSlug: string
+  mode: "standard" | "max"
   configName: string
   backendModel: string
+  contextWindow: number
   upstreamURL: string
+}> & {
+  // Updated while the request and response stream advance.
   upstreamStatus?: number
   servedModel?: string
   requestBytes: number
@@ -80,10 +101,21 @@ type RequestState = {
   error?: ReturnType<typeof errorInfo>
 }
 
+type CachedCatalog = Readonly<{
+  cache_schema_version?: number
+  client_version?: string
+  fetched_at?: string
+  provider_mode?: string
+  models?: ReadonlyArray<CachedModel>
+}>
+
 let lastRequest: RequestState | undefined
 let logStream: ReturnType<typeof createWriteStream> | undefined
 
-function errorInfo(error: unknown, depth = 0): { name: string; message: string; stack?: string; cause?: unknown } {
+function errorInfo(
+  error: unknown,
+  depth = 0,
+): Readonly<{ name: string; message: string; stack?: string; cause?: unknown }> {
   if (!(error instanceof Error)) return { name: typeof error, message: String(error) }
   return {
     name: error.name,
@@ -93,13 +125,71 @@ function errorInfo(error: unknown, depth = 0): { name: string; message: string; 
   }
 }
 
-function log(level: "debug" | "info" | "error", event: string, data: Record<string, unknown> = {}) {
+function log(level: "debug" | "info" | "error", event: string, data: Readonly<Record<string, unknown>> = {}) {
   if (level === "debug" && !DEBUG) return
   if (!logStream) {
     mkdirSync(dirname(LOG_PATH), { recursive: true })
     logStream = createWriteStream(LOG_PATH, { flags: "a" })
   }
   logStream.write(`${JSON.stringify({ ...data, timestamp: new Date().toISOString(), level, event, pid: process.pid })}\n`)
+}
+
+function cachePath() {
+  return join(traeHome(), "models_cache.json")
+}
+
+async function loadModels() {
+  const path = cachePath()
+  const catalog = (await Bun.file(path).json()) as CachedCatalog
+  if (!Array.isArray(catalog.models)) throw new Error(`Invalid Trae model cache: ${path}`)
+
+  const loaded: Record<string, ModelRoute> = {}
+  for (const model of catalog.models) {
+    if (model.visibility !== "list" || model.supported_in_api === false) continue
+    const variants = model.business_metadata?.variants
+    const config = model.config_name ?? model.slug
+    const backend = variants?.standard_key ?? model.slug
+    const context = variants?.standard_context_window ?? model.context_window
+    if (!backend || !context) throw new Error(`Trae cache model ${model.slug} is missing its standard route`)
+    const output = variants?.backend_token_limits?.[backend]?.output_tokens ?? model.output_tokens_hard_limit ?? 32_768
+    loaded[model.slug] = {
+      name: model.slug,
+      sourceSlug: model.slug,
+      mode: "standard",
+      config,
+      backend,
+      context,
+      output,
+    }
+
+    if (variants?.max_key && variants.max_context_window) {
+      const id = `${model.slug}-Max`
+      loaded[id] = {
+        name: `${model.slug} / Max`,
+        sourceSlug: model.slug,
+        mode: "max",
+        config,
+        backend: variants.max_key,
+        context: variants.max_context_window,
+        output:
+          variants.backend_token_limits?.[variants.max_key]?.output_tokens ?? model.output_tokens_hard_limit ?? 32_768,
+      }
+    }
+  }
+  if (!Object.keys(loaded).length) throw new Error(`Trae model cache has no visible API models: ${path}`)
+
+  catalogInfo = {
+    path,
+    cacheSchemaVersion: catalog.cache_schema_version,
+    clientVersion: catalog.client_version,
+    fetchedAt: catalog.fetched_at,
+    providerMode: catalog.provider_mode,
+    sourceModelCount: catalog.models.length,
+    registeredModelCount: Object.keys(loaded).length,
+    maxModelCount: Object.values(loaded).filter((model) => model.mode === "max").length,
+  }
+  log("info", "catalog.loaded", catalogInfo)
+  return loaded
 }
 
 function traeHome() {
@@ -120,7 +210,7 @@ function contentParts(content: ChatMessage["content"]) {
   return content
 }
 
-function messages(input: ChatMessage[]) {
+function messages(input: ReadonlyArray<ChatMessage>) {
   return input.map((message) => ({
     role: message.role,
     content: contentParts(message.content),
@@ -138,7 +228,7 @@ function messages(input: ChatMessage[]) {
   }))
 }
 
-function userInput(input: ChatMessage[]) {
+function userInput(input: ReadonlyArray<ChatMessage>) {
   const content = input.findLast((message) => message.role === "user")?.content
   if (typeof content === "string") return content
   if (!Array.isArray(content)) return ""
@@ -148,10 +238,10 @@ function userInput(input: ChatMessage[]) {
     .join("\n")
 }
 
-function tools(input: Array<Record<string, unknown>>) {
+function tools(input: ReadonlyArray<Readonly<Record<string, unknown>>>) {
   return input.map((tool) => {
     if (tool.type !== "function" || typeof tool.function !== "object" || !tool.function) return tool
-    const { strict: _, parameters, ...definition } = tool.function as Record<string, unknown>
+    const { strict: _, parameters, ...definition } = tool.function as Readonly<Record<string, unknown>>
     return {
       ...tool,
       function: {
@@ -190,7 +280,10 @@ async function requestTrae(body: ChatRequest, signal: AbortSignal, state: Reques
     traceID: state.traceID,
     attempt,
     model: body.model,
+    sourceSlug: model.sourceSlug,
+    mode: model.mode,
     backendModel: model.backend,
+    contextWindow: model.context,
     requestBytes: state.requestBytes,
     messageCount: payload.messages.length,
     toolCount: payload.tools.length,
@@ -257,7 +350,7 @@ async function requestTrae(body: ChatRequest, signal: AbortSignal, state: Reques
   return response
 }
 
-function chunk(model: string, delta: Record<string, unknown>, finishReason: string | null = null) {
+function chunk(model: string, delta: Readonly<Record<string, unknown>>, finishReason: string | null = null) {
   return JSON.stringify({
     id: `chatcmpl-${crypto.randomUUID()}`,
     object: "chat.completion.chunk",
@@ -456,6 +549,8 @@ async function handle(request: Request) {
   const url = new URL(request.url)
   if (request.method === "GET" && url.pathname === "/health") return new Response("ok")
   if (request.method === "GET" && url.pathname === "/debug/last") return Response.json(lastRequest ?? null)
+  if (request.method === "GET" && url.pathname === "/debug/catalog")
+    return Response.json({ catalog: catalogInfo, models })
   if (request.method !== "POST" || url.pathname !== "/v1/chat/completions") return new Response("Not found", { status: 404 })
   const traceID = crypto.randomUUID()
   try {
@@ -465,8 +560,11 @@ async function handle(request: Request) {
     const state: RequestState = {
       traceID,
       requestedModel: body.model,
+      sourceSlug: model.sourceSlug,
+      mode: model.mode,
       configName: model.config,
       backendModel: model.backend,
+      contextWindow: model.context,
       upstreamURL: TRAE_URL,
       requestBytes: 0,
       upstreamBytes: 0,
@@ -528,6 +626,7 @@ export default {
   id: "trae.provider",
   async setup(context) {
     log("info", "plugin.setup", { directory: context.location.directory })
+    models = await loadModels()
     const adapter = startAdapter()
     await context.provider.transform((providers) => {
       providers.update("trae", (provider) => {
@@ -538,14 +637,14 @@ export default {
       })
       for (const [id, info] of Object.entries(models)) {
         providers.models.update("trae", id, (model) => {
-          model.name = id
+          model.name = info.name
           model.compatibility = {
             maxTokensField: "max_tokens",
             reasoningField: "reasoning_content",
             requireFinishReason: true,
           }
           model.capabilities = { tools: true, input: ["text"], output: ["text"] }
-          model.limit = { context: info.context, output: 32_768 }
+          model.limit = { context: info.context, output: info.output }
         })
       }
     })
