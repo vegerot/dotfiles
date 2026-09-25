@@ -40,6 +40,7 @@ export type ModelRoute = Readonly<{
 export type ChatMessage = Readonly<{
   role: string
   content?: string | null | ReadonlyArray<Readonly<Record<string, unknown>>>
+  reasoning_content?: string
   tool_calls?: ReadonlyArray<
     Readonly<{
       id?: string
@@ -283,6 +284,7 @@ export function translateMessages(input: ReadonlyArray<ChatMessage>) {
   return input.map((message) => ({
     role: message.role,
     content: contentParts(message.content),
+    ...(message.reasoning_content ? { reasoning_content: message.reasoning_content } : {}),
     ...(message.tool_call_id ? { tool_call_id: message.tool_call_id } : {}),
     ...(message.tool_calls
       ? {

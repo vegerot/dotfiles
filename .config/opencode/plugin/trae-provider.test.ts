@@ -34,6 +34,7 @@ describe("OpenAI Chat request to Trae raw chat", () => {
           {
             role: "assistant",
             content: null,
+            reasoning_content: "I should read the file.",
             tool_calls: [{ id: "call-1", type: "function", function: { name: "read", arguments: "{\"path\":\"a\"}" } }],
           },
           { role: "tool", tool_call_id: "call-1", content: "contents" },
@@ -67,6 +68,7 @@ describe("OpenAI Chat request to Trae raw chat", () => {
         {
           role: "assistant",
           content: [],
+          reasoning_content: "I should read the file.",
           tool_calls: [
             {
               id: "call-1",
@@ -158,6 +160,37 @@ describe("Trae raw-chat stream to OpenAI Chat SSE", () => {
       completion_tokens_details: { reasoning_tokens: 1 },
     })
     expect(frames[2].choices[0].finish_reason).toBe("tool_calls")
+    expect(output).toEndWith("data: [DONE]\n\n")
+    expect(state).toMatchObject({ sawDone: true, progressNoticeCount: 1 })
+  })
+
+  test("handles arbitrary byte boundaries and CRLF framing", async () => {
+    const input = new TextEncoder().encode(
+      [
+        "event: progress_notice\r\ndata: ;Processing_123",
+        'event: output\r\ndata: {"response":"héllo 🌍"}',
+        'event: done\r\ndata: {"finish_reason":"stop"}',
+      ].join("\r\n\r\n") + "\r\n\r\n",
+    )
+    const stream = new ReadableStream<Uint8Array>({
+      start(controller) {
+        for (const byte of input) controller.enqueue(Uint8Array.of(byte))
+        controller.close()
+      },
+    })
+    const state = {
+      traceID: "trace-fragmented",
+      startedAt: performance.now(),
+      progressNoticeCount: 0,
+      sawDone: false,
+    }
+
+    const output = await new Response(
+      provider.translatedStream(new Response(stream), "GPT-5.6-Sol", state),
+    ).text()
+
+    expect(output).toContain(": ;Processing_123\n\n")
+    expect(output).toContain('"content":"héllo 🌍"')
     expect(output).toEndWith("data: [DONE]\n\n")
     expect(state).toMatchObject({ sawDone: true, progressNoticeCount: 1 })
   })
