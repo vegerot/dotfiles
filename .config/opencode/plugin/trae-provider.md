@@ -39,3 +39,15 @@ Run live text, tool, and long-context checks:
 ```
 
 Protocol and refresh failures flow through OpenCode's service log. The provider intentionally does not maintain a second append-only log.
+
+## Final verification
+
+After removing private logging and request-correlation state:
+
+- all seven deterministic catalog, request, stream, and retry tests pass;
+- the provider bundles to 13.1 KB and contains 453 lines / 15,339 bytes;
+- all 25 Trae routes appear in `opencode models`;
+- live text generation, shell-tool execution, and long-context `progress_notice` handling pass;
+- the former private log does not grow after the restarted service handles those requests.
+
+Capture `opencode models` before filtering it when checking model counts. A direct pipeline intermittently reported zero even though the command emitted all 25 Trae routes; redirecting stdout and then searching the file produced the correct result.
