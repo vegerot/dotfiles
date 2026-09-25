@@ -16,13 +16,13 @@ This skill schedules **Codex turns**, not shell commands that implement the user
 | `$loop 5m` | Fixed interval | Maintenance prompt below |
 | `$loop` | Choose a delay after each iteration | Maintenance prompt below |
 
-Accept `s`, `m`, `h`, and `d` units and phrases such as `every 2 hours`. Round seconds up to one minute. Minimum delay is one minute. For adaptive loops, choose a delay from one minute to one hour based on the latest result; use ten minutes for the first delay when there is no better signal, and explain the choice briefly. The first iteration runs after the first delay. Later intervals begin when the previous iteration finishes, so slow turns do not build a backlog. If the user requests an immediate check as well, do it before starting the timer.
+Accept `s`, `m`, `h`, and `d` units and phrases such as `every 2 hours`. Round seconds up to one minute. Minimum delay is one minute. For adaptive loops, choose a delay from one minute to one hour based on the latest result; use ten minutes for the first delay when there is no better signal, and explain the choice briefly. The first iteration runs immediately. Later intervals begin when the previous iteration finishes, so slow turns do not build a backlog. If the user requests an immediate check as well, do it before starting the timer.
 
 When no prompt is given, use this maintenance prompt: continue unfinished authorized work from this conversation; then tend to the current branch's pull request, review comments, and failed CI; then do a small useful cleanup if there is nothing pending. Do not start unrelated work. Preserve the user's authorization boundaries.
 
 ## Start
 
-Run `scripts/loop.py start --mode fixed --seconds 300 --prompt 'check CI'` from this skill directory. Use `--mode adaptive` and pass the chosen initial delay as `--seconds` when the interval is omitted. When the prompt is omitted, pass the maintenance prompt above. Pass the prompt as **one quoted argument**; never run prompt text as shell code. `CODEX_THREAD_ID` identifies the current conversation and is supplied by Codex shell tools. The helper prints a job ID and next run time. Tell the user the schedule, job ID, and how to cancel it. Finish the turn so the chat is available.
+Run `scripts/loop.py start --mode fixed --seconds 300 --prompt 'check CI'` from this skill directory. Use `--mode adaptive` and pass the chosen initial delay as `--seconds` when the interval is omitted. When the prompt is omitted, pass the maintenance prompt above. Pass the prompt as **one quoted argument**; never run prompt text as shell code. `CODEX_THREAD_ID` identifies the current conversation and is supplied by Codex shell tools. The helper creates a running job and prints its ID and generation; no timer is armed yet. Execute the saved prompt immediately. If complete, stop the job with `--reason completed`; otherwise call `next JOB_ID GENERATION` (with `--seconds N` for adaptive mode). Tell the user the schedule, job ID, and how to cancel it, then finish the turn so the chat is available. If the user explicitly requests a delayed first run, call `next` without executing the prompt first.
 
 The helper needs a running local app-server daemon with `codex queue` support. Its `start` command checks both before scheduling. If the check fails, report the error and do not claim the loop is running. The queued message contains the path to this skill because `codex queue` sends text and does not attach a skill resource itself.
 
@@ -44,3 +44,9 @@ If work is interrupted after `claim`, resume or cancel the job rather than silen
 - `$loop status JOB_ID`: run `scripts/loop.py show JOB_ID`.
 
 Loops expire after seven days. The background timer and app-server daemon must remain available for a scheduled turn to run. A queued iteration waits until the current Codex turn finishes; it does not interrupt the user's ongoing question. The helper stores loop state under `$CODEX_HOME/loop-jobs` (or `~/.codex/loop-jobs`).
+
+## Timing and limits
+
+This implementation uses delays measured from completion, not wall-clock cron slots or Claude's jitter. Missed time never produces a burst of catch-up iterations. Duration and iteration-count limits expressed in the prompt must be checked before each execution and before rescheduling; a duration starts when the job is created. Stop when further iterations cannot make progress. Cancellation prevents unclaimed queued ticks from executing; it does not interrupt work already in progress. Background event watchers are not implemented.
+
+The helper does not automatically restart timers after a machine or daemon restart. Report unavailable scheduling honestly; do not claim that a job is running when `start` or `next` fails.

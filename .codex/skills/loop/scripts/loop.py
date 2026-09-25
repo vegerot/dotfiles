@@ -142,20 +142,13 @@ def command_start(args: argparse.Namespace) -> None:
         "mode": args.mode,
         "seconds": args.seconds,
         "generation": 1,
-        "status": "scheduled",
+        "status": "running",
         "created_at": now,
         "expires_at": now + LIFETIME_SECONDS,
-        "next_at": now + args.seconds,
+        "next_at": None,
     }
     with locked():
         save_job(job)
-        try:
-            start_timer(job, args.seconds)
-        except OSError as error:
-            job["status"] = "failed"
-            job["error"] = str(error)
-            save_job(job)
-            raise
     print_job(job)
 
 
@@ -203,6 +196,11 @@ def command_claim(args: argparse.Namespace) -> None:
         job = read_job(args.job_id)
         if job["generation"] != args.generation or job["status"] != "queued":
             raise SystemExit(f"Loop is {job['status']} or this tick is stale")
+        if time.time() >= job["expires_at"]:
+            job["status"] = "expired"
+            job["next_at"] = None
+            save_job(job)
+            raise SystemExit("Loop expired before this tick could run")
         job["status"] = "running"
         job["next_at"] = None
         save_job(job)
