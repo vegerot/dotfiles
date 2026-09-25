@@ -192,16 +192,11 @@ function catalogFingerprint(catalog: Readonly<Record<string, ModelRoute>>) {
   return JSON.stringify(Object.entries(catalog).sort(([left], [right]) => left.localeCompare(right)))
 }
 
-async function refreshCache(reason: "cache-miss" | "startup") {
+async function runTraex(args: ReadonlyArray<string>, purpose: string) {
   const executable = Bun.which("traex")
-  if (!executable) throw new Error("Cannot refresh Trae models because `traex` is not on PATH")
+  if (!executable) throw new Error(`Cannot ${purpose} because \`traex\` is not on PATH`)
 
-  log("info", "catalog.refresh.start", { reason, timeoutMs: REFRESH_TIMEOUT_MS })
-  const started = performance.now()
-  const process = Bun.spawn([executable, "debug", "models", "--remote"], {
-    stdout: "ignore",
-    stderr: "pipe",
-  })
+  const process = Bun.spawn([executable, ...args], { stdout: "ignore", stderr: "pipe" })
   const stderr = new Response(process.stderr).text()
   let timedOut = false
   const timeout = setTimeout(() => {
@@ -210,10 +205,15 @@ async function refreshCache(reason: "cache-miss" | "startup") {
   }, REFRESH_TIMEOUT_MS)
   const [exitCode, errorOutput] = await Promise.all([process.exited, stderr])
   clearTimeout(timeout)
-  const elapsedMs = performance.now() - started
-  if (timedOut) throw new Error(`Trae model refresh timed out after ${REFRESH_TIMEOUT_MS} ms`)
-  if (exitCode !== 0) throw new Error(`Trae model refresh failed (${exitCode}): ${errorOutput.trim().slice(0, 2_000)}`)
-  log("info", "catalog.refresh.complete", { reason, elapsedMs })
+  if (timedOut) throw new Error(`Trae ${purpose} timed out after ${REFRESH_TIMEOUT_MS} ms`)
+  if (exitCode !== 0) throw new Error(`Trae ${purpose} failed (${exitCode}): ${errorOutput.trim().slice(0, 2_000)}`)
+}
+
+async function refreshCache(reason: "cache-miss" | "startup") {
+  log("info", "catalog.refresh.start", { reason, timeoutMs: REFRESH_TIMEOUT_MS })
+  const started = performance.now()
+  await runTraex(["debug", "models", "--remote"], "model refresh")
+  log("info", "catalog.refresh.complete", { reason, elapsedMs: performance.now() - started })
 }
 
 async function initializeCatalog() {
@@ -324,12 +324,7 @@ export function translateTools(input: ReadonlyArray<Readonly<Record<string, unkn
 }
 
 async function refreshAuth() {
-  const executable = Bun.which("traex")
-  if (!executable) throw new Error("Cannot refresh Trae authentication because `traex` is not on PATH")
-  const process = Bun.spawn([executable, "models"], { stdout: "ignore", stderr: "pipe" })
-  const [exitCode, errorOutput] = await Promise.all([process.exited, new Response(process.stderr).text()])
-  if (exitCode !== 0)
-    throw new Error(`Trae authentication refresh failed (${exitCode}): ${errorOutput.trim().slice(0, 2_000)}`)
+  await runTraex(["models"], "authentication refresh")
 }
 
 export function shouldRefreshAuth(attempt: number, status: number | undefined) {
@@ -369,7 +364,7 @@ export async function translateRequest(request: Request) {
   const state = requestState()
   const payload = buildTraePayload(body, model, crypto.randomUUID())
   const encoded = JSON.stringify(payload)
-  log("info", "request.start", {
+  log("debug", "request.start", {
     traceID: state.traceID,
     model: body.model,
     backendModel: model.backend,
@@ -385,9 +380,7 @@ export async function translateRequest(request: Request) {
         accept: "text/event-stream",
         authorization: `Cloud-CLI-JWT ${await accessToken()}`,
         "content-type": "application/json",
-        originator: "opencode",
-        version: "1",
-        "x-agent-flag": "1",
+        // A live omission probe confirmed that Trae rejects requests without these three headers.
         "x-app-id": TRAE_APP_ID,
         "x-ide-function": "traecli_next",
         "x-ide-version-code": new Date().toISOString().slice(0, 10).replaceAll("-", ""),
@@ -513,7 +506,7 @@ export function translatedStream(response: Response, model: string, state: Reque
         if (cancelled) return
         buffer += decoder.decode()
         if (buffer.trim()) processBlock(buffer, controller)
-        log(state.sawDone ? "info" : "error", "stream.complete", {
+        log(state.sawDone ? "debug" : "error", "stream.complete", {
           traceID: state.traceID,
           elapsedMs: elapsed(),
           progressNoticeCount: state.progressNoticeCount,
@@ -535,7 +528,7 @@ export function translatedStream(response: Response, model: string, state: Reque
     },
     async cancel(reason) {
       cancelled = true
-      log("info", state.sawDone ? "stream.complete" : "stream.cancel", {
+      log("debug", state.sawDone ? "stream.complete" : "stream.cancel", {
         traceID: state.traceID,
         elapsedMs: elapsed(),
         progressNoticeCount: state.progressNoticeCount,
@@ -550,7 +543,7 @@ export function translatedStream(response: Response, model: string, state: Reque
 }
 
 export function translateResponse(response: Response, model: string, state: RequestState) {
-  log(response.ok ? "info" : "error", "request.response", {
+  log(response.ok ? "debug" : "error", "request.response", {
     traceID: state.traceID,
     status: response.status,
     contentType: response.headers.get("content-type"),
