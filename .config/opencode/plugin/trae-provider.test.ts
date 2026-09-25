@@ -114,20 +114,9 @@ describe("Trae raw-chat stream to OpenAI Chat SSE", () => {
     ].join("\n\n") + "\n\n"
     const state = {
       traceID: "trace-1",
-      requestedModel: "GPT-5.6-Sol",
-      sourceSlug: "GPT-5.6-Sol",
-      mode: "standard",
-      configName: "gpt-5.6-sol",
-      backendModel: "gpt-5.6-sol__dev",
-      contextWindow: 272_000,
-      upstreamURL: "https://example.test",
-      requestBytes: 0,
-      upstreamBytes: 0,
-      downstreamBytes: 0,
-      eventCount: 0,
+      startedAt: performance.now(),
       progressNoticeCount: 0,
-      outputEventCount: 0,
-      startedAt: new Date().toISOString(),
+      sawDone: false,
     }
 
     const response = new Response(provider.translatedStream(new Response(upstream), "GPT-5.6-Sol", state))
@@ -154,13 +143,7 @@ describe("Trae raw-chat stream to OpenAI Chat SSE", () => {
     })
     expect(frames[2].choices[0].finish_reason).toBe("tool_calls")
     expect(output).toEndWith("data: [DONE]\n\n")
-    expect(state).toMatchObject({
-      completed: true,
-      sawDone: true,
-      eventCount: 4,
-      outputEventCount: 1,
-      progressNoticeCount: 1,
-    })
+    expect(state).toMatchObject({ sawDone: true, progressNoticeCount: 1 })
   })
 })
 

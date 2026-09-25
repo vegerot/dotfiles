@@ -73,28 +73,10 @@ type TraeEvent = Readonly<Record<string, unknown>> &
 
 type RequestState = Readonly<{
   traceID: string
-  requestedModel: string
-  sourceSlug: string
-  mode: "standard" | "max"
-  configName: string
-  backendModel: string
-  contextWindow: number
-  upstreamURL: string
+  startedAt: number
 }> & {
-  // Updated while the request and response stream advance.
-  upstreamStatus?: number
-  servedModel?: string
-  requestBytes: number
-  upstreamBytes: number
-  downstreamBytes: number
-  eventCount: number
   progressNoticeCount: number
-  outputEventCount: number
-  startedAt: string
-  elapsedMs?: number
-  completed?: boolean
-  sawDone?: boolean
-  error?: ReturnType<typeof errorInfo>
+  sawDone: boolean
 }
 
 type CachedCatalog = Readonly<{
@@ -372,23 +354,12 @@ export function buildTraePayload(body: ChatRequest, model: ModelRoute, id: strin
   }
 }
 
-function requestState(body: ChatRequest, model: ModelRoute): RequestState {
+function requestState(): RequestState {
   return {
     traceID: crypto.randomUUID(),
-    requestedModel: body.model,
-    sourceSlug: model.sourceSlug,
-    mode: model.mode,
-    configName: model.config,
-    backendModel: model.backend,
-    contextWindow: model.context,
-    upstreamURL: TRAE_URL,
-    requestBytes: 0,
-    upstreamBytes: 0,
-    downstreamBytes: 0,
-    eventCount: 0,
+    startedAt: performance.now(),
     progressNoticeCount: 0,
-    outputEventCount: 0,
-    startedAt: new Date().toISOString(),
+    sawDone: false,
   }
 }
 
@@ -396,34 +367,16 @@ export async function translateRequest(request: Request) {
   const body = (await request.json()) as ChatRequest
   const model = catalog.models[body.model]
   if (!model) throw new Error(`Unknown Trae model: ${body.model}`)
-  const state = requestState(body, model)
+  const state = requestState()
   const payload = buildTraePayload(body, model, crypto.randomUUID())
   const encoded = JSON.stringify(payload)
-  state.requestBytes = Buffer.byteLength(encoded)
   log("info", "request.start", {
     traceID: state.traceID,
     model: body.model,
-    sourceSlug: model.sourceSlug,
-    mode: model.mode,
     backendModel: model.backend,
-    contextWindow: model.context,
-    requestBytes: state.requestBytes,
+    requestBytes: Buffer.byteLength(encoded),
     messageCount: payload.messages.length,
     toolCount: payload.tools.length,
-  })
-  log("debug", "request.shape", {
-    traceID: state.traceID,
-    messages: payload.messages.map((message) => ({
-      role: message.role,
-      content: message.content.map((part) => ({ type: part.type, bytes: Buffer.byteLength(JSON.stringify(part)) })),
-      toolCalls: "tool_calls" in message ? message.tool_calls?.length : 0,
-    })),
-    tools: payload.tools.map((tool) => ({
-      type: tool.type,
-      name:
-        typeof tool.function === "object" && tool.function && "name" in tool.function ? tool.function.name : undefined,
-      bytes: Buffer.byteLength(JSON.stringify(tool)),
-    })),
   })
   return {
     request: new Request(TRAE_URL, {
@@ -462,21 +415,7 @@ export function translateFinishReason(reason: string | undefined) {
   return reason ?? "stop"
 }
 
-function translate(eventName: string, event: TraeEvent, model: string, state: RequestState) {
-  state.eventCount++
-  if (eventName === "output") state.outputEventCount++
-  log("debug", "stream.event", {
-    traceID: state.traceID,
-    upstreamEvent: eventName,
-    keys: Object.keys(event),
-    responseBytes: typeof event.response === "string" ? Buffer.byteLength(event.response) : 0,
-    reasoningBytes: typeof event.reasoning_content === "string" ? Buffer.byteLength(event.reasoning_content) : 0,
-    toolCallCount: event.tool_calls?.length ?? 0,
-  })
-  if (eventName === "metadata" || eventName === "timing_cost") {
-    const served = event.provider_model_name ?? event.model
-    if (typeof served === "string") state.servedModel = served
-  }
+function translate(eventName: string, event: TraeEvent, model: string) {
   if (eventName === "output") {
     const delta = {
       ...(typeof event.response === "string" && event.response ? { content: event.response } : {}),
@@ -523,9 +462,8 @@ export function translatedStream(response: Response, model: string, state: Reque
   const decoder = new TextDecoder()
   const encoder = new TextEncoder()
   let buffer = ""
-  let sawDone = false
   let cancelled = false
-  const elapsed = () => Date.now() - Date.parse(state.startedAt)
+  const elapsed = () => performance.now() - state.startedAt
   const processBlock = (block: string, controller: ReadableStreamDefaultController<Uint8Array>) => {
     const eventName = block.match(/^event:\s*(.+)$/m)?.[1] ?? ""
     const data = block
@@ -542,9 +480,7 @@ export function translatedStream(response: Response, model: string, state: Reque
         bytes: Buffer.byteLength(block),
         dataPreview: data.slice(0, 100),
       })
-      const encoded = encoder.encode(`: ${data}\n\n`)
-      state.downstreamBytes += encoded.byteLength
-      controller.enqueue(encoded)
+      controller.enqueue(encoder.encode(`: ${data}\n\n`))
       return
     }
     let event: TraeEvent
@@ -560,21 +496,16 @@ export function translatedStream(response: Response, model: string, state: Reque
       })
       throw error
     }
-    const output = translate(eventName, event, model, state)
-    if (eventName === "done") sawDone = true
-    if (!output) return
-    const encoded = encoder.encode(output)
-    state.downstreamBytes += encoded.byteLength
-    controller.enqueue(encoded)
+    const output = translate(eventName, event, model)
+    if (eventName === "done") state.sawDone = true
+    if (output) controller.enqueue(encoder.encode(output))
   }
-  log("info", "stream.start", { traceID: state.traceID, status: response.status })
   return new ReadableStream<Uint8Array>({
     async start(controller) {
       try {
         while (true) {
           const value = await reader.read()
           if (value.done) break
-          state.upstreamBytes += value.value.byteLength
           buffer += decoder.decode(value.value, { stream: true })
           const blocks = buffer.split(/\r?\n\r?\n/)
           buffer = blocks.pop() ?? ""
@@ -583,53 +514,31 @@ export function translatedStream(response: Response, model: string, state: Reque
         if (cancelled) return
         buffer += decoder.decode()
         if (buffer.trim()) processBlock(buffer, controller)
-        state.elapsedMs = elapsed()
-        state.completed = true
-        state.sawDone = sawDone
-        log(sawDone ? "info" : "error", "stream.complete", {
+        log(state.sawDone ? "info" : "error", "stream.complete", {
           traceID: state.traceID,
-          elapsedMs: state.elapsedMs,
-          upstreamBytes: state.upstreamBytes,
-          downstreamBytes: state.downstreamBytes,
-          eventCount: state.eventCount,
-          outputEventCount: state.outputEventCount,
+          elapsedMs: elapsed(),
           progressNoticeCount: state.progressNoticeCount,
-          sawDone,
+          sawDone: state.sawDone,
         })
         controller.close()
       } catch (error) {
-        if (cancelled || (sawDone && error instanceof Error && error.name === "AbortError")) return
-        state.elapsedMs = elapsed()
-        state.completed = false
-        state.sawDone = sawDone
-        state.error = errorInfo(error)
+        if (cancelled || (state.sawDone && error instanceof Error && error.name === "AbortError")) return
         log("error", "stream.error", {
           traceID: state.traceID,
-          elapsedMs: state.elapsedMs,
-          upstreamBytes: state.upstreamBytes,
-          downstreamBytes: state.downstreamBytes,
-          eventCount: state.eventCount,
-          outputEventCount: state.outputEventCount,
+          elapsedMs: elapsed(),
           progressNoticeCount: state.progressNoticeCount,
-          sawDone,
+          sawDone: state.sawDone,
           bufferedBytes: Buffer.byteLength(buffer),
-          error: state.error,
+          error: errorInfo(error),
         })
         controller.error(error)
       }
     },
     async cancel(reason) {
       cancelled = true
-      state.elapsedMs = elapsed()
-      state.completed = sawDone
-      state.sawDone = sawDone
-      log("info", sawDone ? "stream.complete" : "stream.cancel", {
+      log("info", state.sawDone ? "stream.complete" : "stream.cancel", {
         traceID: state.traceID,
-        elapsedMs: state.elapsedMs,
-        upstreamBytes: state.upstreamBytes,
-        downstreamBytes: state.downstreamBytes,
-        eventCount: state.eventCount,
-        outputEventCount: state.outputEventCount,
+        elapsedMs: elapsed(),
         progressNoticeCount: state.progressNoticeCount,
         downstreamCancelled: true,
         ...(reason === undefined ? {} : { reason: errorInfo(reason) }),
@@ -642,7 +551,6 @@ export function translatedStream(response: Response, model: string, state: Reque
 }
 
 export function translateResponse(response: Response, model: string, state: RequestState) {
-  state.upstreamStatus = response.status
   log(response.ok ? "info" : "error", "request.response", {
     traceID: state.traceID,
     status: response.status,
