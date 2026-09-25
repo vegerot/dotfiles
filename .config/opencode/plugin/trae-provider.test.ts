@@ -19,8 +19,6 @@ describe("OpenAI Chat request to Trae raw chat", () => {
   test("preserves conversation history and converts tool schemas", () => {
     const route: ModelRoute = {
       name: "GPT-5.6-Sol",
-      sourceSlug: "GPT-5.6-Sol",
-      mode: "standard",
       config: "gpt-5.6-sol",
       backend: "gpt-5.6-sol__dev",
       context: 272_000,
@@ -100,6 +98,24 @@ describe("OpenAI Chat request to Trae raw chat", () => {
       ],
       user_input: "First\nSecond",
     })
+  })
+
+  test("uses the selected route output limit by default", () => {
+    const route: ModelRoute = {
+      name: "Small model",
+      config: "small-model",
+      backend: "small-model__dev",
+      context: 100_000,
+      output: 8_192,
+    }
+
+    const payload = provider.buildTraePayload(
+      { model: "Small model", messages: [{ role: "user", content: "hello" }] },
+      route,
+      "conversation-1",
+    )
+
+    expect(payload.max_tokens).toBe(8_192)
   })
 })
 

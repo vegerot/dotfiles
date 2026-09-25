@@ -31,8 +31,6 @@ type CachedModel = Readonly<{
 
 export type ModelRoute = Readonly<{
   name: string
-  sourceSlug: string
-  mode: "standard" | "max"
   config: string
   backend: string
   context: number
@@ -141,36 +139,35 @@ async function readCatalog(): Promise<CatalogSnapshot> {
   if (!Array.isArray(catalog.models)) throw new Error(`Invalid Trae model cache: ${path}`)
 
   const loaded: Record<string, ModelRoute> = {}
+  let maxModelCount = 0
   for (const model of catalog.models) {
     if (model.visibility !== "list" || model.supported_in_api === false) continue
     const variants = model.business_metadata?.variants
-    const config = model.config_name ?? model.slug
-    const backend = variants?.standard_key ?? model.slug
-    const context = variants?.standard_context_window ?? model.context_window
-    if (!backend || !context) throw new Error(`Trae cache model ${model.slug} is missing its standard route`)
-    const output = variants?.backend_token_limits?.[backend]?.output_tokens ?? model.output_tokens_hard_limit ?? 32_768
+    if (!model.config_name || !variants?.standard_key || !variants.standard_context_window)
+      throw new Error(`Trae cache model ${model.slug} is missing its standard route`)
+    const config = model.config_name
+    const backend = variants.standard_key
+    const context = variants.standard_context_window
+    const output = variants.backend_token_limits?.[backend]?.output_tokens ?? model.output_tokens_hard_limit ?? 32_768
     loaded[model.slug] = {
       name: model.slug,
-      sourceSlug: model.slug,
-      mode: "standard",
       config,
       backend,
       context,
       output,
     }
 
-    if (variants?.max_key && variants.max_context_window) {
+    if (variants.max_key && variants.max_context_window) {
       const id = `${model.slug}-Max`
       loaded[id] = {
         name: `${model.slug} / Max`,
-        sourceSlug: model.slug,
-        mode: "max",
         config,
         backend: variants.max_key,
         context: variants.max_context_window,
         output:
           variants.backend_token_limits?.[variants.max_key]?.output_tokens ?? model.output_tokens_hard_limit ?? 32_768,
       }
+      maxModelCount++
     }
   }
   if (!Object.keys(loaded).length) throw new Error(`Trae model cache has no visible API models: ${path}`)
@@ -185,7 +182,7 @@ async function readCatalog(): Promise<CatalogSnapshot> {
       providerMode: catalog.provider_mode,
       sourceModelCount: catalog.models.length,
       registeredModelCount: Object.keys(loaded).length,
-      maxModelCount: Object.values(loaded).filter((model) => model.mode === "max").length,
+      maxModelCount,
     },
   }
 }
@@ -344,7 +341,7 @@ export function buildTraePayload(body: ChatRequest, model: ModelRoute, id: strin
     conversation_id: id,
     extra_info: "",
     is_preset: true,
-    max_tokens: body.max_tokens ?? body.max_completion_tokens ?? 32_768,
+    max_tokens: body.max_tokens ?? body.max_completion_tokens ?? model.output,
     messages: translateMessages(body.messages),
     model_name: model.backend,
     parallel_tool_calls: body.parallel_tool_calls ?? true,
