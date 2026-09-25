@@ -122,12 +122,13 @@ type CatalogSnapshot = Readonly<{
 }>
 
 let logStream: ReturnType<typeof createWriteStream> | undefined
-let models: Readonly<Record<string, ModelRoute>> = {}
-let catalogInfo: CatalogInfo | undefined
-let initializePromise: Promise<void> | undefined
-let refreshPromise: Promise<void> | undefined
-let refreshedDuringInitialization = false
-const providerReloads = new Set<() => Promise<void>>()
+const catalog = {
+  models: {} as Readonly<Record<string, ModelRoute>>,
+  info: undefined as CatalogInfo | undefined,
+  initialization: undefined as Promise<{ refreshed: boolean }> | undefined,
+  refresh: undefined as Promise<void> | undefined,
+  reloads: new Set<() => Promise<void>>(),
+}
 
 function errorInfo(
   error: unknown,
@@ -236,35 +237,37 @@ async function refreshCache(reason: "cache-miss" | "startup") {
 }
 
 async function initializeCatalog() {
-  initializePromise ??= (async () => {
+  catalog.initialization ??= (async () => {
+    let refreshed = false
     const snapshot = await readCatalog().catch(async (error) => {
       log("error", "catalog.cache.error", { error: errorInfo(error) })
       await refreshCache("cache-miss")
-      refreshedDuringInitialization = true
+      refreshed = true
       return readCatalog()
     })
-    models = snapshot.models
-    catalogInfo = snapshot.info
-    log("info", "catalog.loaded", { source: "cache", ...catalogInfo })
+    catalog.models = snapshot.models
+    catalog.info = snapshot.info
+    log("info", "catalog.loaded", { source: "cache", ...catalog.info })
+    return { refreshed }
   })()
-  return initializePromise
+  return catalog.initialization
 }
 
 async function refreshCatalog() {
-  const previousFingerprint = catalogFingerprint(models)
-  const previousFetchedAt = catalogInfo?.fetchedAt
+  const previousFingerprint = catalogFingerprint(catalog.models)
+  const previousFetchedAt = catalog.info?.fetchedAt
   await refreshCache("startup")
   const snapshot = await readCatalog()
   const changed = catalogFingerprint(snapshot.models) !== previousFingerprint
-  models = snapshot.models
-  catalogInfo = snapshot.info
+  catalog.models = snapshot.models
+  catalog.info = snapshot.info
   log("info", changed ? "catalog.updated" : "catalog.unchanged", {
     previousFetchedAt,
-    ...catalogInfo,
+    ...catalog.info,
   })
   if (!changed) return
 
-  const results = await Promise.allSettled([...providerReloads].map((reload) => reload()))
+  const results = await Promise.allSettled([...catalog.reloads].map((reload) => reload()))
   const failures = results.filter((result) => result.status === "rejected")
   log(failures.length ? "error" : "info", "catalog.reload.complete", {
     reloadCount: results.length,
@@ -274,7 +277,7 @@ async function refreshCatalog() {
 }
 
 function startCatalogRefresh() {
-  refreshPromise ??= refreshCatalog().catch((error) => {
+  catalog.refresh ??= refreshCatalog().catch((error) => {
     log("error", "catalog.refresh.error", { error: errorInfo(error), retainedCachedCatalog: true })
   })
 }
@@ -340,8 +343,12 @@ export function translateTools(input: ReadonlyArray<Readonly<Record<string, unkn
 }
 
 async function refreshAuth() {
-  const process = Bun.spawn(["traex", "models"], { stdout: "ignore", stderr: "ignore" })
-  await process.exited
+  const executable = Bun.which("traex")
+  if (!executable) throw new Error("Cannot refresh Trae authentication because `traex` is not on PATH")
+  const process = Bun.spawn([executable, "models"], { stdout: "ignore", stderr: "pipe" })
+  const [exitCode, errorOutput] = await Promise.all([process.exited, new Response(process.stderr).text()])
+  if (exitCode !== 0)
+    throw new Error(`Trae authentication refresh failed (${exitCode}): ${errorOutput.trim().slice(0, 2_000)}`)
 }
 
 export function shouldRefreshAuth(attempt: number, status: number | undefined) {
@@ -387,7 +394,7 @@ function requestState(body: ChatRequest, model: ModelRoute): RequestState {
 
 export async function translateRequest(request: Request) {
   const body = (await request.json()) as ChatRequest
-  const model = models[body.model]
+  const model = catalog.models[body.model]
   if (!model) throw new Error(`Unknown Trae model: ${body.model}`)
   const state = requestState(body, model)
   const payload = buildTraePayload(body, model, crypto.randomUUID())
@@ -653,7 +660,7 @@ export default {
   id: "trae.provider",
   async setup(context) {
     log("info", "plugin.setup", { directory: context.location.directory })
-    await initializeCatalog()
+    const initialCatalog = await initializeCatalog()
     const requests = new WeakMap<Request, RequestState>()
     await context.provider.transform((providers) => {
       providers.update("trae", (provider) => {
@@ -662,7 +669,7 @@ export default {
         provider.package = "@opencode/ai/providers/openai-compatible"
         provider.settings = { baseURL: "https://trae.invalid/v1" }
       })
-      for (const [id, info] of Object.entries(models)) {
+      for (const [id, info] of Object.entries(catalog.models)) {
         providers.models.update("trae", id, (model) => {
           model.name = info.name
           model.compatibility = {
@@ -705,10 +712,10 @@ export default {
       { providerID: "trae" },
     )
     const reload = () => context.provider.reload()
-    providerReloads.add(reload)
-    if (!refreshedDuringInitialization) startCatalogRefresh()
+    catalog.reloads.add(reload)
+    if (!initialCatalog.refreshed) startCatalogRefresh()
     return () => {
-      providerReloads.delete(reload)
+      catalog.reloads.delete(reload)
       log("info", "plugin.cleanup", { directory: context.location.directory })
     }
   },
