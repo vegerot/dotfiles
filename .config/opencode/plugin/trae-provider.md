@@ -38,4 +38,4 @@ Run live text, tool, and long-context checks:
 ./.config/opencode/plugin/trae-provider-smoke.sh
 ```
 
-Set `OPENCODE_TRAE_DEBUG=1` before starting OpenCode to include successful request and stream lifecycle records in `~/.local/share/opencode/log/trae-provider.log`. Catalog changes, authentication refreshes, and errors are always logged.
+Protocol and refresh failures flow through OpenCode's service log. The provider intentionally does not maintain a second append-only log.

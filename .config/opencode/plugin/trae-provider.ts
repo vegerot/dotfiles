@@ -1,13 +1,8 @@
-import { createWriteStream } from "node:fs"
-
 const TRAE_URL = "https://copilot-cn.bytedance.net/api/ide/v2/llm_raw_chat"
 const TRAE_APP_ID = "6eefa01c-1036-4c7e-9ca5-d891f63bfcd8"
 const REFRESH_TIMEOUT_MS = 15_000
 const USER_HOME = Bun.env.HOME
 if (!USER_HOME) throw new Error("HOME is not set")
-const DEBUG = ["1", "true", "yes"].includes((Bun.env.OPENCODE_TRAE_DEBUG ?? "").toLowerCase())
-const LOG_PATH =
-  Bun.env.OPENCODE_TRAE_LOG ?? `${USER_HOME}/.local/share/opencode/log/trae-provider.log`
 
 type CachedModel = Readonly<{
   slug: string
@@ -70,75 +65,25 @@ type TraeEvent = Readonly<Record<string, unknown>> &
     finish_reason?: string
   }>
 
-type RequestState = Readonly<{
-  traceID: string
-  startedAt: number
-}> & {
-  progressNoticeCount: number
-  sawDone: boolean
-}
-
 type CachedCatalog = Readonly<{
-  cache_schema_version?: number
-  client_version?: string
-  fetched_at?: string
-  provider_mode?: string
   models?: ReadonlyArray<CachedModel>
 }>
 
-type CatalogInfo = Readonly<{
-  path: string
-  cacheSchemaVersion?: number
-  clientVersion?: string
-  fetchedAt?: string
-  providerMode?: string
-  sourceModelCount: number
-  registeredModelCount: number
-  maxModelCount: number
-}>
-
-type CatalogSnapshot = Readonly<{
-  models: Readonly<Record<string, ModelRoute>>
-  info: CatalogInfo
-}>
-
-let logStream: ReturnType<typeof createWriteStream> | undefined
 const catalog = {
   models: {} as Readonly<Record<string, ModelRoute>>,
-  info: undefined as CatalogInfo | undefined,
   initialization: undefined as Promise<{ refreshed: boolean }> | undefined,
   refresh: undefined as Promise<void> | undefined,
   reloads: new Set<() => Promise<void>>(),
-}
-
-function errorInfo(
-  error: unknown,
-  depth = 0,
-): Readonly<{ name: string; message: string; stack?: string; cause?: unknown }> {
-  if (!(error instanceof Error)) return { name: typeof error, message: String(error) }
-  return {
-    name: error.name,
-    message: error.message,
-    ...(error.stack ? { stack: error.stack } : {}),
-    ...(error.cause !== undefined && depth < 3 ? { cause: errorInfo(error.cause, depth + 1) } : {}),
-  }
-}
-
-function log(level: "debug" | "info" | "error", event: string, data: Readonly<Record<string, unknown>> = {}) {
-  if (level === "debug" && !DEBUG) return
-  if (!logStream) logStream = createWriteStream(LOG_PATH, { flags: "a" })
-  logStream.write(`${JSON.stringify({ ...data, timestamp: new Date().toISOString(), level, event, pid: process.pid })}\n`)
 }
 
 function cachePath() {
   return `${traeHome()}/models_cache.json`
 }
 
-export function translateCatalog(catalog: CachedCatalog, path: string): CatalogSnapshot {
+export function translateCatalog(catalog: CachedCatalog, path: string) {
   if (!Array.isArray(catalog.models)) throw new Error(`Invalid Trae model cache: ${path}`)
 
   const loaded: Record<string, ModelRoute> = {}
-  let maxModelCount = 0
   for (const model of catalog.models) {
     if (model.visibility !== "list" || model.supported_in_api === false) continue
     const variants = model.business_metadata?.variants
@@ -166,24 +111,11 @@ export function translateCatalog(catalog: CachedCatalog, path: string): CatalogS
         output:
           variants.backend_token_limits?.[variants.max_key]?.output_tokens ?? model.output_tokens_hard_limit ?? 32_768,
       }
-      maxModelCount++
     }
   }
   if (!Object.keys(loaded).length) throw new Error(`Trae model cache has no visible API models: ${path}`)
 
-  return {
-    models: loaded,
-    info: {
-      path,
-      cacheSchemaVersion: catalog.cache_schema_version,
-      clientVersion: catalog.client_version,
-      fetchedAt: catalog.fetched_at,
-      providerMode: catalog.provider_mode,
-      sourceModelCount: catalog.models.length,
-      registeredModelCount: Object.keys(loaded).length,
-      maxModelCount,
-    },
-  }
+  return { models: loaded }
 }
 
 async function readCatalog() {
@@ -212,25 +144,19 @@ async function runTraex(args: ReadonlyArray<string>, purpose: string) {
   if (exitCode !== 0) throw new Error(`Trae ${purpose} failed (${exitCode}): ${errorOutput.trim().slice(0, 2_000)}`)
 }
 
-async function refreshCache(reason: "cache-miss" | "startup") {
-  log("info", "catalog.refresh.start", { reason, timeoutMs: REFRESH_TIMEOUT_MS })
-  const started = performance.now()
+async function refreshCache() {
   await runTraex(["debug", "models", "--remote"], "model refresh")
-  log("info", "catalog.refresh.complete", { reason, elapsedMs: performance.now() - started })
 }
 
 async function initializeCatalog() {
   catalog.initialization ??= (async () => {
     let refreshed = false
-    const snapshot = await readCatalog().catch(async (error) => {
-      log("error", "catalog.cache.error", { error: errorInfo(error) })
-      await refreshCache("cache-miss")
+    const snapshot = await readCatalog().catch(async () => {
+      await refreshCache()
       refreshed = true
       return readCatalog()
     })
     catalog.models = snapshot.models
-    catalog.info = snapshot.info
-    log("info", "catalog.loaded", { source: "cache", ...catalog.info })
     return { refreshed }
   })()
   return catalog.initialization
@@ -238,31 +164,17 @@ async function initializeCatalog() {
 
 async function refreshCatalog() {
   const previousFingerprint = catalogFingerprint(catalog.models)
-  const previousFetchedAt = catalog.info?.fetchedAt
-  await refreshCache("startup")
+  await refreshCache()
   const snapshot = await readCatalog()
   const changed = catalogFingerprint(snapshot.models) !== previousFingerprint
   catalog.models = snapshot.models
-  catalog.info = snapshot.info
-  log("info", changed ? "catalog.updated" : "catalog.unchanged", {
-    previousFetchedAt,
-    ...catalog.info,
-  })
-  if (!changed) return
-
-  const results = await Promise.allSettled([...catalog.reloads].map((reload) => reload()))
-  const failures = results.filter((result) => result.status === "rejected")
-  log(failures.length ? "error" : "info", "catalog.reload.complete", {
-    reloadCount: results.length,
-    failureCount: failures.length,
-    failures: failures.map((result) => errorInfo(result.reason)),
-  })
+  if (changed) await Promise.all([...catalog.reloads].map((reload) => reload()))
 }
 
 function startCatalogRefresh() {
-  catalog.refresh ??= refreshCatalog().catch((error) => {
-    log("error", "catalog.refresh.error", { error: errorInfo(error), retainedCachedCatalog: true })
-  })
+  catalog.refresh ??= refreshCatalog().catch((error) =>
+    console.error("Trae model refresh failed; using cached catalog", error),
+  )
 }
 
 function traeHome() {
@@ -351,47 +263,24 @@ export function buildTraePayload(body: ChatRequest, model: ModelRoute, id: strin
   }
 }
 
-function requestState(): RequestState {
-  return {
-    traceID: crypto.randomUUID(),
-    startedAt: performance.now(),
-    progressNoticeCount: 0,
-    sawDone: false,
-  }
-}
-
 export async function translateRequest(request: Request) {
   const body = (await request.json()) as ChatRequest
   const model = catalog.models[body.model]
   if (!model) throw new Error(`Unknown Trae model: ${body.model}`)
-  const state = requestState()
-  const payload = buildTraePayload(body, model, crypto.randomUUID())
-  const encoded = JSON.stringify(payload)
-  log("debug", "request.start", {
-    traceID: state.traceID,
-    model: body.model,
-    backendModel: model.backend,
-    requestBytes: Buffer.byteLength(encoded),
-    messageCount: payload.messages.length,
-    toolCount: payload.tools.length,
+  return new Request(TRAE_URL, {
+    method: "POST",
+    signal: request.signal,
+    headers: {
+      accept: "text/event-stream",
+      authorization: `Cloud-CLI-JWT ${await accessToken()}`,
+      "content-type": "application/json",
+      // A live omission probe confirmed that Trae rejects requests without these three headers.
+      "x-app-id": TRAE_APP_ID,
+      "x-ide-function": "traecli_next",
+      "x-ide-version-code": new Date().toISOString().slice(0, 10).replaceAll("-", ""),
+    },
+    body: JSON.stringify(buildTraePayload(body, model, crypto.randomUUID())),
   })
-  return {
-    request: new Request(TRAE_URL, {
-      method: "POST",
-      signal: request.signal,
-      headers: {
-        accept: "text/event-stream",
-        authorization: `Cloud-CLI-JWT ${await accessToken()}`,
-        "content-type": "application/json",
-        // A live omission probe confirmed that Trae rejects requests without these three headers.
-        "x-app-id": TRAE_APP_ID,
-        "x-ide-function": "traecli_next",
-        "x-ide-version-code": new Date().toISOString().slice(0, 10).replaceAll("-", ""),
-      },
-      body: encoded,
-    }),
-    state,
-  }
 }
 
 function chunk(model: string, delta: Readonly<Record<string, unknown>>, finishReason: string | null = null) {
@@ -452,13 +341,12 @@ function translate(eventName: string, event: TraeEvent, model: string) {
   return ""
 }
 
-export function translatedStream(response: Response, model: string, state: RequestState) {
+export function translatedStream(response: Response, model: string) {
   const reader = response.body!.getReader()
   const decoder = new TextDecoder()
   const encoder = new TextEncoder()
   let buffer = ""
   let cancelled = false
-  const elapsed = () => performance.now() - state.startedAt
   const processBlock = (block: string, controller: ReadableStreamDefaultController<Uint8Array>) => {
     const eventName = block.match(/^event:\s*(.+)$/m)?.[1] ?? ""
     const data = block
@@ -468,31 +356,10 @@ export function translatedStream(response: Response, model: string, state: Reque
       .join("\n")
     if (!data) return
     if (eventName === "progress_notice") {
-      state.progressNoticeCount++
-      log("debug", "stream.progress", {
-        traceID: state.traceID,
-        upstreamEvent: eventName,
-        bytes: Buffer.byteLength(block),
-        dataPreview: data.slice(0, 100),
-      })
       controller.enqueue(encoder.encode(`: ${data}\n\n`))
       return
     }
-    let event: TraeEvent
-    try {
-      event = JSON.parse(data)
-    } catch (error) {
-      log("error", "stream.parse.error", {
-        traceID: state.traceID,
-        upstreamEvent: eventName,
-        blockBytes: Buffer.byteLength(block),
-        dataPreview: data.slice(0, 500),
-        error: errorInfo(error),
-      })
-      throw error
-    }
-    const output = translate(eventName, event, model)
-    if (eventName === "done") state.sawDone = true
+    const output = translate(eventName, JSON.parse(data), model)
     if (output) controller.enqueue(encoder.encode(output))
   }
   return new ReadableStream<Uint8Array>({
@@ -509,51 +376,21 @@ export function translatedStream(response: Response, model: string, state: Reque
         if (cancelled) return
         buffer += decoder.decode()
         if (buffer.trim()) processBlock(buffer, controller)
-        log(state.sawDone ? "debug" : "error", "stream.complete", {
-          traceID: state.traceID,
-          elapsedMs: elapsed(),
-          progressNoticeCount: state.progressNoticeCount,
-          sawDone: state.sawDone,
-        })
         controller.close()
       } catch (error) {
-        if (cancelled || (state.sawDone && error instanceof Error && error.name === "AbortError")) return
-        log("error", "stream.error", {
-          traceID: state.traceID,
-          elapsedMs: elapsed(),
-          progressNoticeCount: state.progressNoticeCount,
-          sawDone: state.sawDone,
-          bufferedBytes: Buffer.byteLength(buffer),
-          error: errorInfo(error),
-        })
-        controller.error(error)
+        if (!cancelled) controller.error(error)
       }
     },
     async cancel(reason) {
       cancelled = true
-      log("debug", state.sawDone ? "stream.complete" : "stream.cancel", {
-        traceID: state.traceID,
-        elapsedMs: elapsed(),
-        progressNoticeCount: state.progressNoticeCount,
-        downstreamCancelled: true,
-        ...(reason === undefined ? {} : { reason: errorInfo(reason) }),
-      })
-      await reader.cancel(reason).catch((error) =>
-        log("debug", "stream.cancel.error", { traceID: state.traceID, error: errorInfo(error) }),
-      )
+      await reader.cancel(reason).catch(() => {})
     },
   })
 }
 
-export function translateResponse(response: Response, model: string, state: RequestState) {
-  log(response.ok ? "debug" : "error", "request.response", {
-    traceID: state.traceID,
-    status: response.status,
-    contentType: response.headers.get("content-type"),
-    requestID: response.headers.get("x-request-id") ?? response.headers.get("x-tt-logid"),
-  })
+export function translateResponse(response: Response, model: string) {
   if (!response.ok || !response.body) return response
-  return new Response(translatedStream(response, model, state), {
+  return new Response(translatedStream(response, model), {
     status: response.status,
     headers: { "cache-control": "no-cache", "content-type": "text/event-stream" },
   })
@@ -562,9 +399,7 @@ export function translateResponse(response: Response, model: string, state: Requ
 export default {
   id: "trae.provider",
   async setup(context) {
-    log("info", "plugin.setup", { directory: context.location.directory })
     const initialCatalog = await initializeCatalog()
-    const requests = new WeakMap<Request, RequestState>()
     await context.provider.transform((providers) => {
       providers.update("trae", (provider) => {
         provider.name = "Trae"
@@ -588,19 +423,14 @@ export default {
     await context.session.hook(
       "http.request",
       async (event) => {
-        const translated = await translateRequest(event.request.clone())
-        requests.set(translated.request, translated.state)
-        event.request = translated.request
+        event.request = await translateRequest(event.request)
       },
       { providerID: "trae" },
     )
     await context.session.hook(
       "http.response",
       (event) => {
-        const state = requests.get(event.request)
-        if (!state) throw new Error(`Missing Trae request state for session ${event.sessionID}`)
-        requests.delete(event.request)
-        event.response = translateResponse(event.response, event.model.id, state)
+        event.response = translateResponse(event.response, event.model.id)
       },
       { providerID: "trae" },
     )
@@ -608,7 +438,6 @@ export default {
       "retry",
       async (event) => {
         if (!shouldRefreshAuth(event.attempt, event.error.status)) return
-        log("info", "request.auth.refresh", { sessionID: event.sessionID, status: event.error.status })
         await refreshAuth()
         event.decision = { retry: true, delay: 0 }
       },
@@ -619,7 +448,6 @@ export default {
     if (!initialCatalog.refreshed) startCatalogRefresh()
     return () => {
       catalog.reloads.delete(reload)
-      log("info", "plugin.cleanup", { directory: context.location.directory })
     }
   },
 }

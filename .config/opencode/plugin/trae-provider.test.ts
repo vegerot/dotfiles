@@ -1,8 +1,5 @@
-import { afterAll, beforeAll, describe, expect, test } from "bun:test"
+import { beforeAll, describe, expect, test } from "bun:test"
 import type { ModelRoute } from "./trae-provider"
-
-const logPath = `${Bun.env.TMPDIR ?? "/tmp"}/trae-provider-test-${process.pid}.log`
-Bun.env.OPENCODE_TRAE_LOG = logPath
 
 type Provider = typeof import("./trae-provider")
 let provider: Provider
@@ -11,18 +8,10 @@ beforeAll(async () => {
   provider = await import("./trae-provider")
 })
 
-afterAll(async () => {
-  await Bun.file(logPath).delete().catch(() => {})
-})
-
 describe("Trae model catalog", () => {
   test("registers visible standard and Max routes from explicit cache metadata", () => {
     const snapshot = provider.translateCatalog(
       {
-        cache_schema_version: 7,
-        client_version: "test-client",
-        fetched_at: "2026-09-25T00:00:00Z",
-        provider_mode: "test",
         models: [
           {
             slug: "Visible",
@@ -72,12 +61,6 @@ describe("Trae model catalog", () => {
         context: 800_000,
         output: 64_000,
       },
-    })
-    expect(snapshot.info).toMatchObject({
-      path: "/catalog.json",
-      sourceModelCount: 3,
-      registeredModelCount: 2,
-      maxModelCount: 1,
     })
   })
 
@@ -206,14 +189,7 @@ describe("Trae raw-chat stream to OpenAI Chat SSE", () => {
       'event: token_usage\ndata: {"prompt_tokens":10,"completion_tokens":4,"total_tokens":14,"cache_read_input_tokens":3,"reasoning_tokens":1}',
       'event: done\ndata: {"finish_reason":"tool_use"}',
     ].join("\n\n") + "\n\n"
-    const state = {
-      traceID: "trace-1",
-      startedAt: performance.now(),
-      progressNoticeCount: 0,
-      sawDone: false,
-    }
-
-    const response = new Response(provider.translatedStream(new Response(upstream), "GPT-5.6-Sol", state))
+    const response = new Response(provider.translatedStream(new Response(upstream), "GPT-5.6-Sol"))
     const output = await response.text()
     const frames = output
       .split("\n\n")
@@ -237,7 +213,6 @@ describe("Trae raw-chat stream to OpenAI Chat SSE", () => {
     })
     expect(frames[2].choices[0].finish_reason).toBe("tool_calls")
     expect(output).toEndWith("data: [DONE]\n\n")
-    expect(state).toMatchObject({ sawDone: true, progressNoticeCount: 1 })
   })
 
   test("handles arbitrary byte boundaries and CRLF framing", async () => {
@@ -254,21 +229,11 @@ describe("Trae raw-chat stream to OpenAI Chat SSE", () => {
         controller.close()
       },
     })
-    const state = {
-      traceID: "trace-fragmented",
-      startedAt: performance.now(),
-      progressNoticeCount: 0,
-      sawDone: false,
-    }
-
-    const output = await new Response(
-      provider.translatedStream(new Response(stream), "GPT-5.6-Sol", state),
-    ).text()
+    const output = await new Response(provider.translatedStream(new Response(stream), "GPT-5.6-Sol")).text()
 
     expect(output).toContain(": ;Processing_123\n\n")
     expect(output).toContain('"content":"héllo 🌍"')
     expect(output).toEndWith("data: [DONE]\n\n")
-    expect(state).toMatchObject({ sawDone: true, progressNoticeCount: 1 })
   })
 })
 
