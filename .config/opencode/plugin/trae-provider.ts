@@ -134,9 +134,7 @@ function cachePath() {
   return `${traeHome()}/models_cache.json`
 }
 
-async function readCatalog(): Promise<CatalogSnapshot> {
-  const path = cachePath()
-  const catalog: CachedCatalog = (await Bun.file(path).json())
+export function translateCatalog(catalog: CachedCatalog, path: string): CatalogSnapshot {
   if (!Array.isArray(catalog.models)) throw new Error(`Invalid Trae model cache: ${path}`)
 
   const loaded: Record<string, ModelRoute> = {}
@@ -186,6 +184,11 @@ async function readCatalog(): Promise<CatalogSnapshot> {
       maxModelCount,
     },
   }
+}
+
+async function readCatalog() {
+  const path = cachePath()
+  return translateCatalog(await Bun.file(path).json(), path)
 }
 
 function catalogFingerprint(catalog: Readonly<Record<string, ModelRoute>>) {

@@ -15,6 +15,82 @@ afterAll(async () => {
   await Bun.file(logPath).delete().catch(() => {})
 })
 
+describe("Trae model catalog", () => {
+  test("registers visible standard and Max routes from explicit cache metadata", () => {
+    const snapshot = provider.translateCatalog(
+      {
+        cache_schema_version: 7,
+        client_version: "test-client",
+        fetched_at: "2026-09-25T00:00:00Z",
+        provider_mode: "test",
+        models: [
+          {
+            slug: "Visible",
+            config_name: "visible",
+            visibility: "list",
+            business_metadata: {
+              variants: {
+                standard_key: "visible__dev",
+                standard_context_window: 100_000,
+                max_key: "visible__max",
+                max_context_window: 800_000,
+                backend_token_limits: {
+                  visible__dev: { output_tokens: 8_192 },
+                  visible__max: { output_tokens: 64_000 },
+                },
+              },
+            },
+          },
+          {
+            slug: "Hidden",
+            config_name: "hidden",
+            visibility: "hidden",
+            business_metadata: {
+              variants: { standard_key: "hidden__dev", standard_context_window: 100_000 },
+            },
+          },
+          {
+            slug: "Disabled",
+            config_name: "disabled",
+            visibility: "list",
+            supported_in_api: false,
+            business_metadata: {
+              variants: { standard_key: "disabled__dev", standard_context_window: 100_000 },
+            },
+          },
+        ],
+      },
+      "/catalog.json",
+    )
+
+    expect(snapshot.models).toEqual({
+      Visible: { name: "Visible", config: "visible", backend: "visible__dev", context: 100_000, output: 8_192 },
+      "Visible-Max": {
+        name: "Visible / Max",
+        config: "visible",
+        backend: "visible__max",
+        context: 800_000,
+        output: 64_000,
+      },
+    })
+    expect(snapshot.info).toMatchObject({
+      path: "/catalog.json",
+      sourceModelCount: 3,
+      registeredModelCount: 2,
+      maxModelCount: 1,
+    })
+  })
+
+  test("rejects a visible model without an explicit standard route", () => {
+    expect(() =>
+      provider.translateCatalog(
+        { models: [{ slug: "Incomplete", config_name: "incomplete", visibility: "list" }] },
+        "/catalog.json",
+      ),
+    ).toThrow("Trae cache model Incomplete is missing its standard route")
+  })
+})
+
 describe("OpenAI Chat request to Trae raw chat", () => {
   test("preserves conversation history and converts tool schemas", () => {
     const route: ModelRoute = {
