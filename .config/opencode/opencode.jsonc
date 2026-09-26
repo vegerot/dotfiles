@@ -5,10 +5,15 @@
   ],
   "plugin": [
     "./plugin/conditional-bytedance.ts",
-    ".\/plugins\/cmux-session.js"
+    ".\/plugins\/cmux-session.js",
+    "file:///Users/bytedance/.config/opencode/plugins/flux-opencode-plugin.js"
   ],
   "lsp": true,
   "mcp": {
+    "mdn": {
+      "type": "remote",
+      "url": "https://mcp.mdn.mozilla.net/"
+    },
     "atuin": {
       "type": "local",
       "command": [
