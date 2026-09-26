@@ -11,6 +11,7 @@ type CachedModel = Readonly<{
   output_tokens_hard_limit?: number
   visibility?: string
   supported_in_api?: boolean
+  input_modalities?: ReadonlyArray<string>
   supported_reasoning_levels?: ReadonlyArray<Readonly<{ effort: string }>>
   business_metadata?: Readonly<{
     variants?: Readonly<{
@@ -32,6 +33,7 @@ export type ModelRoute = Readonly<{
   context: number
   output: number
   reasoning: ReadonlyArray<string>
+  input: ReadonlyArray<"text" | "image">
 }>
 
 export type ChatMessage = Readonly<{
@@ -101,6 +103,7 @@ export function translateCatalog(catalog: CachedCatalog, path: string) {
     const context = variants.standard_context_window
     const output = variants.backend_token_limits?.[backend]?.output_tokens ?? model.output_tokens_hard_limit ?? 32_768
     const reasoning = model.supported_reasoning_levels?.map((level) => level.effort) ?? []
+    const input = model.input_modalities?.includes("image") ? (["text", "image"] as const) : (["text"] as const)
     loaded[model.slug] = {
       name: model.slug,
       config,
@@ -108,6 +111,7 @@ export function translateCatalog(catalog: CachedCatalog, path: string) {
       context,
       output,
       reasoning,
+      input,
     }
 
     if (variants.max_key && variants.max_context_window) {
@@ -120,6 +124,7 @@ export function translateCatalog(catalog: CachedCatalog, path: string) {
         output:
           variants.backend_token_limits?.[variants.max_key]?.output_tokens ?? model.output_tokens_hard_limit ?? 32_768,
         reasoning,
+        input,
       }
     }
   }
@@ -426,7 +431,7 @@ export default {
             reasoningField: "reasoning_content",
             requireFinishReason: true,
           }
-          model.capabilities = { tools: true, input: ["text"], output: ["text"] }
+          model.capabilities = { tools: true, input: [...info.input], output: ["text"] }
           model.limit = { context: info.context, output: info.output }
           model.variants = reasoningVariants(info.reasoning)
         })

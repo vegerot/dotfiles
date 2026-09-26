@@ -22,7 +22,7 @@ Captured Trae traffic and live requests established that:
 - `x-app-id`, `x-ide-function`, and `x-ide-version-code` are required—a 2026-09-25 omission probe produced Trae `error` events without each one;
 - `originator`, `version`, and `x-agent-flag` are not required—the same probe completed normally without all three.
 
-Malformed JSON model events fail loudly so protocol drift does not silently truncate a response. Images are not advertised because image translation has not been verified.
+Malformed JSON model events fail loudly so protocol drift does not silently truncate a response. Image input is advertised from each cached model's `input_modalities`. OpenCode's OpenAI-compatible driver emits `image_url` content parts, which Trae raw chat accepts unchanged; a live standalone request correctly identified a generated solid-red PNG.
 
 ## Verification
 
@@ -38,12 +38,17 @@ Run live text, tool, and long-context checks:
 ./.config/opencode/plugin/trae-provider-smoke.sh
 ```
 
-Verify a reasoning variant without restarting or interrupting the shared service:
+Verify a reasoning variant or image input without restarting or interrupting the shared service:
 
 ```sh
 opencode run --standalone \
   --model 'trae/GPT-5.6-Sol#high' \
   'Reply with exactly: TRAE_REASONING_VARIANT_OK'
+
+opencode run --standalone \
+  --model 'trae/GPT-5.6-Sol#low' \
+  --file /path/to/image.png \
+  'Describe the attached image.'
 ```
 
 Protocol and refresh failures flow through OpenCode's service log. The provider intentionally does not maintain a second append-only log.

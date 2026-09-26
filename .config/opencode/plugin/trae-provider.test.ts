@@ -17,6 +17,7 @@ describe("Trae model catalog", () => {
             slug: "Visible",
             config_name: "visible",
             visibility: "list",
+            input_modalities: ["text", "image"],
             supported_reasoning_levels: [{ effort: "low" }, { effort: "high" }],
             business_metadata: {
               variants: {
@@ -29,6 +30,15 @@ describe("Trae model catalog", () => {
                   visible__max: { output_tokens: 64_000 },
                 },
               },
+            },
+          },
+          {
+            slug: "TextOnly",
+            config_name: "text-only",
+            visibility: "list",
+            input_modalities: ["text"],
+            business_metadata: {
+              variants: { standard_key: "text-only__dev", standard_context_window: 50_000 },
             },
           },
           {
@@ -54,6 +64,15 @@ describe("Trae model catalog", () => {
     )
 
     expect(snapshot.models).toEqual({
+      TextOnly: {
+        name: "TextOnly",
+        config: "text-only",
+        backend: "text-only__dev",
+        context: 50_000,
+        output: 32_768,
+        reasoning: [],
+        input: ["text"],
+      },
       Visible: {
         name: "Visible",
         config: "visible",
@@ -61,6 +80,7 @@ describe("Trae model catalog", () => {
         context: 100_000,
         output: 8_192,
         reasoning: ["low", "high"],
+        input: ["text", "image"],
       },
       "Visible-Max": {
         name: "Visible / Max",
@@ -69,6 +89,16 @@ describe("Trae model catalog", () => {
         context: 800_000,
         output: 64_000,
         reasoning: ["low", "high"],
+        input: ["text", "image"],
+      },
+      TextOnly: {
+        name: "TextOnly",
+        config: "text-only",
+        backend: "text-only__dev",
+        context: 50_000,
+        output: 32_768,
+        reasoning: [],
+        input: ["text"],
       },
     })
   })
@@ -99,6 +129,7 @@ describe("OpenAI Chat request to Trae raw chat", () => {
       context: 272_000,
       output: 32_768,
       reasoning: ["low", "medium", "high", "xhigh"],
+      input: ["text", "image"],
     }
     const payload = provider.buildTraePayload(
       {
@@ -115,7 +146,14 @@ describe("OpenAI Chat request to Trae raw chat", () => {
             tool_calls: [{ id: "call-1", type: "function", function: { name: "read", arguments: "{\"path\":\"a\"}" } }],
           },
           { role: "tool", tool_call_id: "call-1", content: "contents" },
-          { role: "user", content: [{ type: "text", text: "First" }, { type: "text", text: "Second" }] },
+          {
+            role: "user",
+            content: [
+              { type: "text", text: "First" },
+              { type: "image_url", image_url: { url: "data:image/png;base64,AA==", detail: "high" } },
+              { type: "text", text: "Second" },
+            ],
+          },
         ],
         tools: [
           {
@@ -156,7 +194,14 @@ describe("OpenAI Chat request to Trae raw chat", () => {
           ],
         },
         { role: "tool", content: [{ type: "text", text: "contents" }], tool_call_id: "call-1" },
-        { role: "user", content: [{ type: "text", text: "First" }, { type: "text", text: "Second" }] },
+        {
+          role: "user",
+          content: [
+            { type: "text", text: "First" },
+            { type: "image_url", image_url: { url: "data:image/png;base64,AA==", detail: "high" } },
+            { type: "text", text: "Second" },
+          ],
+        },
       ],
       model_name: "gpt-5.6-sol__dev",
       parallel_tool_calls: false,
@@ -180,6 +225,34 @@ describe("OpenAI Chat request to Trae raw chat", () => {
     })
   })
 
+  test("preserves OpenAI image parts accepted by Trae raw chat", () => {
+    expect(
+      provider.translateMessages([
+        {
+          role: "user",
+          content: [
+            { type: "text", text: "Describe this" },
+            {
+              type: "image_url",
+              image_url: { url: "data:image/png;base64,aGVsbG8=", detail: "high" },
+            },
+          ],
+        },
+      ]),
+    ).toEqual([
+      {
+        role: "user",
+        content: [
+          { type: "text", text: "Describe this" },
+          {
+            type: "image_url",
+            image_url: { url: "data:image/png;base64,aGVsbG8=", detail: "high" },
+          },
+        ],
+      },
+    ])
+  })
+
   test("uses the selected route output limit by default", () => {
     const route: ModelRoute = {
       name: "Small model",
@@ -188,6 +261,7 @@ describe("OpenAI Chat request to Trae raw chat", () => {
       context: 100_000,
       output: 8_192,
       reasoning: [],
+      input: ["text"],
     }
 
     const payload = provider.buildTraePayload(
