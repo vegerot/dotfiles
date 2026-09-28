@@ -21,7 +21,7 @@ Sapling is not Git with renamed commands. Important differences:
 
 For unfamiliar commands, complex stack or history operations, or uncertainty
 about Sapling semantics, read
-`~/workspace/github.com/facebook/sapling/website/docs/introduction/{differences-git.md,git-cheat-sheet.md}`.
+`~/code/github.com/facebook/sapling/website/docs/introduction/{differences-git.md,git-cheat-sheet.md}`.
 Routine `status`, `diff`, `add`, path-scoped `commit`, `show`, and post-commit
 status checks do not require rereading those conceptual documents.
 
@@ -138,11 +138,11 @@ If a command choice is unclear, consult Sapling help:
 - `sl help commands`
 - `sl help <command>`
 - `sl githelp -- <git command>`
-- ~/workspace/github.com/facebook/sapling/website/docs/
-- ~/workspace/github.com/facebook/sapling/eden/scm
+- ~/code/github.com/facebook/sapling/website/docs/
+- ~/code/github.com/facebook/sapling/eden/scm
 - https://sapling-scm.com/docs/introduction/git-cheat-sheet
 
-When facing a TOUGH challenge that requires deep understanding of Sapling's behavior, ground your answer in `~/workspace/github.com/facebook/sapling/eden/scm/`
+When facing a TOUGH challenge that requires deep understanding of Sapling's behavior, ground your answer in `~/code/github.com/facebook/sapling/eden/scm/`
 
 ## Goal
 
