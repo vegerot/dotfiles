@@ -204,16 +204,3 @@ enabled = false
 
 # Machine-specific config goes on the bottom
 
-[projects."/Users/bytedance/code/github.com/anomalyco/opencode"]
-trust_level = "trusted"
-
-[projects."/Users/bytedance/code/github.com/vegerot/ai-conversations"]
-trust_level = "trusted"
-
-[projects."/Users/bytedance/Documents/Codex/2026-09-08/ex"]
-trust_level = "trusted"
-
-[projects."/Users/bytedance/code/github.com/vegerot/dotfiles"]
-trust_level = "trusted"
-
-
