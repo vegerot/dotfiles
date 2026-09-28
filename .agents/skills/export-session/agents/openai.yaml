@@ -1,0 +1,4 @@
+interface:
+  display_name: "Export Session"
+  short_description: "Export a Codex transcript as Markdown"
+  default_prompt: "Use $export-session to save this Codex conversation as Markdown."
