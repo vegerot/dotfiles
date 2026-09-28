@@ -5,13 +5,11 @@ set -o nounset
 set -o pipefail
 
 main() {
-	local root_dir
+	local root_dir=~/code
 	local filter
-	if [[ -d "${1:-}" ]]; then
-		root_dir="$1"
-		shift
-	else
-		root_dir=~/code
+	if [[ ${1:-} == "--root" ]]; then
+		root_dir="${2:?Usage: findrepo [--root DIRECTORY] [FILTER]}"
+		shift 2
 	fi
 	if [[ -n ${1:-} ]]; then
 		filter="$1"
@@ -39,4 +37,4 @@ findrepo() {
 	fi
 }
 
-main $@
+main "$@"
