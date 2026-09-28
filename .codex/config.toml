@@ -154,30 +154,6 @@ git-pull-request-merge-method = "squash"
   # Selects the default application target for opening filesystem paths.
   global = "systemDefault"
 
-  [desktop.appearanceLightChromeTheme]
-  # Sets the accent color for the light-mode app interface.
-  accent = "#0169cc"
-  # Selects whether the accent comes from ChatGPT or a custom color.
-  accentSource = "chatgpt"
-  # Sets light-mode interface contrast on a scale from 0 to 100.
-  contrast = 45
-  # Sets the foreground ink color for the light-mode interface.
-  ink = "#0d0d0d"
-  # Controls whether light-mode windows use opaque surfaces.
-  opaqueWindows = false
-  # Sets the surface background color for the light-mode interface.
-  surface = "#ffffff"
-  # Stores font overrides for the light-mode interface.
-  fonts = { }
-
-    [desktop.appearanceLightChromeTheme.semanticColors]
-    # Sets the light-mode color for added code.
-    diffAdded = "#00a240"
-    # Sets the light-mode color for removed code.
-    diffRemoved = "#e02e2a"
-    # Sets the light-mode color used for skills.
-    skill = "#751ed9"
-
 [plugins."codex-app-tools@openai-bundled"]
 enabled = true
 
