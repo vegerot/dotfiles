@@ -6,8 +6,8 @@ model_reasoning_effort = "medium"
 model_reasoning_summary = "detailed"
 show_raw_agent_reasoning = true
 hide_agent_reasoning = false
-developer_instructions = "For introspection questions about Codex, inspect `~/code/github.com/openai/`."
-service_tier = "priority"
+developer_instructions = "For introspection questions about Codex, ChatGPT, or OpenAI, inspect `~/code/github.com/openai/`."
+service_tier = "default"
 approvals_reviewer = "auto_review"
 personality = "friendly"
 
@@ -103,7 +103,7 @@ experimental_mode = true
 # Controls whether follow-up messages steer, queue behind, or interrupt the active turn.
 followUpQueueMode = "steer"
 # Selects how much step, command, and execution detail appears in conversations.
-conversationDetailMode = "STEPS_COMMANDS"
+conversationDetailMode = "STEPS_PROSE"
 # Enables ambient task suggestions on the home page.
 ambient-suggestions-enabled = true
 # Shows context-window usage in the message composer.
