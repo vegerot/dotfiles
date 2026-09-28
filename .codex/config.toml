@@ -1,8 +1,8 @@
 approval_policy = "never"
 sandbox_mode = "danger-full-access"
 model_context_window = 900000
-model = "gpt-5.6-sol"
-model_reasoning_effort = "medium"
+model = "gpt-6-sol"
+model_reasoning_effort = "low"
 model_reasoning_summary = "detailed"
 show_raw_agent_reasoning = true
 hide_agent_reasoning = false
@@ -56,7 +56,7 @@ startup_timeout_sec = 60
 
 [mcp_servers.dayflow]
 command = "start-mcp-else-empty"
-args = [ "/Applications/Dayflow.app/Contents/Helpers/dayflow", "mcp" ]
+args = [ "dayflow", "mcp" ]
 
 [tui]
 terminal_title = ["project-name", "activity", "thread-title"]
@@ -72,6 +72,8 @@ status_line = [
 ]
 # Colors terminal status-line items using the active syntax theme.
 status_line_use_colors = true
+screen_reader_detection_done = true
+fullscreen_transcript = true
 
   [tui.model_availability_nux]
   gpt-6-astra = 4
@@ -146,6 +148,7 @@ worktree-upstream-refresh-mode = "best-effort"
 git-pr-watch-auto-merge = true
 # Keeps the machine awake while Codex is running.
 preventSleepWhileRunning = true
+git-pull-request-merge-method = "squash"
 
   [desktop.open-in-target-preferences]
   # Selects the default application target for opening filesystem paths.
@@ -203,9 +206,6 @@ enabled = true
 enabled = true
 
 [plugins."template-creator@openai-primary-runtime"]
-enabled = true
-
-[plugins."sites@openai-bundled"]
 enabled = true
 
 [plugins."computer-history@openai-bundled"]
