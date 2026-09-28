@@ -280,7 +280,7 @@ describe("Trae raw-chat stream to OpenAI Chat SSE", () => {
       'event: metadata\ndata: {"model":"gpt-5.6-sol"}',
       "event: progress_notice\ndata: ;Processing_123",
       'event: output\ndata: {"reasoning_content":"think","response":"answer","tool_calls":[{"id":"call-1","index":0,"function_call":{"name":"read","arguments":"{}"}}]}',
-      'event: token_usage\ndata: {"prompt_tokens":10,"completion_tokens":4,"total_tokens":14,"cache_read_input_tokens":3,"reasoning_tokens":1}',
+      'event: token_usage\ndata: {"prompt_tokens":10,"completion_tokens":4,"total_tokens":14,"cache_read_input_tokens":3,"cache_creation_input_tokens":2,"reasoning_tokens":1}',
       'event: done\ndata: {"finish_reason":"tool_use"}',
     ].join("\n\n") + "\n\n"
     const response = new Response(provider.translatedStream(new Response(upstream), "GPT-5.6-Sol"))
@@ -302,7 +302,7 @@ describe("Trae raw-chat stream to OpenAI Chat SSE", () => {
       prompt_tokens: 10,
       completion_tokens: 4,
       total_tokens: 14,
-      prompt_tokens_details: { cached_tokens: 3 },
+      prompt_tokens_details: { cached_tokens: 3, cache_write_tokens: 2 },
       completion_tokens_details: { reasoning_tokens: 1 },
     })
     expect(frames[2].choices[0].finish_reason).toBe("tool_calls")

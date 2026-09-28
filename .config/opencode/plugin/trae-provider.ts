@@ -342,7 +342,10 @@ function translate(eventName: string, event: TraeEvent, model: string) {
         prompt_tokens: event.prompt_tokens,
         completion_tokens: event.completion_tokens,
         total_tokens: event.total_tokens,
-        prompt_tokens_details: { cached_tokens: event.cache_read_input_tokens ?? 0 },
+        prompt_tokens_details: {
+          cached_tokens: event.cache_read_input_tokens ?? 0,
+          cache_write_tokens: event.cache_creation_input_tokens ?? 0,
+        },
         completion_tokens_details: { reasoning_tokens: event.reasoning_tokens ?? 0 },
       },
     })}\n\n`

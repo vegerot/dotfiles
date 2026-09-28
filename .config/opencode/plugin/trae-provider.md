@@ -18,11 +18,14 @@ Captured Trae traffic and live requests established that:
 - `config_name` and `model_name` are distinct route identifiers;
 - tool parameter schemas must be JSON strings;
 - historical tool calls use `function_call` rather than `function`;
+- `cache_creation_input_tokens` maps to OpenCode cache-write usage;
 - `progress_notice` contains non-JSON data and must remain SSE control traffic;
 - `x-app-id`, `x-ide-function`, and `x-ide-version-code` are required—a 2026-09-25 omission probe produced Trae `error` events without each one;
 - `originator`, `version`, and `x-agent-flag` are not required—the same probe completed normally without all three.
 
 Malformed JSON model events fail loudly so protocol drift does not silently truncate a response. Image input is advertised from each cached model's `input_modalities`. OpenCode's OpenAI-compatible driver emits `image_url` content parts, which Trae raw chat accepts unchanged; a live standalone request correctly identified a generated solid-red PNG.
+
+A 2026-09-28 probe found no usable raw-chat semantics for `verbosity`, `temperature`, `top_p`, `seed`, frequency/presence penalties, `stop`, `response_format`, or `tool_choice`. Unknown and malformed values were generally accepted but ignored; `stop` did not stop output, JSON mode returned plain text, low/high verbosity had overlapping output lengths, and `tool_choice` neither prevented nor forced tool calls. Named tool choice returned HTTP 400. The provider deliberately does not forward these controls without behavioral evidence.
 
 ## Verification
 
