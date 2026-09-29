@@ -6,8 +6,3 @@ typeset -U PATH
 if [[ ! -o login && -r ~/.profile ]]; then
 	source ~/.profile
 fi
-
-# Desktop SSH prepends CODEX_INSTALL_DIR to PATH; ordinary terminals keep the fork.
-if [[ -n ${CODEX_REMOTE_PAYLOAD-} && ${HOST%%.*} == devbox ]]; then
-	export CODEX_INSTALL_DIR="$HOME/.codex/packages/app-server-daemon/current/bin"
-fi
