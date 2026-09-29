@@ -1,0 +1,9 @@
+#!/bin/sh
+# Keep the basename "cmux": cmux recognizes persistent hooks by that name.
+# This hook directory is outside PATH, so it cannot shadow the real cmux.
+if [ -n "$CMUX_SURFACE_ID" ] &&
+   [ "$CMUX_CODEX_HOOKS_DISABLED" != "1" ] &&
+   command -v cmux >/dev/null 2>&1; then
+    cmux "$@" && exit 0
+fi
+echo '{}'
