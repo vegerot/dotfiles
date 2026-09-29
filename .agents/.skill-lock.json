@@ -6,9 +6,9 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/GoogleChrome/modern-web-guidance.git",
       "skillPath": "skills/modern-web-guidance/SKILL.md",
-      "skillFolderHash": "d660085f4d82a97610a6c5ef19c45f99719ad37f",
+      "skillFolderHash": "df633f7d26c50424a45cba65b3e9719b0f2faf32",
       "installedAt": "2026-05-30T00:52:40.267Z",
-      "updatedAt": "2026-08-25T23:44:46.429Z"
+      "updatedAt": "2026-09-29T04:26:39.638Z"
     },
     "find-skills": {
       "source": "vercel-labs/skills",
