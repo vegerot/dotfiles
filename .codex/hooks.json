@@ -1,48 +1,13 @@
 {
   "hooks": {
-    "PermissionRequest": [
-      {
-        "hooks": [
-          {
-            "command": "~/dotfiles/bin/flux-hook relay codex",
-            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
-            "timeout": 86400,
-            "type": "command"
-          }
-        ],
-        "matcher": "*"
-      },
-      {
-        "hooks": [
-          {
-            "command": "~/.codex/hooks/cmux hooks feed --source codex --event PermissionRequest",
-            "timeout": 5,
-            "type": "command",
-            "async": false
-          }
-        ]
-      }
-    ],
-    "PostCompact": [
-      {
-        "hooks": [
-          {
-            "command": "~/.codex/hooks/cmux hooks feed --source codex --event PostCompact",
-            "timeout": 5,
-            "type": "command",
-            "async": true
-          }
-        ]
-      }
-    ],
     "PostToolUse": [
       {
         "hooks": [
           {
             "command": "command -v atuin >/dev/null || exit 0; atuin hook codex",
-            "commandWindows": "pwsh -NoProfile -Command \"& (Join-Path ~ '.codex/hooks/atuin-codex.ps1')\"",
             "timeout": 5,
-            "type": "command"
+            "type": "command",
+            "commandWindows": "pwsh -NoProfile -Command \"& (Join-Path ~ '.codex/hooks/atuin-codex.ps1')\""
           }
         ],
         "matcher": "^Bash$"
@@ -50,44 +15,22 @@
       {
         "hooks": [
           {
-            "async": true,
             "command": "~/dotfiles/bin/flux-hook relay codex",
-            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
-            "timeout": 5,
-            "type": "command"
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "~/dotfiles/bin/flux-hook bits codex postToolUse",
-            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
-            "timeout": 30,
-            "type": "command"
-          }
-        ],
-        "matcher": ".*"
-      },
-      {
-        "hooks": [
-          {
-            "command": "~/.codex/hooks/cmux hooks feed --source codex --event PostToolUse",
-            "timeout": 5,
             "type": "command",
+            "timeout": 5,
+            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
             "async": true
           }
         ]
-      }
-    ],
-    "PreCompact": [
+      },
       {
+        "matcher": ".*",
         "hooks": [
           {
-            "command": "~/.codex/hooks/cmux hooks feed --source codex --event PreCompact",
-            "timeout": 5,
+            "command": "~/dotfiles/bin/flux-hook bits codex postToolUse",
             "type": "command",
+            "timeout": 30,
+            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
             "async": true
           }
         ]
@@ -98,9 +41,9 @@
         "hooks": [
           {
             "command": "command -v atuin >/dev/null || exit 0; atuin hook codex",
-            "commandWindows": "pwsh -NoProfile -Command \"& (Join-Path ~ '.codex/hooks/atuin-codex.ps1')\"",
             "timeout": 5,
-            "type": "command"
+            "type": "command",
+            "commandWindows": "pwsh -NoProfile -Command \"& (Join-Path ~ '.codex/hooks/atuin-codex.ps1')\""
           }
         ],
         "matcher": "^Bash$"
@@ -108,43 +51,33 @@
       {
         "hooks": [
           {
-            "async": true,
             "command": "~/dotfiles/bin/flux-hook relay codex",
-            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
-            "timeout": 5,
-            "type": "command"
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "~/dotfiles/bin/flux-hook bits codex preToolUse",
-            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
-            "timeout": 30,
-            "type": "command"
-          }
-        ],
-        "matcher": ".*"
-      },
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "~/.codex/hooks/context-reminder.py",
-            "timeout": 10,
-            "type": "command"
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "command": "~/.codex/hooks/cmux hooks feed --source codex --event PreToolUse",
-            "timeout": 5,
             "type": "command",
-            "async": false
+            "timeout": 5,
+            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
+            "async": true
+          }
+        ]
+      },
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "command": "~/dotfiles/bin/flux-hook bits codex preToolUse",
+            "type": "command",
+            "timeout": 30,
+            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
+            "async": true
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "command": "~/.codex/hooks/context-reminder.py",
+            "type": "command",
+            "timeout": 10,
+            "async": true
           }
         ]
       }
@@ -153,122 +86,21 @@
       {
         "hooks": [
           {
-            "async": true,
             "command": "~/dotfiles/bin/flux-hook relay codex",
-            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
+            "type": "command",
             "timeout": 5,
-            "type": "command"
+            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
+            "async": true
           }
         ]
       },
       {
         "hooks": [
           {
-            "async": true,
             "command": "~/dotfiles/bin/flux-hook bits codex sessionStart",
-            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
+            "type": "command",
             "timeout": 30,
-            "type": "command"
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "command": "~/.codex/hooks/cmux hooks codex session-start",
-            "timeout": 5,
-            "type": "command",
-            "async": true
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "~/dotfiles/bin/flux-hook relay codex",
             "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
-            "timeout": 5,
-            "type": "command"
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "~/dotfiles/bin/flux-hook bits codex stop",
-            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
-            "timeout": 30,
-            "type": "command"
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "~/.codex/hooks/model-switch-reminder.py",
-            "commandWindows": "pwsh -NoProfile -Command \"py -3 (Join-Path ~ '.codex/hooks/model-switch-reminder.py')\"",
-            "timeout": 10,
-            "type": "command"
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "command": "~/.codex/hooks/cmux hooks codex stop",
-            "timeout": 5,
-            "type": "command",
-            "async": true
-          }
-        ]
-      }
-    ],
-    "SubagentStart": [
-      {
-        "hooks": [
-          {
-            "command": "~/.codex/hooks/cmux hooks feed --source codex --event SubagentStart",
-            "timeout": 5,
-            "type": "command",
-            "async": true
-          }
-        ]
-      }
-    ],
-    "SubagentStop": [
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "~/dotfiles/bin/flux-hook relay codex",
-            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
-            "timeout": 5,
-            "type": "command"
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "~/dotfiles/bin/flux-hook bits codex subagentStop",
-            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
-            "timeout": 30,
-            "type": "command"
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "command": "~/.codex/hooks/cmux hooks feed --source codex --event SubagentStop",
-            "timeout": 5,
-            "type": "command",
             "async": true
           }
         ]
@@ -278,20 +110,82 @@
       {
         "hooks": [
           {
-            "async": true,
             "command": "~/dotfiles/bin/flux-hook relay codex",
-            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
+            "type": "command",
             "timeout": 5,
-            "type": "command"
+            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "command": "~/dotfiles/bin/flux-hook relay codex",
+            "type": "command",
+            "timeout": 86400,
+            "commandWindows": "pwsh -NoProfile -Command \"exit 0\""
+          }
+        ],
+        "matcher": "*"
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "command": "~/dotfiles/bin/flux-hook relay codex",
+            "type": "command",
+            "timeout": 5,
+            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
+            "async": true
           }
         ]
       },
       {
         "hooks": [
           {
-            "command": "~/.codex/hooks/cmux hooks codex prompt-submit",
-            "timeout": 5,
+            "command": "~/dotfiles/bin/flux-hook bits codex stop",
             "type": "command",
+            "timeout": 30,
+            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
+            "async": true
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "command": "~/.codex/hooks/model-switch-reminder.py",
+            "commandWindows": "pwsh -NoProfile -Command \"py -3 (Join-Path ~ '.codex/hooks/model-switch-reminder.py')\"",
+            "type": "command",
+            "timeout": 10,
+            "async": true
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "command": "~/dotfiles/bin/flux-hook relay codex",
+            "type": "command",
+            "timeout": 5,
+            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
+            "async": true
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "command": "~/dotfiles/bin/flux-hook bits codex subagentStop",
+            "type": "command",
+            "timeout": 30,
+            "commandWindows": "pwsh -NoProfile -Command \"exit 0\"",
             "async": true
           }
         ]
