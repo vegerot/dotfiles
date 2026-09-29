@@ -5,7 +5,6 @@ model = "gpt-6-sol"
 model_reasoning_effort = "low"
 model_reasoning_summary = "detailed"
 show_raw_agent_reasoning = true
-hide_agent_reasoning = false
 developer_instructions = "For introspection questions about Codex, ChatGPT, or OpenAI, inspect `~/code/github.com/openai/`."
 service_tier = "default"
 approvals_reviewer = "auto_review"
@@ -70,10 +69,7 @@ status_line = [
   "five-hour-limit",
   "weekly-limit"
 ]
-# Colors terminal status-line items using the active syntax theme.
-status_line_use_colors = true
 screen_reader_detection_done = true
-fullscreen_transcript = true
 
   [tui.model_availability_nux]
   gpt-6-astra = 4
@@ -81,7 +77,6 @@ fullscreen_transcript = true
 [features]
 # Preserves the request-level reasoning baseline and appends effort updates on supported OpenAI models to retain cache reuse.
 reasoning_effort_override = true
-hooks = true
 memories = true
 # Enables the Chronicle sidecar for passive screen-context memories.
 chronicle = true
@@ -106,22 +101,14 @@ experimental_mode = true
 followUpQueueMode = "steer"
 # Selects how much step, command, and execution detail appears in conversations.
 conversationDetailMode = "STEPS_PROSE"
-# Enables ambient task suggestions on the home page.
-ambient-suggestions-enabled = true
 # Shows context-window usage in the message composer.
 show-context-window-usage = true
 # Allows the app to display confetti celebrations.
 toys-confetti-enabled = true
 # Makes conversation navigation rails react to system playback audio.
 toys-audio-visualizer-enabled = true
-# Automatically keeps imported content from other agents in sync.
-external-agent-import-sync-enabled = false
 # Chooses which imported content categories stay in sync, with all including categories discovered later.
 external-agent-import-sync-item-types = "all"
-# Selects system, light, or dark app appearance.
-appearanceTheme = "system"
-# Selects the code syntax theme used in light mode.
-appearanceLightCodeThemeId = "codex"
 # Selects the preferred macOS Dock icon.
 dock-icon-preference = "codex-system"
 # Uses pointer cursors over interactive controls.
@@ -130,18 +117,8 @@ usePointerCursors = true
 sansFontSize = 16
 # Sets the code font size.
 codeFontSize = 14
-# Chooses colored or symbolic change markers in code review views.
-appearanceDiffMarkerStyle = "color"
 # Shows the full URL in the in-app browser address bar.
 browser-show-full-url = true
-# Enables notifications for permission requests.
-notifications-permissions-enabled = true
-# Chooses the default panel location for terminal tabs.
-defaultTerminalLocation = "bottom"
-# Shows the app in the macOS menu bar.
-mac-menu-bar-enabled = true
-# Allows realtime voice to inspect the foreground app when the user refers to screen content.
-realtimeVoiceScreenContextEnabled = true
 # Controls whether upstream branches are refreshed before creating a worktree.
 worktree-upstream-refresh-mode = "best-effort"
 # Controls whether watched pull requests are merged when ready.
@@ -155,47 +132,31 @@ git-pull-request-merge-method = "squash"
   global = "systemDefault"
 
 [plugins."codex-app-tools@openai-bundled"]
-enabled = true
 
 [plugins."browser@openai-bundled"]
-enabled = true
 
 [plugins."unified-computer-use@openai-bundled"]
-enabled = true
 
 [plugins."visualize@openai-bundled"]
-enabled = true
 
 [plugins."computer-use@openai-bundled"]
-enabled = true
 
 [plugins."documents@openai-primary-runtime"]
-enabled = true
 
 [plugins."pdf@openai-primary-runtime"]
-enabled = true
 
 [plugins."spreadsheets@openai-primary-runtime"]
-enabled = true
 
 [plugins."presentations@openai-primary-runtime"]
-enabled = true
 
 [plugins."template-creator@openai-primary-runtime"]
-enabled = true
 
 [plugins."computer-history@openai-bundled"]
-enabled = true
 
 [plugins."chrome@openai-bundled"]
-enabled = true
 
 [shell_environment_policy]
 inherit = "core"
-
-[memories]
-generate_memories = true
-use_memories = true
 
 [[skills.config]]
 # Selects the skill by name rather than by its filesystem path.
