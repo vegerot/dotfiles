@@ -105,6 +105,9 @@ if [ -d "$HOME/Invoke" ]; then
 	export PATH="$PATH:$HOME/Invoke"
 fi
 
+if [ -d "/Applications/Dayflow.app/Contents/Helpers/" ]; then
+	export PATH="$PATH:/Applications/Dayflow.app/Contents/Helpers"
+fi
 
 if [ -d "$HOME/.railway/bin" ]; then
 	export PATH="$PATH:$HOME/.railway/bin"
