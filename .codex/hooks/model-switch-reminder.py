@@ -49,7 +49,11 @@ FALLBACK = [
     for mode, offset in (("Fast", 50), ("Standard", 0))
     for (high, low), model in zip(ORIGINAL_BANDS, PARETO_MODELS)
 ]
-STATE_PATH = Path("~/.codex/model-switch-reminder-state.json").expanduser()
+STATE_PATH = (
+    Path(os.environ.get("CODEX_HOME", Path.home() / ".codex"))
+    / "hooks"
+    / "model-switch-reminder-state.json"
+)
 CODEX = os.environ.get("CODEX_BIN") or shutil.which("codex") or str(
     Path.home() / ".local/bin/codex"
 )

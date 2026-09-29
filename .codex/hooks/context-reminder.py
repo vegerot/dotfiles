@@ -11,7 +11,11 @@ from pathlib import Path
 
 
 LIMIT = 272_000
-STATE_DIR = Path(os.environ.get("CODEX_HOME", Path.home() / ".codex")) / "context-reminder"
+STATE_DIR = (
+    Path(os.environ.get("CODEX_HOME", Path.home() / ".codex"))
+    / "hooks"
+    / "context-reminder"
+)
 
 
 def latest_input_tokens(transcript_path: str) -> int | None:
