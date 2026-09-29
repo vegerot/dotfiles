@@ -1,6 +1,6 @@
 # Trae provider
 
-`trae-provider.ts` adapts OpenCode's OpenAI Chat requests to Trae's raw-chat API and translates Trae's named server-sent events back to OpenAI Chat events. It uses OpenCode V2's provider-scoped request, response, and retry hooks; there is no loopback server.
+`provider.ts` adapts OpenCode's OpenAI Chat requests to Trae's raw-chat API and translates Trae's named server-sent events back to OpenAI Chat events. It uses OpenCode V2's provider-scoped request, response, and retry hooks; there is no loopback server.
 
 ## Ownership
 
@@ -32,13 +32,13 @@ A 2026-09-28 probe found no usable raw-chat semantics for `verbosity`, `temperat
 Run deterministic translation tests:
 
 ```sh
-bun test './.config/opencode/plugin/trae-provider.test.ts'
+bun test './.config/opencode/plugins/trae/provider.test.ts'
 ```
 
 Run live text, tool, and long-context checks:
 
 ```sh
-./.config/opencode/plugin/trae-provider-smoke.sh
+./.config/opencode/plugins/trae/trae-provider-smoke.sh
 ```
 
 Verify a reasoning variant or image input without restarting or interrupting the shared service:

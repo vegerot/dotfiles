@@ -14,5 +14,5 @@ The weekly quota is account-wide and currently applies to the OpenRouter routes.
 Run the pure contract tests with:
 
 ```sh
-bun test './.config/opencode/plugins/trae-status/status.test.ts'
+bun test './.config/opencode/plugins/trae/status.test.ts'
 ```
