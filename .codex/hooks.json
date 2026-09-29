@@ -75,6 +75,7 @@
         "hooks": [
           {
             "command": "~/.codex/hooks/context-reminder.py",
+            "commandWindows": "pwsh -NoProfile -Command \"py -3 (Join-Path ~ '.codex/hooks/context-reminder.py')\"",
             "type": "command",
             "timeout": 10,
             "async": true

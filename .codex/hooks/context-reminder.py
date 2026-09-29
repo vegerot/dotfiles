@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Remind me to compact after a Codex request exceeds 272K input tokens."""
 
+import base64
 import json
 import mmap
 import os
@@ -36,6 +37,35 @@ def notify(input_tokens: int) -> None:
             "-e",
             f'display notification "{message}" with title "Codex context reminder"',
         ]
+    elif sys.platform == "win32":
+        escaped = message.replace("'", "''")
+        script = (
+            "$ErrorActionPreference = 'Stop'; "
+            "[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] > $null; "
+            "[Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] > $null; "
+            "$xml = [Windows.Data.Xml.Dom.XmlDocument]::new(); "
+            "$xml.LoadXml('<toast><visual><binding template=\"ToastGeneric\"><text>Codex context reminder</text><text /></binding></visual></toast>'); "
+            f"$xml.GetElementsByTagName('text').Item(1).InnerText = '{escaped}'; "
+            "$notifier = [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier('OpenAI.Codex_2p2nqsd0c76g0!App'); "
+            "if ($notifier.Setting -ne 'Enabled') { throw ('Notifications: ' + $notifier.Setting) }; "
+            "$notifier.Show([Windows.UI.Notifications.ToastNotification]::new($xml))"
+        )
+        subprocess.run(
+            [
+                "powershell.exe",
+                "-NoProfile",
+                "-NonInteractive",
+                "-WindowStyle",
+                "Hidden",
+                "-EncodedCommand",
+                base64.b64encode(script.encode("utf-16le")).decode("ascii"),
+            ],
+            creationflags=subprocess.CREATE_NO_WINDOW,
+            check=True,
+            capture_output=True,
+            timeout=5,
+        )
+        return
     else:
         command = ["/usr/bin/notify-send", "Codex context reminder", message]
     subprocess.run(
