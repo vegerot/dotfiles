@@ -14,25 +14,27 @@ import unittest
 from pathlib import Path
 
 
+# Artificial Analysis Intelligence Index vs. cost per task, 2026-09-29:
+# https://artificialanalysis.ai/ (GPT-6 Astra, GPT-6.1 Sol, GPT-6 Sol, GPT-6 Luna)
+# Keep the existing Luna high floor and its bottom-quarter allocation.
+# API benchmark cost orders the models; it does not measure Codex quota cost.
 PARETO_MODELS = [
     "Astra max",
     "Astra xhigh",
-    "Astra high",
-    "Astra medium",
-    "Astra low",
-    "Sol medium",
+    "Sol 6.1 max",
+    "Sol 6.1 xhigh",
+    "Sol 6.1 high",
+    "Sol 6.1 medium",
+    "Sol 6.1 low",
     "Luna max",
     "Luna xhigh",
     "Luna high",
 ]
 MODEL_EMOJIS = {"Astra": "✨", "Sol": "☀️", "Luna": "🌙"}
 ORIGINAL_BANDS = [
-    (100, 87.5),
-    (87.5, 75),
-    (75, 62.5),
-    (62.5, 50),
-    (50, 37.5),
-    (37.5, 25),
+    (100 - index * 75 / 7, 100 - (index + 1) * 75 / 7)
+    for index in range(7)
+] + [
     (25, 50 / 3),
     (50 / 3, 25 / 3),
     (25 / 3, 0),
@@ -246,22 +248,24 @@ class ScheduleTests(unittest.TestCase):
         )
 
     def test_modes_meet_at_fifty_percent(self) -> None:
-        self.assertEqual(FALLBACK[8][2], 50)
-        self.assertEqual(FALLBACK[9][1], 50)
+        self.assertEqual(FALLBACK[9][2], 50)
+        self.assertEqual(FALLBACK[10][1], 50)
         self.assertEqual(FALLBACK[0][1], 100)
         self.assertEqual(FALLBACK[-1][2], 0)
 
     def test_luna_stays_in_each_half_bottom_quarter(self) -> None:
-        self.assertEqual((FALLBACK[6][1], FALLBACK[8][2]), (62.5, 50.0))
-        self.assertEqual((FALLBACK[15][1], FALLBACK[17][2]), (12.5, 0.0))
+        self.assertEqual((FALLBACK[7][1], FALLBACK[9][2]), (62.5, 50.0))
+        self.assertEqual((FALLBACK[17][1], FALLBACK[19][2]), (12.5, 0.0))
 
     def test_scaled_band_widths(self) -> None:
-        fast_widths = [high - low for _, high, low, _ in FALLBACK[:6]]
-        fast_luna_widths = [high - low for _, high, low, _ in FALLBACK[6:9]]
-        standard_widths = [high - low for _, high, low, _ in FALLBACK[9:15]]
-        standard_luna_widths = [high - low for _, high, low, _ in FALLBACK[15:]]
-        self.assertEqual(fast_widths, [6.25] * 6)
-        self.assertEqual(standard_widths, [6.25] * 6)
+        fast_widths = [high - low for _, high, low, _ in FALLBACK[:7]]
+        fast_luna_widths = [high - low for _, high, low, _ in FALLBACK[7:10]]
+        standard_widths = [high - low for _, high, low, _ in FALLBACK[10:17]]
+        standard_luna_widths = [high - low for _, high, low, _ in FALLBACK[17:]]
+        for widths in (fast_widths, standard_widths):
+            self.assertEqual(len(widths), 7)
+            for width in widths:
+                self.assertAlmostEqual(width, 37.5 / 7, places=5)
         for widths in (fast_luna_widths, standard_luna_widths):
             self.assertEqual(len(widths), 3)
             for width in widths:
@@ -269,7 +273,9 @@ class ScheduleTests(unittest.TestCase):
 
     def test_transition_targets(self) -> None:
         self.assertIsNone(target_model(100))
-        self.assertEqual(target_model(93.75), ("Astra xhigh ✨ (fast)", 93.75))
+        self.assertEqual(target_model(94.642857), ("Astra xhigh ✨ (fast)", 94.642857))
+        self.assertEqual(target_model(89.285714), ("Sol 6.1 max ☀️ (fast)", 89.285714))
+        self.assertEqual(target_model(39.285714), ("Sol 6.1 max ☀️", 39.285714))
         self.assertEqual(target_model(62.5), ("Luna max 🌙 (fast)", 62.5))
         self.assertEqual(target_model(50), ("Astra max ✨", 50.0))
         self.assertEqual(target_model(12.5), ("Luna max 🌙", 12.5))
@@ -280,7 +286,17 @@ class ScheduleTests(unittest.TestCase):
         self.assertEqual(target_model(0), ("Luna high 🌙", 4.166667))
 
     def test_sol_gets_a_sun_emoji(self) -> None:
-        self.assertEqual(display_model("Sol medium", "Standard"), "Sol medium ☀️")
+        self.assertEqual(display_model("Sol 6.1 medium", "Standard"), "Sol 6.1 medium ☀️")
+
+    def test_every_boundary_selects_the_next_stage_without_gaps(self) -> None:
+        for index, (mode, high, low, model) in enumerate(FALLBACK):
+            with self.subTest(mode=mode, model=model):
+                if index:
+                    self.assertEqual(FALLBACK[index - 1][2], high)
+                    self.assertEqual(target_model(high), (display_model(model, mode), high))
+                midpoint = (high + low) / 2
+                expected = None if index == 0 else (display_model(model, mode), high)
+                self.assertEqual(target_model(midpoint), expected)
 
     def test_remaining_uses_the_most_constrained_window(self) -> None:
         result = {
