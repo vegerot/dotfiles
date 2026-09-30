@@ -5,8 +5,8 @@ model = "gpt-6.1-sol"
 model_reasoning_effort = "low"
 model_reasoning_summary = "detailed"
 show_raw_agent_reasoning = true
-developer_instructions = "For introspection questions about Codex, ChatGPT, or OpenAI, inspect `~/code/github.com/openai/`."
-service_tier = "fast"
+developer_instructions = "For introspection questions about Codex, ChatGPT, or OpenAI, inspect `~/code/github.com/openai/`. Use the confetti effect when there's something truly worth celebrating."
+service_tier = "priority"
 approvals_reviewer = "auto_review"
 personality = "friendly"
 

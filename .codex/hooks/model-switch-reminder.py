@@ -174,7 +174,7 @@ def notify(message: str) -> None:
     if sys.platform == "darwin":
         escaped = message.replace("\\", "\\\\").replace('"', '\\"')
         command = [
-            "/usr/bin/osascript",
+            "osascript",
             "-e",
             f'display notification "{escaped}" with title "Codex model reminder"',
         ]
@@ -208,7 +208,7 @@ def notify(message: str) -> None:
         )
         return
     else:
-        command = ["/usr/bin/notify-send", "Codex model reminder", message]
+        command = ["notify-send", "Codex model reminder", message]
     subprocess.run(
         command,
         check=False,
