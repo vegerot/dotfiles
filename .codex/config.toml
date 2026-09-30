@@ -1,12 +1,12 @@
 approval_policy = "never"
 sandbox_mode = "danger-full-access"
 model_context_window = 900000
-model = "gpt-6-sol"
+model = "gpt-6.1-sol"
 model_reasoning_effort = "low"
 model_reasoning_summary = "detailed"
 show_raw_agent_reasoning = true
 developer_instructions = "For introspection questions about Codex, ChatGPT, or OpenAI, inspect `~/code/github.com/openai/`."
-service_tier = "default"
+service_tier = "fast"
 approvals_reviewer = "auto_review"
 personality = "friendly"
 
@@ -32,6 +32,11 @@ args = [
   "x",
   "chrome-devtools-mcp@1.9.0",
   "--channel=dev",
+  "--headless=true",
+  "--chromeArg=--remote-debugging-port=9222",
+  "--chromeArg=--remote-debugging-address=127.0.0.1",
+  "--chromeArg=--remote-allow-origins=http://127.0.0.1:9223,http://localhost:9223",
+  "--userDataDir=/home/max.coplan/.cache/sa-tea-chrome-profile",
   "--experimental-devtools=true",
   "--experimental-vision=true",
   "--experimental-structured-content=true",
@@ -48,8 +53,7 @@ command = "bun"
 args = [
   "x",
   "chrome-devtools-mcp@1.9.0",
-  "--autoConnect",
-  "--channel=dev"
+  "--browserUrl=http://127.0.0.1:9222"
 ]
 startup_timeout_sec = 60
 
@@ -71,8 +75,9 @@ status_line = [
 ]
 screen_reader_detection_done = true
 
-  [tui.model_availability_nux]
-  gpt-6-astra = 4
+[tui.model_availability_nux]
+gpt-6-astra = 4
+"gpt-6.1-sol" = 4
 
 [features]
 # Preserves the request-level reasoning baseline and appends effort updates on supported OpenAI models to retain cache reuse.
@@ -162,6 +167,62 @@ inherit = "core"
 # Selects the skill by name rather than by its filesystem path.
 name = "coco-export-location"
 enabled = false
+
+[projects."/data00/home/max.coplan/code/github.com/ClementTsang/bottom"]
+trust_level = "trusted"
+
+[projects."/data00/home/max.coplan/code/github.com/vegerot/ai-conversations"]
+trust_level = "trusted"
+
+[hooks.state]
+
+[hooks.state."/home/max.coplan/.codex/hooks.json:pre_tool_use:0:0"]
+trusted_hash = "sha256:b04282ce4a019ebeaff919e6f27d51ed4d8d4d89ae21acbe8b4189e0327213ab"
+
+[hooks.state."/home/max.coplan/.codex/hooks.json:pre_tool_use:1:0"]
+trusted_hash = "sha256:e21f5bba7acff4d78e0e89721a9b194dd4aa9bbd4db812d6628f5d147cebeaab"
+
+[hooks.state."/home/max.coplan/.codex/hooks.json:pre_tool_use:2:0"]
+trusted_hash = "sha256:8f4e45e6a61a91b16910f4ded0356e91bef3905c65c8e91721cf266e5f87bc41"
+
+[hooks.state."/home/max.coplan/.codex/hooks.json:pre_tool_use:3:0"]
+trusted_hash = "sha256:834c21a3d6f94a5414655f4142b6c1a08e7f3539631a1234c0d5332a2fa2e119"
+
+[hooks.state."/home/max.coplan/.codex/hooks.json:permission_request:0:0"]
+trusted_hash = "sha256:059c0e0c0efa36c2de3535e75e3f223e70eef9f2165497e4bd82e4c7333242aa"
+
+[hooks.state."/home/max.coplan/.codex/hooks.json:post_tool_use:0:0"]
+trusted_hash = "sha256:cd4fe20bd8b9b3bea34eb6e0abb1513eab37c92c673618d04a2c0bc71b72ad9d"
+
+[hooks.state."/home/max.coplan/.codex/hooks.json:post_tool_use:1:0"]
+trusted_hash = "sha256:4b11d38c6d6c10e80ff9d69364909beecd6231e2f20528b3576558de29fcacf4"
+
+[hooks.state."/home/max.coplan/.codex/hooks.json:post_tool_use:2:0"]
+trusted_hash = "sha256:9ee497ed23c8f4f7efaa3b4035fad74d9e2dc8ce2d275a2aaf02aeb57d4dc341"
+
+[hooks.state."/home/max.coplan/.codex/hooks.json:session_start:0:0"]
+trusted_hash = "sha256:d27d2237001a3277c702b9a39b4b407e018c17af9524ab51b8f9388056c8bafb"
+
+[hooks.state."/home/max.coplan/.codex/hooks.json:session_start:1:0"]
+trusted_hash = "sha256:7b7ed35e91cb28dc2c594b229e7cdd9cb239c5a319eced2db58703606fed53df"
+
+[hooks.state."/home/max.coplan/.codex/hooks.json:user_prompt_submit:0:0"]
+trusted_hash = "sha256:c68369e086b7383f9cb5e49f2f29a74b4ab51affd48209d7138266d9869dd39d"
+
+[hooks.state."/home/max.coplan/.codex/hooks.json:subagent_stop:0:0"]
+trusted_hash = "sha256:731f70607a39c628072a718d666d3c1f29b42620865d128a248f435bbf3f3994"
+
+[hooks.state."/home/max.coplan/.codex/hooks.json:subagent_stop:1:0"]
+trusted_hash = "sha256:3d255ff85d8d4af9c9479172c438ae30016447b530f202943ddcd7cd017b7afd"
+
+[hooks.state."/home/max.coplan/.codex/hooks.json:stop:0:0"]
+trusted_hash = "sha256:df2f23cad43eb70ca1e07356af965b7466356b329767a613fb22206ba8427780"
+
+[hooks.state."/home/max.coplan/.codex/hooks.json:stop:1:0"]
+trusted_hash = "sha256:b67b4df0dbccfe935aa6303fcb968457bfe147349f58fce55cbbf8a2e0125718"
+
+[hooks.state."/home/max.coplan/.codex/hooks.json:stop:2:0"]
+trusted_hash = "sha256:8b2beb15b4238010a31f273b1858e0bb190db58c7514e0757d71af40ffc623c9"
 
 # Machine-specific config goes on the bottom
 
