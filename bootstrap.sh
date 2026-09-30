@@ -20,7 +20,7 @@ function doIt() {
 
 function dry_run() {
         find . \
-                \( -type f -o -type l \) \
+                \( -path "./.agents/skills" -prune -o -type f -o -type l \) \
                 ! -path "*/.git/*" \
                 ! -path "*/.sl/*" \
                 ! -path "./.claude/worktrees/*" \
@@ -35,7 +35,7 @@ function dry_run() {
 
 function force() {
         find . \
-                \( -type f -o -type l \) \
+                \( -path "./.agents/skills" -prune -o -type f -o -type l \) \
                 ! -path "*/.git/*" \
                 ! -path "*/.sl/*" \
                 ! -path "./.claude/worktrees/*" \
@@ -67,7 +67,7 @@ function force() {
 
 function normal() {
         find . \
-                \( -type f -o -type l \) \
+                \( -path "./.agents/skills" -prune -o -type f -o -type l \) \
                 ! -path "*/.git/*" \
                 ! -path "*/.sl/*" \
                 ! -path "./.claude/worktrees/*" \
