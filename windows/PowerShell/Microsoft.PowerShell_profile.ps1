@@ -26,7 +26,6 @@ function prompt {
 }
 
 Set-Alias sap sl.exe
-Set-Alias findrepo "$HOME\dotfiles\bin\findrepo.ps1"
 Set-Alias filepilot "$env:LOCALAPPDATA\Voidstar\FilePilot\FPilot.exe"
 
 # Printing anything here corrupts scp/sftp and one-shot shells, which must stay silent.

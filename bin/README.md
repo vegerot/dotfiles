@@ -1,8 +1,8 @@
 # bin
 Collection of frequently used programs I've created
 
-`findrepo.ps1` ports `findrepo` to PowerShell; the profile exposes it as
-`findrepo`. It searches `~/code` through five directory levels, follows links,
+`findrepo.ps1` ports `findrepo` to PowerShell. Add `~/dotfiles/bin` to your
+Windows user PATH to run `findrepo`. It searches `~/code` through five directory levels, follows links,
 ignores ignore rules, and returns sorted repository paths. Windows includes
 `.git` files for worktrees and submodules as well as `.git` directories.
 
