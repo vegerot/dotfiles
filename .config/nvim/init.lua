@@ -45,10 +45,15 @@ local function VANILLA()
 		end,
 	})
 
-	vim.api.nvim_create_autocmd({ "TextYankPost", "TextPutPost" }, {
+	local highlight_events = { "TextYankPost" }
+	if vim.fn.exists("##TextPutPost") == 1 then
+		table.insert(highlight_events, "TextPutPost")
+	end
+
+	vim.api.nvim_create_autocmd(highlight_events, {
 		pattern = "*",
 		callback = function()
-			vim.hl.hl_op({ higroup = "Visual", timeout = 300 })
+			(vim.hl.hl_op or vim.hl.on_yank)({ higroup = "Visual", timeout = 300 })
 		end,
 	})
 
