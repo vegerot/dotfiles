@@ -138,6 +138,16 @@
       "pluginName": "mattpocock-skills",
       "installedAt": "2026-08-25T23:50:11.253Z",
       "updatedAt": "2026-08-25T23:50:11.253Z"
+    },
+    "wait-what": {
+      "source": "mattpocock/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/mattpocock/skills.git",
+      "skillPath": "skills/productivity/wait-what/SKILL.md",
+      "skillFolderHash": "c8b050e6b8c711be1a9008ceacb2126914f0763e",
+      "pluginName": "mattpocock-skills",
+      "installedAt": "2026-10-05T22:42:12.029Z",
+      "updatedAt": "2026-10-05T22:42:12.029Z"
     }
   },
   "dismissed": {
