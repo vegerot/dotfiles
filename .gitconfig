@@ -9,6 +9,7 @@
   symlinks = true
 	hooksPath = /Users/bytedance/.bytesec/commit_hook/
 
+	longpaths = true
 [color "branch"]
   current = yellow reverse
   local = yellow

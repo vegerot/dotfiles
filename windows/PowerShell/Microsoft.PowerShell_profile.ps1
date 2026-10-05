@@ -29,9 +29,11 @@ Set-Alias sap sl.exe
 Set-Alias filepilot "$env:LOCALAPPDATA\Voidstar\FilePilot\FPilot.exe"
 
 # Printing anything here corrupts scp/sftp and one-shot shells, which must stay silent.
-# -NonInteractive, -Command, -File and -EncodedCommand all mean "run and exit".
-$oneShotSwitch = [Environment]::GetCommandLineArgs() |
-  Where-Object { $_ -match '^-(?:noni\w*|c(?:ommand)?|f(?:ile)?|e(?:c|ncodedcommand)?)$' }
+# -NonInteractive, -Command, -File and -EncodedCommand mean "run and exit" unless -NoExit is present.
+$commandLineArgs = [Environment]::GetCommandLineArgs()
+$hasNoExit = [bool]($commandLineArgs | Where-Object { $_ -match '^-(?:noe(?:xit)?)$' })
+$oneShotSwitch = -not $hasNoExit -and [bool]($commandLineArgs |
+  Where-Object { $_ -match '^-(?:noni\w*|c(?:ommand)?|f(?:ile)?|e(?:c|ncodedcommand)?)$' })
 $isInteractive = -not $oneShotSwitch -and
   -not [Console]::IsInputRedirected -and
   -not [Console]::IsOutputRedirected
