@@ -29,7 +29,7 @@ This skill guides controlling the user's live, signed-in **Google Chrome Dev** b
 4. **One Persistent Connection**: Every new CDP connection causes Chrome Dev to display an "Allow remote debugging?" prompt. Running a long-lived daemon (`chrome-devtools start --autoConnect --channel=dev`) or using the native Antigravity MCP server keeps the connection open and eliminates repeated prompts.
 5. **Snapshot Over Screenshot**: Always prefer `take_snapshot` (accessibility tree with element `uid`s) over `take_screenshot`. Snapshots are fast, token-efficient, unambiguous, and directly actionable.
 6. **Fresh Snapshots**: Element `uid`s are valid only for the snapshot in which they were generated. After any click, navigation, or DOM change, take a fresh snapshot before interacting with new elements.
-7. **Source Code & Documentation**: The `chrome-devtools-mcp` repository is cloned locally at `~/code/github.com/google/chrome-devtools-mcp` on all machines. Inspect it whenever you need exact tool schemas, CLI argument definitions (`scripts/generate-cli.ts`), or connection logic.
+7. **Source Code & Documentation**: The `chrome-devtools-mcp` repository is cloned locally at `~/code/github.com/google/`. Inspect it whenever you need exact tool schemas, CLI argument definitions (`scripts/generate-cli.ts`), or connection logic.
 
 ---
 
