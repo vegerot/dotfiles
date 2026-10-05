@@ -5,17 +5,31 @@ description: Control, inspect, and automate the user's live, signed-in Google Ch
 
 # 🌐 Chrome Dev Control (Live Browser Automation)
 
-This skill guides controlling the user's live, signed-in **Google Chrome Dev** browser (`/Applications/Google Chrome Dev.app`) on macOS in Antigravity.
+This skill guides controlling the user's live, signed-in **Google Chrome Dev** browser across platforms (Linux, macOS, and Windows) in Antigravity.
 
 ---
 
 ## 🧭 Architecture & Core Rules
 
-1. **Target**: Connects to the user's actual Chrome Dev instance listening with remote debugging on `127.0.0.1:9222`.
-2. **Never Launch Isolated Headless Chrome**: If flags or daemon connection are omitted, tools may start an empty, headless, signed-out browser. **Always ensure `--channel=dev` or `--auto-connect` is used.**
-3. **One Persistent Connection**: Every new CDP connection causes Chrome Dev to display an "Allow remote debugging?" prompt. Running a long-lived daemon (`chrome-devtools start --autoConnect --channel=dev`) or using the native Antigravity MCP server keeps the connection open and eliminates repeated prompts.
-4. **Snapshot Over Screenshot**: Always prefer `take_snapshot` (accessibility tree with element `uid`s) over `take_screenshot`. Snapshots are fast, token-efficient, unambiguous, and directly actionable.
-5. **Fresh Snapshots**: Element `uid`s are valid only for the snapshot in which they were generated. After any click, navigation, or DOM change, take a fresh snapshot before interacting with new elements.
+1. **Target**: Connects to the user's actual live Chrome Dev instance listening with remote debugging on `127.0.0.1:9222` (or via `DevToolsActivePort`).
+   - Enable by visiting `chrome://inspect/#remote-debugging` in Chrome Dev and checking "Enable remote debugging".
+   - Fast tab launch shortcut:
+     - **Linux**: `google-chrome-unstable "chrome://inspect/#remote-debugging"`
+     - **macOS**: `open -a "Google Chrome Dev" "chrome://inspect/#remote-debugging"`
+     - **Windows**: `Start-Process "chrome.exe" "chrome://inspect/#remote-debugging"`
+2. **Platform Matrix**:
+
+| Platform | Chrome Executable | Profile / User Data Dir | CDP Discovery / Port | Global CLI Binary |
+|---|---|---|---|---|
+| **Linux** | Flatpak `com.google.ChromeDev` / wrapper `~/.local/bin/google-chrome-unstable` | `~/.var/app/com.google.ChromeDev/config/google-chrome-unstable` (symlinked $\rightarrow$ `~/.config/google-chrome-unstable`) | `~/.config/google-chrome-unstable/DevToolsActivePort` | `~/.npm-global/bin/chrome-devtools` |
+| **macOS** | `/Applications/Google Chrome Dev.app` | `~/Library/Application Support/Google/Chrome Dev` | `DevToolsActivePort` | `/opt/homebrew/bin/chrome-devtools` |
+| **Windows** | `C:\Program Files\Google\Chrome Dev\Application\chrome.exe` | `%LOCALAPPDATA%\Google\Chrome Dev\User Data` | `DevToolsActivePort` | `%USERPROFILE%\.bun\bin\chrome-devtools.exe` |
+
+3. **Never Launch Isolated Headless Chrome**: If flags or daemon connection are omitted, tools may start an empty, headless, signed-out browser (`about:blank`). **Always ensure `--channel=dev` or `--auto-connect` is used.**
+4. **One Persistent Connection**: Every new CDP connection causes Chrome Dev to display an "Allow remote debugging?" prompt. Running a long-lived daemon (`chrome-devtools start --autoConnect --channel=dev`) or using the native Antigravity MCP server keeps the connection open and eliminates repeated prompts.
+5. **Snapshot Over Screenshot**: Always prefer `take_snapshot` (accessibility tree with element `uid`s) over `take_screenshot`. Snapshots are fast, token-efficient, unambiguous, and directly actionable.
+6. **Fresh Snapshots**: Element `uid`s are valid only for the snapshot in which they were generated. After any click, navigation, or DOM change, take a fresh snapshot before interacting with new elements.
+7. **Source Code & Documentation**: The `chrome-devtools-mcp` repository is cloned locally at `~/code/github.com/google/chrome-devtools-mcp` on all machines. Inspect it whenever you need exact tool schemas, CLI argument definitions (`scripts/generate-cli.ts`), or connection logic.
 
 ---
 
@@ -53,19 +67,28 @@ call_mcp_tool(
 
 ## 💻 Interface 2: `chrome-devtools` CLI (Fallback & Scripting)
 
-The CLI binary is installed globally at `/opt/homebrew/bin/chrome-devtools`.
+The CLI binary is installed globally via `npm install --global chrome-devtools-mcp`:
+- **Linux**: `~/.npm-global/bin/chrome-devtools` (and `chrome-devtools-mcp`)
+- **macOS**: `/opt/homebrew/bin/chrome-devtools`
+- **Windows**: `%USERPROFILE%\.bun\bin\chrome-devtools.exe` or `%APPDATA%\npm\chrome-devtools.cmd`
 
 ### Daemon Management
 - **Check Status**: `chrome-devtools status`
 - **Start Daemon**: `chrome-devtools start --autoConnect --channel=dev`
 - **Stop Daemon**: `chrome-devtools stop`
 
-### ⚠️ Critical CLI Syntax Rule
+### ⚠️ Critical CLI Syntax Rules
 In the `chrome-devtools` CLI, **required arguments must be positional** (not flags), while optional options use `--flags`:
-- **Correct**: `chrome-devtools click 1 "2_5"`
-- **Incorrect**: `chrome-devtools click --pageId 1 --uid "2_5"`
-- **Correct**: `chrome-devtools new_page "https://example.com"`
-- **Correct**: `chrome-devtools navigate_page 1 --url="https://example.com"`
+- **Take snapshot**: `chrome-devtools take_snapshot 1`
+- **Click element**: `chrome-devtools click 1 "2_5"`
+- **Fill input**: `chrome-devtools fill 1 "2_7" "search text"`
+- **Navigate tab**: `chrome-devtools navigate_page 1 --url="https://example.com"`
+- **New tab**: `chrome-devtools new_page "https://example.com"`
+- **Evaluate JS**: `chrome-devtools evaluate_script "() => document.title" --pageId 1`
+- **Incorrect (will error)**: `chrome-devtools click --pageId 1 --uid "2_5"`
+
+> [!NOTE]
+> `wait_for` and `fill_form` are MCP-only tools and are not exposed as CLI subcommands. In shell scripts, use sleep loops or `evaluate_script` checks instead.
 
 ---
 
@@ -107,7 +130,9 @@ When driving Google OAuth consent for developer tools (`gws`, local clients):
 | Issue | Cause | Fix |
 |---|---|---|
 | `Could not find Google Chrome executable for channel 'stable'` | Default channel is stable, but Chrome Dev is installed. | Pass `--channel=dev` to the CLI or daemon. |
+| `Could not find DevToolsActivePort for chrome-dev at ~/.config/google-chrome-unstable/DevToolsActivePort` | On Linux, Chrome Dev runs via Flatpak in `~/.var/app/com.google.ChromeDev/config/google-chrome-unstable/`, or remote debugging is not enabled. | 1. Ensure `~/.config/google-chrome-unstable` is symlinked to `~/.var/app/com.google.ChromeDev/config/google-chrome-unstable`.<br>2. In Chrome Dev, navigate to `chrome://inspect/#remote-debugging` and check "Enable remote debugging". |
 | Repeated "Allow remote debugging?" prompts | New connections started per command. | Keep the daemon running: `chrome-devtools start --autoConnect --channel=dev`. |
+| CLI starts an isolated, empty browser (`about:blank`) | Running CLI tool without active daemon or without `--channel=dev --autoConnect`. | Start daemon first: `chrome-devtools start --autoConnect --channel=dev`. |
 | Element not found or invalid `uid` | DOM changed since previous snapshot. | Call `take_snapshot` again and use the new `uid`. |
 | Connection refused on `127.0.0.1:9222` | Chrome Dev is not running or remote debugging is disabled. | Start Chrome Dev with remote debugging enabled (`chrome://inspect/#remote-debugging` or `--remote-debugging-port=9222`). |
 | `Error: Unknown argument` in CLI | Required parameters passed as flags instead of positionals. | Pass required parameters positionally (e.g. `chrome-devtools click 1 "1_2"`). |
