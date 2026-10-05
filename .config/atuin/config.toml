@@ -267,8 +267,8 @@ keymap_mode = "auto"
 # strategy = "auto"
 
 [daemon]
-enabled = true
-autostart = true
+enabled = false
+autostart = false
 ## Enables using the daemon to sync.
 # enabled = false
 
