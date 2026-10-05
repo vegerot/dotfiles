@@ -28,6 +28,7 @@ function dry_run() {
                 ! -path "./.osx" \
                 ! -path "./bootstrap.sh" \
                 ! -path "./brew.sh" \
+                ! -path "./AGENTS.md" \
                 ! -path "./README.md" \
                 ! -path "./LICENSE-MIT.txt" \
                 -exec bash -c 'file=$1; printf "%s -> %s\n" "$HOME/dotfiles/$file" "$HOME/$file"' bash {} \;
@@ -42,6 +43,8 @@ function force() {
                 ! -path "./.DS_Store" \
                 ! -path "./.osx" \
                 ! -path "./bootstrap.sh" \
+                ! -path "./brew.sh" \
+                ! -path "./AGENTS.md" \
                 ! -path "./README.md" \
                 ! -path "./LICENSE-MIT.txt" \
                 -exec bash -xc '
@@ -62,7 +65,6 @@ function force() {
                     fi
                     ln -svfn "$HOME/dotfiles/$file" "$destination"
                 ' bash {} \;
-        rm -f ~/AGENTS.md
 }
 
 function normal() {
@@ -74,6 +76,8 @@ function normal() {
                 ! -path "./.DS_Store" \
                 ! -path "./.osx" \
                 ! -path "./bootstrap.sh" \
+                ! -path "./brew.sh" \
+                ! -path "./AGENTS.md" \
                 ! -path "./README.md" \
                 ! -path "./LICENSE-MIT.txt" \
                 -exec bash -xc '
@@ -87,7 +91,6 @@ function normal() {
                     fi
                     ln -svn "$HOME/dotfiles/$file" "$destination"
                 ' bash {} \;
-        rm -f ~/AGENTS.md
 }
 
 mode=${1:-""}
