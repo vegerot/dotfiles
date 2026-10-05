@@ -304,10 +304,13 @@
     },
     "gitai.integratedTerminalWrapperEnabled": true,
     "AI.agent.shellOpenTerminalMode": "background_only",
-    "AI.ide.computerUse.enable": true,
     "gitai.experiments.aiTabTracking": true,
     "gitai.blameMode": "line",
     "AI.agent.v2.browserChromeEnabled": "auto",
-    "gitai.enabled": true,
+	"gitai.enabled": true,
+    "trae.network.proxy.effectiveMode": "system",
+    "AI.ide.chronicle.enable": true,
+    "AI.ide.computerUse.appApprovalMode": "full_access",
+    "AI.ide.computerUse.enable": true,
 
 }

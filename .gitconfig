@@ -7,6 +7,7 @@
   # every fresh clone writes core.symlinks=false and checks symlinks out as
   # text stubs. Setting it globally opts in. Needs Developer Mode (or admin).
   symlinks = true
+	hooksPath = /Users/bytedance/.bytesec/commit_hook/
 
 [color "branch"]
   current = yellow reverse
@@ -106,5 +107,8 @@ mnemonicPrefix = true
 	helper = !gh auth git-credential
 [gpg "ssh"]
 	allowedSignersFile = ~/.ssh/allowed_signers
+[trace2]
+	eventTarget = af_unix:stream:/var/folders/0_/gsj9v0_x7sb28zr4x42c1fk40000gn/T/git-ai-d-ee7225e30fa93e1b/trace.sock
+	eventNesting = 10
 [safe]
 	directory = *

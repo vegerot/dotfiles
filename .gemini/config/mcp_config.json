@@ -1,5 +1,12 @@
 {
   "mcpServers": {
+    "chrome-devtools": {
+      "command": "chrome-devtools-mcp",
+      "args": [
+        "--auto-connect",
+        "--channel=dev"
+      ]
+    },
     "fff": {
       "command": "fff-mcp",
       "args": [],
