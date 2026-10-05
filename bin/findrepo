@@ -30,7 +30,7 @@ findrepo() {
 			--exec dirname {} \; \
 			| sort
 	else
-		fd '^.git$' "$@" \
+		fd '^\.(git|sl)$' "$@" \
 			--no-ignore --max-depth=5 --hidden --type=d --follow --prune \
 			--exec dirname {} \; \
 			| sort

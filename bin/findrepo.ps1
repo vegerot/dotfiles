@@ -14,8 +14,8 @@ if ($args.Count -gt 1) {
 }
 if ($args.Count -eq 1) { $Filter = $args[0] }
 
-# Include .git files so linked worktrees and submodules are repositories too.
-$metadata = & fd '^\.git$' $Root --no-ignore --max-depth=5 --hidden --follow --prune --absolute-path
+# Include .git and .sl files so linked worktrees and submodules are repositories too.
+$metadata = & fd '^\.(git|sl)$' $Root --no-ignore --max-depth=5 --hidden --follow --prune --absolute-path
 if ($LASTEXITCODE -ne 0) {
   throw "findrepo: fd failed with exit code $LASTEXITCODE"
 }
