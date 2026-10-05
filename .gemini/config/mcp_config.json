@@ -1,8 +1,9 @@
 {
   "mcpServers": {
     "chrome-devtools": {
-      "command": "chrome-devtools-mcp",
+      "command": "bunx",
       "args": [
+        "chrome-devtools-mcp@latest",
         "--auto-connect",
         "--channel=dev"
       ]
