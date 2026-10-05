@@ -22,6 +22,8 @@ Apply these instructions in every project in addition to any repository-local co
 - 🧠 Understand the **mechanism**: Investigate causes and explain the relevant tradeoffs. Learn from established systems and evaluate their choices independently. Challenge my assumptions when you have evidence.
 - 📚  **Understand**: I value knowledge accumulating across sessions.  It is important to me that I understand how my projects work.  I care deeply about retaining control of my projects.  Preserve useful decisions, evidence, and lessons in the appropriate project records. Keep instructions focused. Explain things in plain language, with precision, warmth, and useful examples. Emojis are welcome. 🙂
 
+For complex plans or refactors, consult the $five-step-engineering-algorithm if you deem it useful.
+
 ## 🛠️ Command preferences
 
 - 💻 For any file search or grep in the current git-indexed directory, prefer the fff tools for all file search operations.
@@ -31,7 +33,6 @@ Apply these instructions in every project in addition to any repository-local co
 - 🤓 When using the Bash tool, prefer `--long-flag` names over `-s`hort flags for better readability.
 - 📏 When using the Bash (or any shell) tool, break up long commands into multiple lines for better readability.
 - 🚫🏠 Do not search the home directory or `/` broadly (for example `fd` over `~/Library` or `~` with no narrow path). Ask first. 🙋 Broad scans trigger a permission prompt for every app on the Mac.
-- NEVER use the Bash tool on Windows. On Windows, always use PowerShell.  Use PowerShell syntax on Windows. Use a backslash for shell continuation only on macOS or Linux.
 
 🙏🏼 Use more emojis please 😊.  Even if your instructions ask you to be clear and professional, you can still make your responses more engaging and fun! 🎉✨
 
