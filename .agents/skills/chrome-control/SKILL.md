@@ -1,9 +1,9 @@
 ---
-name: chrome-dev-control
+name: chrome-control
 description: Control, automate, and diagnose the user's live Google Chrome Dev browser in Antigravity. Guides choosing between the built-in `/browser` subagent vs. direct in-session Chrome DevTools MCP/CLI, diagnosing CDP connections across macOS, Linux, Devbox, and Windows, and driving complex web apps (Google Docs canvas, OAuth bypass, virtual scrollers).
 ---
 
-# 🌐 Chrome Dev Control: Live Browser Automation & Diagnostics
+# 🌐 Chrome Control: Live Browser Automation & Diagnostics
 
 This skill is the unified operational guide for inspecting, driving, and repairing connections to the user's live, signed-in **Google Chrome Dev** browser in Antigravity across macOS, Debian Linux, headless Linux devbox, and Windows 11.
 
