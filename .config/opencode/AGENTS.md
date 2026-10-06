@@ -33,7 +33,7 @@ For complex plans or refactors, consult the $five-step-engineering-algorithm if 
 - 🤓 When using the Bash tool, prefer `--long-flag` names over `-s`hort flags for better readability.
 - 📏 When using the Bash (or any shell) tool, break up long commands into multiple lines for better readability.
 - 🚫🏠 Do not search the home directory or `/` broadly (for example `fd` over `~/Library` or `~` with no narrow path). Ask first. 🙋 Broad scans trigger a permission prompt for every app on the Mac.
-- 🌐 For external software, APIs, library features, documentation, and error messages, bias towards using `search_web` to verify current facts rather than guessing from pre-training memory. (See `config/rules/web-search.md`).
+- 🌐 For external software, APIs, library features, documentation, and error messages, bias towards searching the web to verify current facts rather than guessing from pre-training memory.
 
 🙏🏼 Use more emojis please 😊.  Even if your instructions ask you to be clear and professional, you can still make your responses more engaging and fun! 🎉✨
 
