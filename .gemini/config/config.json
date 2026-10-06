@@ -1,0 +1,20 @@
+{
+  "userSettings": {
+    "autoExecutionPolicy": "CASCADE_COMMANDS_AUTO_EXECUTION_EAGER",
+    "enableTerminalSandbox": false,
+    "globalPermissionGrants": {
+      "allow": [
+        "read_file(/Users/bytedance/code/github.com/vegerot/dotfiles/.agents/skills/sapling/SKILL.md)",
+        "command(sl)",
+        "execute_url(chatgpt.com)",
+        "execute_url(booking.elal.com)"
+      ]
+    },
+    "nonWorkspaceFileAccessPolicy": "AGENT_SETTING_POLICY_ALLOW",
+    "permissionGrantsV2Migrated": true,
+    "permissionPreset": "AGENT_PERMISSION_PRESET_TURBO",
+    "remoteControlEnabled": true,
+    "remoteControlHostname": "maxs-mactok-pro-local-misty-corona",
+    "sandboxEnabledAtV2Migration": true
+  }
+}
