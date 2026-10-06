@@ -23,7 +23,12 @@
       "command(git grep)",
       "command(bun run build)",
       "command(git log)",
-      "command(agy)"
+      "command(agy)",
+      "command(sl status)",
+      "command(Get-Command sl.exe -ErrorAction SilentlyContinue; Get-Command git.exe -ErrorAction SilentlyContinue; Test-Path .sl; Test-Path .git)",
+      "command(Test-Path .git/sl; git status)",
+      "command(sl.exe status)",
+      "command(Get-ChildItem -Path .git -Filter \"*rebase*\" -Force; Get-ChildItem -Path .git -Filter \"*MERGE*\" -Force)"
     ]
   },
   "pickerGrouping": "grouped",
@@ -43,7 +48,11 @@
     "/Users/bytedance/code/github.com/google-gemini/gemini-cli",
     "/Users/bytedance/code/github.com/vegerot/ai-conversations",
     "/Users/bytedance/code/github.com/google",
-    "/Users/bytedance/workspace/github.com/anomalyco/opencode"
+    "/Users/bytedance/workspace/github.com/anomalyco/opencode",
+    "C:\\Users\\Max\\dotfiles",
+    "C:\\Users\\Max",
+    "C:\\Users\\Max\\ai-conversations",
+    "C:\\Users\\Max\\code\\github.com\\google"
   ],
   "vimInsertFirst": true
 }

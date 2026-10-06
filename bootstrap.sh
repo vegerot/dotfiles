@@ -27,6 +27,7 @@ function dry_run() {
                 ! -path "./.DS_Store" \
                 ! -path "./.osx" \
                 ! -path "./bootstrap.sh" \
+                ! -path "./bootstrap.ps1" \
                 ! -path "./brew.sh" \
                 ! -path "./AGENTS.md" \
                 ! -path "./README.md" \
@@ -43,6 +44,7 @@ function force() {
                 ! -path "./.DS_Store" \
                 ! -path "./.osx" \
                 ! -path "./bootstrap.sh" \
+                ! -path "./bootstrap.ps1" \
                 ! -path "./brew.sh" \
                 ! -path "./AGENTS.md" \
                 ! -path "./README.md" \
@@ -76,6 +78,7 @@ function normal() {
                 ! -path "./.DS_Store" \
                 ! -path "./.osx" \
                 ! -path "./bootstrap.sh" \
+                ! -path "./bootstrap.ps1" \
                 ! -path "./brew.sh" \
                 ! -path "./AGENTS.md" \
                 ! -path "./README.md" \
