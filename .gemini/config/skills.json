@@ -1,7 +1,7 @@
 {
   "entries": [
     {
-      "path": "~/code/github.com/google/googleworkspace-cli/skills",
+      "path": "~/code/github.com/google/workspace-cli/skills",
       "include_only": [
         "gws-shared",
         "gws-drive",

@@ -54,14 +54,6 @@ $results = $repos | ForEach-Object -Parallel {
         return [PSCustomObject]@{ Dir = $dir; Status = "Skipped" }
     }
 
-    if ($dir -eq "workspace-cli" -and (Test-Path -LiteralPath (Join-Path $using:baseDir "googleworkspace-cli"))) {
-        Write-Host "⏩ [$dir] found existing googleworkspace-cli, creating junction..."
-        $targetPath = (Resolve-Path -LiteralPath (Join-Path $using:baseDir "googleworkspace-cli")).Path
-        New-Item -ItemType Junction -Path $dirPath -Target $targetPath | Out-Null
-        Write-Host "✅ [$dir -> googleworkspace-cli] Junction created!"
-        return [PSCustomObject]@{ Dir = $dir; Status = "Success" }
-    }
-
     Write-Host "⏳ [$dir] Cloning from $url..."
     $stdoutFile = [System.IO.Path]::GetTempFileName()
     $stderrFile = [System.IO.Path]::GetTempFileName()
