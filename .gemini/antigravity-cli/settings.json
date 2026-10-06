@@ -1,0 +1,49 @@
+{
+  "allowNonWorkspaceAccess": true,
+  "artifactReviewPolicy": "agent-decides",
+  "model": "Gemini 3.8 Flash (Medium)",
+  "notifications": true,
+  "permissions": {
+    "allow": [
+      "command(rg)",
+      "command(head)",
+      "command(wc)",
+      "command(tail)",
+      "command(cat)",
+      "command(ls)",
+      "command(which)",
+      "command(fff-mcp)",
+      "mcp(fff/*)",
+      "command(git diff)",
+      "command(fd)",
+      "command(cd)",
+      "command(git status)",
+      "command(bun install)",
+      "command(git show)",
+      "command(git grep)",
+      "command(bun run build)",
+      "command(git log)",
+      "command(agy)"
+    ]
+  },
+  "pickerGrouping": "grouped",
+  "queuedMessages": "send-immediately",
+  "statusLine": {
+    "type": "",
+    "command": "",
+    "enabled": true
+  },
+  "trustedWorkspaces": [
+    "/Users/bytedance/code/github.com/git/git",
+    "/Users/bytedance/dotfiles",
+    "/Users/bytedance/ai-conversations",
+    "/Users/bytedance/code/github.com/jossephus/chuchu",
+    "/Users/bytedance/workspace/code.byted.org/i18n_ecom_fe/workbench_components",
+    "/Users/bytedance/code/github.com/apple",
+    "/Users/bytedance/code/github.com/google-gemini/gemini-cli",
+    "/Users/bytedance/code/github.com/vegerot/ai-conversations",
+    "/Users/bytedance/code/github.com/google",
+    "/Users/bytedance/workspace/github.com/anomalyco/opencode"
+  ],
+  "vimInsertFirst": true
+}
