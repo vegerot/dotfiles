@@ -1,7 +1,7 @@
 {
   "mcpServers": {
-    "cua-driver": {
-      "command": "cua-driver",
+    "cmux-cua": {
+      "command": "/Applications/cmux.app/Contents/Resources/bin/cmux-cua",
       "args": [
         "mcp"
       ]
