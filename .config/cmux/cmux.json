@@ -1,21 +1,21 @@
 {
-  "$schema": "https://raw.githubusercontent.com/manaflow-ai/cmux/main/web/data/cmux.schema.json",
-  "schemaVersion": 1,
-  "shortcuts": {
-    "bindings": {
-      "toggleReactGrab": {
-        "first": {
-          "command": true,
-          "control": false,
-          "key": "g",
-          "keyCode": 32,
-          "option": false,
-          "shift": true
+  "$schema" : "https://raw.githubusercontent.com/manaflow-ai/cmux/main/web/data/cmux.schema.json",
+  "computerUse" : {
+    "enabled" : true
+  },
+  "schemaVersion" : 1,
+  "shortcuts" : {
+    "bindings" : {
+      "toggleReactGrab" : {
+        "first" : {
+          "command" : true,
+          "control" : false,
+          "key" : "g",
+          "keyCode" : 32,
+          "option" : false,
+          "shift" : true
         }
       }
     }
-  },
-  "computerUse": {
-    "enabled": false
   }
 }
