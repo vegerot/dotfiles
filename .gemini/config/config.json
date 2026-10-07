@@ -55,7 +55,7 @@
     "permissionGrantsV2Migrated": true,
     "permissionPreset": "AGENT_PERMISSION_PRESET_TURBO",
     "remoteControlEnabled": true,
-    "remoteControlHostname": "maxs-mactok-pro-local-misty-corona",
+    "remoteControlHostname": "maxs-mactok-pro",
     "sandboxEnabledAtV2Migration": true
   }
 }

@@ -1,5 +1,11 @@
 {
   "mcpServers": {
+    "cua-driver": {
+      "command": "cua-driver",
+      "args": [
+        "mcp"
+      ]
+    },
     "chrome-devtools": {
       "command": "bunx",
       "args": [
