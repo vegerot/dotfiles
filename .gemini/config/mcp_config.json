@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "cmux-cua": {
-      "command": "cmux-cua-mcp",
+      "command": "/Users/bytedance/.local/bin/cmux-cua-mcp",
       "args": []
     },
     "chrome-devtools": {
