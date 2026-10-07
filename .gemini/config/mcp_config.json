@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "cua-driver": {
-      "command": "/Users/bytedance/.local/bin/cua-driver",
+      "command": "cua-driver",
       "args": [
         "mcp"
       ]
