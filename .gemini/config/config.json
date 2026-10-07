@@ -42,8 +42,6 @@
         "mcp(chrome-devtools/take_snapshot)",
         "execute_url(*)",
         "execute_url(.*)",
-        "unsandboxed(*)",
-        "unsandboxed(.*)",
         "mcp(chrome-devtools/new_page)",
         "mcp(chrome-devtools/fill)",
         "mcp(chrome-devtools/click)",
