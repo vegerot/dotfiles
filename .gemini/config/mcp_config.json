@@ -1,10 +1,8 @@
 {
   "mcpServers": {
     "cmux-cua": {
-      "command": "/Applications/cmux.app/Contents/Resources/bin/cmux-cua",
-      "args": [
-        "mcp"
-      ]
+      "command": "cmux-cua-mcp",
+      "args": []
     },
     "chrome-devtools": {
       "command": "bunx",

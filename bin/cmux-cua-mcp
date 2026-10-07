@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# 1. Prefer the signed helper app binary (identity: com.cmuxterm.cua)
+CLIENT="${CMUX_CUA_CLIENT_PATH:-$HOME/Library/Application Support/cmux/cmux-cua/helper/com.cmuxterm.app/cmux Computer Use.app/Contents/MacOS/cmux-cua}"
+if [[ ! -x "$CLIENT" ]]; then
+    CLIENT="/Applications/cmux.app/Contents/Resources/bin/cmux-cua"
+fi
+
+# 2. Dynamically locate active auth-token
+AUTH_FILE="${CMUX_CUA_AUTH_TOKEN_FILE:-}"
+if [[ -z "$AUTH_FILE" || ! -f "$AUTH_FILE" ]]; then
+    AUTH_FILE="$(find "${TMPDIR:-/tmp}" -maxdepth 3 -name "auth-token" -path "*cmux-cua*" 2>/dev/null | head -n 1)"
+fi
+if [[ -z "$AUTH_FILE" || ! -f "$AUTH_FILE" ]]; then
+    echo "cmux Computer Use auth-token not found. Ensure Computer Use is enabled in cmux Settings." >&2
+    exit 1
+fi
+AUTH_TOKEN="$(cat "$AUTH_FILE")"
+
+# 3. Dynamically locate active socket
+SOCKET="${CMUX_CUA_SOCKET_PATH:-}"
+if [[ -z "$SOCKET" || ! -S "$SOCKET" ]]; then
+    SOCKET="$(find "${TMPDIR:-/tmp}" -maxdepth 3 -name "cmux-cua.sock" -path "*cmux-cua*" 2>/dev/null | head -n 1)"
+fi
+if [[ -z "$SOCKET" || ! -S "$SOCKET" ]]; then
+    echo "cmux Computer Use socket not found. Ensure Computer Use is enabled in cmux Settings." >&2
+    exit 1
+fi
+
+SCOPE="${CMUX_CUA_RUNTIME_SCOPE:-${CMUX_TAG:-com.cmuxterm.app}}"
+STATE_DIR="${CMUX_CUA_STATE_DIR:-$HOME/Library/Application Support/cmux/cmux-cua/runtime/${SCOPE}/state}"
+
+export CMUX_CUA_MCP_FORCE_PROXY="1"
+export CMUX_CUA_EXTERNAL_PERMISSION_FLOW="1"
+export CMUX_CUA_SOCKET_AUTH_TOKEN="$AUTH_TOKEN"
+export CMUX_CUA_DEFAULT_SESSION="${CMUX_CUA_DEFAULT_SESSION:-cmux-antigravity}"
+export CMUX_CUA_STATE_OWNER_PID="${CMUX_CUA_STATE_OWNER_PID:-$$}"
+export CMUX_CUA_STATE_DIR="$STATE_DIR"
+export CMUX_CUA_TELEMETRY_ENABLED="false"
+export CMUX_CUA_UPDATE_CHECK="false"
+
+exec "$CLIENT" mcp --socket "$SOCKET" "$@"
