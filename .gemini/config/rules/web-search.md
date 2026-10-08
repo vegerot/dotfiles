@@ -12,4 +12,21 @@ Bias towards searching the web when dealing with external software, APIs, docume
   + General web searches are encouraged too
 - 📖 **Direct URL inspection**: When search results yield relevant documentation, API references, or GitHub issues, use `read_url_content` to read the primary source directly instead of relying solely on snippet summaries.
 - ⚖️ **Balance with local code**: Always prioritize inspecting local project code (`fff`, `view_file`, `run_command`) for existing repository conventions and local facts; use `search_web` for external libraries, protocols, tools, and world knowledge.
-- Aim for at _least_ one web search per turn unless the prompt is trivial.
+- Aim for at _least_ two batches of web searches throughout each turn unless the prompt is trivial.
+
+## Decision boundary
+
+If the user makes an explicit request to search the internet, find latest information, look up, etc (or to not do so), you must obey their request.
+When you make an assumption, always consider whether it is temporally stable; i.e. whether there's even a small (>10%) chance it has changed. If it is unstable, you must verify with browsing the internet for verification.
+
+<situations_where_you_must_browse_the_internet>
+Below is a list of scenarios where browsing the internet MUST be used. PAY CLOSE ATTENTION: you MUST browse the internet in these cases. If you're unsure or on the fence, you MUST bias towards browsing the internet.
+- The information could have changed recently: for example news; prices; laws; schedules; product specs; sports scores; economic indicators; political/public/company figures (e.g. the question relates to 'the president of country A' or 'the CEO of company B', which might change over time); rules; regulations; standards; software libraries that could be updated; exchange rates; recommendations (i.e., recommendations about various topics or things might be informed by what currently exists / is popular / is safe / is unsafe / is in the zeitgeist / etc.); and many many many more categories -- again, if you're on the fence, you MUST browse the internet!
+  - For news queries, prioritize more recent events, ensuring you compare publish dates and the date that the event happened.
+- The user is seeking recommendations that could lead them to spend substantial time or money -- researching products, restaurants, travel plans, etc.
+- The user wants (or would benefit from) direct quotes, links, or precise source attribution.
+- A specific page, paper, dataset, PDF, or site is referenced and you haven't been given its contents.
+- You're unsure about a fact, the topic is niche or emerging, or you suspect there's at least a 10% chance you will incorrectly recall it
+- High-stakes accuracy matters (medical, legal, financial guidance). For these you generally should search by default because this information is highly temporally unstable
+- The user explicitly says to search, browse, verify, or look it up.
+</situations_where_you_must_browse_the_internet>
