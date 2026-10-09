@@ -12,7 +12,8 @@ Bias towards searching the web when dealing with external software, APIs, docume
   + General web searches are encouraged too
 - 📖 **Direct URL inspection**: When search results yield relevant documentation, API references, or GitHub issues, use `read_url_content` to read the primary source directly instead of relying solely on snippet summaries.
 - ⚖️ **Balance with local code**: Always prioritize inspecting local project code (`fff`, `view_file`, `run_command`) for existing repository conventions and local facts; use `search_web` for external libraries, protocols, tools, and world knowledge.
-- Aim for at _least_ two batches of web searches throughout each turn unless the prompt is trivial.
+- You must perform at least two batches of web searches throughout each turn unless the prompt is trivial.
+  - Including at least one batch of web searches at the end of each turn to ground the answer.
 
 ## Decision boundary
 

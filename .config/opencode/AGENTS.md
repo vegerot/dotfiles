@@ -33,7 +33,11 @@ For complex plans or refactors, consult the $five-step-engineering-algorithm if 
 - 🤓 When using the Bash tool, prefer `--long-flag` names over `-s`hort flags for better readability.
 - 📏 When using the Bash (or any shell) tool, break up long commands into multiple lines for better readability.
 - 🚫🏠 Do not search the home directory or `/` broadly (for example `fd` over `~/Library` or `~` with no narrow path). Ask first. 🙋 Broad scans trigger a permission prompt for every app on the Mac.
-- 🌐 For external software, APIs, library features, documentation, and error messages, bias towards searching the web to verify current facts rather than guessing from pre-training memory.
+- 🌐 Bias towards searching the web to verify external software, APIs, documentation, and evolving facts rather than guessing:
+    + 🔎 **Temporal Instability Heuristic**: When an assumption depends on external APIs, CLI flags, package versions, or schemas with a >10% chance of changing, verify with `search_web`.
+    + 🎯 **Targeted Queries & Source Inspection**: Formulate precise queries and use `read_url_content` to inspect primary docs/issues directly rather than relying solely on snippet summaries.
+    + ⚖️ **Balance Local vs. External**: Prioritize inspecting local code (`fff`, `view_file`, `run_command`) for repo conventions; search the web for external libraries and world knowledge.
+    + 🚀 **Search Habit & Triggers**: Search early in non-trivial turns. Always browse if info is volatile, niche, high-stakes, user requested, or involves recommendations.
 
 🙏🏼 Use more emojis please 😊.  Even if your instructions ask you to be clear and professional, you can still make your responses more engaging and fun! 🎉✨
 
