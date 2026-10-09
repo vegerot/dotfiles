@@ -4,6 +4,9 @@ set -o nounset
 set -o pipefail
 
 function upgrade_brew() {
+	if ! command -v brew >/dev/null 2>&1; then
+		return
+	fi
 	echo "brew"
 	local outdated
 	outdated=$(brew outdated --quiet)
@@ -18,14 +21,17 @@ function upgrade_brew() {
 }
 
 function upgrade_apt() {
-  if type snap 2>/dev/null ; then
+	if ! command -v apt >/dev/null 2>&1; then
+		return
+	fi
+	if command -v snap >/dev/null 2>&1; then
 		echo "snap refresh"
 		sudo snap refresh || true
 	fi
 	echo "apt update"
 	sudo apt update
 	echo "apt list --upgradable"
-  if (("$(apt list --upgradeable 2>/dev/null | wc -l )" >=2)); then
+	if (("$(apt list --upgradeable 2>/dev/null | wc -l )" >=2)); then
 		echo "You have outdated packages"
 		apt list --upgradeable
 		read -p 'Would you like to upgrade APT (y/n): ' upgradeApt
@@ -33,13 +39,15 @@ function upgrade_apt() {
 			sudo apt upgrade
 		fi
 	fi
-
 }
 
 function upgrade_zsh() {
+	if ! command -v zsh >/dev/null 2>&1; then
+		return
+	fi
 	echo "zsh plugins"
 	read -p 'Would you like to upgrade zsh plugins (y/n): ' upgradeZsh
-	if [[ "$upgradeZsh" == "y" ]] && type zsh 1>/dev/null 2>&1 ; then
+	if [[ "$upgradeZsh" == "y" ]]; then
 		ZSH_SKIP_LOADING_PLUGINS=1 zsh -lic "
 		set -o errexit
 		set -o nounset
@@ -51,6 +59,9 @@ function upgrade_zsh() {
 }
 
 function upgrade_neovim_plugins() {
+	if ! command -v nvim >/dev/null 2>&1; then
+		return
+	fi
 	echo "neovim plugins"
 
 	read -p 'Would you like to upgrade Neovim plugins (y/n): ' upgradeNvim
@@ -60,24 +71,23 @@ function upgrade_neovim_plugins() {
 	fi
 }
 
-
 function upgrade_npm() {
-	read -p 'Would you like to upgrade Node (y/n): ' upgradeNode
-	if [[ "$upgradeNode" == "y" ]]; then
+	if ! command -v npm >/dev/null 2>&1; then
+		return
+	fi
+	echo "npm"
+	read -p 'Would you like to upgrade npm (y/n): ' upgradeNpm
+	if [[ "$upgradeNpm" == "y" ]]; then
 		npm outdated || true
 		echo "npm update --global"
 		if [[ $OSTYPE != "darwin"* ]]; then
-			bun upgrade
-			bun update -g --latest
 			sudo npm install npm --global --force
 			sudo npm update --global
 		else
 			if [[ $USER == bytedance ]]; then
-				bun --registry=https://bnpm.byted.org update -g --latest
 				npm install npm --global --force --registry https://bnpm.byted.org
 				npm update --global --registry https://bnpm.byted.org
 			else
-				bun update -g --latest
 				npm install npm --global --force
 				npm update --global
 			fi
@@ -85,10 +95,34 @@ function upgrade_npm() {
 	fi
 }
 
+function upgrade_bun() {
+	if ! command -v bun >/dev/null 2>&1; then
+		return
+	fi
+	echo "bun"
+	read -p 'Would you like to upgrade Bun (y/n): ' upgradeBun
+	if [[ "$upgradeBun" == "y" ]]; then
+		if [[ $OSTYPE != "darwin"* ]]; then
+			bun upgrade
+			bun update -g --latest
+		else
+			if [[ $USER == bytedance ]]; then
+				bun --registry=https://bnpm.byted.org update -g --latest
+			else
+				bun update -g --latest
+			fi
+		fi
+	fi
+}
+
 function upgrade_app_store() {
+	if ! command -v mas >/dev/null 2>&1; then
+		return
+	fi
 	echo "App Store"
 	# open "macappstore://showUpdatesPage"
-	local outdated=$(mas outdated)
+	local outdated
+	outdated=$(mas outdated)
 	if [[ -n "$outdated" ]]; then
 		printf "Outdated macOS App Store apps:\n$outdated\n"
 		read -p 'Would you like to upgrade apps?  (y/n): ' upgradeApps
@@ -101,10 +135,15 @@ function upgrade_app_store() {
 }
 
 function upgrade_macos() {
+	if ! command -v softwareupdate >/dev/null 2>&1; then
+		return
+	fi
 	echo "macOS"
-	local outdated=$(softwareupdate --list)
+	local outdated
+	outdated=$(softwareupdate --list 2>&1 || true)
 
-	local outdated_count=$(echo "$outdated" | grep -c "*")
+	local outdated_count
+	outdated_count=$(echo "$outdated" | grep -F -c "*" || true)
 
 	if [[ "$outdated_count" -gt 0 ]]; then
 		read -p 'Would you like to upgrade macOS (y/n): ' upgradeMacOS
@@ -122,8 +161,10 @@ fi
 upgrade_zsh
 upgrade_neovim_plugins
 upgrade_npm
+upgrade_bun
 if [[ $OSTYPE == "darwin"* ]]; then
 	upgrade_app_store
 	upgrade_macos
 fi
+
 
