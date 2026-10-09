@@ -16,35 +16,36 @@ cdr() {
 
 }
 
-# cd to node package root
+# cd to package root
 cdp() {
 	find-up() {
 		local current_path
 		current_path=$(pwd)
 		while [[ -n $current_path ]]; do
-			if [[ -e $current_path/$1 ]]; then
-				echo $current_path/$1
-				return
-			fi
+			for needle in "$@"; do
+				if [[ -e $current_path/$needle ]]; then
+					echo "$current_path/$needle"
+					return
+				fi
+			done
 			current_path=${current_path%/*}
 		done
 		return 1
 	}
 
-	local packagejson
-	packagejson=$(find-up package.json)
+	local projectfile
+	projectfile=$(find-up package.json Cargo.toml)
 	if [[ $? != 0 ]]; then
-		echo "Not in a node package" >&2
+		echo "Not in a known package" >&2
 		return 1
 	fi
-	local package_root=$(dirname "$packagejson")
+	local package_root=$(dirname "$projectfile")
 	if [[ -d "$package_root" ]]; then
 		cd "$package_root/$1"
 	else
-		echo "Not in a node package" >&2
+		echo "Not in a known package" >&2
 		return 1
 	fi
-
 }
 
 repo() {
