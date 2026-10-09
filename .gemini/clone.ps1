@@ -9,6 +9,7 @@
 #>
 [CmdletBinding()]
 param(
+    [string]$TargetDir = (Join-Path $HOME "code/github.com/google"),
     [int]$ThrottleLimit = 8
 )
 
@@ -40,7 +41,10 @@ $repos = @(
     @{ Dir = "workspace-cli"; Url = "https://github.com/googleworkspace/cli.git" }
 )
 
-$baseDir = (Get-Location).Path
+$baseDir = $TargetDir
+if (-not (Test-Path -LiteralPath $baseDir)) {
+    New-Item -ItemType Directory -Path $baseDir -Force | Out-Null
+}
 
 Write-Host "Cloning $($repos.Count) repositories in parallel via HTTPS..."
 

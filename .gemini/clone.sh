@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
-set -x
+# Target directory defaults to ~/code/github.com/google or $1
+TARGET_DIR="${1:-${TARGET_DIR:-$HOME/code/github.com/google}}"
+mkdir -p "$TARGET_DIR"
+cd "$TARGET_DIR"
 
 # List of target directory and HTTPS remote URL pairs
 repos=(
@@ -43,10 +46,11 @@ for entry in "${repos[@]}"; do
 
   (
     echo "⏳ [$dir] Cloning from $url..."
-    if git clone --depth 1 "$url" "$dir" >/dev/null 2>&1; then
+    if err=$(git clone --depth 1 "$url" "$dir" 2>&1); then
       echo "✅ [$dir] Done!"
     else
       echo "❌ [$dir] Failed to clone!" >&2
+      echo "$err" >&2
       exit 1
     fi
   ) &
