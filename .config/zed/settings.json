@@ -7,7 +7,8 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
-	"proxy": "",
+	"disable_ai": false,
+ "proxy": "",
 	"edit_predictions": {
 		"provider": "mercury",
 	},
@@ -65,7 +66,8 @@
 		"anthropic_retention": true,
 	},
 	"agent": {
-		"play_sound_when_agent_done": "when_hidden",
+		"expand_terminal_card": false,
+  "play_sound_when_agent_done": "when_hidden",
   "sandbox_permissions": {
    "allow_unsandboxed": true
   },
@@ -74,9 +76,11 @@
 		},
 		"show_turn_stats": true,
 		"tool_permissions": {
-			"tools": {
+			"default": "allow",
+   "tools": {
 				"terminal": {
-					"always_deny": [
+					"default": "allow",
+     "always_deny": [
 						{
 							"pattern": "^cat\\s+internal/proxy/server\\.go(\\s|$)",
 						},
@@ -135,27 +139,42 @@
 			},
 		},
 		"default_model": {
-			"provider": "Better Coding Router",
-			"model": "pareto@0.6",
+			"provider": "CLIProxy",
+			"model": "gemini-3.8-flash-high",
 			"enable_thinking": false,
 		},
 		"favorite_models": [
-			{
-				"provider": "Better Coding Router",
-				"model": "pareto@0.6",
-				"enable_thinking": true,
-			},
-			{
-				"provider": "Better Coding Router",
-				"model": "pareto@0.8",
-				"enable_thinking": true,
-			},
-			{
-				"provider": "Better Coding Router",
-				"model": "pareto@0.9",
-				"enable_thinking": true,
-			},
-		],
+   {
+    "provider": "Better Coding Router",
+    "model": "pareto@0.6",
+    "enable_thinking": true
+   },
+   {
+    "provider": "Better Coding Router",
+    "model": "pareto@0.8",
+    "enable_thinking": true
+   },
+   {
+    "provider": "Better Coding Router",
+    "model": "pareto@0.9",
+    "enable_thinking": true
+   },
+   {
+    "provider": "CLIProxy",
+    "model": "gemini-3.8-flash-high",
+    "enable_thinking": false
+   },
+   {
+    "provider": "CLIProxy",
+    "model": "claude-sonnet-5-5-high",
+    "enable_thinking": false
+   },
+   {
+    "provider": "CLIProxy",
+    "model": "claude-opus-5-5-high",
+    "enable_thinking": false
+   }
+  ],
 		"model_parameters": [],
 	},
 	"language_models": {
@@ -207,13 +226,78 @@
 					},
 				],
 			},
+			"CLIProxy": {
+				"api_url": "http://localhost:8317/v1",
+				"available_models": [
+					{
+						"name": "gemini-3.8-flash-high",
+						"display_name": "Gemini 3.8 Flash (High)",
+						"max_tokens": 1000000,
+						"max_output_tokens": 20000,
+						"max_completion_tokens": 200000,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": true,
+						},
+					},
+					{
+						"name": "claude-opus-5-5-high",
+						"display_name": "Claude Opus 5.5 (High)",
+						"max_tokens": 1000000,
+						"max_output_tokens": 32000,
+						"max_completion_tokens": 128000,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": true,
+						},
+					},
+					{
+						"name": "claude-sonnet-5-5-high",
+						"display_name": "Claude Sonnet 5.5 (High)",
+						"max_tokens": 200000,
+						"max_output_tokens": 32000,
+						"max_completion_tokens": 64000,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": true,
+						},
+					},
+					{
+						"name": "gpt-oss-120b-medium",
+						"display_name": "GPT-OSS 120B (Medium)",
+						"max_tokens": 100000,
+						"max_output_tokens": 20000,
+						"max_completion_tokens": 100000,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": true,
+						},
+					},
+				],
+			},
 		},
 	},
 	"cli_default_open_behavior": "existing_window",
 	"session": {
 		"trust_all_worktrees": true,
 	},
-	"vim_mode": false,
+	"vim_mode": true,
 	"terminal": {
 		"max_scroll_history_lines": 10000000000,
 	},
@@ -240,7 +324,10 @@
 	"buffer_font_family": "SFMono Nerd Font",
 	"linked_edits": true,
 	"agent_servers": {
-		"traecli": {
+		"antigravity-acp": {
+   "type": "registry"
+  },
+  "traecli": {
 			"type": "custom",
 			"command": "traecli",
 			"args": ["acp", "serve"]
