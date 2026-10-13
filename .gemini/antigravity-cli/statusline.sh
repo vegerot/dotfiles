@@ -30,7 +30,7 @@ FG_BRIGHT_WHITE="\033[97m"
 NUM_COLOR="${FG_BRIGHT_WHITE}${B}"
 
 # ─── Parse JSON from stdin (Single jq pass for performance) ──────────────────
-# Extract all fields in one pass to prevent spawning jq 8 times.
+# Extract all fields in one pass to prevent spawning jq multiple times.
 {
   read -r STATE
   read -r USED_PCT
@@ -40,8 +40,8 @@ NUM_COLOR="${FG_BRIGHT_WHITE}${B}"
   read -r ARTIFACTS
   read -r SUBAGENTS
   read -r BG_TASKS
-  read -r MODEL
   read -r COLS
+  read -r CWD
 } <<< "$(
   jq -r '
     (.agent_state // "idle"),
@@ -52,9 +52,9 @@ NUM_COLOR="${FG_BRIGHT_WHITE}${B}"
     (.artifact_count // 0),
     (if .subagents | type == "array" then (.subagents | length) else 0 end),
     (.task_count // 0),
-    (.model.display_name // ""),
-    (.terminal_width // 80)
-  ' 2>/dev/null || printf "idle\n0\n\nfalse\nfalse\n0\n0\n0\n\n80\n"
+    (.terminal_width // 80),
+    (.workspace.current_dir // .cwd // "")
+  ' 2>/dev/null || printf "idle\n0\n\nfalse\nfalse\n0\n0\n0\n80\n\n"
 )"
 
 # ─── Computed Values ─────────────────────────────────────────────────────────
@@ -71,20 +71,51 @@ case "$STATE" in
   *)        S="${FG_WHITE}${B}⏳ $(echo "$STATE" | tr '[:lower:]' '[:upper:]')${R}" ;;
 esac
 
-# ─── VCS Branch ──────────────────────────────────────────────────────────────
-V=""
-if [ -n "$VCS_BRANCH" ]; then
-  if [ "$VCS_DIRTY" = "true" ]; then
-    V="${FG_GRAY} ╱ ${FG_BRIGHT_RED}${VCS_BRANCH}${FG_BRIGHT_YELLOW}*${R}"
-  else
-    V="${FG_GRAY} ╱ ${FG_BRIGHT_BLUE}${VCS_BRANCH}${R}"
+# ─── Identity & Directory ───────────────────────────────────────────────────
+USER_NAME=$(whoami)
+HOST_NAME=$(hostname | cut -d. -f1)
+
+TARGET_DIR="${CWD:-$(pwd)}"
+# Windows gives C:\Users\Max\x. Make it /c/Users/Max/x so $HOME and awk match.
+TARGET_DIR=$(echo "$TARGET_DIR" | tr '\\' '/' | sed 's|^\([A-Za-z]\):/|/\L\1/|')
+
+if [ -n "$TARGET_DIR" ]; then
+  # Shorten to last 3 path components, replacing $HOME with ~
+  HOME_ESCAPED=$(printf '%s\n' "$HOME" | sed 's/[[\.*^$()+?{|]/\\&/g')
+  SHORT_DIR=$(echo "$TARGET_DIR" | sed "s|^$HOME_ESCAPED|~|")
+  SHORT_DIR=$(echo "$SHORT_DIR" | awk -F'/' '{
+    n=NF; if(n<=3) print $0;
+    else { out=$(n-2)"/"$(n-1)"/"$n; print ".../"out }
+  }')
+else
+  SHORT_DIR="~"
+fi
+
+ID_PATH="${FG_GRAY} ╱ ${FG_BRIGHT_GREEN}🪪 ${USER_NAME}${R} ${FG_GRAY}💻${FG_BRIGHT_GREEN}${HOST_NAME}${R}${FG_GRAY}:${R} ${FG_BRIGHT_BLUE}📁 ${SHORT_DIR}${R}"
+
+# ─── VCS Branch & Dirty Indicator ────────────────────────────────────────────
+BRANCH="$VCS_BRANCH"
+DIRTY="$VCS_DIRTY"
+
+# Fallback to local git if agy payload is empty or in detached HEAD
+if [ -z "$BRANCH" ]; then
+  if git -C "${TARGET_DIR}" --no-optional-locks rev-parse --git-dir >/dev/null 2>&1; then
+    BRANCH=$(git -C "${TARGET_DIR}" --no-optional-locks symbolic-ref --short HEAD 2>/dev/null || git -C "${TARGET_DIR}" --no-optional-locks rev-parse --short HEAD 2>/dev/null || true)
+    if [ -n "$BRANCH" ]; then
+      if [ -n "$(git -C "${TARGET_DIR}" --no-optional-locks status --porcelain 2>/dev/null | head -n 1)" ]; then
+        DIRTY="true"
+      fi
+    fi
   fi
 fi
 
-# ─── Model ───────────────────────────────────────────────────────────────────
-M=""
-if [ -n "$MODEL" ]; then
-  M="${FG_GRAY} ╱ ${FG_BRIGHT_MAGENTA}${I}${MODEL}${R}"
+V=""
+if [ -n "$BRANCH" ]; then
+  if [ "$DIRTY" = "true" ]; then
+    V="${FG_GRAY} ╱ ${FG_BRIGHT_BLUE}🌿 ${BRANCH}${FG_BRIGHT_YELLOW}*${R}"
+  else
+    V="${FG_GRAY} ╱ ${FG_BRIGHT_BLUE}🌿 ${BRANCH}${R}"
+  fi
 fi
 
 # ─── Sandbox Badge ───────────────────────────────────────────────────────────
@@ -138,7 +169,7 @@ BG_FMT="${FG_GRAY}tasks ${NUM_COLOR}${BG_TASKS}${R}"
 DOT="${FG_GRAY} · ${R}"
 
 # ─── Output ──────────────────────────────────────────────────────────────────
-LINE1="${S}${M}${V}"
+LINE1="${S}${ID_PATH}${V}"
 LINE2=" ${CTX}${DOT}${ART_FMT}${DOT}${SUB_FMT}${DOT}${BG_FMT}${DOT}${SB}"
 
 if [ "$COLS" -ge 120 ]; then
@@ -150,6 +181,6 @@ elif [ "$COLS" -ge 80 ]; then
   echo -e "${FG_GRAY}╰─${R}${LINE2}"
 else
   # Narrow: compact two-line, minimal chrome
-  echo -e "${S}${M}"
+  echo -e "${S}${V}"
   echo -e "${CTX}${DOT}${BG_FMT}"
 fi
