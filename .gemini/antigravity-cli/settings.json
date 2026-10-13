@@ -36,13 +36,13 @@
   "queuedMessages": "send-immediately",
   "statusLine": {
     "type": "command",
-    "command": "/Users/bytedance/.gemini/antigravity-cli/statusline.sh",
+    "command": "~/.gemini/antigravity-cli/statusline.sh",
     "stack_with_default": true,
     "enabled": true
   },
   "title": {
     "type": "command",
-    "command": "/Users/bytedance/.gemini/antigravity-cli/title.sh",
+    "command": "~/.gemini/antigravity-cli/title.sh",
     "enabled": true
   },
   "verbosity": "medium",
