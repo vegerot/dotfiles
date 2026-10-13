@@ -121,6 +121,32 @@ async () => {
 }
 ```
 
+### 🎥 On-Demand Screencast Video Recording (`--experimentalScreencast`)
+
+To record live video of browser actions (e.g. capturing dynamic animations, UI flows, or end-to-end visual tests) instead of static screenshots, enable the `--experimentalScreencast` flag:
+
+1. **Prerequisites**:
+   - `ffmpeg` must be installed and accessible in `$PATH` (e.g. `/opt/homebrew/bin/ffmpeg`).
+2. **Activation**:
+   Add `--experimentalScreencast=true` (and optionally `--experimentalScreencastFps=15` or `--experimentalFfmpegPath`) to the server `args` in `~/.gemini/config/mcp_config.json`:
+   ```json
+   "chrome-devtools": {
+     "command": "bunx",
+     "args": [
+       "chrome-devtools-mcp@latest",
+       "--auto-connect",
+       "--channel=dev",
+       "--experimentalScreencast=true",
+       "--experimentalScreencastFps=15"
+     ]
+   }
+   ```
+3. **Available Screencast Tools**:
+   - `start_screencast`: Starts recording video of the target page (options: `pageId`, `filePath`, `format: "webm" | "mp4"`).
+   - `stop_screencast`: Stops the active recording session and writes the final video file.
+4. **Performance Consideration**:
+   Keep `--experimentalScreencast` **disabled** during everyday browsing to prevent continuous background video encoding CPU load and memory pressure. Enable it selectively when video captures are required.
+
 ---
 
 ## 💻 Interface 2: `chrome-devtools` CLI (Shell & Scripting)

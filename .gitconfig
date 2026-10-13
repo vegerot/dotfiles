@@ -113,3 +113,5 @@ mnemonicPrefix = true
 	eventNesting = 10
 [safe]
 	directory = *
+[submodule]
+	shallow = true
