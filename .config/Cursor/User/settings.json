@@ -1,0 +1,12 @@
+// symlink me to ~/.config/Cursor/User/settings.json
+// and ~/Library/Application Support/Cursor/User/settings.json
+{
+    "window.autoDetectColorScheme": true,
+    "cursor.general.glassShowWarningNotifications": true,
+    "cursor.composer.conversationDensity": "compact-ungrouped",
+    "cursor.composer.codeBlockWordWrap": true,
+    "cursor.composer.queueMessageDefaultBehavior": "steer",
+    "cursor.cpp.enablePartialAccepts": true,
+    "update.releaseTrack": "dev",
+    "cursor.composer.shouldChimeAfterChatFinishes": true
+}
