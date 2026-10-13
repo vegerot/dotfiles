@@ -86,9 +86,15 @@ setopt incappendhistorytime
 unsetopt histignorespace
 
 export HELPDIR=/usr/share/zsh/$ZSH_VERSION/help
-unalias run-help 2>/dev/null # sometimes this alias is set and sometimes it isn't
-autoload -U run-help
-alias help=run-help
+# zsh defines `alias run-help=man` in every shell, including `zsh -f`.
+# Grok sources this file, then replays `typeset -f` in one `eval` inside a
+# fresh zsh that still has that alias. `run-help ()` is then a parse error.
+# Interactive shells unalias it first and use the real help function.
+if [[ -o interactive ]]; then
+	unalias run-help 2>/dev/null
+	autoload -U run-help
+	alias help=run-help
+fi
 
 # COMMAND LINE EDITING
 setopt vi

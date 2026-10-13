@@ -16,7 +16,13 @@ fi
 #alias vim=nvim
 #alias vimdiff='nvim -d'
 
-alias grep="egrep --color=always"
+# Grok sets GROK_AGENT=1 before zsh reads startup files, then parses
+# `grep() { ... }` in that same `zsh -c` script. zsh expands this alias
+# at parse time, before `unalias` can run, and every command dies with
+# "defining function based on alias `grep'".
+if [ -z "${GROK_AGENT:-}" ]; then
+  alias grep="egrep --color=always"
+fi
 alias rgv="rg --vimgrep --color=auto"
 alias rgt="rg --glob '!*.spec.ts' --glob '!*mx*' --glob '!*mock*'"
 
