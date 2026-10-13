@@ -228,6 +228,9 @@ load_plugins() {
 
   [[ -s "$HOME/.ttadk/completion/ttadk.zsh" ]] && source "$HOME/.ttadk/completion/ttadk.zsh"
 
+	# Grok Build completions
+	fpath=(~/.grok/completions/zsh $fpath)
+
   # HISTORY plugins start
   if type atuin > /dev/null; then
 	  export FZF_CTRL_R_COMMAND=

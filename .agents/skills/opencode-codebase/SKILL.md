@@ -1,6 +1,6 @@
 ---
 name: opencode-codebase
-description: Reference and inspect the source code, architecture, plugins, or inner workings of OpenCode. Use whenever asking implementation, introspection, or behavior questions about OpenCode.
+description: See ~/code/github.com/anomalyco/ to Reference and inspect the source code, architecture, plugins, or inner workings of OpenCode. Use whenever asking implementation, introspection, or behavior questions about OpenCode.
 ---
 
 When investigating how OpenCode works:
