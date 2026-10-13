@@ -11,7 +11,11 @@
       "args": [
         "chrome-devtools-mcp@latest",
         "--auto-connect",
-        "--channel=dev"
+        "--channel=dev",
+        "--categoryExtensions=true",
+        "--experimentalVision=true",
+        "--memoryDebugging=true",
+        "--categoryThirdParty=true"
       ]
     },
     "fff": {
@@ -22,6 +26,13 @@
     "atuin": {
       "command": "atuin",
       "args": [
+        "mcp"
+      ]
+    },
+    "dayflow": {
+      "command": "start-mcp-else-empty",
+      "args": [
+        "dayflow",
         "mcp"
       ]
     }

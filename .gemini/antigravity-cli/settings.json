@@ -1,7 +1,7 @@
 {
   "allowNonWorkspaceAccess": true,
   "artifactReviewPolicy": "agent-decides",
-  "model": "Gemini 3.8 Flash (Medium)",
+  "model": "Gemini 3.8 Flash (High)",
   "notifications": true,
   "permissions": {
     "allow": [
@@ -15,6 +15,7 @@
       "command(fff-mcp)",
       "mcp(fff/*)",
       "mcp(atuin/*)",
+      "mcp(dayflow/*)",
       "command(git diff)",
       "command(fd)",
       "command(cd)",
@@ -37,8 +38,8 @@
   "statusLine": {
     "type": "command",
     "command": "~/.gemini/antigravity-cli/statusline.sh",
-    "stack_with_default": true,
-    "enabled": true
+    "enabled": true,
+    "stack_with_default": true
   },
   "title": {
     "type": "command",
@@ -60,7 +61,11 @@
     "C:\\Users\\Max\\dotfiles",
     "C:\\Users\\Max",
     "C:\\Users\\Max\\ai-conversations",
-    "C:\\Users\\Max\\code\\github.com\\google"
+    "C:\\Users\\Max\\code\\github.com\\google",
+    "/Users/bytedance/code/github.com/earendil-works/pi",
+    "/Users/bytedance/workspace/code.byted.org/max.coplan/spooky-bio",
+    "/Users/bytedance/code/github.com/vegerot/larklish",
+    "/Users/bytedance/code/github.com/atuinsh/atuin"
   ],
   "vimInsertFirst": true
 }

@@ -43,7 +43,12 @@
       "command": "bunx",
       "args": [
         "chrome-devtools-mcp",
-        "--channel=dev"
+        "--channel=dev",
+        "--auto-connect",
+        "--categoryExtensions=true",
+        "--experimentalVision=true",
+        "--memoryDebugging=true",
+        "--categoryThirdParty=true"
       ]
     },
     "Firefox-MCP": {
@@ -62,6 +67,13 @@
     "atuin": {
       "command": "atuin",
       "args": [
+        "mcp"
+      ]
+    },
+    "dayflow": {
+      "command": "start-mcp-else-empty",
+      "args": [
+        "dayflow",
         "mcp"
       ]
     }
