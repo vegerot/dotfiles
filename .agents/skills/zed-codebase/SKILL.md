@@ -1,6 +1,6 @@
 ---
 name: zed-codebase
-description: Reference and inspect the source code, architecture, tools, settings, or inner workings of Zed and the Zed AI agent. Use whenever asking implementation, introspection, or behavior questions about Zed.
+description: See ~/code/github.com/zed-industries to Reference and inspect the source code, architecture, tools, settings, or inner workings of Zed and the Zed AI agent. Use whenever asking implementation, introspection, or behavior questions about Zed.
 ---
 
 When investigating how Zed or the Zed Agent works, inspect its local source code:

@@ -1,6 +1,6 @@
 ---
 name: codex-codebase
-description: Reference and inspect the source code, architecture, tools, settings, or inner workings of OpenAI, ChatGPT, or Codex . Use whenever asking about OpenAI, e.g. implementation, introspection, or behavior questions about Codex.
+description: See ~/code/github.com/openai/ to Reference and inspect the source code, architecture, tools, settings, or inner workings of OpenAI, ChatGPT, or Codex . Use whenever asking about OpenAI, e.g. implementation, introspection, or behavior questions about Codex.
 ---
 
 When investigating how ChatGPT, Codex, OpenAI API, or OpenAI agent tools work:
