@@ -14,6 +14,7 @@
       "command(which)",
       "command(fff-mcp)",
       "mcp(fff/*)",
+      "mcp(atuin/*)",
       "command(git diff)",
       "command(fd)",
       "command(cd)",
@@ -34,10 +35,17 @@
   "pickerGrouping": "grouped",
   "queuedMessages": "send-immediately",
   "statusLine": {
-    "type": "",
-    "command": "",
+    "type": "command",
+    "command": "/Users/bytedance/.gemini/antigravity-cli/statusline.sh",
+    "stack_with_default": true,
     "enabled": true
   },
+  "title": {
+    "type": "command",
+    "command": "/Users/bytedance/.gemini/antigravity-cli/title.sh",
+    "enabled": true
+  },
+  "verbosity": "medium",
   "trustedWorkspaces": [
     "/Users/bytedance/code/github.com/git/git",
     "/Users/bytedance/dotfiles",

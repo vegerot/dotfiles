@@ -18,6 +18,12 @@
       "command": "fff-mcp",
       "args": [],
       "disabled": false
+    },
+    "atuin": {
+      "command": "atuin",
+      "args": [
+        "mcp"
+      ]
     }
   }
 }
