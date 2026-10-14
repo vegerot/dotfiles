@@ -6,6 +6,6 @@ Commit messages should begin with an emoji
 
 Loop skill tests, from this repo root:
 
-`python3 -m unittest .codex/skills/loop/scripts/test_loop.py`
+`python3 .codex/skills/loop/scripts/test_loop.py`
 
 `./bootstrap.sh` links these files into `$HOME`. `--dry-run` only prints the mapping. Do not pass `--force` here; it replaces files in the Cloud Agent home directory.
