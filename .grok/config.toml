@@ -1,0 +1,353 @@
+[cli]
+installer = "internal"
+
+[marketplace]
+default_skills_installs_purged = true
+official_marketplace_auto_installed = true
+
+[[marketplace.sources]]
+name = "xAI Official"
+git = "https://github.com/xai-org/plugin-marketplace.git"
+
+[ui]
+vim_mode = true
+max_thoughts_width = 120
+yolo = false
+compact_mode = false
+tool_call_density = "compact-ungrouped"
+show_timeline = true
+theme = "auto"
+follow_up_behavior = "steer"
+permission_mode = "always-approve"
+hunk_tracker_mode = "agent_only"
+confirm_before_rewind = false
+
+[ui.contextual_hints]
+send_now = true
+
+[ui.status_line]
+type = "command"
+command = "~/.grok/statusline.sh"
+
+[privacy]
+privacy_banner_acked = "2026-10-13T22:23:03Z"
+
+[models]
+default = "grok-4.7-build-fast"
+default_reasoning_effort = "xhigh"
+
+[features]
+subagent_model_inheritance = true
+lsp_tools = true
+
+[compat.claude]
+hooks = false
+
+[model.frontier-throughput-0]
+name = "Frontier throughput p=0"
+model = "throughput@0"
+base_url = "http://localhost:4000/v1"
+api_backend = "chat_completions"
+context_window = 200000
+description = "Fastest eligible model. Quality floor 0."
+
+[[model.frontier-throughput-0.reasoning_efforts]]
+value = "none"
+label = "None"
+description = "No requested reasoning."
+default = true
+
+[[model.frontier-throughput-0.reasoning_efforts]]
+value = "low"
+label = "Low"
+description = "Fastest responses. Best for simple tasks."
+
+[[model.frontier-throughput-0.reasoning_efforts]]
+value = "medium"
+label = "Medium"
+description = "Strong quality with a faster turnaround."
+
+[[model.frontier-throughput-0.reasoning_efforts]]
+value = "high"
+label = "High"
+description = "Thorough reasoning and quality."
+
+[[model.frontier-throughput-0.reasoning_efforts]]
+value = "xhigh"
+label = "Extra High"
+description = "Maximum reasoning for the hardest tasks."
+
+[model.frontier-throughput-0-6]
+name = "Frontier throughput p=0.6"
+model = "throughput@0.6"
+base_url = "http://localhost:4000/v1"
+api_backend = "chat_completions"
+context_window = 200000
+description = "Throughput routing with quality floor 0.6."
+
+[[model.frontier-throughput-0-6.reasoning_efforts]]
+value = "none"
+label = "None"
+description = "No requested reasoning."
+
+[[model.frontier-throughput-0-6.reasoning_efforts]]
+value = "low"
+label = "Low"
+description = "Fastest responses. Best for simple tasks."
+default = true
+
+[[model.frontier-throughput-0-6.reasoning_efforts]]
+value = "medium"
+label = "Medium"
+description = "Strong quality with a faster turnaround."
+
+[[model.frontier-throughput-0-6.reasoning_efforts]]
+value = "high"
+label = "High"
+description = "Thorough reasoning and quality."
+
+[[model.frontier-throughput-0-6.reasoning_efforts]]
+value = "xhigh"
+label = "Extra High"
+description = "Maximum reasoning for the hardest tasks."
+
+[model.frontier-throughput-0-8]
+name = "Frontier throughput p=0.8"
+model = "throughput@0.8"
+base_url = "http://localhost:4000/v1"
+api_backend = "chat_completions"
+context_window = 200000
+description = "Throughput routing with quality floor 0.8."
+
+[[model.frontier-throughput-0-8.reasoning_efforts]]
+value = "none"
+label = "None"
+description = "No requested reasoning."
+
+[[model.frontier-throughput-0-8.reasoning_efforts]]
+value = "low"
+label = "Low"
+description = "Fastest responses. Best for simple tasks."
+
+[[model.frontier-throughput-0-8.reasoning_efforts]]
+value = "medium"
+label = "Medium"
+description = "Strong quality with a faster turnaround."
+default = true
+
+[[model.frontier-throughput-0-8.reasoning_efforts]]
+value = "high"
+label = "High"
+description = "Thorough reasoning and quality."
+
+[[model.frontier-throughput-0-8.reasoning_efforts]]
+value = "xhigh"
+label = "Extra High"
+description = "Maximum reasoning for the hardest tasks."
+
+[model.frontier-throughput-0-9]
+name = "Frontier throughput p=0.9"
+model = "throughput@0.9"
+base_url = "http://localhost:4000/v1"
+api_backend = "chat_completions"
+context_window = 200000
+description = "Throughput routing with quality floor 0.9."
+
+[[model.frontier-throughput-0-9.reasoning_efforts]]
+value = "none"
+label = "None"
+description = "No requested reasoning."
+
+[[model.frontier-throughput-0-9.reasoning_efforts]]
+value = "low"
+label = "Low"
+description = "Fastest responses. Best for simple tasks."
+
+[[model.frontier-throughput-0-9.reasoning_efforts]]
+value = "medium"
+label = "Medium"
+description = "Strong quality with a faster turnaround."
+
+[[model.frontier-throughput-0-9.reasoning_efforts]]
+value = "high"
+label = "High"
+description = "Thorough reasoning and quality."
+default = true
+
+[[model.frontier-throughput-0-9.reasoning_efforts]]
+value = "xhigh"
+label = "Extra High"
+description = "Maximum reasoning for the hardest tasks."
+
+[model.frontier-throughput-1]
+name = "Frontier throughput p=1"
+model = "throughput@1"
+base_url = "http://localhost:4000/v1"
+api_backend = "chat_completions"
+context_window = 200000
+description = "Highest-quality candidate, still chosen for throughput."
+
+[[model.frontier-throughput-1.reasoning_efforts]]
+value = "none"
+label = "None"
+description = "No requested reasoning."
+
+[[model.frontier-throughput-1.reasoning_efforts]]
+value = "low"
+label = "Low"
+description = "Fastest responses. Best for simple tasks."
+
+[[model.frontier-throughput-1.reasoning_efforts]]
+value = "medium"
+label = "Medium"
+description = "Strong quality with a faster turnaround."
+
+[[model.frontier-throughput-1.reasoning_efforts]]
+value = "high"
+label = "High"
+description = "Thorough reasoning and quality."
+
+[[model.frontier-throughput-1.reasoning_efforts]]
+value = "xhigh"
+label = "Extra High"
+description = "Maximum reasoning for the hardest tasks."
+default = true
+
+[model.gpt-oss-120b-medium]
+name = "gpt-oss-120b-medium"
+model = "gpt-oss-120b-medium"
+base_url = "http://localhost:8317/v1"
+api_backend = "chat_completions"
+env_key = "api-key"
+context_window = 114000
+max_completion_tokens = 32768
+
+[model.claude-sonnet-5-5-high]
+name = "Claude Sonnet 5.5"
+model = "claude-sonnet-5-5-high"
+base_url = "http://localhost:8317/v1"
+api_backend = "chat_completions"
+env_key = "api-key"
+context_window = 1000000
+max_completion_tokens = 128000
+vision = true
+
+[[model.claude-sonnet-5-5-high.reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model.claude-sonnet-5-5-high.reasoning_efforts]]
+value = "medium"
+label = "Medium"
+
+[[model.claude-sonnet-5-5-high.reasoning_efforts]]
+value = "high"
+label = "High"
+default = true
+
+[model.claude-opus-5-5-high]
+name = "Claude Opus 5.5"
+model = "claude-opus-5-5-high"
+base_url = "http://localhost:8317/v1"
+api_backend = "chat_completions"
+env_key = "api-key"
+context_window = 1000000
+max_completion_tokens = 128000
+vision = true
+
+[[model.claude-opus-5-5-high.reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model.claude-opus-5-5-high.reasoning_efforts]]
+value = "medium"
+label = "Medium"
+
+[[model.claude-opus-5-5-high.reasoning_efforts]]
+value = "high"
+label = "High"
+default = true
+
+[model."gpt-5.6-terra"]
+name = "gpt-5.6-terra"
+model = "gpt-5.6-terra"
+base_url = "http://localhost:8317/v1"
+api_backend = "chat_completions"
+env_key = "api-key"
+
+[model.gpt-6-luna]
+name = "gpt-6-luna"
+model = "gpt-6-luna"
+base_url = "http://localhost:8317/v1"
+api_backend = "chat_completions"
+env_key = "api-key"
+
+[model.gemini-4-argon-high]
+name = "Gemini 4 Argon"
+model = "gemini-4-argon-high"
+base_url = "http://localhost:8317/v1"
+api_backend = "chat_completions"
+env_key = "api-key"
+context_window = 1048576
+max_completion_tokens = 65536
+vision = true
+
+[[model.gemini-4-argon-high.reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model.gemini-4-argon-high.reasoning_efforts]]
+value = "medium"
+label = "Medium"
+
+[[model.gemini-4-argon-high.reasoning_efforts]]
+value = "high"
+label = "High"
+default = true
+
+[model."gemini-3.8-flash-high"]
+name = "Gemini 3.8 Flash"
+model = "gemini-3.8-flash-high"
+base_url = "http://localhost:8317/v1"
+api_backend = "chat_completions"
+env_key = "api-key"
+context_window = 1048576
+max_completion_tokens = 65536
+vision = true
+
+[[model."gemini-3.8-flash-high".reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model."gemini-3.8-flash-high".reasoning_efforts]]
+value = "medium"
+label = "Medium"
+
+[[model."gemini-3.8-flash-high".reasoning_efforts]]
+value = "high"
+label = "High"
+default = true
+
+[model.gpt-image-2]
+name = "gpt-image-2"
+model = "gpt-image-2"
+base_url = "http://localhost:8317/v1"
+api_backend = "chat_completions"
+env_key = "api-key"
+description = "Image model from the CLIProxyAPI catalog."
+
+[model."gpt-image-2.5-sunburst"]
+name = "gpt-image-2.5-sunburst"
+model = "gpt-image-2.5-sunburst"
+base_url = "http://localhost:8317/v1"
+api_backend = "chat_completions"
+env_key = "api-key"
+description = "Image model from the CLIProxyAPI catalog."
+
+[model."gpt-image-2.5-flare"]
+name = "gpt-image-2.5-flare"
+model = "gpt-image-2.5-flare"
+base_url = "http://localhost:8317/v1"
+api_backend = "chat_completions"
+env_key = "api-key"
+description = "Image model from the CLIProxyAPI catalog."

@@ -1,0 +1,125 @@
+{
+  "hooks": {
+    "session_start": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source plugin:grok --event SessionStart",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "user_prompt_submit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source plugin:grok --event UserPromptSubmit",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "pre_tool_use": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source plugin:grok --event PreToolUse",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "post_tool_use": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source plugin:grok --event PostToolUse",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "post_tool_use_failure": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source plugin:grok --event PostToolUseFailure",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source plugin:grok --event Stop",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "stop_failure": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source plugin:grok --event StopFailure",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "session_end": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source plugin:grok --event SessionEnd",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source plugin:grok --event PermissionRequest",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "pre_compact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source plugin:grok --event PreCompact",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "permission_denied": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "flux_grok_payload_file=\"$(mktemp \"${TMPDIR:-/tmp}/flux-grok-hook.XXXXXX\")\" || exit 1; trap 'rm -f \"$flux_grok_payload_file\"' EXIT; cat > \"$flux_grok_payload_file\" || exit 1; flux_grok_status=0; [ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source plugin:grok --event PostToolUse < \"$flux_grok_payload_file\" || flux_grok_status=$?; [ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-hooks-relay' --source plugin:grok --event Stop < \"$flux_grok_payload_file\" || flux_grok_status=$?; exit \"$flux_grok_status\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
