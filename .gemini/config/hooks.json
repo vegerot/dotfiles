@@ -32,7 +32,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "( ~/dotfiles/bin/flux-hook relay gemini </dev/null >/dev/null 2>&1 & ); echo '{\"decision\":\"allow\"}'",
+            "command": "~/dotfiles/bin/flux-hook agy PreToolUse",
             "timeout": 5
           }
         ]
@@ -44,7 +44,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "( ~/dotfiles/bin/flux-hook relay gemini </dev/null >/dev/null 2>&1; [ -z \"$FLUX_AGENT_ENV\" ] || exit 0; [ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; TEA_APP_ID=1013111 TEA_CHANNEL=cn TEA_APP_NAME_FOR_BITS=@fluxisland@0.1.35@0.4.16 ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-bits-report' gemini postToolUse </dev/null >/dev/null 2>&1 & ); echo '{}'",
+            "command": "~/dotfiles/bin/flux-hook agy PostToolUse",
             "timeout": 10
           }
         ]
@@ -53,21 +53,21 @@
     "PreInvocation": [
       {
         "type": "command",
-        "command": "( ~/dotfiles/bin/flux-hook relay gemini </dev/null >/dev/null 2>&1 & ); echo '{}'",
+        "command": "~/dotfiles/bin/flux-hook agy PreInvocation",
         "timeout": 5
       }
     ],
     "PostInvocation": [
       {
         "type": "command",
-        "command": "( ~/dotfiles/bin/flux-hook relay gemini </dev/null >/dev/null 2>&1 & ); echo '{}'",
+        "command": "~/dotfiles/bin/flux-hook agy PostInvocation",
         "timeout": 5
       }
     ],
     "Stop": [
       {
         "type": "command",
-        "command": "( ~/dotfiles/bin/flux-hook relay gemini </dev/null >/dev/null 2>&1; [ -z \"$FLUX_AGENT_ENV\" ] || exit 0; [ -e '/Applications/Flux Island.app/Contents/MacOS/Flux Island' ] || exit 0; TEA_APP_ID=1013111 TEA_CHANNEL=cn TEA_APP_NAME_FOR_BITS=@fluxisland@0.1.35@0.4.16 ELECTRON_RUN_AS_NODE=1 '/Applications/Flux Island.app/Contents/MacOS/Flux Island' '/Applications/Flux Island.app/Contents/Resources/bin/flux-bits-report' gemini stop </dev/null >/dev/null 2>&1 & ); echo '{}'",
+        "command": "~/dotfiles/bin/flux-hook agy Stop",
         "timeout": 10
       }
     ]

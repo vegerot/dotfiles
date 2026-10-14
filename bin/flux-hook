@@ -4,6 +4,7 @@
 #
 #   flux-hook relay <agent>          claude | gemini | codex | ...
 #   flux-hook bits <agent> <event>   claude-code postToolUse, codex stop, ...
+#   flux-hook agy <event>            PreToolUse | PostToolUse | PreInvocation | PostInvocation | Stop
 #
 # Flux Island is a macOS app. It installs Linux helpers under ~/.flux/bin on a
 # dev box when you connect to that box from its Remote SSH pane. The two live
@@ -17,6 +18,49 @@ linux_bin="$HOME/.flux/bin"
 
 # Flux stamps its own version into these hooks. Update it after a Flux upgrade.
 tea_env=(TEA_APP_ID=1013111 TEA_CHANNEL=cn TEA_APP_NAME_FOR_BITS=@fluxisland@0.1.35@0.4.16)
+
+# Antigravity (agy CLI, Desktop, IDE, and Zed antigravity-acp) hook wrapper.
+# Note: antigravity-acp executes hook commands via shlex.split + execve (no
+# shell), so hooks.json must invoke this script directly without shell syntax.
+if [ "${1:-}" = agy ]; then
+	event="${2:-}"
+	input=$(cat 2>/dev/null || true)
+	(
+		if [ -n "$input" ] && command -v jq >/dev/null 2>&1; then
+			flux_event=""
+			case "$event" in
+			PreInvocation)
+				inv_num=$(printf '%s' "$input" | jq -r '.invocationNum // 1' 2>/dev/null || echo 1)
+				[ "$inv_num" = "1" ] && flux_event="BeforeAgent"
+				;;
+			PreToolUse) flux_event="BeforeTool" ;;
+			PostToolUse) flux_event="AfterTool" ;;
+			Stop) flux_event="AfterAgent" ;;
+			esac
+			if [ -n "$flux_event" ]; then
+				printf '%s' "$input" | jq -c --arg ev "$flux_event" '
+					. + {
+						hook_event_name: $ev,
+						session_id: (.conversationId // .session_id // "agy"),
+						cwd: ((.workspacePaths[0] // .cwd // "") | sub("^file://"; "")),
+						tool_name: (.toolCall.name // .tool_name // null),
+						tool_input: (.toolCall.args // .tool_input // null),
+						tool_response: (.toolOutput // .tool_response // null)
+					}
+				' 2>/dev/null | "$0" relay gemini
+			fi
+		fi
+		if [ "$event" = "Stop" ] && [ -n "$input" ]; then
+			printf '%s' "$input" | "$0" bits agy Stop
+		fi
+	) </dev/null >/dev/null 2>&1 &
+	if [ "$event" = "PreToolUse" ]; then
+		echo '{"decision":"allow"}'
+	else
+		echo '{}'
+	fi
+	exit 0
+fi
 
 # Skip reporting when Flux already owns the agent environment.
 if [ "${1}" = bits ] && [ -n "${FLUX_AGENT_ENV:-}" ]; then
@@ -36,12 +80,16 @@ relay:Linux)
 	;;
 bits:Darwin)
 	[ -e "$mac_bin" ] || exit 0
+	bits_agent="$2"
+	[ "$bits_agent" = gemini ] && bits_agent=agy
 	exec env "${tea_env[@]}" ELECTRON_RUN_AS_NODE=1 "$mac_bin" \
-		"$mac_app/Contents/Resources/bin/flux-bits-report" "$2" "$3"
+		"$mac_app/Contents/Resources/bin/flux-bits-report" "$bits_agent" "$3"
 	;;
 bits:Linux)
 	[ -x "$linux_bin/flux-bits-report-wrapper" ] || exit 0
-	exec env "${tea_env[@]}" "$linux_bin/flux-bits-report-wrapper" "$2" "$3"
+	bits_agent="$2"
+	[ "$bits_agent" = gemini ] && bits_agent=agy
+	exec env "${tea_env[@]}" "$linux_bin/flux-bits-report-wrapper" "$bits_agent" "$3"
 	;;
 esac
 exit 0
