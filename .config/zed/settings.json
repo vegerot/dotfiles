@@ -140,7 +140,7 @@
 		},
 		"default_model": {
 			"provider": "CLIProxy",
-			"model": "gemini-3.8-flash-high",
+			"model": "grok-4.7-build-fast",
 			"enable_thinking": false,
 		},
 		"favorite_models": [
@@ -161,6 +161,11 @@
    },
    {
     "provider": "CLIProxy",
+    "model": "gemini-4-argon-high",
+    "enable_thinking": false
+   },
+   {
+    "provider": "CLIProxy",
     "model": "gemini-3.8-flash-high",
     "enable_thinking": false
    },
@@ -172,6 +177,21 @@
    {
     "provider": "CLIProxy",
     "model": "claude-opus-5-5-high",
+    "enable_thinking": false
+   },
+   {
+    "provider": "CLIProxy",
+    "model": "grok-4.7",
+    "enable_thinking": false
+   },
+   {
+    "provider": "CLIProxy",
+    "model": "grok-4.7-build-fast",
+    "enable_thinking": false
+   },
+   {
+    "provider": "CLIProxy",
+    "model": "gpt-6-luna",
     "enable_thinking": false
    }
   ],
@@ -229,6 +249,21 @@
 			"CLIProxy": {
 				"api_url": "http://localhost:8317/v1",
 				"available_models": [
+					{
+						"name": "gemini-4-argon-high",
+						"display_name": "Gemini 4 Argon (High)",
+						"max_tokens": 1048576,
+						"max_output_tokens": 65536,
+						"max_completion_tokens": 200000,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": true,
+						},
+					},
 					{
 						"name": "gemini-3.8-flash-high",
 						"display_name": "Gemini 3.8 Flash (High)",
@@ -289,6 +324,141 @@
 							"interleaved_reasoning": true,
 						},
 					},
+					{
+						"name": "grok-4.7",
+						"display_name": "Grok 4.7",
+						"max_tokens": 500000,
+						"max_output_tokens": 65536,
+						"max_completion_tokens": 500000,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": true,
+						},
+					},
+					{
+						"name": "grok-4.7-build-fast",
+						"display_name": "Grok 4.7 Fast",
+						"max_tokens": 500000,
+						"max_output_tokens": 65536,
+						"max_completion_tokens": 500000,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": true,
+						},
+					},
+					{
+						"name": "grok-4.6",
+						"display_name": "Grok 4.6",
+						"max_tokens": 500000,
+						"max_output_tokens": 65536,
+						"max_completion_tokens": 65536,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": true,
+						},
+					},
+					{
+						"name": "grok-build-0.1",
+						"display_name": "Grok Build 0.1",
+						"max_tokens": 256000,
+						"max_output_tokens": 65536,
+						"max_completion_tokens": 256000,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": true,
+						},
+					},
+					{
+						"name": "grok-4.5",
+						"display_name": "Grok 4.5",
+						"max_tokens": 500000,
+						"max_output_tokens": 65536,
+						"max_completion_tokens": 65536,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": true,
+						},
+					},
+					{
+						"name": "gpt-6-luna",
+						"display_name": "GPT-6 Luna",
+						"max_tokens": 272000,
+						"max_output_tokens": 128000,
+						"max_completion_tokens": 128000,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": true,
+						},
+					},
+					{
+						"name": "gpt-5.6-terra",
+						"display_name": "GPT-5.6 Terra",
+						"max_tokens": 921000,
+						"max_output_tokens": 128000,
+						"max_completion_tokens": 128000,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": true,
+						},
+					},
+					{
+						"name": "gpt-5.6-luna",
+						"display_name": "GPT-5.6 Luna",
+						"max_tokens": 921000,
+						"max_output_tokens": 128000,
+						"max_completion_tokens": 128000,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": true,
+						},
+					},
+					{
+						"name": "gpt-5.5",
+						"display_name": "GPT-5.5",
+						"max_tokens": 272000,
+						"max_output_tokens": 128000,
+						"max_completion_tokens": 128000,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": true,
+						},
+					},
 				],
 			},
 		},
@@ -324,24 +494,29 @@
 	"buffer_font_family": "SFMono Nerd Font",
 	"linked_edits": true,
 	"agent_servers": {
-		"antigravity-acp": {
+		"opencode": {
+   "type": "registry"
+  },
+  "github-copilot-cli": {
+   "type": "registry"
+  },
+  "pi-acp": {
+   "type": "registry"
+  },
+  "grok-build": {
+   "type": "registry"
+  },
+  "antigravity-acp": {
+   "default_config_options": {
+    "mode": "yolo",
+    "model": "gemini-4-argon-medium"
+   },
    "type": "registry"
   },
   "traecli": {
 			"type": "custom",
 			"command": "traecli",
 			"args": ["acp", "serve"]
-		},
-
-		"opencode": {
-			"type": "custom",
-			"command": "opencode",
-			"args": ["acp"],
-		},
-		"github-copilot-cli": {
-			"type": "custom",
-			"command": "copilot",
-			"args": ["--acp"],
 		},
 		"codex-acp": {
 			"type": "registry",
