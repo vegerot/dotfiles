@@ -16,11 +16,28 @@ fi
 #alias vim=nvim
 #alias vimdiff='nvim -d'
 
+# Detect common AI coding harnesses:
+set_agent_env_variable() {
+  [ -n "${ANTIGRAVITY_AGENT:-}" ] && export AGENT="antigravity"
+  [ -n "${CODEX_THREAD_ID:-}" ] && export AGENT="codex"
+  [ -n "${CLAUDECODE:-}" ] && export AGENT="claude"
+  [ -n "${OPENCODE:-}" ] && export AGENT="opencode"
+  [ -n "${GROK_AGENT:-}" ] && export AGENT="grok"
+  [ -n "${CURSOR_AGENT:-}" ] && export AGENT="cursor"
+  [ -n "${DSH_SHELL:-}" ] && export AGENT="deepseek"
+}
+set_agent_env_variable
+
+is_agent_harness() {
+  [ -n "${AGENT:-}" ]
+}
+
 # Grok sets GROK_AGENT=1 before zsh reads startup files, then parses
 # `grep() { ... }` in that same `zsh -c` script. zsh expands this alias
 # at parse time, before `unalias` can run, and every command dies with
 # "defining function based on alias `grep'".
-if [ -z "${GROK_AGENT:-}" ]; then
+# Also skip `--color=always` in other agent harnesses so piped/captured output stays clean.
+if ! is_agent_harness; then
   alias grep="egrep --color=always"
 fi
 alias rgv="rg --vimgrep --color=auto"
@@ -31,8 +48,8 @@ alias ln="ln -v"
 alias mkdir="mkdir -pv"
 
 # careful
-# Claude Code sets CLAUDECODE=1. Its Bash tool has no TTY, so a -i prompt hangs it.
-if [ -z "${CLAUDECODE:-}" ]; then
+# Agent harnesses often run without an interactive TTY or human at the prompt, so -i hangs them.
+if ! is_agent_harness; then
 	alias rm="rm -i"
 	alias mv="mv -i"
 	alias cp="cp -i"
