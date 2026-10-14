@@ -21,6 +21,9 @@ Thumbs.db
 .secrets.env
 .secrets.env.ps1
 
+# machine X display cookies
+.Xauthority
+
 # Claude Code bridge worktrees
 .claude/worktrees/
 

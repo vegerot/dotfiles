@@ -115,3 +115,7 @@ mnemonicPrefix = true
 	directory = *
 [submodule]
 	shallow = true
+
+# Cloud Agent identity, signing, and GitHub auth. Missing on other machines.
+[include]
+	path = ~/.gitconfig.cursor
