@@ -30,6 +30,7 @@ export PATH="$HOME/.local/bin:$HOME/dotfiles/bin:/sbin:$PATH"
 ## Unimportant stuff goes at the end
 [ -d /usr/games ] && export PATH="$PATH:/usr/games"
 [ -d "$HOME/.cargo/bin" ] && export PATH="$PATH:$HOME/.cargo/bin"
+[ -d /usr/local/cargo/bin ] && export PATH="$PATH:/usr/local/cargo/bin"
 [ -d /opt/homebrew/opt/rustup ] && export PATH="$PATH:/opt/homebrew/opt/rustup"
 
 export DENO_INSTALL="$HOME/.deno"
