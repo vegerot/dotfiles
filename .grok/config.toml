@@ -1,5 +1,6 @@
 [cli]
 installer = "internal"
+auto_update = true
 
 [marketplace]
 default_skills_installs_purged = true

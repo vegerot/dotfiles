@@ -32,6 +32,23 @@ is_agent_harness() {
   [ -n "${AGENT:-}" ]
 }
 
+if is_agent_harness; then
+  grep() {
+    echo 'user note: grep is okay if necessary, but prefer `rg` or `fff` by default'
+    command grep "$@"
+  }
+
+  find() {
+    echo 'user note: find is okay if necessary, but prefer `fd` or `fff` by default'
+    command find "$@"
+  }
+
+  chrome-devtools-mcp() {
+    echo 'user note: see `findrepo chrome-devtools-mcp` for help'
+    command chrome-devtools-mcp "$@"
+  }
+fi
+
 # Grok sets GROK_AGENT=1 before zsh reads startup files, then parses
 # `grep() { ... }` in that same `zsh -c` script. zsh expands this alias
 # at parse time, before `unalias` can run, and every command dies with
@@ -90,6 +107,9 @@ fi
 
 if type sl >/dev/null 2>&1; then
   function sl() {
+    if is_agent_harness; then
+      echo 'user note: if you need extra help, run the sapling skill and see `findrepo sapling`'
+    fi
     if [[ "$PWD" =~ "code.byted.or" ]]; then
       command sl --config 'ui.username=Max 🕺 Coplan <max.coplan@bytedance.com>' $@
     else
