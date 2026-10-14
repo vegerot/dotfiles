@@ -19,7 +19,9 @@
   "exploreSubagentModel": "default",
   "permissions": {
     "allow": [
-      "Shell(ls)"
+      "Shell(ls)",
+      "Shell(git log)",
+      "Shell(git status)"
     ],
     "deny": []
   },
