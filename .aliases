@@ -32,20 +32,33 @@ is_agent_harness() {
   [ -n "${AGENT:-}" ]
 }
 
-if is_agent_harness; then
+if is_agent_harness && [ -z "${AGENT_SILENCE_HINTS:-}" ]; then
   grep() {
-    echo 'user note: grep is okay if necessary, but prefer `rg` or `fff` by default'
+    if [[ -z "${AGENT_SILENCE_HINTS:-}" ]]; then
+      echo 'user note: `grep` is okay if necessary, but prefer `rg` or `fff` by default. Silence by setting `AGENT_SILENCE_HINTS=1`' 1>&2
+    fi
     command grep "$@"
   }
 
   find() {
-    echo 'user note: find is okay if necessary, but prefer `fd` or `fff` by default'
+    if [[ -z "${AGENT_SILENCE_HINTS:-}" ]]; then
+      echo 'user note: `find` is okay if necessary, but prefer `fd` or `fff` by default. Silence by setting `AGENT_SILENCE_HINTS=1`' 1>&2
+    fi
     command find "$@"
   }
 
   chrome-devtools-mcp() {
-    echo 'user note: see `findrepo chrome-devtools-mcp` for help'
+    if [[ -z "${AGENT_SILENCE_HINTS:-}" ]]; then
+      echo 'user note: see `findrepo chrome-devtools-mcp` for help. Silence by setting `AGENT_SILENCE_HINTS=1`' 1>&2
+    fi
     command chrome-devtools-mcp "$@"
+  }
+
+  nvim() {
+    if [[ -z "${AGENT_SILENCE_HINTS:-}" ]]; then
+      echo 'user note: the nvim source code is available at `findrepo neovim`. Silence by setting `AGENT_SILENCE_HINTS=1`' 1>&2
+    fi
+    command nvim "$@"
   }
 fi
 
@@ -75,6 +88,9 @@ fi
 #git
 if type git > /dev/null; then
   function git() {
+    if is_agent_harness && [[ -z "${AGENT_SILENCE_HINTS:-}" ]]; then
+      echo 'user note: The git source is available for reference at `findrepo git/git`. Prefer sapling (`sl`) over git by default. Silence this message by setting `AGENT_SILENCE_HINTS=1`' 1>&2
+    fi
     if [[ "$PWD" =~ "code.byted.or" ]]; then
       command git -c 'user.name=Max 🕺 Coplan' -c 'user.email=max.coplan@bytedance.com' "$@"
     else
@@ -103,12 +119,19 @@ if type git > /dev/null; then
   }
 fi
 
+if type gh >/dev/null 2>&1 && is_agent_harness && [[ -z "${AGENT_SILENCE_HINTS:-}" ]]; then
+  function gh() {
+    echo 'user note: The GitHub CLI source is available for reference at `findrepo github/cli`. Silence this message by setting `AGENT_SILENCE_HINTS=1`' 1>&2
+    command gh "$@"
+  }
+fi
+
 #sapling
 
 if type sl >/dev/null 2>&1; then
   function sl() {
-    if is_agent_harness; then
-      echo 'user note: if you need extra help, run the sapling skill and see `findrepo sapling`'
+    if is_agent_harness && [[ -z "${AGENT_SILENCE_HINTS:-}" ]]; then
+      echo 'user note: if you need extra help, run the sapling skill and see `findrepo sapling`' 1>&2
     fi
     if [[ "$PWD" =~ "code.byted.or" ]]; then
       command sl --config 'ui.username=Max 🕺 Coplan <max.coplan@bytedance.com>' $@
