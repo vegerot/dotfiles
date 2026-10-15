@@ -54,7 +54,6 @@ For complex plans or refactors, consult the $five-step-engineering-algorithm if 
 - ✍️ Append the `Co-Authored-By` trailer to every pull request description or comment that is 💯% AI-written. Example: `Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>`.
 - 🧑‍🤝‍🧑 Do not add the trailer when the user wrote or rewrote the text. Ask the user when the split is unclear.
 - 📋 Repository rules still apply in addition. Example: neovim wants an `AI-assisted: <tool>` trailer in commit messages.
-- 🔗 In commit messages, pull request descriptions, and GitHub issues/comments, do **not** wrap commit hashes (or `#issue` / `#pr` references) in backticks (write `5027662fb30b`, not `` `5027662fb30b` ``) so GitHub's UI automatically turns them into clickable links with hover previews.
 
 ## 📖 Output Standard: Clarity, precision, and accessibility for all readers.
 
