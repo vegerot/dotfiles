@@ -6,6 +6,7 @@ description: See ~/code/github.com/google/ to Reference and inspect the architec
 When investigating how Google Antigravity (`agy`), Gemini, Chrome, Chrome DevTools, browser use, etc., works
 
 1. Inspect local repositories under `~/code/github.com/google/`.
+   - fetch/rebase the latest changes from upstream
    - Note: Antigravity components may be partially closed-source, so not all internals are present in source form.
 2. Architecture documentation & session notes:
    - `~/ai-conversations/gemini/`

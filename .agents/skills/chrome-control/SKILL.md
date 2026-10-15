@@ -16,7 +16,7 @@ Antigravity provides two distinct paths for browser automation. Choose intention
 ```mermaid
 flowchart TD
     User["👨‍💻 Browser Automation Task"] --> Decision{"Is this an open-ended visual exploration<br>or a precision engineering task?"}
-    
+
     Decision -- "Exploratory / High Token Risk" --> Subagent["🌐 Built-in /browser Subagent<br>(Isolated Context Thread)"]
     Decision -- "Data Extraction / Precision / Forms / Canvas" --> Direct["⚡ Direct In-Session CDP<br>(chrome-devtools MCP / CLI)"]
 
@@ -104,14 +104,14 @@ async () => {
   const container = document.querySelector('infinite-scroller, .chat-history');
   container.scrollTop = 0; // Load earliest messages
   await new Promise(r => setTimeout(r, 1000));
-  
+
   const items = Array.from(document.querySelectorAll('user-query, model-response'));
   const extracted = [];
-  
+
   for (const item of items) {
     item.scrollIntoView({ block: 'center' }); // Force virtual DOM hydration
     await new Promise(r => setTimeout(r, 150));
-    
+
     // Clean preview headers/aria noise
     const clone = item.cloneNode(true);
     clone.querySelectorAll('.cdk-visually-hidden, h5, .screen-reader-user-query-label').forEach(el => el.remove());
@@ -188,3 +188,7 @@ When authenticating local CLI tools (`gws`, local relays):
 - Google Docs renders document text on an HTML5 canvas. Standard `fill` commands on canvas elements will fail.
 - **Best Practice**: Use Google Workspace APIs (`gws docs`) for reading and writing document bodies.
 - **Browser-Only Actions**: Use browser automation strictly for UI actions that lack API support (e.g. embedding live Sheets charts: Insert → Chart → From Sheets). Focus the element and use `press_key` or `type_text` instead of `fill`.
+
+### Extra references
+
+Please see `findrepo google` to learn more about how to use chrome-devtools-mcp.  You MUST consult this when running into issues.
