@@ -18,7 +18,9 @@ Durable context consolidated from `memories.md`. Repository-local `AGENTS.md` / 
 
 ## 💼 Profession & Career History
 - **Core Expertise**: Senior/Lead Software Engineer specializing in performance engineering, developer tooling, full-stack web infrastructure, and AI coding agents.
-- **TikTok / ByteDance** (Nov 2024–present, `i18n_ecom_fe` group, GEC business line, San Jose/Sunnyvale):
+- **Google** (Senior Software Engineer):
+  - Works on developer tools, mostly **Antigravity**.
+- **TikTok / ByteDance** (Nov 2024–present, part-time, `i18n_ecom_fe` group, GEC business line, San Jose/Sunnyvale):
   - **Project Phoenix**: Championed and led from-scratch Seller Center homepage rewrite, cutting LCP from 13s to 1.5s (9x).
   - **ELMO (Seller Academy)**: Led SSR rewrite unifying three codebases into one (0% → 95% shared code, +80% search impressions) across US/ID/VN/TH/MY and launches in Japan and Brazil (~$100K GMV Japan Day 1). Essays come from the Pearl CMS in the `phoenix` monorepo.
   - **US Portal (`seller.tiktok.com`)**: Tech lead for CSR → SSG migration (Rspress then Rsbuild), bringing all Core Web Vitals to "Good" and lifting account-creation conversion by 14.24%; ran a "phantom traffic" forensics investigation that flipped the launch decision.

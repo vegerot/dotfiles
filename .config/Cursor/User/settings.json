@@ -8,5 +8,6 @@
     "cursor.composer.queueMessageDefaultBehavior": "steer",
     "cursor.cpp.enablePartialAccepts": true,
     "update.releaseTrack": "dev",
-    "cursor.composer.shouldChimeAfterChatFinishes": true
+    "cursor.composer.shouldChimeAfterChatFinishes": true,
+    "cursor.chatMaxWidth": 880
 }
