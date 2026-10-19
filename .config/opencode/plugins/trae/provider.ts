@@ -12,6 +12,7 @@ type CachedModel = Readonly<{
   visibility?: string
   supported_in_api?: boolean
   input_modalities?: ReadonlyArray<string>
+  default_reasoning_level?: string | null
   supported_reasoning_levels?: ReadonlyArray<Readonly<{ effort: string }>>
   business_metadata?: Readonly<{
     variants?: Readonly<{
@@ -74,14 +75,14 @@ type CachedCatalog = Readonly<{
   models?: ReadonlyArray<CachedModel>
 }>
 
-const catalog = {
+export const catalog = {
   models: {} as Readonly<Record<string, ModelRoute>>,
   initialization: undefined as Promise<{ refreshed: boolean }> | undefined,
   refresh: undefined as Promise<void> | undefined,
   reloads: new Set<() => Promise<void>>(),
 }
 
-function cachePath() {
+export function cachePath() {
   return `${traeHome()}/models_cache.json`
 }
 
@@ -102,7 +103,13 @@ export function translateCatalog(catalog: CachedCatalog, path: string) {
     const backend = variants.standard_key
     const context = variants.standard_context_window
     const output = variants.backend_token_limits?.[backend]?.output_tokens ?? model.output_tokens_hard_limit ?? 32_768
-    const reasoning = model.supported_reasoning_levels?.map((level) => level.effort) ?? []
+    const explicitReasoning = model.supported_reasoning_levels?.map((level) => level.effort) ?? []
+    const reasoning =
+      explicitReasoning.length > 0
+        ? explicitReasoning
+        : model.default_reasoning_level
+          ? [model.default_reasoning_level]
+          : []
     const input = model.input_modalities?.includes("image") ? (["text", "image"] as const) : (["text"] as const)
     loaded[model.slug] = {
       name: model.slug,
@@ -133,7 +140,7 @@ export function translateCatalog(catalog: CachedCatalog, path: string) {
   return { models: loaded }
 }
 
-async function readCatalog() {
+export async function readCatalog() {
   const path = cachePath()
   return translateCatalog(await Bun.file(path).json(), path)
 }
@@ -163,7 +170,7 @@ async function refreshCache() {
   await runTraex(["debug", "models", "--remote"], "model refresh")
 }
 
-async function initializeCatalog() {
+export async function initializeCatalog() {
   catalog.initialization ??= (async () => {
     let refreshed = false
     const snapshot = await readCatalog().catch(async () => {
@@ -186,7 +193,7 @@ async function refreshCatalog() {
   if (changed) await Promise.all([...catalog.reloads].map((reload) => reload()))
 }
 
-function startCatalogRefresh() {
+export function startCatalogRefresh() {
   catalog.refresh ??= refreshCatalog().catch((error) =>
     console.error("Trae model refresh failed; using cached catalog", error),
   )
@@ -253,7 +260,7 @@ export function translateTools(input: ReadonlyArray<Readonly<Record<string, unkn
   })
 }
 
-async function refreshAuth() {
+export async function refreshAuth() {
   await runTraex(["models"], "authentication refresh")
 }
 
@@ -279,11 +286,11 @@ export function buildTraePayload(body: ChatRequest, model: ModelRoute, id: strin
   }
 }
 
-export async function translateRequest(request: Request) {
+export async function translateRequest(request: Request, url = TRAE_URL) {
   const body = (await request.json()) as ChatRequest
   const model = catalog.models[body.model]
   if (!model) throw new Error(`Unknown Trae model: ${body.model}`)
-  return new Request(TRAE_URL, {
+  return new Request(url, {
     method: "POST",
     signal: request.signal,
     headers: {

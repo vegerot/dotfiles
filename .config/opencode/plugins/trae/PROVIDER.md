@@ -1,6 +1,6 @@
 # Trae provider
 
-`provider.ts` adapts OpenCode's OpenAI Chat requests to Trae's raw-chat API and translates Trae's named server-sent events back to OpenAI Chat events. It uses OpenCode V2's provider-scoped request, response, and retry hooks; there is no loopback server.
+`provider.ts` adapts OpenCode's OpenAI Chat requests to Trae's raw-chat API and translates Trae's named server-sent events back to OpenAI Chat events. In OpenCode V2 it runs in-process via provider-scoped request, response, and retry hooks; `server.ts` reuses the exact same functions from `provider.ts` to expose a lightweight loopback OpenAI-compatible HTTP server (`127.0.0.1:43821/v1`) and syncs the 31-model catalog into `/opt/homebrew/etc/cliproxyapi.conf` (`api-keys.openai-compatibility`) for `cliproxyapi`.
 
 ## Ownership
 

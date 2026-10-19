@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>com.vegerot.trae-openai-proxy</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/Users/bytedance/.bun/bin/bun</string>
+		<string>/Users/bytedance/.config/opencode/plugins/trae/server.ts</string>
+	</array>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>HOME</key>
+		<string>/Users/bytedance</string>
+		<key>PATH</key>
+		<string>/Users/bytedance/.bun/bin:/Users/bytedance/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+	</dict>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>KeepAlive</key>
+	<true/>
+	<key>StandardOutPath</key>
+	<string>/Users/bytedance/.cli-proxy-api/logs/trae-openai-proxy.log</string>
+	<key>StandardErrorPath</key>
+	<string>/Users/bytedance/.cli-proxy-api/logs/trae-openai-proxy.log</string>
+</dict>
+</plist>
