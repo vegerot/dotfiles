@@ -504,12 +504,16 @@
    "type": "registry"
   },
   "grok-build": {
+   "default_config_options": {
+    "model": "grok-4.7-build-fast"
+   },
    "type": "registry"
   },
   "antigravity-acp": {
    "default_config_options": {
+    "thinking_level": "medium",
     "mode": "yolo",
-    "model": "gemini-4-argon-medium"
+    "model": "gemini-4-argon"
    },
    "type": "registry"
   },
