@@ -262,6 +262,36 @@ function RequireChecked(name)
 	return mod
 end
 
+-- Plugins that are not needed to draw the first screen. `vim.pack.add` during
+-- init.lua packadds them before the window exists. This list is added on the
+-- first turn after VimEnter, which is after that first screen.
+local deferred_specs = {}
+local after_screen = {}
+
+local function PackAfterScreen(specs)
+	vim.list_extend(deferred_specs, specs)
+end
+
+local function AfterScreen(fn)
+	after_screen[#after_screen + 1] = fn
+end
+
+vim.api.nvim_create_autocmd("VimEnter", {
+	once = true,
+	callback = function()
+		vim.schedule(function()
+			if vim.o.loadplugins and not vim.g.vscode and #deferred_specs > 0 then
+				vim.pack.add(deferred_specs)
+			end
+			local pending = after_screen
+			after_screen = {}
+			for _, fn in ipairs(pending) do
+				fn()
+			end
+		end)
+	end,
+})
+
 local function PLUGINS()
 	local function GitHub(repo)
 		return "https://github.com/" .. repo .. ".git"
@@ -289,7 +319,21 @@ local function PLUGINS()
 	})
 
 	if vim.o.loadplugins and not vim.g.vscode then
+		-- These two have to be on the runtimepath before the file's FileType
+		-- event, which is what draws the first highlighted screen.
 		vim.pack.add({
+			GitHub("nvim-treesitter/nvim-treesitter"),
+			GitHub("neovim/nvim-lspconfig"),
+			GitHub("folke/snacks.nvim"),
+		})
+		local snacks = RequireChecked("snacks")
+		if snacks ~= nil then
+			snacks.setup({
+				picker = { enabled = true },
+				debug = { enabled = true }
+			})
+		end
+		PackAfterScreen({
 			-- simple plugins
 			GitHub("vegerot/open-remote"),
 			GitHub("bkad/CamelCaseMotion"),
@@ -312,11 +356,9 @@ local function PLUGINS()
 			GitHub("tpope/vim-obsession"),
 
 			-- folke's plugins
-			GitHub("folke/snacks.nvim"),
 			GitHub("folke/sidekick.nvim"),
 
-			-- treesitter
-			GitHub("nvim-treesitter/nvim-treesitter"),
+			-- treesitter extras. The highlighter itself is loaded above.
 			GitHub("nvim-treesitter/nvim-treesitter-context"),
 			GitHub("nvim-treesitter/nvim-treesitter-textobjects"),
 			GitHub("davidmh/mdx.nvim"),
@@ -327,7 +369,6 @@ local function PLUGINS()
 
 			-- LSP+autocomplete
 			GitHub("zbirenbaum/copilot.lua"),
-			GitHub("neovim/nvim-lspconfig"),
 			GitHub("ray-x/go.nvim"),
 			GitHub("ray-x/guihua.lua"),
 			{ src = "https://codeberg.org/ziglang/zig.vim.git" },
@@ -384,9 +425,11 @@ local function PLUGINS()
 		return "FINISH_EARLY"
 	end
 
-	if vim.o.loadplugins then
-		vim.cmd.packadd("nvim.undotree")
-	end
+	AfterScreen(function()
+		if vim.o.loadplugins then
+			vim.cmd.packadd("nvim.undotree")
+		end
+	end)
 
 	local function gitsigns_plugin()
 		local gitsigns = RequireChecked("gitsigns");
@@ -407,31 +450,36 @@ local function PLUGINS()
 		vim.keymap.set({ "o", "x" }, "ih", gitsigns.select_hunk)
 	end
 
-	gitsigns_plugin()
+	AfterScreen(gitsigns_plugin)
 
-	local oil = RequireChecked("oil"); if oil ~= nil then
-		oil.setup({ columns = { "icon", "size", "mtime" } }); vim.keymap.set("n", "-", "<CMD>Oil<CR>",
-			{ desc = "Open parent directory" })
-	end
-	local colorizer = RequireChecked("colorizer"); if colorizer ~= nil then
-		vim.o.termguicolors = true; colorizer.setup({ options = { parsers = { css = true }, display = { mode = { "virtualtext", "foreground" } } } })
-	end
+	AfterScreen(function()
+		local oil = RequireChecked("oil"); if oil ~= nil then
+			oil.setup({ columns = { "icon", "size", "mtime" } }); vim.keymap.set("n", "-", "<CMD>Oil<CR>",
+				{ desc = "Open parent directory" })
+		end
+		local colorizer = RequireChecked("colorizer"); if colorizer ~= nil then
+			vim.o.termguicolors = true; colorizer.setup({ options = { parsers = { css = true }, display = { mode = { "virtualtext", "foreground" } } } })
+		end
 
-	local quicker = RequireChecked("quicker"); if quicker ~= nil then
-		quicker.setup({
-			keys = {
-				{ ">", function() quicker.expand({ before = 2, after = 2, add_to_existing = true }) end, desc = "Expand quickfix content" },
-				{ "<", function() quicker.collapse() end,                                                desc = "Collapse quickfix content" }
-			}
-		})
-	end
+		local quicker = RequireChecked("quicker"); if quicker ~= nil then
+			quicker.setup({
+				keys = {
+					{ ">", function() quicker.expand({ before = 2, after = 2, add_to_existing = true }) end, desc = "Expand quickfix content" },
+					{ "<", function() quicker.collapse() end,                                                desc = "Collapse quickfix content" }
+				}
+			})
+		end
 
-	local render_markdown = RequireChecked("render-markdown"); if render_markdown ~= nil then
-		render_markdown.setup({
-			html = { comment = { conceal = false } }
-		})
-	end
-	RequireChecked("mini.align").setup()
+		local render_markdown = RequireChecked("render-markdown"); if render_markdown ~= nil then
+			render_markdown.setup({
+				html = { comment = { conceal = false } }
+			})
+		end
+		local align = RequireChecked("mini.align")
+		if align ~= nil then
+			align.setup()
+		end
+	end)
 end
 
 if PLUGINS() == "FINISH_EARLY" then
@@ -1069,7 +1117,12 @@ local function AUTOCOMPLETE()
 					"typescript",
 					"typescriptreact",
 				},
-				cmd = { "quick-lint-js", "--lsp-server" },
+				-- WindowsApps app-execution aliases are reparse points.
+				-- vim.fn.executable() returns 0 for them, so a command table
+				-- never auto-starts. CreateProcess still launches the real binary.
+				cmd = function(dispatchers)
+					return vim.lsp.rpc.start({ "quick-lint-js", "--lsp-server" }, dispatchers)
+				end,
 				flags = { debounce_text_changes = 9 },
 				-- settings= {
 				--   ["quick-lint-js"] = {
@@ -1080,7 +1133,7 @@ local function AUTOCOMPLETE()
 		}
 
 		local tsserver_config = {
-			"tsgo",
+			"tsc",
 			{
 				on_attach = on_attach,
 				flags = {
@@ -1263,8 +1316,14 @@ local function AUTOCOMPLETE()
 				settings = defaultConfig
 			end
 			vim.lsp.config(name, settings)
-			vim.lsp.enable(name)
 		end
+		-- FileType already ran for the file on the command line. enable()
+		-- attaches those buffers itself once the window exists.
+		AfterScreen(function()
+			for _, lsp in ipairs(servers) do
+				vim.lsp.enable(lsp[1])
+			end
+		end)
 	end
 end
 
@@ -1285,23 +1344,17 @@ end
 
 --marscode()
 
-local copilot = RequireChecked("copilot")
-if copilot == nil then
-	--print("copilot not installed")
-else
-	-- TODO: because startup is slow I need to lazy load this
-	--copilot.setup({
+AfterScreen(function()
+	local copilot = RequireChecked("copilot")
+	if copilot == nil then
+		--print("copilot not installed")
+	else
+		-- TODO: because startup is slow I need to lazy load this
+		--copilot.setup({
 
-	--})
-end
-
-local snacks = RequireChecked("snacks")
-if snacks ~= nil then
-	snacks.setup({
-		picker = { enabled = true },
-		debug = { enabled = true }
-	})
-end
+		--})
+	end
+end)
 
 vim.api.nvim_create_user_command("FindFile",
 	'tabnew | execute "0read !fd --follow <args> | sort" | set nomodified | 0',
@@ -1335,21 +1388,23 @@ local function FZF()
 	end, { bang = true, nargs = "*" })
 end
 
-FZF()
+AfterScreen(FZF)
 
 -- FFF
-if vim.o.loadplugins then
-	vim.cmd.packadd("fff.nvim")
-	if vim.fn.exists(":FFFFind") == 2 then
-		vim.g.fff = { debug = { show_scores = true } }
-		vim.keymap.set("n", "<C-p>", ":FFFFind<CR>", { remap = true })
-		vim.keymap.set("n", "<C-f>",
-			function() require("fff").live_grep({ grep = { modes = { "fuzzy", "plain", "regex" } } }) end)
-		vim.keymap.set("n", "<C-S-F>", function() require("fff").live_grep_under_cursor() end)
-	else
-		print("fff.nvim not installed.  Not loading fff.nvim")
+AfterScreen(function()
+	if vim.o.loadplugins then
+		vim.cmd.packadd("fff.nvim")
+		if vim.fn.exists(":FFFFind") == 2 then
+			vim.g.fff = { debug = { show_scores = true } }
+			vim.keymap.set("n", "<C-p>", ":FFFFind<CR>", { remap = true })
+			vim.keymap.set("n", "<C-f>",
+				function() require("fff").live_grep({ grep = { modes = { "fuzzy", "plain", "regex" } } }) end)
+			vim.keymap.set("n", "<C-S-F>", function() require("fff").live_grep_under_cursor() end)
+		else
+			print("fff.nvim not installed.  Not loading fff.nvim")
+		end
 	end
-end
+end)
 
 -- TREESITTER start
 local function TREESITTER()
@@ -1398,15 +1453,17 @@ local function TREESITTER()
 		end,
 	})
 
+end
+
+AfterScreen(function()
 	local install_plugin_name = "treesitter-context"
 	local treesitterContext = RequireChecked(install_plugin_name)
 	if treesitterContext == nil then
-		print(install_plugin_name .. " plugin not loaded.  Not loading treesitter-context")
-		return false
+		return
 	end
 	treesitterContext.setup {}
 	vim.keymap.set("n", "[c", function() treesitterContext.go_to_context(vim.v.count1) end)
-end
+end)
 
 TREESITTER()
 
@@ -1414,9 +1471,11 @@ local ok, ui2 = pcall(require, "vim._core.ui2")
 if ok then
 	ui2.enable({})
 end
-local devicons_plugin = RequireChecked("nvim-web-devicons")
-if devicons_plugin ~= nil then
-	devicons_plugin.setup({
-		default = true,
-	})
-end
+AfterScreen(function()
+	local devicons_plugin = RequireChecked("nvim-web-devicons")
+	if devicons_plugin ~= nil then
+		devicons_plugin.setup({
+			default = true,
+		})
+	end
+end)
