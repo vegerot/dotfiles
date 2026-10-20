@@ -1,14 +1,19 @@
-# Trae provider
+# Trae and CLIProxyAPI providers
 
-`provider.ts` adapts OpenCode's OpenAI Chat requests to Trae's raw-chat API and translates Trae's named server-sent events back to OpenAI Chat events. In OpenCode V2 it runs in-process via provider-scoped request, response, and retry hooks; `server.ts` reuses the exact same functions from `provider.ts` to expose a lightweight loopback OpenAI-compatible HTTP server (`127.0.0.1:43821/v1`) and syncs the 31-model catalog into `/opt/homebrew/etc/cliproxyapi.conf` (`api-keys.openai-compatibility`) for `cliproxyapi`.
+OpenCode and Pi share discovery in `.config/cliproxy/catalog.ts`. Each has a small adapter for its host API. OpenCode keeps Trae-owned models under `trae/` so the quota/load footer and `/trae-status` continue to work; other chat models appear under `cliproxy/`. Pi exposes the full catalog under `cliproxy`.
 
-## Ownership
+Both clients send ordinary OpenAI Chat requests to CLIProxyAPI at `127.0.0.1:8317/v1`. For Trae routes, CLIProxyAPI forwards to the Bun loopback server at `127.0.0.1:43821/v1`. `protocol.ts` owns Trae authentication and request/stream translation; `server.ts` owns HTTP serving, 401 refresh/retry, and syncing the Trae routes into CLIProxyAPI. OpenCode's adapter has no request, response, or retry hooks.
 
-- Trae owns authentication in `$TRAECLI_HOME/auth.json` and refreshes it through `traex models`.
-- Trae owns model discovery in `$TRAECLI_HOME/models_cache.json` and refreshes it through `traex debug models --remote`.
-- The plugin owns only protocol translation and OpenCode model registration.
+## Discovery and ownership
 
-The catalog is loaded from cache before one process-wide background refresh. This is intentional: local parsing was measured in milliseconds, while a remote refresh took about four seconds. An isolated stale-cache test proved that the refresh can restore a missing model without restarting OpenCode. A later three-run probe took 4.78, 3.78, and 3.94 seconds and changed only `fetched_at`, not the normalized routes. That short same-minute sample is not enough to discard live refresh; revisit it only after observing normal launches over a longer period. Standard and Max routes are separate OpenCode models because their backend keys and context limits differ. Trae's model-level `supported_reasoning_levels` become OpenCode variants on both routes. Selecting a variant such as `trae/GPT-5.6-Terra#high` sends that effort to Trae as `reasoning_effort`.
+- Trae owns authentication in `$TRAECLI_HOME/auth.json` and its model cache in `$TRAECLI_HOME/models_cache.json`. The daemon refreshes the cache and watches for changes.
+- Shared discovery combines CLIProxyAPI's rich Codex catalog (`/models?client_version=…`) with the ordinary `/models` ownership list. The optional Trae loopback catalog supplies missing output caps.
+- Media and hidden/disabled routes are excluded. Standard and Max routes remain distinct. Supported reasoning efforts become OpenCode variants and Pi thinking levels.
+- OpenCode discovers on startup, refreshes every 30 seconds, replaces removed routes, and persists the last successful catalog in plugin storage. Failed discovery retains that catalog.
+- Pi owns its `models-store.json` cache and native refresh hook, including offline startup. Fixed-effort models may reason without advertising selectable effort levels.
+- `CLIPROXY_URL`, `CLIPROXY_API_KEY`, and `TRAE_OPENAI_URL` override the local endpoints/key for both clients.
+
+Install `.config/cliproxy/` alongside the Pi extension and OpenCode plugin. The dotfiles bootstrap installs these files; on this machine `~/.config/cliproxy` links to the tracked directory. The shared module sits outside either host's plugin discovery directory.
 
 ## Verified protocol assumptions
 
@@ -32,7 +37,7 @@ A 2026-09-28 probe found no usable raw-chat semantics for `verbosity`, `temperat
 Run deterministic translation tests:
 
 ```sh
-bun test './.config/opencode/plugins/trae/provider.test.ts'
+bun test './.config/opencode/plugins/trae' './.config/cliproxy'
 ```
 
 Run live text, tool, and long-context checks:
@@ -54,9 +59,9 @@ opencode run --standalone \
   'Describe the attached image.'
 ```
 
-Protocol and refresh failures flow through OpenCode's service log. The provider intentionally does not maintain a second append-only log.
+Discovery failures flow through OpenCode's service log. Trae protocol failures are returned by the loopback server; its process output belongs to the LaunchAgent. Neither adapter maintains a private append-only log.
 
-## Final verification
+## Historical direct-provider verification
 
 After removing private logging and request-correlation state:
 
@@ -67,3 +72,13 @@ After removing private logging and request-correlation state:
 - the former private log does not grow after the restarted service handles those requests.
 
 Capture `opencode models` before filtering it when checking model counts. A direct pipeline intermittently reported zero even though the command emitted all 25 Trae routes; redirecting stdout and then searching the file produced the correct result.
+
+## Shared-catalog verification (2026-10-20)
+
+- 24 deterministic tests pass, covering protocol translation, 401 retry, quota/status, media filtering, output caps, provider ownership, and removal of stale routes.
+- Standalone OpenCode lists 12 `trae/` routes and 12 `cliproxy/` routes. Starting with CLIProxyAPI pointed at a closed port restores the same 24 routes from plugin storage.
+- Live OpenCode requests through `trae/GPT-6.1-Sol#low` and `cliproxy/grok-4.7#low` each returned `PONG`. Pi's Trae request and offline catalog restoration also returned `PONG`.
+- A local fake catalog changed a route from `Before` to `After`; the 30-second refresh persisted the new route and reloaded the provider once, then cleanup stopped the timer and aborted discovery.
+- Bun bundles both the daemon and Pi adapter successfully. Interactive footer rendering was not manually exercised during this refactor; its existing tests pass and its implementation is unchanged.
+
+An already-running OpenCode service needs its plugins reloaded or the service restarted to adopt source changes. Standalone verification uses a private server and does not interrupt existing sessions.

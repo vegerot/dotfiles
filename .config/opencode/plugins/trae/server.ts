@@ -12,7 +12,7 @@ import {
   startCatalogRefresh,
   translateRequest,
   translateResponse,
-} from "./provider"
+} from "./protocol"
 
 const BEGIN_MARKER = "# BEGIN TRAE OPENAI-COMPATIBILITY"
 const END_MARKER = "# END TRAE OPENAI-COMPATIBILITY"
@@ -29,7 +29,7 @@ export function renderCliProxyBlock(models: Readonly<Record<string, ModelRoute>>
     `      base-url: ${JSON.stringify(baseURL)}`,
     "      disable-cooling: true",
     "      # CLIProxyAPI forwards this value as `Bearer` to the loopback server, which ignores",
-    "      # it: per-request auth is the Cloud-CLI-JWT from provider.ts. Required structurally.",
+    "      # it: per-request auth is the Cloud-CLI-JWT from protocol.ts. Required structurally.",
     "      keys:",
     '        - api-key: "loopback-no-auth"',
     "      models:",

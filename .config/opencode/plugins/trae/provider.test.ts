@@ -1,11 +1,11 @@
 import { beforeAll, describe, expect, test } from "bun:test"
-import type { ModelRoute } from "./provider"
+import type { ModelRoute } from "./protocol"
 
-type Provider = typeof import("./provider")
+type Provider = typeof import("./protocol")
 let provider: Provider
 
 beforeAll(async () => {
-  provider = await import("./provider")
+  provider = await import("./protocol")
 })
 
 describe("Trae model catalog", () => {
