@@ -140,7 +140,7 @@
 		},
 		"default_model": {
 			"provider": "CLIProxy",
-			"model": "grok-4.7-build-fast",
+			"model": "gemini-4-argon-high",
 			"enable_thinking": false,
 		},
 		"favorite_models": [
@@ -261,14 +261,14 @@
 							"parallel_tool_calls": true,
 							"prompt_cache_key": true,
 							"chat_completions": true,
-							"interleaved_reasoning": true,
-						},
+							"interleaved_reasoning": true
+						}
 					},
 					{
 						"name": "gemini-3.8-flash-high",
 						"display_name": "Gemini 3.8 Flash (High)",
-						"max_tokens": 1000000,
-						"max_output_tokens": 20000,
+						"max_tokens": 1048576,
+						"max_output_tokens": 65536,
 						"max_completion_tokens": 200000,
 						"capabilities": {
 							"tools": true,
@@ -276,8 +276,23 @@
 							"parallel_tool_calls": true,
 							"prompt_cache_key": true,
 							"chat_completions": true,
-							"interleaved_reasoning": true,
-						},
+							"interleaved_reasoning": true
+						}
+					},
+					{
+						"name": "gemini-3.5-flash-lite",
+						"display_name": "Gemini 3.5 Flash Lite",
+						"max_tokens": 1048576,
+						"max_output_tokens": 65535,
+						"max_completion_tokens": 65535,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": true
+						}
 					},
 					{
 						"name": "claude-opus-5-5-high",
@@ -291,38 +306,23 @@
 							"parallel_tool_calls": true,
 							"prompt_cache_key": true,
 							"chat_completions": true,
-							"interleaved_reasoning": true,
-						},
+							"interleaved_reasoning": true
+						}
 					},
 					{
 						"name": "claude-sonnet-5-5-high",
 						"display_name": "Claude Sonnet 5.5 (High)",
-						"max_tokens": 200000,
+						"max_tokens": 1000000,
 						"max_output_tokens": 32000,
-						"max_completion_tokens": 64000,
+						"max_completion_tokens": 128000,
 						"capabilities": {
 							"tools": true,
 							"images": true,
 							"parallel_tool_calls": true,
 							"prompt_cache_key": true,
 							"chat_completions": true,
-							"interleaved_reasoning": true,
-						},
-					},
-					{
-						"name": "gpt-oss-120b-medium",
-						"display_name": "GPT-OSS 120B (Medium)",
-						"max_tokens": 100000,
-						"max_output_tokens": 20000,
-						"max_completion_tokens": 100000,
-						"capabilities": {
-							"tools": true,
-							"images": true,
-							"parallel_tool_calls": true,
-							"prompt_cache_key": true,
-							"chat_completions": true,
-							"interleaved_reasoning": true,
-						},
+							"interleaved_reasoning": true
+						}
 					},
 					{
 						"name": "grok-4.7",
@@ -336,8 +336,8 @@
 							"parallel_tool_calls": true,
 							"prompt_cache_key": true,
 							"chat_completions": true,
-							"interleaved_reasoning": true,
-						},
+							"interleaved_reasoning": true
+						}
 					},
 					{
 						"name": "grok-4.7-build-fast",
@@ -351,53 +351,23 @@
 							"parallel_tool_calls": true,
 							"prompt_cache_key": true,
 							"chat_completions": true,
-							"interleaved_reasoning": true,
-						},
+							"interleaved_reasoning": true
+						}
 					},
 					{
-						"name": "grok-4.6",
-						"display_name": "Grok 4.6",
-						"max_tokens": 500000,
-						"max_output_tokens": 65536,
-						"max_completion_tokens": 65536,
+						"name": "grok-composer-2.5-fast",
+						"display_name": "Grok Composer 2.5 Fast",
+						"max_tokens": 200000,
+						"max_output_tokens": 32768,
+						"max_completion_tokens": 32768,
 						"capabilities": {
 							"tools": true,
 							"images": true,
 							"parallel_tool_calls": true,
 							"prompt_cache_key": true,
 							"chat_completions": true,
-							"interleaved_reasoning": true,
-						},
-					},
-					{
-						"name": "grok-build-0.1",
-						"display_name": "Grok Build 0.1",
-						"max_tokens": 256000,
-						"max_output_tokens": 65536,
-						"max_completion_tokens": 256000,
-						"capabilities": {
-							"tools": true,
-							"images": true,
-							"parallel_tool_calls": true,
-							"prompt_cache_key": true,
-							"chat_completions": true,
-							"interleaved_reasoning": true,
-						},
-					},
-					{
-						"name": "grok-4.5",
-						"display_name": "Grok 4.5",
-						"max_tokens": 500000,
-						"max_output_tokens": 65536,
-						"max_completion_tokens": 65536,
-						"capabilities": {
-							"tools": true,
-							"images": true,
-							"parallel_tool_calls": true,
-							"prompt_cache_key": true,
-							"chat_completions": true,
-							"interleaved_reasoning": true,
-						},
+							"interleaved_reasoning": true
+						}
 					},
 					{
 						"name": "gpt-6-luna",
@@ -411,8 +381,8 @@
 							"parallel_tool_calls": true,
 							"prompt_cache_key": true,
 							"chat_completions": true,
-							"interleaved_reasoning": true,
-						},
+							"interleaved_reasoning": true
+						}
 					},
 					{
 						"name": "gpt-5.6-terra",
@@ -426,13 +396,28 @@
 							"parallel_tool_calls": true,
 							"prompt_cache_key": true,
 							"chat_completions": true,
-							"interleaved_reasoning": true,
-						},
+							"interleaved_reasoning": true
+						}
 					},
 					{
-						"name": "gpt-5.6-luna",
-						"display_name": "GPT-5.6 Luna",
-						"max_tokens": 921000,
+						"name": "muse-spark-1.3",
+						"display_name": "Muse Spark 1.3",
+						"max_tokens": 1048576,
+						"max_output_tokens": 65536,
+						"max_completion_tokens": 65536,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": true
+						}
+					},
+					{
+						"name": "muse-wonder-1.0",
+						"display_name": "Muse Wonder 1.0",
+						"max_tokens": 1007997,
 						"max_output_tokens": 128000,
 						"max_completion_tokens": 128000,
 						"capabilities": {
@@ -441,26 +426,221 @@
 							"parallel_tool_calls": true,
 							"prompt_cache_key": true,
 							"chat_completions": true,
-							"interleaved_reasoning": true,
-						},
+							"interleaved_reasoning": true
+						}
 					},
 					{
-						"name": "gpt-5.5",
-						"display_name": "GPT-5.5",
+						"name": "GPT-6.1-Sol",
+						"display_name": "Trae GPT-6.1-Sol",
+						"max_tokens": 475000,
+						"max_output_tokens": 32000,
+						"max_completion_tokens": 32000,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": true
+						}
+					},
+					{
+						"name": "GPT-6.1-Sol-Max",
+						"display_name": "Trae GPT-6.1-Sol / Max",
+						"max_tokens": 800000,
+						"max_output_tokens": 64000,
+						"max_completion_tokens": 64000,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": true
+						}
+					},
+					{
+						"name": "GPT-6-Astra",
+						"display_name": "Trae GPT-6-Astra",
 						"max_tokens": 272000,
-						"max_output_tokens": 128000,
-						"max_completion_tokens": 128000,
+						"max_output_tokens": 32000,
+						"max_completion_tokens": 32000,
 						"capabilities": {
 							"tools": true,
 							"images": true,
 							"parallel_tool_calls": true,
 							"prompt_cache_key": true,
 							"chat_completions": true,
-							"interleaved_reasoning": true,
-						},
+							"interleaved_reasoning": true
+						}
 					},
-				],
-			},
+					{
+						"name": "GPT-6-Astra-Max",
+						"display_name": "Trae GPT-6-Astra / Max",
+						"max_tokens": 800000,
+						"max_output_tokens": 64000,
+						"max_completion_tokens": 64000,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": true
+						}
+					},
+					{
+						"name": "GPT-5.6-Terra",
+						"display_name": "Trae GPT-5.6-Terra",
+						"max_tokens": 272000,
+						"max_output_tokens": 32768,
+						"max_completion_tokens": 32768,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": true
+						}
+					},
+					{
+						"name": "GPT-5.6-Terra-Max",
+						"display_name": "Trae GPT-5.6-Terra / Max",
+						"max_tokens": 800000,
+						"max_output_tokens": 32768,
+						"max_completion_tokens": 32768,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": true
+						}
+					},
+					{
+						"name": "openrouter-4o",
+						"display_name": "Trae Claude Opus 5.5 (openrouter-4o)",
+						"max_tokens": 200000,
+						"max_output_tokens": 32768,
+						"max_completion_tokens": 32768,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": true
+						}
+					},
+					{
+						"name": "openrouter-4o-Max",
+						"display_name": "Trae Claude Opus 5.5 (openrouter-4o) / Max",
+						"max_tokens": 1000000,
+						"max_output_tokens": 32768,
+						"max_completion_tokens": 32768,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": true
+						}
+					},
+					{
+						"name": "DeepSeek-V4.1-Flash",
+						"display_name": "Trae DeepSeek-V4.1-Flash",
+						"max_tokens": 200000,
+						"max_output_tokens": 32768,
+						"max_completion_tokens": 32768,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": true
+						}
+					},
+					{
+						"name": "DeepSeek-V4.1-Flash-Max",
+						"display_name": "Trae DeepSeek-V4.1-Flash / Max",
+						"max_tokens": 1000000,
+						"max_output_tokens": 32768,
+						"max_completion_tokens": 32768,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": true
+						}
+					},
+					{
+						"name": "DeepSeek-V4-Pro",
+						"display_name": "Trae DeepSeek-V4-Pro",
+						"max_tokens": 216000,
+						"max_output_tokens": 32768,
+						"max_completion_tokens": 32768,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": true
+						}
+					},
+					{
+						"name": "DeepSeek-V4-Pro-Max",
+						"display_name": "Trae DeepSeek-V4-Pro / Max",
+						"max_tokens": 1000000,
+						"max_output_tokens": 32768,
+						"max_completion_tokens": 32768,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": true
+						}
+					},
+					{
+						"name": "Seed-Evolving",
+						"display_name": "Trae Seed-Evolving",
+						"max_tokens": 1000000,
+						"max_output_tokens": 32768,
+						"max_completion_tokens": 32768,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": true
+						}
+					},
+					{
+						"name": "Seed-2.1-Turbo",
+						"display_name": "Trae Seed-2.1-Turbo",
+						"max_tokens": 200000,
+						"max_output_tokens": 32768,
+						"max_completion_tokens": 32768,
+						"capabilities": {
+							"tools": true,
+							"images": true,
+							"parallel_tool_calls": true,
+							"prompt_cache_key": true,
+							"chat_completions": true,
+							"interleaved_reasoning": true
+						}
+					}
+				]
+			}
 		},
 	},
 	"cli_default_open_behavior": "existing_window",
@@ -518,7 +698,10 @@
    "type": "registry"
   },
   "traecli": {
-			"type": "custom",
+			"default_config_options": {
+    "model": "deepseek-v4.1-flash"
+   },
+   "type": "custom",
 			"command": "traecli",
 			"args": ["acp", "serve"]
 		},
