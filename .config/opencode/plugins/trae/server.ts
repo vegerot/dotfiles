@@ -28,8 +28,10 @@ export function renderCliProxyBlock(models: Readonly<Record<string, ModelRoute>>
     '    - name: "trae"',
     `      base-url: ${JSON.stringify(baseURL)}`,
     "      disable-cooling: true",
+    "      # CLIProxyAPI forwards this value as `Bearer` to the loopback server, which ignores",
+    "      # it: per-request auth is the Cloud-CLI-JWT from provider.ts. Required structurally.",
     "      keys:",
-    '        - api-key: "trae-local"',
+    '        - api-key: "loopback-no-auth"',
     "      models:",
   ]
   for (const [id, info] of Object.entries(models)) {
