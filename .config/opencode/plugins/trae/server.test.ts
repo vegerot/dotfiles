@@ -145,6 +145,22 @@ describe("Trae OpenAI-compatible HTTP handler", () => {
       const streamText = await streamResp.text()
       expect(streamText).toContain("PONG:gpt-6.1-sol__max")
       expect(streamText).toContain("data: [DONE]")
+
+      // 4. Omitted stream defaults to non-streaming chat.completion JSON
+      const omittedStreamResp = await handler(
+        new Request("http://127.0.0.1/v1/chat/completions", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            model: "GPT-5.4",
+            messages: [{ role: "user", content: "hi" }],
+          }),
+        }),
+      )
+      expect(omittedStreamResp.status).toBe(200)
+      const omittedStreamJson = (await omittedStreamResp.json()) as Record<string, any>
+      expect(omittedStreamJson.object).toBe("chat.completion")
+      expect(omittedStreamJson.choices[0].message.content).toBe("PONG:gpt-5.4__dev")
     } finally {
       upstream.stop(true)
     }

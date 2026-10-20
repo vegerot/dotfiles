@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-model=${OPENCODE_TRAE_SMOKE_MODEL:-trae/GPT-5.6-Sol}
+model=${OPENCODE_TRAE_SMOKE_MODEL:-trae/GPT-5.6-Terra}
 marker="OPENCODE_TRAE_SMOKE_$$"
 workspace=$(mktemp -d "${TMPDIR:-/tmp}/opencode-trae-smoke.XXXXXX")
 trap 'rm -rf "$workspace"' EXIT INT TERM

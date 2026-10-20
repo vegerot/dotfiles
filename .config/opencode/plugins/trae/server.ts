@@ -203,7 +203,7 @@ export function createTraeHandler(options: TraeHandlerOptions = {}) {
           )
         }
         const sseResp = translateResponse(upstream, parsed.model)
-        if (parsed.stream === false) {
+        if (parsed.stream !== true) {
           return await assembleChatCompletion(sseResp, parsed.model)
         }
         return sseResp

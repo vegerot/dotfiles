@@ -90,12 +90,34 @@ export function reasoningVariants(efforts: ReadonlyArray<string>) {
   return efforts.map((effort) => ({ id: effort, settings: { reasoningEffort: effort } }))
 }
 
+const DISPLAY_NAMES: Readonly<Record<string, string>> = {
+  "openrouter-4o": "Claude Opus 5.5 (openrouter-4o)",
+}
+
+const EXCLUDED_SLUGS: ReadonlySet<string> = new Set([
+  "openrouter-3o",
+  "openrouter-2o",
+  "openrouter-1o",
+  "openrouter-1",
+  "GPT-5.6-Sol",
+  "GPT-5.6-Luna",
+  "GPT-5.5",
+  "GPT-5.4",
+  "GPT-5.2",
+  "DeepSeek-V4-Flash",
+  "Seed-2.1-Pro-0915",
+  "Seed-Dogfooding-2.0",
+  "Seed-Code",
+  "Gemini-3.1-Pro-Preview",
+  "Gemini-3-Flash-Preview",
+])
+
 export function translateCatalog(catalog: CachedCatalog, path: string) {
   if (!Array.isArray(catalog.models)) throw new Error(`Invalid Trae model cache: ${path}`)
 
   const loaded: Record<string, ModelRoute> = {}
   for (const model of catalog.models) {
-    if (model.visibility !== "list" || model.supported_in_api === false) continue
+    if (model.visibility !== "list" || model.supported_in_api === false || EXCLUDED_SLUGS.has(model.slug)) continue
     const variants = model.business_metadata?.variants
     if (!model.config_name || !variants?.standard_key || !variants.standard_context_window)
       throw new Error(`Trae cache model ${model.slug} is missing its standard route`)
@@ -111,8 +133,9 @@ export function translateCatalog(catalog: CachedCatalog, path: string) {
           ? [model.default_reasoning_level]
           : []
     const input = model.input_modalities?.includes("image") ? (["text", "image"] as const) : (["text"] as const)
+    const displayName = DISPLAY_NAMES[model.slug] ?? model.slug
     loaded[model.slug] = {
-      name: model.slug,
+      name: displayName,
       config,
       backend,
       context,
@@ -124,7 +147,7 @@ export function translateCatalog(catalog: CachedCatalog, path: string) {
     if (variants.max_key && variants.max_context_window) {
       const id = `${model.slug}-Max`
       loaded[id] = {
-        name: `${model.slug} / Max`,
+        name: `${displayName} / Max`,
         config,
         backend: variants.max_key,
         context: variants.max_context_window,
@@ -316,10 +339,10 @@ function chunk(model: string, delta: Readonly<Record<string, unknown>>, finishRe
   })
 }
 
-export function translateFinishReason(reason: string | undefined) {
+export function translateFinishReason(reason: string | null | undefined) {
   if (reason === "tool_use" || reason === "function_call") return "tool_calls"
   if (reason === "max_tokens") return "length"
-  return reason ?? "stop"
+  return reason || "stop"
 }
 
 function translate(eventName: string, event: TraeEvent, model: string) {

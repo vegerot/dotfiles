@@ -110,6 +110,61 @@ describe("Trae model catalog", () => {
     ])
   })
 
+  test("omits excluded non-frontier slugs and their Max routes while keeping frontier and new models", () => {
+    const route = (slug: string, withMax = false) => ({
+      slug,
+      config_name: slug.toLowerCase(),
+      visibility: "list",
+      business_metadata: {
+        variants: {
+          standard_key: `${slug.toLowerCase()}__dev`,
+          standard_context_window: 200_000,
+          ...(withMax ? { max_key: `${slug.toLowerCase()}__max`, max_context_window: 1_000_000 } : {}),
+        },
+      },
+    })
+    const snapshot = provider.translateCatalog(
+      {
+        models: [
+          route("GPT-6.1-Sol", true),
+          route("GPT-5.6-Luna", true),
+          route("openrouter-3o", true),
+          route("DeepSeek-V4-Flash", true),
+          route("Seed-2.1-Pro-0915"),
+          route("Gemini-3.1-Pro-Preview"),
+          route("Future-Model-7"),
+        ],
+      },
+      "/catalog.json",
+    )
+    expect(Object.keys(snapshot.models)).toEqual(["GPT-6.1-Sol", "GPT-6.1-Sol-Max", "Future-Model-7"])
+  })
+
+  test("labels openrouter-4o and its Max route with the real Claude model name while keeping route IDs", () => {
+    const snapshot = provider.translateCatalog(
+      {
+        models: [
+          {
+            slug: "openrouter-4o",
+            config_name: "openrouter-4o",
+            visibility: "list",
+            business_metadata: {
+              variants: {
+                standard_key: "es1_orange_o55",
+                standard_context_window: 200_000,
+                max_key: "es1_orange_o55_1m",
+                max_context_window: 1_000_000,
+              },
+            },
+          },
+        ],
+      },
+      "/catalog.json",
+    )
+    expect(snapshot.models["openrouter-4o"]?.name).toBe("Claude Opus 5.5 (openrouter-4o)")
+    expect(snapshot.models["openrouter-4o-Max"]?.name).toBe("Claude Opus 5.5 (openrouter-4o) / Max")
+  })
+
   test("rejects a visible model without an explicit standard route", () => {
     expect(() =>
       provider.translateCatalog(
@@ -307,6 +362,19 @@ describe("Trae raw-chat stream to OpenAI Chat SSE", () => {
     })
     expect(frames[2].choices[0].finish_reason).toBe("tool_calls")
     expect(output).toEndWith("data: [DONE]\n\n")
+  })
+
+  test("normalizes empty finish_reason in done event to stop", async () => {
+    const upstream = [
+      "event: output\ndata: {\"response\":\"PONG\"}",
+      "event: done\ndata: {\"finish_reason\":\"\"}",
+    ].join("\n\n") + "\n\n"
+    const output = await new Response(provider.translatedStream(new Response(upstream), "DeepSeek-V4.1-Flash")).text()
+    const frames = output
+      .split("\n\n")
+      .filter((frame) => frame.startsWith("data: ") && frame !== "data: [DONE]")
+      .map((frame) => JSON.parse(frame.slice(6)))
+    expect(frames[1].choices[0].finish_reason).toBe("stop")
   })
 
   test("handles arbitrary byte boundaries and CRLF framing", async () => {
