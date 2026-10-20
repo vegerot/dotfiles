@@ -15,7 +15,7 @@
         "--categoryExtensions=true",
         "--experimentalVision=true",
         "--memoryDebugging=true",
-        "--categoryThirdParty=true"
+        "--experimentalIncludeAllPages=true"
       ]
     },
     "fff": {

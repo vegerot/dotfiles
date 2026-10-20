@@ -30,11 +30,11 @@ It talks to a background daemon. Two traps, both observed:
 So, once per session, start the daemon in a background task that stays alive (`IsDaemon=true`):
 
 ```powershell
-chrome-devtools start --autoConnect --channel=dev --experimentalVision; while ($true) { Start-Sleep 30 }
+chrome-devtools start --autoConnect --channel=dev --categoryExtensions --experimentalVision --experimentalIncludeAllPages; while ($true) { Start-Sleep 30 }
 ```
 
 ```bash
-chrome-devtools start --autoConnect --channel=dev --experimentalVision && sleep infinity
+chrome-devtools start --autoConnect --channel=dev --categoryExtensions --experimentalVision --experimentalIncludeAllPages && sleep infinity
 ```
 
 Then run commands normally and chain them:
@@ -66,10 +66,11 @@ call_mcp_tool(ServerName="chrome-devtools", ToolName="evaluate_script",
 
 The MCP server and the CLI daemon can both be attached to the same Chrome at once (tested 2026-10-19 on Windows).
 
-## 📝 Page tips
+## 📝 Page & extension tips
 
 - For canvas editors (Google Docs), use APIs (`gws docs`) for content. Use the browser only for UI-only actions, with `press_key`/`type_text` instead of `fill`. `click_at` (from `--experimentalVision`) clicks by screenshot coordinates.
 - Record video with `screencast_start` / `screencast_stop` (built in; no ffmpeg needed).
+- `--categoryExtensions` exposes all extensions' service workers (`sw-*`) and `chrome-extension://` pages in `list_pages`, allows `evaluate_script --serviceWorkerId`, and includes content-script console logs. Note: `list_extensions` (`Extensions.getExtensions` in CDP) only lists **unpacked** developer extensions, not Chrome Web Store extensions.
 
 ## 🩺 When it does not connect
 
