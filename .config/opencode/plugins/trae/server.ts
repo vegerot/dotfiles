@@ -1,5 +1,6 @@
 import { watch } from "node:fs"
 import { dirname } from "node:path"
+export { default } from "./provider"
 import {
   type ModelRoute,
   cachePath,
