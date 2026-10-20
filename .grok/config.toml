@@ -214,21 +214,12 @@ label = "Extra High"
 description = "Maximum reasoning for the hardest tasks."
 default = true
 
-[model.gpt-oss-120b-medium]
-name = "gpt-oss-120b-medium"
-model = "gpt-oss-120b-medium"
-base_url = "http://localhost:8317/v1"
-api_backend = "chat_completions"
-env_key = "api-key"
-context_window = 114000
-max_completion_tokens = 32768
-
 [model.claude-sonnet-5-5-high]
 name = "Claude Sonnet 5.5"
 model = "claude-sonnet-5-5-high"
 base_url = "http://localhost:8317/v1"
 api_backend = "chat_completions"
-env_key = "api-key"
+api_key = "api-key"
 context_window = 1000000
 max_completion_tokens = 128000
 vision = true
@@ -251,7 +242,7 @@ name = "Claude Opus 5.5"
 model = "claude-opus-5-5-high"
 base_url = "http://localhost:8317/v1"
 api_backend = "chat_completions"
-env_key = "api-key"
+api_key = "api-key"
 context_window = 1000000
 max_completion_tokens = 128000
 vision = true
@@ -270,25 +261,73 @@ label = "High"
 default = true
 
 [model."gpt-5.6-terra"]
-name = "gpt-5.6-terra"
+name = "GPT 5.6 Terra"
 model = "gpt-5.6-terra"
 base_url = "http://localhost:8317/v1"
 api_backend = "chat_completions"
-env_key = "api-key"
+api_key = "api-key"
+context_window = 372000
+max_completion_tokens = 128000
+vision = true
+
+[[model."gpt-5.6-terra".reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model."gpt-5.6-terra".reasoning_efforts]]
+value = "medium"
+label = "Medium"
+
+[[model."gpt-5.6-terra".reasoning_efforts]]
+value = "high"
+label = "High"
+default = true
+
+[[model."gpt-5.6-terra".reasoning_efforts]]
+value = "xhigh"
+label = "Extra High"
+
+[[model."gpt-5.6-terra".reasoning_efforts]]
+value = "max"
+label = "Max"
 
 [model.gpt-6-luna]
-name = "gpt-6-luna"
+name = "GPT 6.0 Luna"
 model = "gpt-6-luna"
 base_url = "http://localhost:8317/v1"
 api_backend = "chat_completions"
-env_key = "api-key"
+api_key = "api-key"
+context_window = 272000
+max_completion_tokens = 128000
+vision = true
+
+[[model.gpt-6-luna.reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model.gpt-6-luna.reasoning_efforts]]
+value = "medium"
+label = "Medium"
+
+[[model.gpt-6-luna.reasoning_efforts]]
+value = "high"
+label = "High"
+default = true
+
+[[model.gpt-6-luna.reasoning_efforts]]
+value = "xhigh"
+label = "Extra High"
+
+[[model.gpt-6-luna.reasoning_efforts]]
+value = "max"
+label = "Max"
 
 [model.gemini-4-argon-high]
 name = "Gemini 4 Argon"
 model = "gemini-4-argon-high"
 base_url = "http://localhost:8317/v1"
 api_backend = "chat_completions"
-env_key = "api-key"
+api_key = "api-key"
 context_window = 1048576
 max_completion_tokens = 65536
 vision = true
@@ -311,7 +350,7 @@ name = "Gemini 3.8 Flash"
 model = "gemini-3.8-flash-high"
 base_url = "http://localhost:8317/v1"
 api_backend = "chat_completions"
-env_key = "api-key"
+api_key = "api-key"
 context_window = 1048576
 max_completion_tokens = 65536
 vision = true
@@ -329,12 +368,451 @@ value = "high"
 label = "High"
 default = true
 
+[model."gemini-3.5-flash-lite"]
+name = "Gemini 3.5 Flash Lite"
+model = "gemini-3.5-flash-lite"
+base_url = "http://localhost:8317/v1"
+api_backend = "chat_completions"
+api_key = "api-key"
+context_window = 1048576
+max_completion_tokens = 65535
+vision = true
+
+[[model."gemini-3.5-flash-lite".reasoning_efforts]]
+value = "minimal"
+label = "Minimal"
+
+[[model."gemini-3.5-flash-lite".reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model."gemini-3.5-flash-lite".reasoning_efforts]]
+value = "medium"
+label = "Medium"
+default = true
+
+[[model."gemini-3.5-flash-lite".reasoning_efforts]]
+value = "high"
+label = "High"
+
+[model."muse-spark-1.3"]
+name = "Muse Spark 1.3"
+model = "muse-spark-1.3"
+base_url = "http://localhost:8317/v1"
+api_backend = "chat_completions"
+api_key = "api-key"
+context_window = 1048576
+max_completion_tokens = 65536
+vision = true
+
+[[model."muse-spark-1.3".reasoning_efforts]]
+value = "minimal"
+label = "Minimal"
+
+[[model."muse-spark-1.3".reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model."muse-spark-1.3".reasoning_efforts]]
+value = "medium"
+label = "Medium"
+
+[[model."muse-spark-1.3".reasoning_efforts]]
+value = "high"
+label = "High"
+default = true
+
+[[model."muse-spark-1.3".reasoning_efforts]]
+value = "xhigh"
+label = "Extra High"
+
+[[model."muse-spark-1.3".reasoning_efforts]]
+value = "max"
+label = "Max"
+
+[model."muse-wonder-1.0"]
+name = "Muse Wonder 1.0"
+model = "muse-wonder-1.0"
+base_url = "http://localhost:8317/v1"
+api_backend = "chat_completions"
+api_key = "api-key"
+context_window = 1007997
+max_completion_tokens = 128000
+vision = true
+
+[[model."muse-wonder-1.0".reasoning_efforts]]
+value = "minimal"
+label = "Minimal"
+
+[[model."muse-wonder-1.0".reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model."muse-wonder-1.0".reasoning_efforts]]
+value = "medium"
+label = "Medium"
+
+[[model."muse-wonder-1.0".reasoning_efforts]]
+value = "high"
+label = "High"
+default = true
+
+[[model."muse-wonder-1.0".reasoning_efforts]]
+value = "xhigh"
+label = "Extra High"
+
+[model."GPT-6.1-Sol"]
+name = "Trae GPT-6.1-Sol"
+model = "GPT-6.1-Sol"
+base_url = "http://localhost:8317/v1"
+api_backend = "chat_completions"
+api_key = "api-key"
+context_window = 475000
+max_completion_tokens = 32000
+vision = true
+
+[[model."GPT-6.1-Sol".reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model."GPT-6.1-Sol".reasoning_efforts]]
+value = "medium"
+label = "Medium"
+
+[[model."GPT-6.1-Sol".reasoning_efforts]]
+value = "high"
+label = "High"
+default = true
+
+[[model."GPT-6.1-Sol".reasoning_efforts]]
+value = "xhigh"
+label = "Extra High"
+
+[model."GPT-6.1-Sol-Max"]
+name = "Trae GPT-6.1-Sol / Max"
+model = "GPT-6.1-Sol-Max"
+base_url = "http://localhost:8317/v1"
+api_backend = "chat_completions"
+api_key = "api-key"
+context_window = 800000
+max_completion_tokens = 64000
+vision = true
+
+[[model."GPT-6.1-Sol-Max".reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model."GPT-6.1-Sol-Max".reasoning_efforts]]
+value = "medium"
+label = "Medium"
+
+[[model."GPT-6.1-Sol-Max".reasoning_efforts]]
+value = "high"
+label = "High"
+default = true
+
+[[model."GPT-6.1-Sol-Max".reasoning_efforts]]
+value = "xhigh"
+label = "Extra High"
+
+[model.GPT-6-Astra]
+name = "Trae GPT-6-Astra"
+model = "GPT-6-Astra"
+base_url = "http://localhost:8317/v1"
+api_backend = "chat_completions"
+api_key = "api-key"
+context_window = 272000
+max_completion_tokens = 32000
+vision = true
+
+[[model.GPT-6-Astra.reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model.GPT-6-Astra.reasoning_efforts]]
+value = "medium"
+label = "Medium"
+
+[[model.GPT-6-Astra.reasoning_efforts]]
+value = "high"
+label = "High"
+default = true
+
+[[model.GPT-6-Astra.reasoning_efforts]]
+value = "xhigh"
+label = "Extra High"
+
+[model.GPT-6-Astra-Max]
+name = "Trae GPT-6-Astra / Max"
+model = "GPT-6-Astra-Max"
+base_url = "http://localhost:8317/v1"
+api_backend = "chat_completions"
+api_key = "api-key"
+context_window = 800000
+max_completion_tokens = 64000
+vision = true
+
+[[model.GPT-6-Astra-Max.reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model.GPT-6-Astra-Max.reasoning_efforts]]
+value = "medium"
+label = "Medium"
+
+[[model.GPT-6-Astra-Max.reasoning_efforts]]
+value = "high"
+label = "High"
+default = true
+
+[[model.GPT-6-Astra-Max.reasoning_efforts]]
+value = "xhigh"
+label = "Extra High"
+
+[model."GPT-5.6-Terra"]
+name = "Trae GPT-5.6-Terra"
+model = "GPT-5.6-Terra"
+base_url = "http://localhost:8317/v1"
+api_backend = "chat_completions"
+api_key = "api-key"
+context_window = 272000
+max_completion_tokens = 32768
+vision = true
+
+[[model."GPT-5.6-Terra".reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model."GPT-5.6-Terra".reasoning_efforts]]
+value = "medium"
+label = "Medium"
+
+[[model."GPT-5.6-Terra".reasoning_efforts]]
+value = "high"
+label = "High"
+default = true
+
+[[model."GPT-5.6-Terra".reasoning_efforts]]
+value = "xhigh"
+label = "Extra High"
+
+[model."GPT-5.6-Terra-Max"]
+name = "Trae GPT-5.6-Terra / Max"
+model = "GPT-5.6-Terra-Max"
+base_url = "http://localhost:8317/v1"
+api_backend = "chat_completions"
+api_key = "api-key"
+context_window = 800000
+max_completion_tokens = 32768
+vision = true
+
+[[model."GPT-5.6-Terra-Max".reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model."GPT-5.6-Terra-Max".reasoning_efforts]]
+value = "medium"
+label = "Medium"
+
+[[model."GPT-5.6-Terra-Max".reasoning_efforts]]
+value = "high"
+label = "High"
+default = true
+
+[[model."GPT-5.6-Terra-Max".reasoning_efforts]]
+value = "xhigh"
+label = "Extra High"
+
+[model.openrouter-4o]
+name = "Trae Claude Opus 5.5 (openrouter-4o)"
+model = "openrouter-4o"
+base_url = "http://localhost:8317/v1"
+api_backend = "chat_completions"
+api_key = "api-key"
+context_window = 200000
+max_completion_tokens = 32768
+vision = true
+
+[[model.openrouter-4o.reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model.openrouter-4o.reasoning_efforts]]
+value = "medium"
+label = "Medium"
+
+[[model.openrouter-4o.reasoning_efforts]]
+value = "high"
+label = "High"
+default = true
+
+[[model.openrouter-4o.reasoning_efforts]]
+value = "xhigh"
+label = "Extra High"
+
+[[model.openrouter-4o.reasoning_efforts]]
+value = "max"
+label = "Max"
+
+[model.openrouter-4o-Max]
+name = "Trae Claude Opus 5.5 (openrouter-4o) / Max"
+model = "openrouter-4o-Max"
+base_url = "http://localhost:8317/v1"
+api_backend = "chat_completions"
+api_key = "api-key"
+context_window = 1000000
+max_completion_tokens = 32768
+vision = true
+
+[[model.openrouter-4o-Max.reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model.openrouter-4o-Max.reasoning_efforts]]
+value = "medium"
+label = "Medium"
+
+[[model.openrouter-4o-Max.reasoning_efforts]]
+value = "high"
+label = "High"
+default = true
+
+[[model.openrouter-4o-Max.reasoning_efforts]]
+value = "xhigh"
+label = "Extra High"
+
+[[model.openrouter-4o-Max.reasoning_efforts]]
+value = "max"
+label = "Max"
+
+[model."DeepSeek-V4.1-Flash"]
+name = "Trae DeepSeek-V4.1-Flash"
+model = "DeepSeek-V4.1-Flash"
+base_url = "http://localhost:8317/v1"
+api_backend = "chat_completions"
+api_key = "api-key"
+context_window = 200000
+max_completion_tokens = 32768
+vision = true
+
+[[model."DeepSeek-V4.1-Flash".reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model."DeepSeek-V4.1-Flash".reasoning_efforts]]
+value = "medium"
+label = "Medium"
+
+[[model."DeepSeek-V4.1-Flash".reasoning_efforts]]
+value = "high"
+label = "High"
+default = true
+
+[model."DeepSeek-V4.1-Flash-Max"]
+name = "Trae DeepSeek-V4.1-Flash / Max"
+model = "DeepSeek-V4.1-Flash-Max"
+base_url = "http://localhost:8317/v1"
+api_backend = "chat_completions"
+api_key = "api-key"
+context_window = 1000000
+max_completion_tokens = 32768
+vision = true
+
+[[model."DeepSeek-V4.1-Flash-Max".reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model."DeepSeek-V4.1-Flash-Max".reasoning_efforts]]
+value = "medium"
+label = "Medium"
+
+[[model."DeepSeek-V4.1-Flash-Max".reasoning_efforts]]
+value = "high"
+label = "High"
+default = true
+
+[model.DeepSeek-V4-Pro]
+name = "Trae DeepSeek-V4-Pro"
+model = "DeepSeek-V4-Pro"
+base_url = "http://localhost:8317/v1"
+api_backend = "chat_completions"
+api_key = "api-key"
+context_window = 216000
+max_completion_tokens = 32768
+vision = true
+
+[[model.DeepSeek-V4-Pro.reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model.DeepSeek-V4-Pro.reasoning_efforts]]
+value = "medium"
+label = "Medium"
+
+[[model.DeepSeek-V4-Pro.reasoning_efforts]]
+value = "high"
+label = "High"
+default = true
+
+[model.DeepSeek-V4-Pro-Max]
+name = "Trae DeepSeek-V4-Pro / Max"
+model = "DeepSeek-V4-Pro-Max"
+base_url = "http://localhost:8317/v1"
+api_backend = "chat_completions"
+api_key = "api-key"
+context_window = 1000000
+max_completion_tokens = 32768
+vision = true
+
+[[model.DeepSeek-V4-Pro-Max.reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model.DeepSeek-V4-Pro-Max.reasoning_efforts]]
+value = "medium"
+label = "Medium"
+
+[[model.DeepSeek-V4-Pro-Max.reasoning_efforts]]
+value = "high"
+label = "High"
+default = true
+
+[model.Seed-Evolving]
+name = "Trae Seed-Evolving"
+model = "Seed-Evolving"
+base_url = "http://localhost:8317/v1"
+api_backend = "chat_completions"
+api_key = "api-key"
+context_window = 1000000
+max_completion_tokens = 32768
+vision = true
+
+[[model.Seed-Evolving.reasoning_efforts]]
+value = "high"
+label = "High"
+default = true
+
+[model."Seed-2.1-Turbo"]
+name = "Trae Seed-2.1-Turbo"
+model = "Seed-2.1-Turbo"
+base_url = "http://localhost:8317/v1"
+api_backend = "chat_completions"
+api_key = "api-key"
+context_window = 200000
+max_completion_tokens = 32768
+vision = true
+
+[[model."Seed-2.1-Turbo".reasoning_efforts]]
+value = "high"
+label = "High"
+default = true
+
 [model.gpt-image-2]
 name = "gpt-image-2"
 model = "gpt-image-2"
 base_url = "http://localhost:8317/v1"
 api_backend = "chat_completions"
-env_key = "api-key"
+api_key = "api-key"
 description = "Image model from the CLIProxyAPI catalog."
 
 [model."gpt-image-2.5-sunburst"]
@@ -342,7 +820,7 @@ name = "gpt-image-2.5-sunburst"
 model = "gpt-image-2.5-sunburst"
 base_url = "http://localhost:8317/v1"
 api_backend = "chat_completions"
-env_key = "api-key"
+api_key = "api-key"
 description = "Image model from the CLIProxyAPI catalog."
 
 [model."gpt-image-2.5-flare"]
@@ -350,5 +828,5 @@ name = "gpt-image-2.5-flare"
 model = "gpt-image-2.5-flare"
 base_url = "http://localhost:8317/v1"
 api_backend = "chat_completions"
-env_key = "api-key"
+api_key = "api-key"
 description = "Image model from the CLIProxyAPI catalog."
