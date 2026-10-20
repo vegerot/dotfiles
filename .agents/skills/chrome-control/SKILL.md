@@ -17,45 +17,59 @@ We use [chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-m
 
 1. Chrome 144+ (we use Chrome Dev). Open `chrome://inspect/#remote-debugging` and turn on remote debugging.
    Chrome then writes `DevToolsActivePort` (port + `/devtools/browser/<id>`) into its user-data directory.
-2. The MCP server in `~/.gemini/config/mcp_config.json` (symlinked from dotfiles) must contain:
-   ```json
-   "chrome-devtools": { "command": "bunx", "args": ["chrome-devtools-mcp@latest", "--auto-connect", "--channel=dev"] }
-   ```
-   Use `bunx` (not `npx` without `-y`, which hangs on `Ok to proceed?`). Restart agy after editing it.
-3. Each new connection makes Chrome show **"Allow remote debugging?"**. The user clicks Allow. Keep one long-lived connection so this happens once.
+2. Each new connection makes Chrome show **"Allow remote debugging?"**. The user clicks Allow. Keep one long-lived connection so this happens once.
 
-## ⚡ Use the MCP tools (default)
+## 💻 Use the CLI (`chrome-devtools`) by default
 
-The MCP server is long-lived, so it holds one connection and only prompts once.
-
-```
-call_mcp_tool(ServerName="chrome-devtools", ToolName="list_pages", Arguments={})
-call_mcp_tool(ServerName="chrome-devtools", ToolName="evaluate_script",
-              Arguments={"pageId": 3, "function": "() => document.title"})
-```
-
-- Prefer `take_snapshot` (text tree with element `uid`s) and `evaluate_script` over screenshots.
-- Pass `pageId` explicitly. With extension service workers listed, `evaluate_script` fails with `specify either a pageId or a serviceWorkerId` otherwise.
-- `filePath` outputs must be inside a workspace root (`Access denied ... not within any of the configured workspace roots`).
-- For canvas editors (Google Docs), use APIs (`gws docs`) for content. Use the browser only for UI-only actions, with `press_key`/`type_text` instead of `fill`.
-
-## 💻 The CLI (`chrome-devtools`), only when you need shell scripting
-
-The CLI talks to a background daemon. Two traps, both observed:
+The CLI chains well: loops, pipes, and several actions in one shell command.
+It talks to a background daemon. Two traps, both observed:
 
 - If no daemon is running, any command **auto-starts an isolated, headless, blank browser**.
 - In Antigravity, a daemon started by `chrome-devtools start` **dies when that command finishes**.
 
-So start it in a background task that stays alive (`IsDaemon=true`), then run commands normally:
+So, once per session, start the daemon in a background task that stays alive (`IsDaemon=true`):
 
 ```powershell
-chrome-devtools start --autoConnect --channel=dev; while ($true) { Start-Sleep 30 }
+chrome-devtools start --autoConnect --channel=dev --experimentalVision; while ($true) { Start-Sleep 30 }
 ```
 
-Required arguments are positional: `chrome-devtools click 1 "2_5"`, `chrome-devtools evaluate_script "() => location.href" --pageId 1`.
-Stop with `chrome-devtools stop` and kill the background task.
+```bash
+chrome-devtools start --autoConnect --channel=dev --experimentalVision && sleep infinity
+```
+
+Then run commands normally and chain them:
+
+```powershell
+chrome-devtools list_pages
+chrome-devtools take_snapshot 3
+chrome-devtools click 3 "2_5"; chrome-devtools evaluate_script "() => document.title" --pageId 3
+```
+
+- Required arguments are positional; check `chrome-devtools <command> --help` when unsure (`take_screenshot 3 --filePath x.png`, not `--pageId 3`).
+- Prefer `take_snapshot` (text tree with element `uid`s) and `evaluate_script` over screenshots.
+- Stop with `chrome-devtools stop` and kill the background task.
+- MCP-only tools: `wait_for`, `fill_form`. Use the MCP for those.
+
+## ⚡ The MCP tools (fallback)
+
+Configured in `~/.gemini/config/mcp_config.json` (symlinked from dotfiles) with `bunx chrome-devtools-mcp@latest --auto-connect --channel=dev`.
+Use `bunx` (not `npx` without `-y`, which hangs on `Ok to proceed?`). Restart agy after editing it.
+The MCP server is already long-lived, so it needs no daemon setup.
+
+```
+call_mcp_tool(ServerName="chrome-devtools", ToolName="evaluate_script",
+              Arguments={"pageId": 3, "function": "() => document.title"})
+```
+
+- Always pass `pageId`: `--pageIdRouting` is on by default, so page tools fail with `specify either a pageId or a serviceWorkerId` without it.
+- `filePath` outputs must be inside a workspace root (`Access denied ... not within any of the configured workspace roots`). The CLI has no such limit.
 
 The MCP server and the CLI daemon can both be attached to the same Chrome at once (tested 2026-10-19 on Windows).
+
+## 📝 Page tips
+
+- For canvas editors (Google Docs), use APIs (`gws docs`) for content. Use the browser only for UI-only actions, with `press_key`/`type_text` instead of `fill`. `click_at` (from `--experimentalVision`) clicks by screenshot coordinates.
+- Record video with `screencast_start` / `screencast_stop` (built in; no ffmpeg needed).
 
 ## 🩺 When it does not connect
 
