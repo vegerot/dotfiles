@@ -1,7 +1,8 @@
 {
   "allowNonWorkspaceAccess": true,
+  "altScreenMode": "always",
   "artifactReviewPolicy": "agent-decides",
-  "model": "Gemini 3.8 Flash (High)",
+  "model": "Gemini 4 Argon (High)",
   "notifications": true,
   "permissions": {
     "allow": [
@@ -46,7 +47,6 @@
     "command": "~/.gemini/antigravity-cli/title.sh",
     "enabled": true
   },
-  "verbosity": "medium",
   "trustedWorkspaces": [
     "/Users/bytedance/code/github.com/git/git",
     "/Users/bytedance/dotfiles",
@@ -65,7 +65,8 @@
     "/Users/bytedance/code/github.com/earendil-works/pi",
     "/Users/bytedance/workspace/code.byted.org/max.coplan/spooky-bio",
     "/Users/bytedance/code/github.com/vegerot/larklish",
-    "/Users/bytedance/code/github.com/atuinsh/atuin"
+    "/Users/bytedance/code/github.com/atuinsh/atuin",
+    "/Users/bytedance/workspace/github.com/neovim/neovim"
   ],
   "vimInsertFirst": true
 }
