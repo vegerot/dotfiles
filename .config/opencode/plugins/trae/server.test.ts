@@ -37,6 +37,7 @@ describe("CLIProxyAPI config sync", () => {
     const block = renderCliProxyBlock(sampleModels, "http://127.0.0.1:43821/v1")
     expect(block).toContain('name: "trae"')
     expect(block).toContain('base-url: "http://127.0.0.1:43821/v1"')
+    expect(block).toContain("disable-cooling: true")
     expect(block).toContain('name: "GPT-5.4"')
     expect(block).toContain("max-context-length: 272000")
     expect(block).toContain('input-modalities: ["text", "image"]')

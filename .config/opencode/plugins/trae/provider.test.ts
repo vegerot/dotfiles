@@ -280,6 +280,16 @@ describe("OpenAI Chat request to Trae raw chat", () => {
     })
   })
 
+  test("supplies placeholder reasoning_content on assistant tool-call turns when omitted", () => {
+    const translated = provider.translateMessages([
+      {
+        role: "assistant",
+        tool_calls: [{ id: "call-1", type: "function", function: { name: "read", arguments: "{}" } }],
+      },
+    ])
+    expect(translated[0]?.reasoning_content).toBe(" ")
+  })
+
   test("preserves OpenAI image parts accepted by Trae raw chat", () => {
     expect(
       provider.translateMessages([

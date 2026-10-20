@@ -1,6 +1,7 @@
 approval_policy = "never"
 sandbox_mode = "danger-full-access"
 model_context_window = 900_000
+model_provider = "cliproxyapi"
 model = "gpt-6-luna"
 model_reasoning_summary = "detailed"
 show_raw_agent_reasoning = true
@@ -209,5 +210,13 @@ source = "/Users/bytedance/.codex/.tmp/bundled-marketplaces/openai-bundled"
 [marketplaces.openai-primary-runtime]
 source_type = "local"
 source = "/Users/bytedance/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
+
+[model_providers.cliproxyapi]
+name = "OpenAI"
+base_url = "http://127.0.0.1:8317/v1"
+wire_api = "responses"
+requires_openai_auth = true
+http_headers = { "X-Api-Key" = "api-key" }
+supports_standalone_web_search = true
 
 # Machine-specific config goes on the bottom

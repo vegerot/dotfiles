@@ -27,6 +27,7 @@ export function renderCliProxyBlock(models: Readonly<Record<string, ModelRoute>>
     "  openai-compatibility:",
     '    - name: "trae"',
     `      base-url: ${JSON.stringify(baseURL)}`,
+    "      disable-cooling: true",
     "      keys:",
     '        - api-key: "trae-local"',
     "      models:",

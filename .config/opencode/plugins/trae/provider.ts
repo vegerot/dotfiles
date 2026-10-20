@@ -241,10 +241,13 @@ function contentParts(content: ChatMessage["content"]) {
 }
 
 export function translateMessages(input: ReadonlyArray<ChatMessage>) {
-  return input.map((message) => ({
+  return input.map((message) => {
+    const reasoningContent =
+      message.reasoning_content || (message.role === "assistant" && message.tool_calls?.length ? " " : undefined)
+    return {
     role: message.role,
     content: contentParts(message.content),
-    ...(message.reasoning_content ? { reasoning_content: message.reasoning_content } : {}),
+    ...(reasoningContent ? { reasoning_content: reasoningContent } : {}),
     ...(message.tool_call_id ? { tool_call_id: message.tool_call_id } : {}),
     ...(message.tool_calls
       ? {
@@ -256,7 +259,8 @@ export function translateMessages(input: ReadonlyArray<ChatMessage>) {
           })),
         }
       : {}),
-  }))
+  }
+  })
 }
 
 export function latestUserInput(input: ReadonlyArray<ChatMessage>) {
