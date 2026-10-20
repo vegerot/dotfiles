@@ -38,13 +38,13 @@
   "queuedMessages": "send-immediately",
   "statusLine": {
     "type": "command",
-    "command": "~/.gemini/antigravity-cli/statusline.sh",
+    "command": "~/dotfiles/.gemini/antigravity-cli/statusline",
     "enabled": true,
     "stack_with_default": true
   },
   "title": {
     "type": "command",
-    "command": "~/.gemini/antigravity-cli/title.sh",
+    "command": "~/dotfiles/.gemini/antigravity-cli/title",
     "enabled": true
   },
   "trustedWorkspaces": [
@@ -66,7 +66,8 @@
     "/Users/bytedance/workspace/code.byted.org/max.coplan/spooky-bio",
     "/Users/bytedance/code/github.com/vegerot/larklish",
     "/Users/bytedance/code/github.com/atuinsh/atuin",
-    "/Users/bytedance/workspace/github.com/neovim/neovim"
+    "/Users/bytedance/workspace/github.com/neovim/neovim",
+    "C:\\Users\\Max\\workspace\\github.com\\vegerot\\ai-conversations"
   ],
   "vimInsertFirst": true
 }

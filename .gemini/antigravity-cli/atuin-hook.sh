@@ -18,17 +18,17 @@ command -v atuin >/dev/null 2>&1 || exit_success
 EVENT="${1:-PreToolUse}"
 INPUT=$(cat)
 
-TOOL_NAME=$(echo "$INPUT" | jq -r '.toolCall.name // empty' 2>/dev/null || true)
+TOOL_NAME=$(echo "$INPUT" | jq -r '.toolCall.name // empty' 2>/dev/null | tr -d "\015" || true)
 if [ "$TOOL_NAME" != "run_command" ]; then
   exit_success
 fi
 
-CONV_ID=$(echo "$INPUT" | jq -r '.conversationId // "agy"' 2>/dev/null || echo "agy")
-STEP_IDX=$(echo "$INPUT" | jq -r '.stepIdx // 0' 2>/dev/null || echo "0")
+CONV_ID=$(echo "$INPUT" | jq -r '.conversationId // "agy"' 2>/dev/null | tr -d "\015" || echo "agy")
+STEP_IDX=$(echo "$INPUT" | jq -r '.stepIdx // 0' 2>/dev/null | tr -d "\015" || echo "0")
 TOOL_USE_ID="${CONV_ID}_${STEP_IDX}"
 
 if [ "$EVENT" = "PreToolUse" ]; then
-  CMD=$(echo "$INPUT" | jq -r '.toolCall.args.CommandLine // empty' 2>/dev/null || true)
+  CMD=$(echo "$INPUT" | jq -r '.toolCall.args.CommandLine // empty' 2>/dev/null | tr -d "\015" || true)
   if [ -n "$CMD" ]; then
     (
       jq -n \
@@ -39,7 +39,7 @@ if [ "$EVENT" = "PreToolUse" ]; then
     ) </dev/null >/dev/null 2>&1 &
   fi
 elif [ "$EVENT" = "PostToolUse" ]; then
-  ERR=$(echo "$INPUT" | jq -r '.error // empty' 2>/dev/null || true)
+  ERR=$(echo "$INPUT" | jq -r '.error // empty' 2>/dev/null | tr -d "\015" || true)
   EV_NAME="PostToolUse"
   [ -n "$ERR" ] && EV_NAME="PostToolUseFailure"
   (

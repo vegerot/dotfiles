@@ -9,7 +9,7 @@ eval $(echo "$DATA" | jq -r '
   "STATE=\"\(.agent_state // "idle")\"
    CWD=\"\(.workspace.current_dir // "")\"
   "
-' 2>/dev/null || echo 'STATE="idle" CWD=""')
+' 2>/dev/null | tr -d "\015" || echo 'STATE="idle" CWD=""')
 
 # Try to extract CitC workspace name from CWD
 if [ -n "$CWD" ]; then

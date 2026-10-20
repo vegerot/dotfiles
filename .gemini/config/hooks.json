@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.gemini/antigravity-cli/atuin-hook.sh PreToolUse",
+            "command": "~/dotfiles/.gemini/antigravity-cli/atuin-hook PreToolUse",
             "timeout": 5
           }
         ]
@@ -18,7 +18,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.gemini/antigravity-cli/atuin-hook.sh PostToolUse",
+            "command": "~/dotfiles/.gemini/antigravity-cli/atuin-hook PostToolUse",
             "timeout": 5
           }
         ]

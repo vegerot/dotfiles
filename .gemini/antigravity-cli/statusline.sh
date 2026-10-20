@@ -54,7 +54,7 @@ NUM_COLOR="${FG_BRIGHT_WHITE}${B}"
     (.task_count // 0),
     (.terminal_width // 80),
     (.workspace.current_dir // .cwd // "")
-  ' 2>/dev/null || printf "idle\n0\n\nfalse\nfalse\n0\n0\n0\n80\n\n"
+  ' 2>/dev/null | tr -d "\015" || printf "idle\n0\n\nfalse\nfalse\n0\n0\n0\n80\n\n"
 )"
 
 # ─── Computed Values ─────────────────────────────────────────────────────────
@@ -77,7 +77,7 @@ HOST_NAME=$(hostname | cut -d. -f1)
 
 TARGET_DIR="${CWD:-$(pwd)}"
 # Windows gives C:\Users\Max\x. Make it /c/Users/Max/x so $HOME and awk match.
-TARGET_DIR=$(echo "$TARGET_DIR" | tr '\\' '/' | sed 's|^\([A-Za-z]\):/|/\L\1/|')
+TARGET_DIR=$(printf "%s" "${TARGET_DIR//\\//}" | sed 's|^\([A-Za-z]\):/|/\L\1/|')
 
 if [ -n "$TARGET_DIR" ]; then
   # Shorten to last 3 path components, replacing $HOME with ~
