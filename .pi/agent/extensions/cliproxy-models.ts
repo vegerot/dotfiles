@@ -7,7 +7,7 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 
-import { type CatalogModel, fetchCatalog, PROXY_URL, PROXY_KEY } from "../../../.config/cliproxy/catalog";
+import { type CatalogModel, fetchCatalog, preferTraeMax, PROXY_URL, PROXY_KEY } from "../../../.config/cliproxy/catalog";
 
 // Pi thinking levels in picker order. Catalog efforts not in this list (e.g. "ultra") are dropped.
 const PI_THINKING_LEVELS = ["minimal", "low", "medium", "high", "xhigh", "max"] as const;
@@ -47,7 +47,10 @@ function sanitize(entries: unknown): PiModel[] {
     }
     models.push(model);
   }
-  return models;
+  // Pi's persisted snapshot omits ownership. Trae Max IDs are generated as
+  // <model>-Max; retain other providers' model names as supplied by the catalog.
+  const traeIDs = new Set(models.filter((model) => model.id.endsWith("-Max")).map((model) => model.id.slice(0, -4)));
+  return preferTraeMax(models, traeIDs);
 }
 
 function readStoredModels(): PiModel[] {

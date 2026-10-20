@@ -189,7 +189,7 @@ async function runTraex(args: ReadonlyArray<string>, purpose: string) {
   if (exitCode !== 0) throw new Error(`Trae ${purpose} failed (${exitCode}): ${errorOutput.trim().slice(0, 2_000)}`)
 }
 
-async function refreshCache() {
+export async function refreshCache() {
   await runTraex(["debug", "models", "--remote"], "model refresh")
 }
 

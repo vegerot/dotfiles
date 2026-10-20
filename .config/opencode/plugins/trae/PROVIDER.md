@@ -8,7 +8,7 @@ Both clients send ordinary OpenAI Chat requests to CLIProxyAPI at `127.0.0.1:831
 
 - Trae owns authentication in `$TRAECLI_HOME/auth.json` and its model cache in `$TRAECLI_HOME/models_cache.json`. The daemon refreshes the cache and watches for changes.
 - Shared discovery combines CLIProxyAPI's rich Codex catalog (`/models?client_version=…`) with the ordinary `/models` ownership list. The optional Trae loopback catalog supplies missing output caps.
-- Media and hidden/disabled routes are excluded. Standard and Max routes remain distinct. Supported reasoning efforts become OpenCode variants and Pi thinking levels.
+- Media and hidden/disabled routes are excluded. Model pickers prefer Max when a Trae model has both routes, retaining models with no Max route. The loopback server keeps both routes callable. Supported reasoning efforts become OpenCode variants and Pi thinking levels.
 - OpenCode discovers on startup, refreshes every 30 seconds, replaces removed routes, and persists the last successful catalog in plugin storage. Failed discovery retains that catalog.
 - Pi owns its `models-store.json` cache and native refresh hook, including offline startup. Fixed-effort models may reason without advertising selectable effort levels.
 - `CLIPROXY_URL`, `CLIPROXY_API_KEY`, and `TRAE_OPENAI_URL` override the local endpoints/key for both clients.
@@ -82,3 +82,15 @@ Capture `opencode models` before filtering it when checking model counts. A dire
 - Bun bundles both the daemon and Pi adapter successfully. Interactive footer rendering was not manually exercised during this refactor; its existing tests pass and its implementation is unchanged.
 
 An already-running OpenCode service needs its plugins reloaded or the service restarted to adopt source changes. Standalone verification uses a private server and does not interrupt existing sessions.
+
+## Prefer Max in model pickers (2026-10-20)
+
+The shared catalog hides a Trae Standard entry when its visible `-Max` entry exists. Cached Pi/OpenCode inventories apply the same preference before registration. This reduces today's displayed Trae routes from 12 to 7 (five Max routes plus Seed-Evolving and Seed-2.1-Turbo). The daemon and CLIProxyAPI retain Standard routes for direct requests.
+
+Observed upstream metadata provides one load value per model, not separate Standard/Max loads. Every advertised pair currently has the same reasoning levels. Max increases context limits; GPT-6.1-Sol and GPT-6-Astra also increase the output cap from 32,000 to 64,000 tokens. Separate `__dev` and `__max` backend keys do not establish equal queueing, latency, or cost. Trae's reason for offering both routes is unverified; the preference is a picker choice based on the advertised capabilities, not proof of backend equivalence.
+
+## CLIProxyAPI web load page
+
+The native `trae-load` plugin registers a **Trae model load** menu resource in the existing web management UI. It bridges HTML and load JSON from this Bun server; no Management Center or CLIProxyAPI source patch is required. Build and configuration instructions live in `.config/cliproxy/trae-load-plugin/README.md`.
+
+The resource has no extra login and only exposes load/status data. The loopback `/v1/status` reads raw model metadata, refreshes it through `traex debug models --remote`, and coalesces requests for 30 seconds. `/v1/load-page` serves the page. Trae credentials remain in the existing protocol implementation.

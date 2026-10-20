@@ -1,5 +1,6 @@
 import { watch } from "node:fs"
 import { dirname } from "node:path"
+import { readModelLoads } from "./load"
 export { default } from "./provider"
 import {
   type ModelRoute,
@@ -163,6 +164,18 @@ export function createTraeHandler(options: TraeHandlerOptions = {}) {
     const url = new URL(req.url)
     if (req.method === "GET" && url.pathname === "/healthz") {
       return Response.json({ ok: true, models: Object.keys(getModels()).length })
+    }
+    if (req.method === "GET" && url.pathname === "/v1/load-page") {
+      return new Response(Bun.file(new URL("./load-page.html", import.meta.url)), {
+        headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" },
+      })
+    }
+    if (req.method === "GET" && url.pathname === "/v1/status") {
+      try {
+        return Response.json(await readModelLoads(getModels(), url.searchParams.get("refresh") === "true"))
+      } catch (error) {
+        return Response.json({ error: { message: error instanceof Error ? error.message : String(error) } }, { status: 502 })
+      }
     }
     if (req.method === "GET" && (url.pathname === "/v1/models" || url.pathname === "/models")) {
       const now = Math.floor(Date.now() / 1_000)

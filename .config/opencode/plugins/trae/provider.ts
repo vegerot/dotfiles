@@ -1,8 +1,9 @@
 import type { Context } from "@opencode/plugin/promise/plugin"
 import type { ProviderEditor } from "@opencode/plugin/promise/provider"
-import { type CatalogModel, fetchCatalog, PROXY_URL, PROXY_KEY } from "../../../cliproxy/catalog"
+import { type CatalogModel, fetchCatalog, preferTraeMax, PROXY_URL, PROXY_KEY } from "../../../cliproxy/catalog"
 
 export function applyCatalog(providers: ProviderEditor, models: readonly CatalogModel[]) {
+  const visible = preferTraeMax([...models], new Set(models.filter((model) => model.owner === "trae").map((model) => model.id)))
   for (const providerID of ["trae", "cliproxy"]) {
     providers.update(providerID, (provider) => {
       provider.name = providerID === "trae" ? "Trae" : "CLIProxyAPI"
@@ -12,7 +13,7 @@ export function applyCatalog(providers: ProviderEditor, models: readonly Catalog
     })
     // Replace the inventory so deleted routes disappear on refresh.
     providers.models.set(providerID, [])
-    for (const info of models) {
+    for (const info of visible) {
       if ((info.owner === "trae" ? "trae" : "cliproxy") !== providerID) continue
       providers.models.update(providerID, info.id, (model) => {
         model.name = info.name

@@ -14,6 +14,12 @@ export type CatalogModel = {
   output?: number
 }
 
+// Prefer Max in model pickers while keeping Standard callable at the proxy.
+export function preferTraeMax<T extends { id: string }>(models: T[], traeIDs: ReadonlySet<string>): T[] {
+  const ids = new Set(models.map((model) => model.id))
+  return models.filter((model) => !traeIDs.has(model.id) || !ids.has(`${model.id}-Max`))
+}
+
 type RemoteModel = {
   slug?: string
   id?: string
@@ -31,7 +37,7 @@ export function normalizeCatalog(
   owners: ReadonlyMap<string, string>,
   outputCaps: ReadonlyMap<string, number>,
 ): CatalogModel[] {
-  return entries.flatMap((entry) => {
+  const models = entries.flatMap((entry) => {
     const id = entry.slug ?? entry.id
     if (!id || MEDIA_MODEL_PATTERN.test(id) || entry.supported_in_api === false) return []
     if (entry.visibility && entry.visibility !== "list") return []
@@ -46,6 +52,7 @@ export function normalizeCatalog(
       ...(output ? { output } : {}),
     }]
   })
+  return preferTraeMax(models, new Set(models.filter((model) => model.owner === "trae").map((model) => model.id)))
 }
 
 export async function fetchCatalog(signal: AbortSignal): Promise<CatalogModel[]> {

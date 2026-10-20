@@ -1,6 +1,13 @@
 import { expect, test } from "bun:test"
-import { normalizeCatalog } from "./catalog"
+import { normalizeCatalog, preferTraeMax } from "./catalog"
 import { applyCatalog } from "../opencode/plugins/trae/provider"
+
+test("prefers Trae Max only when available and leaves other provider pairs visible", () => {
+  const entries = ["Trae", "Trae-Max", "Single", "Other", "Other-Max"].map((id) => ({ slug: id }))
+  const models = normalizeCatalog(entries, new Map([["Trae", "trae"], ["Trae-Max", "trae"], ["Single", "trae"]]), new Map())
+  expect(models.map((model) => model.id)).toEqual(["Trae-Max", "Single", "Other", "Other-Max"])
+  expect(preferTraeMax([{ id: "Trae" }, { id: "Trae-Max" }, { id: "Single" }], new Set(["Trae", "Single"]))).toEqual([{ id: "Trae-Max" }, { id: "Single" }])
+})
 
 test("filters media and hidden routes and supplements Trae output limits", () => {
   const models = normalizeCatalog([
