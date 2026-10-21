@@ -80,6 +80,8 @@ if (result.exitCode !== 0) {
 
 Take a fresh snapshot afterward. The editor update is asynchronous: an `innerText` read immediately after paste returned the old placeholder in the live experiment, while the subsequent snapshot contained all three lines correctly.
 
+When editing an existing sent message (`contextmenu` → `Edit Message`), `document.execCommand('selectAll')` only selects the first paragraph in Slate; clear the edit box with `chrome-devtools press_key <pageId> "Meta+a"` (or `"Control+a"`) and `"Backspace"` before pasting, then click the `Save` button by snapshot UID.
+
 ## Extract a fresh device authorization link
 
 Run this on the actual device-denial page. It clicks the named button and waits up to two seconds for a new matching iframe URL. If none appears, inspect new tabs and the DOM instead of inventing a link.

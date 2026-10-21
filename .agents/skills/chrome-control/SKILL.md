@@ -5,12 +5,12 @@ description: Control the user's real, signed-in Chrome Dev browser (their tabs, 
 
 # 🌐 Chrome Control: drive the user's real Chrome
 
-Antigravity has no built-in equivalent of the Claude or Codex Chrome extensions.
-We use [chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp) instead.
+Antigravity, Cursor, Grok, etc. have no built-in equivalent of the Claude or Codex Chrome extensions.
+Agents that aren't Claude or Codex should use [chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp) instead.
 
 > [!IMPORTANT]
 > By default, chrome-devtools-mcp and the `chrome-devtools` CLI **launch a new, separate, signed-out Chrome profile**.
-> That is never what we want. Always attach to the running browser with `--autoConnect --channel=dev`.
+> That is rarely what we want. Always attach to the running browser with `--autoConnect --channel=dev`.
 > If you see `about:blank` as the only page, you are in the wrong browser. Never sign in there.
 
 ## ✅ Setup (one time per machine)
@@ -94,4 +94,4 @@ Do **not** probe `http://127.0.0.1:9222/json/version`: the server Chrome starts 
 | CLI hits an unrelated process / stale daemon | Stale daemon pid or socket file | `chrome-devtools stop`, then start again |
 | Devbox (headless Linux) | There is no real Chrome there | Out of scope; any Chrome there is a separate headless profile |
 
-When stuck, read the source: `~/code/github.com/google/chrome-devtools-mcp` (`src/BrowserManager.ts` `#connect`, `docs/cli.md`).
+When stuck, read the source: `~/code/github.com/google/` (`src/BrowserManager.ts` `#connect`, `docs/cli.md`, etc.).
