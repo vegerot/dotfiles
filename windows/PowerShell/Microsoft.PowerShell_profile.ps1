@@ -33,6 +33,46 @@ function prompt {
 Set-Alias sap sl.exe
 Set-Alias filepilot "$env:LOCALAPPDATA\Voidstar\FilePilot\FPilot.exe"
 
+# Detect common AI coding harnesses:
+function Set-AgentEnvVariable {
+  if (-not $env:AGENT) {
+    if ($env:ANTIGRAVITY_AGENT) { $env:AGENT = "antigravity" }
+    elseif ($env:CODEX_THREAD_ID) { $env:AGENT = "codex" }
+    elseif ($env:CLAUDECODE) { $env:AGENT = "claude" }
+    elseif ($env:OPENCODE) { $env:AGENT = "opencode" }
+    elseif ($env:GROK_AGENT) { $env:AGENT = "grok" }
+    elseif ($env:CURSOR_AGENT) { $env:AGENT = "cursor" }
+    elseif ($env:DSH_SHELL) { $env:AGENT = "deepseek" }
+  }
+}
+Set-AgentEnvVariable
+
+function is_agent_harness {
+  [bool]($env:AGENT -or $env:ANTIGRAVITY_AGENT -or $env:CODEX_THREAD_ID -or $env:CLAUDECODE -or $env:OPENCODE -or $env:GROK_AGENT -or $env:CURSOR_AGENT -or $env:DSH_SHELL)
+}
+
+if ((is_agent_harness) -and -not $env:AGENT_SILENCE_HINTS) {
+  function psmux {
+    $cmd = Get-Command -CommandType Application -Name psmux.exe -ErrorAction SilentlyContinue
+    if (-not $cmd) {
+      $cmd = Get-Command -CommandType Application -Name psmux -ErrorAction SilentlyContinue
+    }
+    if (-not $cmd) {
+      [Console]::Error.WriteLine("psmux: command not found")
+      return
+    }
+    if ((is_agent_harness) -and -not $env:AGENT_SILENCE_HINTS) {
+      [Console]::Error.WriteLine('user note: the psmux source code is available at `findrepo psmux`. Silence by setting `AGENT_SILENCE_HINTS=1`')
+    }
+    if ($MyInvocation.ExpectingInput) {
+      $input | & $cmd @args
+    } else {
+      & $cmd @args
+    }
+  }
+  Set-Alias psmux.exe psmux
+}
+
 # Printing anything here corrupts scp/sftp and one-shot shells, which must stay silent.
 # -NonInteractive, -Command, -File and -EncodedCommand mean "run and exit" unless -NoExit is present.
 $commandLineArgs = [Environment]::GetCommandLineArgs()
