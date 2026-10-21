@@ -7,6 +7,11 @@
 
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete # make tab work like bash
 
+# fnm prepends the selected Node to PATH, including in one-shot shells.
+if (Get-Command fnm -ErrorAction SilentlyContinue) {
+  fnm env --use-on-cd --shell powershell | Out-String | Invoke-Expression
+}
+
 # Chocolatey profile
 $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
 if (Test-Path($ChocolateyProfile)) {
