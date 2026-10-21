@@ -53,7 +53,14 @@ fi
 cost_part=""
 cost=$(echo "$input" | jq -r '.cost.total_cost_usd // empty')
 if [ -n "$cost" ]; then
-  cost_part=" 💸\$$(printf '%.2f' "$cost")"
+  # Emoji tier by cost: <$1 🪙, <$5 💵, <$20 💸, otherwise 🔥 (awk handles float compare)
+  cost_emoji=$(awk -v c="$cost" 'BEGIN {
+    if (c < 1) print "🪙";
+    else if (c < 5) print "💵";
+    else if (c < 20) print "💸";
+    else print "🔥";
+  }')
+  cost_part=" ${cost_emoji}\$$(printf '%.2f' "$cost")"
 fi
 
 # --- Rate limits (Claude.ai subscribers only) ---
