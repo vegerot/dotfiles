@@ -162,7 +162,9 @@ local function VANILLA()
 		))
 
 		if vim.v.shell_error ~= 0 or root == "" then
-			if not quiet then
+			if quiet then
+				vim.cmd.lcd({ bang = true })
+			else
 				vim.api.nvim_echo({ { "Not in a git repo", "ErrorMsg" } }, true, { err = true })
 			end
 			return
@@ -174,8 +176,12 @@ local function VANILLA()
 	-- When opening a file, automatically cd to the git root
 	vim.api.nvim_create_autocmd("BufEnter", {
 		callback = function()
-			if vim.bo.buftype == "" and vim.api.nvim_buf_get_name(0) ~= "" then
-				Cdr("", true)
+			if vim.bo.buftype == "" then
+				if vim.api.nvim_buf_get_name(0) ~= "" then
+					Cdr("", true)
+				else
+					vim.cmd.lcd({ bang = true })
+				end
 			end
 		end,
 	})
@@ -454,8 +460,20 @@ local function PLUGINS()
 
 	AfterScreen(function()
 		local oil = RequireChecked("oil"); if oil ~= nil then
-			oil.setup({ columns = { "icon", "size", "mtime" } }); vim.keymap.set("n", "-", "<CMD>Oil<CR>",
-				{ desc = "Open parent directory" })
+			vim.api.nvim_create_autocmd({ "FileType", "BufEnter" }, {
+				desc = "Use the Oil directory as the window-local working directory",
+				callback = function()
+					if vim.bo.filetype == "oil" then
+						local dir = oil.get_current_dir()
+						if dir then vim.cmd.lcd(vim.fn.fnameescape(dir)) end
+					end
+				end,
+			})
+			oil.setup({
+				columns = { "icon", "size", "mtime" },
+				keymaps = { ["<C-p>"] = false },
+			})
+			vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 		end
 		local colorizer = RequireChecked("colorizer"); if colorizer ~= nil then
 			vim.o.termguicolors = true; colorizer.setup({ options = { parsers = { css = true }, display = { mode = { "virtualtext", "foreground" } } } })
@@ -1396,10 +1414,17 @@ AfterScreen(function()
 		vim.cmd.packadd("fff.nvim")
 		if vim.fn.exists(":FFFFind") == 2 then
 			vim.g.fff = { debug = { show_scores = true } }
-			vim.keymap.set("n", "<C-p>", ":FFFFind<CR>", { remap = true })
-			vim.keymap.set("n", "<C-f>",
-				function() require("fff").live_grep({ grep = { modes = { "fuzzy", "plain", "regex" } } }) end)
-			vim.keymap.set("n", "<C-S-F>", function() require("fff").live_grep_under_cursor() end)
+			vim.api.nvim_create_autocmd("User", {
+				pattern = "FFFOpen",
+				callback = function()
+					vim.defer_fn(function() require("fff.picker_ui.picker_ui").monitor_scan_progress(0) end, 50)
+				end,
+			})
+			vim.keymap.set("n", "<C-p>", function() require("fff").find_files({ cwd = vim.fn.getcwd() }) end)
+			vim.keymap.set("n", "<C-f>", function()
+				require("fff").live_grep({ cwd = vim.fn.getcwd(), grep = { modes = { "fuzzy", "plain", "regex" } } })
+			end)
+			vim.keymap.set("n", "<C-S-F>", function() require("fff").live_grep_under_cursor({ cwd = vim.fn.getcwd() }) end)
 		else
 			print("fff.nvim not installed.  Not loading fff.nvim")
 		end
