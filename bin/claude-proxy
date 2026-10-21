@@ -1,0 +1,2 @@
+#!/bin/sh
+exec bun "$HOME/.config/cliproxy/claude.ts" "$@"
