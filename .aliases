@@ -55,10 +55,33 @@ if is_agent_harness && [ -z "${AGENT_SILENCE_HINTS:-}" ]; then
   }
 
   nvim() {
+    if ! type nvim >/dev/null 2>&1; then
+      return 127
+    fi
     if [[ -z "${AGENT_SILENCE_HINTS:-}" ]]; then
       echo 'user note: the nvim source code is available at `findrepo neovim`. Silence by setting `AGENT_SILENCE_HINTS=1`' 1>&2
     fi
     command nvim "$@"
+  }
+
+  bytedcli() {
+    if ! type bytedcli >/dev/null 2>&1; then
+      return 127
+    fi
+    if [[ -z "${AGENT_SILENCE_HINTS:-}" ]]; then
+      echo 'user note: the bytedcli source code is available at `findrepo bytedcli`. Silence by setting `AGENT_SILENCE_HINTS=1`' 1>&2
+    fi
+    command bytedcli "$@"
+  }
+
+  adb() {
+    if ! type adb >/dev/null 2>&1; then
+      return 127
+    fi
+    if [[ -z "${AGENT_SILENCE_HINTS:-}" ]]; then
+      echo 'user note: the adb source code is available at `~/code/googlesource.com/android/platform/packages/modules/adb`. Silence by setting `AGENT_SILENCE_HINTS=1`' 1>&2
+    fi
+    command adb "$@"
   }
 fi
 
