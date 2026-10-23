@@ -34,14 +34,6 @@
       "url": "https://agent.robinhood.com/mcp/trading",
       "enabled": false,
     },
-    "Chrome DevTools": {
-      "type": "local",
-      "command": [
-        "bunx",
-        "chrome-devtools-mcp",
-        "--channel=dev"
-      ]
-    },
     "openrouter": {
       "type": "remote",
       "url": "https://mcp.openrouter.ai/mcp",
