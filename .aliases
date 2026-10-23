@@ -79,7 +79,10 @@ if is_agent_harness && [ -z "${AGENT_SILENCE_HINTS:-}" ]; then
       return 127
     fi
     if [[ -z "${AGENT_SILENCE_HINTS:-}" ]]; then
-      echo 'user note: the bytedcli source code is available at `findrepo bytedcli`. Silence by setting `AGENT_SILENCE_HINTS=1`' 1>&2
+		echo 'user note: the bytedcli source code is available at `findrepo bytedcli`. Silence by setting `AGENT_SILENCE_HINTS=1`' 1>&2
+		if [[ $1 == "lark" ]]; then
+			echo 'user note: `bytedcli lark` is a wrapper around `findrepo larksuite/cli`. Silence by setting `AGENT_SILENCE_HINTS=1`' 1>&2
+		fi
     fi
     command bytedcli "$@"
   }
