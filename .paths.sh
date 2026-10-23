@@ -150,6 +150,9 @@ _aime_socat_path() {
 _aime_socat_path
 unset -f _aime_socat_path
 
+# CAB/CloudIDE/devflow
+[[ -d "$HOME/.devflow-cli/bin" ]] && export PATH="$PATH:$HOME/.devflow-cli/bin"
+
 # make sure this is the last thing
 export PATH="$PATH:./node_modules/.bin:."
 
