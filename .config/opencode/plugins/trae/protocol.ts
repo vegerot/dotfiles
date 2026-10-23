@@ -343,6 +343,18 @@ function chunk(model: string, delta: Readonly<Record<string, unknown>>, finishRe
   })
 }
 
+// Grok's chat-completions decoder requires `id` on every SSE chunk, including the usage trailer.
+function usageChunk(model: string, usage: Readonly<Record<string, unknown>>) {
+  return JSON.stringify({
+    id: `chatcmpl-${crypto.randomUUID()}`,
+    object: "chat.completion.chunk",
+    created: Math.floor(Date.now() / 1_000),
+    model,
+    choices: [],
+    usage,
+  })
+}
+
 export function translateFinishReason(reason: string | null | undefined) {
   if (reason === "tool_use" || reason === "function_call") return "tool_calls"
   if (reason === "max_tokens") return "length"
@@ -370,18 +382,15 @@ function translate(eventName: string, event: TraeEvent, model: string) {
     if (Object.keys(delta).length) return `data: ${chunk(model, delta)}\n\n`
   }
   if (eventName === "token_usage") {
-    return `data: ${JSON.stringify({
-      choices: [],
-      usage: {
-        prompt_tokens: event.prompt_tokens,
-        completion_tokens: event.completion_tokens,
-        total_tokens: event.total_tokens,
-        prompt_tokens_details: {
-          cached_tokens: event.cache_read_input_tokens ?? 0,
-          cache_write_tokens: event.cache_creation_input_tokens ?? 0,
-        },
-        completion_tokens_details: { reasoning_tokens: event.reasoning_tokens ?? 0 },
+    return `data: ${usageChunk(model, {
+      prompt_tokens: event.prompt_tokens,
+      completion_tokens: event.completion_tokens,
+      total_tokens: event.total_tokens,
+      prompt_tokens_details: {
+        cached_tokens: event.cache_read_input_tokens ?? 0,
+        cache_write_tokens: event.cache_creation_input_tokens ?? 0,
       },
+      completion_tokens_details: { reasoning_tokens: event.reasoning_tokens ?? 0 },
     })}\n\n`
   }
   if (eventName === "done") {

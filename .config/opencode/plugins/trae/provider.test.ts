@@ -370,6 +370,10 @@ describe("Trae raw-chat stream to OpenAI Chat SSE", () => {
       prompt_tokens_details: { cached_tokens: 3, cache_write_tokens: 2 },
       completion_tokens_details: { reasoning_tokens: 1 },
     })
+    expect(frames[1].object).toBe("chat.completion.chunk")
+    expect(frames[1].model).toBe("GPT-5.6-Sol")
+    expect(frames[1].choices).toEqual([])
+    expect(frames[1].id.startsWith("chatcmpl-")).toBe(true)
     expect(frames[2].choices[0].finish_reason).toBe("tool_calls")
     expect(output).toEndWith("data: [DONE]\n\n")
   })

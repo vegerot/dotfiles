@@ -11,7 +11,7 @@ claude-proxy --model grok-4.7
 claude-proxy --model GPT-6.1-Sol-Max --effort high
 ```
 
-The default proxy model is Trae GPT-6.1-Sol-Max. Claude's built-in Sonnet/Opus
+The default proxy model is Antigravity Claude Opus 5.5. Claude's built-in Sonnet/Opus
 aliases route to CLIProxyAPI's Claude Sonnet/Opus models; its background Haiku
 alias routes to Seed-2.1-Turbo. The proxy uses the Anthropic Messages API at
 `http://127.0.0.1:8317`, with a local client token. `CLIPROXY_URL` and
