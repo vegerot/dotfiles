@@ -30,11 +30,11 @@ It talks to a background daemon. Two traps, both observed:
 So, once per session, start the daemon in a background task that stays alive (`IsDaemon=true`):
 
 ```powershell
-chrome-devtools start --autoConnect --channel=dev --categoryExtensions --experimentalVision --experimentalIncludeAllPages; while ($true) { Start-Sleep 30 }
+bunx chrome-devtools-mcp@latest start --autoConnect --channel=dev --categoryExtensions --experimentalVision --experimentalIncludeAllPages; while ($true) { Start-Sleep 30 }
 ```
 
 ```bash
-chrome-devtools start --autoConnect --channel=dev --categoryExtensions --experimentalVision --experimentalIncludeAllPages && sleep infinity
+bunx chrome-devtools-mcp@latest start --autoConnect --channel=dev --categoryExtensions --experimentalVision --experimentalIncludeAllPages && sleep infinity
 ```
 
 Then run commands normally and chain them:
