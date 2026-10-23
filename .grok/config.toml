@@ -42,7 +42,23 @@ subagent_model_inheritance = true
 lsp_tools = true
 
 [compat.claude]
+skills = false
+rules = false
+agents = false
+mcps = false
 hooks = false
+
+# Same marker Grok writes when you dismiss /import-claude.
+# Stops live reads of Claude permissions, env, hooks, and plugin enablement.
+[claude_compat]
+imported = true
+
+[mcp_servers.fff]
+command = "fff-mcp"
+
+[mcp_servers.dayflow]
+command = "/Applications/Dayflow.app/Contents/Helpers/dayflow"
+args = ["mcp"]
 
 [model.frontier-throughput-0]
 name = "Frontier throughput p=0"
