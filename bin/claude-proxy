@@ -1,9 +1,33 @@
 #!/usr/bin/env bun
 // Generate Claude Code's picker from the same chat catalog as Pi and OpenCode.
-import { mkdtemp, rm, writeFile } from "node:fs/promises"
-import { tmpdir } from "node:os"
+// `--desktop` instead points Claude Desktop's third-party (3P) gateway mode at the proxy.
+import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises"
+import { homedir, tmpdir } from "node:os"
 import { join } from "node:path"
 import { fetchCatalog, PROXY_URL, PROXY_KEY } from "../.config/cliproxy/catalog"
+
+if (process.argv.includes("--desktop")) {
+  // Fixed so reruns overwrite the same entry in Desktop's configuration library.
+  const id = "c11a0de5-0000-4000-8000-c11a0de5c0de"
+  const library = join(homedir(), "Library/Application Support/Claude-3p/configLibrary")
+  await mkdir(library, { recursive: true, mode: 0o700 })
+  const write = (name: string, value: unknown) =>
+    writeFile(join(library, name), `${JSON.stringify(value, null, 2)}\n`, { mode: 0o600 })
+  // Desktop discovers models from the proxy's /v1/models.
+  await write(`${id}.json`, {
+    inferenceProvider: "gateway",
+    // Desktop appends /v1/messages and /v1/models itself.
+    inferenceGatewayBaseUrl: PROXY_URL.replace(/\/v1\/?$/, ""),
+    inferenceGatewayAuthScheme: "bearer",
+    inferenceCredentialKind: "static",
+    inferenceGatewayApiKey: PROXY_KEY,
+    // One picker entry per model, using 1M context where /v1/models advertises it.
+    modelPrefer1mContext: true,
+  })
+  await write("_meta.json", { appliedId: id, entries: [{ id, name: "CLIProxyAPI", provider: "gateway" }] })
+  console.log(`Wrote ${library}; quit and relaunch Claude Desktop, then choose the third-party option.`)
+  process.exit()
+}
 
 const models = await fetchCatalog(new AbortController().signal)
 if (!models.length) throw new Error("CLIProxyAPI returned no chat models")
