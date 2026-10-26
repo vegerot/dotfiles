@@ -25,16 +25,18 @@ The CLI chains well: loops, pipes, and several actions in one shell command.
 It talks to a background daemon. Two traps, both observed:
 
 - If no daemon is running, any command **auto-starts an isolated, headless, blank browser**.
-- In Antigravity, a daemon started by `chrome-devtools start` **dies when that command finishes**.
+- On **Windows** in Antigravity (`exebox` Job Object), a daemon started by `chrome-devtools start` **dies when that command finishes** (on macOS and unsandboxed Linux, `setsid()` detaches it cleanly).
 
-So, once per session, start the daemon in a background task that stays alive (`IsDaemon=true`):
-
-```powershell
-bunx chrome-devtools-mcp@latest start --autoConnect --channel=dev --categoryExtensions --experimentalVision --experimentalIncludeAllPages; while ($true) { Start-Sleep 30 }
-```
+So, once per session, start the daemon first:
 
 ```bash
-bunx chrome-devtools-mcp@latest start --autoConnect --channel=dev --categoryExtensions --experimentalVision --experimentalIncludeAllPages && sleep infinity
+# macOS / Linux (synchronous — detaches cleanly on its own)
+bunx chrome-devtools-mcp@latest start --autoConnect --channel=dev --categoryExtensions --experimentalVision --experimentalIncludeAllPages
+```
+
+```powershell
+# Windows (run as a persistent background task, e.g. IsDaemon=true, so the Job Object stays open)
+bunx chrome-devtools-mcp@latest start --autoConnect --channel=dev --categoryExtensions --experimentalVision --experimentalIncludeAllPages; while ($true) { Start-Sleep 30 }
 ```
 
 Then run commands normally and chain them:
@@ -47,7 +49,7 @@ chrome-devtools click 3 "2_5"; chrome-devtools evaluate_script "() => document.t
 
 - Required arguments are positional; check `chrome-devtools <command> --help` when unsure (`take_screenshot 3 --filePath x.png`, not `--pageId 3`).
 - Prefer `take_snapshot` (text tree with element `uid`s) and `evaluate_script` over screenshots.
-- Stop with `chrome-devtools stop` and kill the background task.
+- Stop with `chrome-devtools stop` (on Windows, also kill the background task).
 - MCP-only tools: `wait_for`, `fill_form`. Use the MCP for those.
 
 ## ⚡ The MCP tools (fallback)
