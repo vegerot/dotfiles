@@ -13,7 +13,16 @@ if (process.argv.includes("--desktop")) {
   await mkdir(library, { recursive: true, mode: 0o700 })
   const write = (name: string, value: unknown) =>
     writeFile(join(library, name), `${JSON.stringify(value, null, 2)}\n`, { mode: 0o600 })
-  // Desktop discovers models from the proxy's /v1/models.
+  // Same filtered catalog as the terminal picker. Desktop only shows the Effort
+  // control for IDs in its own table, so Antigravity Claude uses the proxy's
+  // claude-opus-5/claude-sonnet-5 aliases, and other models the proxy's
+  // claude-fable-5-dd-<reversed id> form, which Desktop's model filter accepts.
+  const desktopId = (id: string) =>
+    id.startsWith("claude-") ? id.replace(/^(claude-(?:opus|sonnet)-5)-5-high$/, "$1")
+      : `claude-fable-5-dd-${[...id].reverse().join("")}`
+  const models = [...new Map((await fetchCatalog(new AbortController().signal)).map((model) =>
+    [desktopId(model.id), model])).entries()]
+  if (!models.length) throw new Error("CLIProxyAPI returned no chat models")
   await write(`${id}.json`, {
     inferenceProvider: "gateway",
     // Desktop appends /v1/messages and /v1/models itself.
@@ -21,8 +30,16 @@ if (process.argv.includes("--desktop")) {
     inferenceGatewayAuthScheme: "bearer",
     inferenceCredentialKind: "static",
     inferenceGatewayApiKey: PROXY_KEY,
-    // One picker entry per model, using 1M context where /v1/models advertises it.
-    modelPrefer1mContext: true,
+    // Unset means an empty allowlist, which forces a locked sandbox on Code sessions.
+    coworkEgressAllowedHosts: ["*"],
+    // The first entry is the default; full IDs let Desktop skip /v1/models discovery.
+    inferenceModels: [...models]
+      .sort(([a], [b]) => Number(b === "claude-opus-5") - Number(a === "claude-opus-5"))
+      .map(([name, model]) => ({
+        name,
+        labelOverride: model.name.replace(/ \(High\)$/, ""),
+        ...((model.context ?? 0) >= 1_000_000 && { supports1m: true, prefer1m: true }),
+      })),
   })
   await write("_meta.json", { appliedId: id, entries: [{ id, name: "CLIProxyAPI", provider: "gateway" }] })
   console.log(`Wrote ${library}; quit and relaunch Claude Desktop, then choose the third-party option.`)
