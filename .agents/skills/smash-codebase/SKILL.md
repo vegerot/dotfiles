@@ -35,3 +35,5 @@ Brawl:
 Dolphin:
 
 - `~/code/github.com/dolphin-emu/dolphin` — upstream GameCube and Wii emulator. `origin` is `dolphin-emu/dolphin` and the working branch is `master`. This clone also has remotes `brawlback-dolphin` (`Brawlback-Team/Project-Plus-Dolphin`), `project-plus-dolphin` (`Project-Plus-Development-Team/Project-Plus-Dolphin`), and `ishiiruka` (`project-slippi/Ishiiruka`). The `ishiiruka` remote tracks only `slippi`, as `ishiiruka/slippi`; that branch is Slippi's Dolphin fork (Faster Melee lineage) and records and plays back `.slp` files.
+
+When running this skill, fetch/rebase any repos you dive deep into.
