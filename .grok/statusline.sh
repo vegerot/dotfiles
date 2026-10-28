@@ -46,7 +46,14 @@ fi
 
 cost_part=""
 if [ -n "$cost" ]; then
-  cost_part=" 💸\$$(printf '%.2f' "$cost")"
+  # Same tiers as ~/.claude/statusline-command.sh: <$1 🪙, <$5 💵, <$20 💸, else 🔥.
+  cost_emoji=$(awk -v c="$cost" 'BEGIN {
+    if (c < 1) print "🪙";
+    else if (c < 5) print "💵";
+    else if (c < 20) print "💸";
+    else print "🔥";
+  }')
+  cost_part=" ${cost_emoji}\$$(printf '%.2f' "$cost")"
 fi
 
 effort_part=""
