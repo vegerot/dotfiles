@@ -25,7 +25,8 @@ The CLI chains well: loops, pipes, and several actions in one shell command.
 It talks to a background daemon. Two traps, both observed:
 
 - If no daemon is running, any command **auto-starts an isolated, headless, blank browser**.
-- On **Windows** in Antigravity (`exebox` Job Object), a daemon started by `chrome-devtools start` **dies when that command finishes** (on macOS and unsandboxed Linux, `setsid()` detaches it cleanly).
+- On **Windows**, a daemon started with `bunx chrome-devtools-mcp@latest start` **dies right after `start` exits 0**, so `start` looks successful. Observed in Antigravity (`exebox` Job Object) and in Cursor's shell (tested 2026-10-28: `bunx` start leaves no daemon, installed `chrome-devtools start` leaves one, same conditions). The mechanism is not confirmed. Use the installed binary there. On macOS and unsandboxed Linux, `setsid()` detaches the daemon cleanly.
+- The CLI connects to Chrome on the **first tool call**, not at `start`. A healthy `start` or `status` does not prove Chrome is attached.
 
 So, once per session, start the daemon first:
 
@@ -35,9 +36,11 @@ bunx chrome-devtools-mcp@latest start --autoConnect --channel=dev --categoryExte
 ```
 
 ```powershell
-# Windows (run as a persistent background task, e.g. IsDaemon=true, so the Job Object stays open)
-bunx chrome-devtools-mcp@latest start --autoConnect --channel=dev --categoryExtensions --experimentalVision --experimentalIncludeAllPages; while ($true) { Start-Sleep 30 }
+# Windows: use the INSTALLED binary, not bunx (install once: bun add --global chrome-devtools-mcp)
+chrome-devtools start --autoConnect --channel=dev --categoryExtensions --experimentalVision --experimentalIncludeAllPages
 ```
+
+**Before any other command, verify the daemon**: `chrome-devtools status` must say "running" and its `args` must contain `--auto-connect`. If it says "not running", or `args` is only `["--viaCli"]`, you are about to use (or already used) an isolated blank browser. Stop it with `chrome-devtools stop` and start again.
 
 Then run commands normally and chain them:
 
@@ -49,7 +52,9 @@ chrome-devtools click 3 "2_5"; chrome-devtools evaluate_script "() => document.t
 
 - Required arguments are positional; check `chrome-devtools <command> --help` when unsure (`take_screenshot 3 --filePath x.png`, not `--pageId 3`).
 - Prefer `take_snapshot` (text tree with element `uid`s) and `evaluate_script` over screenshots.
-- Stop with `chrome-devtools stop` (on Windows, also kill the background task).
+- Element `uid`s change after each navigation (the prefix increments, e.g. `1_5` becomes `4_5`). Take a fresh `take_snapshot` before clicking.
+- `get_network_request` takes `--reqid N` (after the page id), not a bare number.
+- Stop with `chrome-devtools stop`.
 - MCP-only tools: `wait_for`, `fill_form`. Use the MCP for those.
 
 ## ⚡ The MCP tools (fallback)
@@ -90,6 +95,8 @@ Do **not** probe `http://127.0.0.1:9222/json/version`: the server Chrome starts 
 |---|---|---|
 | No port file / `Could not connect to Chrome` | Remote debugging is off or Chrome is closed | Turn it on at `chrome://inspect/#remote-debugging` |
 | Only `about:blank`, signed out | Launched a new profile instead of attaching | Add `--autoConnect --channel=dev`; for the CLI, see the daemon traps above |
+| `start` exited 0 but `status` says "not running" (Windows) | `bunx ... start` daemon died with its parent | Use the installed `chrome-devtools start` |
+| `status` shows `args=["--viaCli"]` only | A command auto-started an isolated daemon before yours | `chrome-devtools stop`, start with `--autoConnect`, check `status` |
 | Many "Allow remote debugging?" prompts | A new connection per action (one-off scripts, CLI without a daemon) | Use the MCP, or one long-lived CLI daemon |
 | Linux Flatpak Chrome Dev: port file not found | Profile lives in `~/.var/app/com.google.ChromeDev/config/google-chrome-unstable` | `ln -s ~/.var/app/com.google.ChromeDev/config/google-chrome-unstable ~/.config/google-chrome-unstable` |
 | macOS `/browser` subagent: `Could not find DevToolsActivePort for chrome at .../Google/Chrome/` | `/browser` looks in the Chrome Stable profile | `ln -sf ".../Google/Chrome Dev/DevToolsActivePort" ".../Google/Chrome/DevToolsActivePort"` |
