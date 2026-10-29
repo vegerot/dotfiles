@@ -34,8 +34,8 @@ command = "~/.grok/statusline.sh"
 privacy_banner_acked = "2026-10-13T22:23:03Z"
 
 [models]
-default = "grok-4.7"
-default_reasoning_effort = "xhigh"
+default = "grok-4.7-build-fast"
+default_reasoning_effort = "high"
 
 [features]
 subagent_model_inheritance = true
@@ -48,8 +48,6 @@ agents = false
 mcps = false
 hooks = false
 
-# Same marker Grok writes when you dismiss /import-claude.
-# Stops live reads of Claude permissions, env, hooks, and plugin enablement.
 [claude_compat]
 imported = true
 
