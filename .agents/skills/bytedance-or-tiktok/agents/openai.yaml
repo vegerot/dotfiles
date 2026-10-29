@@ -1,0 +1,4 @@
+interface:
+  display_name: "ByteDance or TikTok"
+  short_description: "Quick context for ByteDance and TikTok work"
+  default_prompt: "Use $bytedance-or-tiktok to explain this internal term or tool briefly and point me to the right source."

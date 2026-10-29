@@ -1,0 +1,4 @@
+interface:
+  display_name: "ByteDance Deep Research"
+  short_description: "Deep investigations across ByteDance sources"
+  default_prompt: "Use $bytedance-deep-research for a deep investigation of this ByteDance system, checking sources and explaining the mechanism."
