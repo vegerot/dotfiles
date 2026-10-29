@@ -82,7 +82,7 @@ main() {
 	fi
 	if [[ -z "$commanddescription" ]]; then
 		# we'll never get three duds in a row, right?
-		commanddescription="randomcowcommand - a script that works sometimes 😢\n"
+		commanddescription="randomcowcommand - a script that works sometimes 😢\n\n Bad manpage: $manpagefile"
 	fi
 	cow=$(format_message "$commanddescription")
 	# download from github.com/arsham/rainbow

@@ -24,6 +24,7 @@ export PATH="$HOME/.local/bin:$HOME/dotfiles/bin:/sbin:$PATH"
 # My own scripts. They go before the system directories, so they win.
 [ -d "$HOME/.claude/my-scripts" ] && export PATH="$HOME/.claude/my-scripts:$PATH"
 [ -d "$HOME/.codex/my-scripts" ] && export PATH="$HOME/.codex/my-scripts:$PATH"
+[ -d "$HOME/.local/share/coco" ] && export PATH="$HOME/.local/share/coco:$PATH"
 
 
 ### -----------------------------------
