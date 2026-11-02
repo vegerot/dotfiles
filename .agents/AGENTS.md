@@ -26,10 +26,8 @@ For complex plans or refactors, consult the $five-step-engineering-algorithm if 
 
 ## 🛠️ Command preferences
 
-- 💻 For any file search or grep in the current git-indexed directory, prefer the fff tools for all file search operations.
-    + 🔎 For general file search and grep, prefer the fff tools over builtin search tools, prefer builtin search tools over `rg` and `fd` in the Bash tool, and prefer `rg` and `fd` over `grep` and `find` in the Bash tool.
-    + When using the Bash tool (and can't use the fff MCP), prefer ⚡️ `rg` and `fd` over 🐌 `grep` and `find`.
-    + 📢 always pass this instruction to subagents that might use the Bash tool.
+- 🔎 For file search and grep, prefer the fff tools, then the builtin search tools, then ⚡️ `rg` and `fd` in the Bash tool over 🐌 `grep` and `find`.
+    + 📢 Pass this instruction to subagents that might use the Bash tool.
 - 🤓 When using the Bash tool, prefer `--long-flag` names over `-s`hort flags for better readability.
 - 📏 When using the Bash (or any shell) tool, break up long commands into multiple lines for better readability.
 - 🚫🏠 Do not search the home directory or `/` broadly (for example `fd` over `~/Library` or `~` with no narrow path). Ask first. 🙋 Broad scans trigger a permission prompt for every app on the Mac.
@@ -48,7 +46,7 @@ For complex plans or refactors, consult the $five-step-engineering-algorithm if 
 
 ## 🤖 AI attribution
 
-- ✍️ Append the `Co-Authored-By` trailer to every pull request description or comment that is 💯% AI-written. Example: `Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>`.
+- ✍️ Append the `Co-Authored-By` trailer to every pull request description or comment that is 💯% AI-written, naming the model that wrote it: `Co-Authored-By: Claude <model name> <noreply@anthropic.com>`.
 - 🧑‍🤝‍🧑 Do not add the trailer when the user wrote or rewrote the text. Ask the user when the split is unclear.
 - 📋 Repository rules still apply in addition. Example: neovim wants an `AI-assisted: <tool>` trailer in commit messages.
 
