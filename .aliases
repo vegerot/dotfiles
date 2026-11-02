@@ -186,16 +186,15 @@ fi
 
 if type sl >/dev/null 2>&1; then
   function sl() {
-	  local extra_args
-    if is_agent_harness && [[ -z "${AGENT_SILENCE_HINTS:-}" ]]; then
-      echo 'user note: if you need extra help, run the sapling skill and see `findrepo sapling`. Silence this message by setting `AGENT_SILENCE_HINTS=1`' 1>&2
-	  extra_args="--pager=never"
+    local -a extra_args=()
+    if is_agent_harness; then
+      [[ -z "${AGENT_SILENCE_HINTS:-}" ]] && echo 'user note: if you need extra help, run the sapling skill and see `findrepo sapling`. Silence this message by setting `AGENT_SILENCE_HINTS=1`' 1>&2
+      extra_args+=(--pager=never)
     fi
-    if [[ "$PWD" =~ "code.byted.or" ]]; then
-      command sl --config 'ui.username=Max 🕺 Coplan <max.coplan@bytedance.com>' "$extra_args" "$@"
-    else
-      command sl "$extra_args" $@
+    if [[ "$PWD" == *code.byted.or* ]]; then
+      extra_args+=(--config 'ui.username=Max 🕺 Coplan <max.coplan@bytedance.com>')
     fi
+    command sl "${extra_args[@]}" "$@"
   }
 
   alias sst="sl status && sl ssl"
