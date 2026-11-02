@@ -96,6 +96,26 @@ if is_agent_harness && [ -z "${AGENT_SILENCE_HINTS:-}" ]; then
     fi
     command adb "$@"
   }
+
+  cmux() {
+	if ! type cmux >/dev/null 2>&1; then
+      return 127
+    fi
+    if [[ -z "${AGENT_SILENCE_HINTS:-}" ]]; then
+      echo 'user note: the cmux source code is available at `findrepo cmux`. Silence by setting `AGENT_SILENCE_HINTS=1`' 1>&2
+    fi
+    command cmux "$@"
+  }
+
+  zsh() {
+	if ! type zsh >/dev/null 2>&1; then
+      return 127
+    fi
+    if [[ -z "${AGENT_SILENCE_HINTS:-}" ]]; then
+      echo 'user note: the zsh source code is available at `findrepo zsh`. Silence by setting `AGENT_SILENCE_HINTS=1`' 1>&2
+    fi
+    command zsh "$@"
+  }
 fi
 
 # Grok sets GROK_AGENT=1 before zsh reads startup files, then parses
@@ -125,7 +145,7 @@ fi
 if type git > /dev/null; then
   function git() {
     if is_agent_harness && [[ -z "${AGENT_SILENCE_HINTS:-}" ]]; then
-      echo 'user note: The git source is available for reference at `findrepo git/git`. Prefer sapling (`sl`) over git by default. Silence this message by setting `AGENT_SILENCE_HINTS=1`' 1>&2
+      echo 'user note: The git source is available for reference at `~/code/github.com/git/git/`. Prefer sapling (`sl`) over git by default. Silence this message by setting `AGENT_SILENCE_HINTS=1`' 1>&2
     fi
     if [[ "$PWD" =~ "code.byted.or" ]]; then
       command git -c 'user.name=Max 🕺 Coplan' -c 'user.email=max.coplan@bytedance.com' "$@"
@@ -166,13 +186,15 @@ fi
 
 if type sl >/dev/null 2>&1; then
   function sl() {
+	  local extra_args
     if is_agent_harness && [[ -z "${AGENT_SILENCE_HINTS:-}" ]]; then
       echo 'user note: if you need extra help, run the sapling skill and see `findrepo sapling`. Silence this message by setting `AGENT_SILENCE_HINTS=1`' 1>&2
+	  extra_args="--pager=never"
     fi
     if [[ "$PWD" =~ "code.byted.or" ]]; then
-      command sl --config 'ui.username=Max 🕺 Coplan <max.coplan@bytedance.com>' $@
+      command sl --config 'ui.username=Max 🕺 Coplan <max.coplan@bytedance.com>' "$extra_args" "$@"
     else
-      command sl $@
+      command sl "$extra_args" $@
     fi
   }
 
@@ -195,6 +217,14 @@ if ! type trae >/dev/null 2>&1 && type trae-cn >/dev/null 2>&1;then
 fi
 alias traex-frontier="traex --profile frontier"
 alias agy="agy --dangerously-skip-permissions --remote-control"
+if [[ -n "${ZSH_VERSION:-}" && -n "${CMUX_SHELL_INTEGRATION_DIR:-}" ]]; then
+  _restore_agy_alias() {
+    alias agy="agy --dangerously-skip-permissions --remote-control"
+    add-zsh-hook -d precmd _restore_agy_alias
+  }
+  autoload -Uz add-zsh-hook
+  add-zsh-hook precmd _restore_agy_alias
+fi
 
 # k8s
 if type kubectl >/dev/null 2>&1; then
