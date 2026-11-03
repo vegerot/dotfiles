@@ -50,9 +50,9 @@ cdp() {
 
 repo() {
 	if [[ -n ${1:-} ]]; then
-		cd $(findrepo "$1" | fzf)
+		cd $(findrepo --fast "$1" | fzf)
 	else
-		cd $(findrepo | fzf)
+		cd $(findrepo --fast | fzf)
 	fi
 }
 
