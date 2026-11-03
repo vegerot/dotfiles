@@ -1,6 +1,26 @@
 # Browser recipes and evidence
 
-Read this when using the CLI or when editor/authentication mechanics need inspection. Selectors below were observed, so inspect the current DOM and snapshot before using them.
+Read this for each driver's steps, or when editor/authentication mechanics need inspection. Selectors below were observed, so inspect the current DOM and snapshot before using them.
+
+## Claude in Chrome (preferred)
+
+Observed November 2, 2026 in Claude Code on the work MacBook. Load the tools in one ToolSearch: `list_connected_browsers`, `select_browser`, `tabs_context_mcp`, `navigate`, `computer`, `javascript_tool`, `find`, `read_page`, `browser_batch`, `tabs_close_mcp`.
+
+1. `list_connected_browsers` lists each Chrome profile that has the extension. That session listed `Personal Chrome - work laptop` and `Browser 2`; `Browser 2` was the work profile. Lark shows an error in any other profile.
+2. `navigate` to `https://bytedance.larkoffice.com/next/messenger/`. Without a `tabId` it creates this session's tab group. Grey skeleton rows showed for about 3 seconds. Wait, then take a scaled screenshot (`scale: 0.6`).
+3. Click `Search (⌘+K)` in the left sidebar. The modal (`One search, find everything.`) left focus on its wrapper (`larklet-modal-wrapper`), so `document.execCommand('insertText')` reported nothing focused. Click the input itself, then `computer` `type` the query. A Chinese name typed correctly.
+4. Person results show the name and department. Group results below them say `Includes: <name>`. Click the person row for a direct chat, then check the header name and the recent history.
+5. Click the composer (placeholder `Communicate responsibly. Ensure message is publicly acceptable.`) and run the paste function below in `javascript_tool`. The code is a tool parameter, so no shell quoting is involved. First throw if `document.activeElement` is not contenteditable or already holds a draft.
+6. Check the rows (below), click the Send button at the composer's bottom right (tooltip `Send (Enter)`), wait about 3 seconds, and screenshot. Then close the tab with `tabs_close_mcp`.
+
+Chain predictable steps with `browser_batch`, for example click, type, wait, screenshot. Coordinates always use the full-resolution frame, even when the screenshot was scaled.
+
+Check the draft's line structure from the editor rows, not `innerText`, which showed extra trailing blank lines made of zero-width spaces:
+
+```javascript
+[...document.activeElement.querySelectorAll('.ace-line')]
+  .map(row => row.innerText.replaceAll(String.fromCharCode(0x200b), ''))
+```
 
 ## CLI and browser profile
 
@@ -34,9 +54,13 @@ chrome-devtools start \
 
 `start` can restart the CLI daemon: inspect who is using it first. Keep the same profile and tab through authorization. Launching an isolated context is useful for a sign-in experiment, but loses the existing session and is inappropriate for the normal send.
 
+On macOS, attach to the running Chrome Dev with `--autoConnect --channel=dev` as `$chrome-control` describes. On November 2, 2026 a `list_pages` run with no daemon auto-started an isolated one (`status` showed `args=["--viaCli"]`). Stop that one and start again before using the browser.
+
+`new_page` opened Chrome's default profile, which was the personal profile on the work MacBook. To open Messenger in the work profile, inject a temporary `<a target="_blank">` into a tab already open in the work profile. Click its snapshot `uid` with `chrome-devtools click`, which is a trusted gesture, so the popup blocker allows it. Remove the link afterwards. This worked for internal consoles in October 2026 but has not been tried for Messenger.
+
 ## Search and real mentions
 
-Click Search using a fresh snapshot UID. `.appNavbar-search-input` was its observed DOM container. Focus the visible search editor, then insert a query with:
+Click Search using a fresh snapshot UID. `.appNavbar-search-input` was its observed DOM container in September 2026. By November 2026 Search opened a modal that left focus on its wrapper; click the modal's input first. Focus the visible search editor, then insert a query with:
 
 ```javascript
 () => {
@@ -52,7 +76,7 @@ In the chat composer, type `@`, wait for suggestions, and click the intended sug
 
 ## Paste full text without shell interpolation
 
-Run this JavaScript with Bun. Use an argument array to pass message text and JavaScript as literal arguments. Set the current page ID and message deliberately. Focus and verify the correct composer before this call; do not assume the first contenteditable belongs to the destination.
+With Claude in Chrome, run only the `browserFunction` body as an immediately invoked function in `javascript_tool`, with the message as a JavaScript string literal. With the CLI, run this JavaScript with Bun. Use an argument array to pass message text and JavaScript as literal arguments. Set the current page ID and message deliberately. Focus and verify the correct composer before this call; do not assume the first contenteditable belongs to the destination.
 
 ```javascript
 const pageId = 2; // Replace with the current page ID.
@@ -123,5 +147,6 @@ In the clean-session experiment the browser redirected to `accounts.feishu.cn/ac
 - Live experiments September 30, 2026: launched the saved profile, recovered from a partial Messenger shell after reload/initialization, searched for Max Coplan, opened the self chat, pasted three lines with shell-sensitive symbols and Unicode, selected a real self mention, and cleared the experiment draft. No test message was sent.
 - A separate isolated context reproduced QR-only sign-in; the QR screenshot was visually inspected, then that context's tab was closed. Device approval was not forced on the already-authorized saved profile. Its completion is established by the historical transcript.
 - A controlled DOM fixture with an old binding iframe, a newly generated matching iframe, and an unrelated final iframe verified that the extraction recipe selected the new link. The fixture was cleared afterward. This checks extraction logic, not live authorization completion.
+- Send conversation `3361fa2a-2d82-4e2a-a61a-51d1e2114ed2` (Claude Code), November 2, 2026, work MacBook: Claude in Chrome on the work profile. Searched a colleague by Chinese name, opened the direct chat, pasted a nine-line message with an emoji, confirmed nine `.ace-line` rows, sent with the Send button, and confirmed delivery in the chat and with `lark-cli im +chat-messages-list`. The search-modal focus trap and the extra trailing `innerText` lines were observed there.
 
 Note: This being a web UI, it's subject to change and be buggy.  Experiment with better ways to do things and if one is discovered, ask the user for permission to update this skill.
