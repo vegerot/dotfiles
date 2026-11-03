@@ -1,0 +1,1 @@
+{ "name": "session-cost", "version": "0.1.0", "description": "Shows this session's running cost in a band above the prompt, on every surface", "types": "./types/index.d.ts" }
