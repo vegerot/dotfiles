@@ -94,3 +94,29 @@ Observed upstream metadata provides one load value per model, not separate Stand
 The native `trae-load` plugin registers a **Trae model load** menu resource in the existing web management UI. It bridges HTML and load JSON from this Bun server; no Management Center or CLIProxyAPI source patch is required. Build and configuration instructions live in `.config/cliproxy/trae-load-plugin/README.md`.
 
 The resource has no extra login and only exposes load/status data. The loopback `/v1/status` reads raw model metadata, refreshes it through `traex debug models --remote`, and coalesces requests for 30 seconds. `/v1/load-page` serves the page. Trae credentials remain in the existing protocol implementation.
+
+## Sol Max context override (2026-10-26)
+
+The user-selected usable Codex window for `GPT-6.1-Sol-Max` is **900,000 tokens**.
+`protocol.ts` advertises `ceil(900000 / 0.95) = 947369` as this route's raw
+context window so Codex's default 5% reserve leaves exactly 900,000. The active
+and tracked Codex configs use the same raw ceiling. Standard Sol remains at
+475,000, and other Trae route metadata is unchanged.
+
+The old 760,000 meter was not an independently chosen limit: the bridge copied
+Trae's advertised Max window of 800,000, then Codex applied 95%. The October 26
+Trae cache simultaneously advertised backend limits of 936,000 input plus
+64,000 output. The override is below that combined budget; 900,000 usable input
+is below the backend input cap. This is metadata evidence, not a completed
+900,000-token upstream request test. Trae's reason for advertising the smaller
+800,000 window remains unverified.
+
+Automatic compaction is separate: absent an explicit compaction setting, Codex
+uses 90% of the raw window (about 852,632 tokens). This change does not disable
+or raise that default independently.
+
+The bridge source change requires restarting `com.vegerot.trae-openai-proxy`
+after active model requests finish. It then regenerates the managed CLIProxyAPI
+block; CLIProxyAPI hot-reloads the file. Reload Codex's model catalog/restart its
+backend to replace cached 800,000 metadata. Do not edit the generated block as
+the durable fix: the existing bridge would overwrite it on a Trae cache refresh.

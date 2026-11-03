@@ -103,6 +103,34 @@ describe("Trae model catalog", () => {
     })
   })
 
+  test("gives Sol Max 900k usable Codex context without changing Standard or other Max routes", () => {
+    const model = (slug: string) => ({
+      slug,
+      config_name: slug.toLowerCase(),
+      visibility: "list",
+      business_metadata: {
+        variants: {
+          standard_key: `${slug.toLowerCase()}__dev`,
+          standard_context_window: 475_000,
+          max_key: `${slug.toLowerCase()}__max`,
+          max_context_window: 800_000,
+          backend_token_limits: {
+            [`${slug.toLowerCase()}__max`]: { input_tokens: 936_000, output_tokens: 64_000 },
+          },
+        },
+      },
+    })
+    const snapshot = provider.translateCatalog(
+      { models: [model("GPT-6.1-Sol"), model("GPT-6-Astra")] },
+      "/catalog.json",
+    )
+    const solMax = snapshot.models["GPT-6.1-Sol-Max"]!
+    expect(Math.floor(solMax.context * 95 / 100)).toBe(900_000)
+    expect(solMax.output).toBe(64_000)
+    expect(snapshot.models["GPT-6.1-Sol"]!.context).toBe(475_000)
+    expect(snapshot.models["GPT-6-Astra-Max"]!.context).toBe(800_000)
+  })
+
   test("exposes Trae reasoning efforts as OpenCode variants", () => {
     expect(provider.reasoningVariants(["low", "high"])).toEqual([
       { id: "low", settings: { reasoningEffort: "low" } },

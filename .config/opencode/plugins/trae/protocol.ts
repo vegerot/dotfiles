@@ -90,6 +90,10 @@ export function reasoningVariants(efforts: ReadonlyArray<string>) {
   return efforts.map((effort) => ({ id: effort, settings: { reasoningEffort: effort } }))
 }
 
+// User-selected 900k usable window after Codex's 5% reserve. Trae advertises
+// 800k for Sol Max, but its backend metadata allows 936k input + 64k output.
+const SOL_MAX_CONTEXT_WINDOW = Math.ceil(900_000 * 100 / 95)
+
 const DISPLAY_NAMES: Readonly<Record<string, string>> = {
   "openrouter-4o": "Claude Opus 5.5 (openrouter-4o)",
 }
@@ -150,7 +154,7 @@ export function translateCatalog(catalog: CachedCatalog, path: string) {
         name: `${displayName} / Max`,
         config,
         backend: variants.max_key,
-        context: variants.max_context_window,
+        context: model.slug === "GPT-6.1-Sol" ? SOL_MAX_CONTEXT_WINDOW : variants.max_context_window,
         output:
           variants.backend_token_limits?.[variants.max_key]?.output_tokens ?? model.output_tokens_hard_limit ?? 32_768,
         reasoning,
