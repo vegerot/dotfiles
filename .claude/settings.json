@@ -264,30 +264,18 @@
     "command": "/Users/bytedance/.flux/bin/flux-statusline"
   },
   "enabledPlugins": {
-    "clangd-lsp@claude-plugins-official": false,
-    "github@claude-plugins-official": true,
-    "gopls-lsp@claude-plugins-official": false,
     "lua-lsp@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true,
     "swift-lsp@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true
-  },
-  "effortLevel": "high",
-  "modelSettings": {
-    "claude-fable-5": {
-      "effortLevel": "medium"
-    },
-    "claude-opus-5": {
-      "effortLevel": "high"
-    },
-    "claude-fable-5-1": {
-      "effortLevel": "xhigh"
-    }
+    "typescript-lsp@claude-plugins-official": true,
+    "cc-plugin-you-should-know@builtin": true,
+    "plugin-dev@anthropic-plugin-directory": true,
+    "agent-sdk-dev@anthropic-plugin-directory": true,
+    "explanatory-output-style@anthropic-plugin-directory": true
   },
   "askUserQuestionTimeout": "10m",
   "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
-  "theme": "auto",
   "editorMode": "vim",
   "remoteControlAtStartup": true,
   "inputNeededNotifEnabled": true,
