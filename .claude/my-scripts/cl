@@ -64,7 +64,7 @@ find_repo() {
 }
 
 server_cmd() {
-	printf 'CLAUDE_CODE_ENABLE_CFC=1 %s remote-control --name=devbox-%s --spawn=worktree --permission-mode=bypassPermissions' \
+	printf 'CLAUDE_CODE_ENABLE_CFC=1 %s remote-control --name=devbox-%s --spawn=worktree --permission-mode=bypassPermissions --chrome' \
 		"$HOME/.local/bin/claude" "$1"
 }
 
