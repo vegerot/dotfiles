@@ -9,3 +9,6 @@ ignores ignore rules, and returns sorted repository paths. Windows includes
 Use `findrepo dotfiles` for a case-insensitive regular expression filter, or
 `findrepo --root C:\projects dotfiles` to choose a search root (`-Root` also works).
 Requires `fd` on PATH.
+
+The bash `findrepo` also takes `--deep` (search 10 levels instead of 5) and
+`--fast` (skip sorting). The PowerShell port does not.

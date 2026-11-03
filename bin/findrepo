@@ -5,36 +5,44 @@ set -o nounset
 set -o pipefail
 
 main() {
+	local usage="Usage: findrepo [--root DIRECTORY] [--deep] [--fast] [FILTER]"
 	local root_dir=~/code
-	local filter
-	if [[ ${1:-} == "--root" ]]; then
-		root_dir="${2:?Usage: findrepo [--root DIRECTORY] [FILTER]}"
-		shift 2
-	fi
-	if [[ -n ${1:-} ]]; then
-		filter="$1"
-		shift
-		findrepo "$root_dir" | rg -i "$filter"
-	else
-		findrepo "$root_dir"
-	fi
+	local max_depth=5
+	local sort=true
+	while [[ ${1:-} == --* ]]; do
+		case $1 in
+		--root)
+			root_dir="${2:?$usage}"
+			shift 2
+			;;
+		--deep)
+			max_depth=10
+			shift
+			;;
+		--fast) # skip sorting
+			sort=false
+			shift
+			;;
+		*)
+			echo "findrepo: unknown flag $1" >&2
+			echo "$usage" >&2
+			exit 2
+			;;
+		esac
+	done
+
+	# `.` matches every non-empty line, so no FILTER means "show all"
+	list_repos "$root_dir" "$max_depth" \
+		| if $sort; then sort; else cat; fi \
+		| rg -i "${1:-.}"
 }
 
-
-# List all repositories in the given directory
-findrepo() {
-	if [[ ${1:-} == "deep" ]]; then
-		shift
-		fd '^\.(git|sl)$' "$@" \
-			--no-ignore --max-depth=10 --hidden --type=d --follow --prune \
-			--exec dirname {} \; \
-			| sort
-	else
-		fd '^\.(git|sl)$' "$@" \
-			--no-ignore --max-depth=5 --hidden --type=d --follow --prune \
-			--exec dirname {} \; \
-			| sort
-	fi
+# List all repositories in the given directory, up to the given depth
+list_repos() {
+	local root_dir=$1 max_depth=$2
+	fd '^\.(git|sl)$' "$root_dir" \
+		--no-ignore --max-depth="$max_depth" --hidden --type=d --follow --prune \
+		--exec dirname {} \;
 }
 
 main "$@"
