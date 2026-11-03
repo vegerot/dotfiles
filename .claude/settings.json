@@ -2,9 +2,7 @@
   "env": {
     "CLAUDE_CODE_ENABLE_CFC": "1",
     "CLAUDE_CODE_AUTO_BACKGROUND_TIMEOUT_MS": "30000",
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
-    "CLAUDE_CODE_FORK_SUBAGENT": "1",
-    "CLAUDE_CODE_REPL": "1"
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
   "permissions": {
     "defaultMode": "bypassPermissions"
@@ -449,7 +447,6 @@
     "swift-lsp@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true
   },
-  "syntaxHighlightingDisabled": false,
   "effortLevel": "high",
   "modelSettings": {
     "claude-fable-5": {
@@ -463,14 +460,11 @@
     }
   },
   "askUserQuestionTimeout": "10m",
-  "autoUpdatesChannel": "latest",
   "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
   "theme": "auto",
   "editorMode": "vim",
-  "verbose": true,
   "remoteControlAtStartup": true,
   "inputNeededNotifEnabled": true,
-  "agentPushNotifEnabled": true,
-  "claudeInChromeDefaultEnabled": true
+  "agentPushNotifEnabled": true
 }
