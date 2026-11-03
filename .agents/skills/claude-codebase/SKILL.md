@@ -1,6 +1,6 @@
 ---
 name: claude-codebase
-description: See ~/code/github.com/anthropics/ to Reference and inspect the source code, architecture, tools, settings, or inner workings of Claude Code. Use whenever asking implementation, introspection, or behavior questions about Claude, Claude Code, or Anthropic. For comparisons between multiple harnesses, use both skills (this one and codex-codebase).
+description: See ~/code/github.com/anthropics/ to Reference and inspect the source code, architecture, tools, settings, or inner workings of Claude Code. Use whenever asking implementation, introspection, or behavior questions about Claude, Claude Code, or Anthropic. For comparisons between multiple harnesses, use all their skills.
 ---
 
 When investigating how Claude works or answering implementation questions about Claude Code:
