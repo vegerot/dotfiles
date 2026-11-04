@@ -6,3 +6,5 @@ For introspection questions about Claude Code, first use your other instructions
   * `strings` on the binary
   * run `claude` in tmux
   * other experiments
+
+Before relying on a repo under `~/code/github.com/anthropics/`, check its age with `git log -1 --format=%cr`.  If it is older than a day, update it first: `git pull` for a full clone, or `git fetch --depth=1 origin && git reset --hard FETCH_HEAD` for a shallow clone (`git rev-parse --is-shallow-repository`).
