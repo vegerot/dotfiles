@@ -1,0 +1,113 @@
+#!/usr/bin/env swift
+// appledocs: semantic search over Xcode's offline Apple Developer Documentation index, without Xcode.
+//
+// Pipeline (mirrors Xcode's DocumentationSearch):
+//   query text → MediaAnalysisServices text embedding (on-device, via mediaanalysisd)
+//              → cosine similarity against every 512-d float32 vector in the asset's SQLite index
+//              → top-k chunks (title, uri, score, text) as JSON lines.
+//
+// Usage: appledocs [--k N] [--version V] [--framework NAME] QUERY
+import Accelerate
+import Foundation
+import SQLite3
+
+setvbuf(stdout, nil, _IONBF, 0)
+
+// ---- arguments
+var args = Array(CommandLine.arguments.dropFirst())
+var k = 5
+var version: UInt? = nil
+var framework: String? = nil
+while let flag = args.first, flag.hasPrefix("--") {
+    switch flag {
+    case "--k": k = Int(args[1])!
+    case "--version": version = UInt(args[1])
+    case "--framework": framework = args[1]
+    default: fatalError("unknown flag \(flag)")
+    }
+    args.removeFirst(2)
+}
+let query = args.joined(separator: " ")
+precondition(!query.isEmpty, "usage: appledocs [--k N] [--version V] [--framework NAME] QUERY")
+
+// ---- newest documentation asset
+let assetRoot = "/System/Library/AssetsV2/com_apple_MobileAsset_AppleDeveloperDocumentation"
+let fm = FileManager.default
+let dbPath = try! fm.contentsOfDirectory(atPath: assetRoot)
+    .filter { $0.hasSuffix(".asset") }
+    .map { "\(assetRoot)/\($0)/AssetData/documentation-db/index.sql" }
+    .filter { fm.fileExists(atPath: $0) }
+    .max { (try! fm.attributesOfItem(atPath: $0)[.modificationDate] as! Date) < (try! fm.attributesOfItem(atPath: $1)[.modificationDate] as! Date) }!
+
+// ---- embed the query (MediaAnalysisServices, private)
+func embed(_ text: String) -> [Float] {
+    dlopen("/System/Library/PrivateFrameworks/MediaAnalysisServices.framework/MediaAnalysisServices", RTLD_NOW)
+    let svcCls: AnyClass = NSClassFromString("MADService")!
+    typealias ServiceFn = @convention(c) (AnyClass, Selector) -> NSObject
+    let serviceSel = NSSelectorFromString("service")
+    let svc = unsafeBitCast(method_getImplementation(class_getClassMethod(svcCls, serviceSel)!), to: ServiceFn.self)(svcCls, serviceSel)
+    let req = (NSClassFromString("MADTextEmbeddingRequest") as! NSObject.Type).init()
+    if let v = version { req.setValue(v, forKey: "version") }
+    req.setValue(true, forKey: "allowTruncation")
+    typealias PerformFn = @convention(c) (NSObject, Selector, NSArray, NSArray, NSString, @escaping @convention(block) (Int, UnsafeRawPointer?) -> Void) -> Int32
+    let sel = NSSelectorFromString("performRequests:text:identifier:completionHandler:")
+    let done = DispatchSemaphore(value: 0)
+    _ = unsafeBitCast(svc.method(for: sel), to: PerformFn.self)(svc, sel, [req], [text], "appledocs") { _, _ in done.signal() }
+    // Embedding is local and takes well under a second; 60 s only guards against a wedged daemon.
+    precondition(done.wait(timeout: .now() + 60) == .success, "timed out waiting for mediaanalysisd")
+    let res = (req.value(forKey: "embeddingResults") as! [NSObject]).first!
+    let emb = res.value(forKey: "embedding") as! NSObject
+    let data = emb.value(forKey: "data") as! Data
+    // type 1 = float16 (observed: 1024 bytes for 512 dims).
+    precondition(emb.value(forKey: "type") as! UInt == 1, "unexpected embedding element type")
+    return data.withUnsafeBytes { $0.bindMemory(to: Float16.self).map(Float.init) }
+}
+
+let t0 = Date()
+let q = embed(query)
+let tEmbed = Date().timeIntervalSince(t0)
+var qNorm: Float = 0
+vDSP_svesq(q, 1, &qNorm, vDSP_Length(q.count))
+qNorm = qNorm.squareRoot()
+
+// ---- score every stored vector
+var db: OpaquePointer?
+precondition(sqlite3_open_v2("file:\(dbPath)?immutable=1", &db, SQLITE_OPEN_READONLY | SQLITE_OPEN_URI, nil) == SQLITE_OK)
+var stmt: OpaquePointer?
+sqlite3_prepare_v2(db, "select id, embedding from observations", -1, &stmt, nil)
+var scored: [(score: Float, id: Int64)] = []
+scored.reserveCapacity(300_000)
+while sqlite3_step(stmt) == SQLITE_ROW {
+    let n = Int(sqlite3_column_bytes(stmt, 1)) / 4
+    precondition(n == q.count, "stored vector has \(n) dims, query has \(q.count)")
+    let p = sqlite3_column_blob(stmt, 1)!.assumingMemoryBound(to: Float.self)
+    var dot: Float = 0, sq: Float = 0
+    vDSP_dotpr(p, 1, q, 1, &dot, vDSP_Length(n))
+    vDSP_svesq(p, 1, &sq, vDSP_Length(n))
+    scored.append((dot / (sq.squareRoot() * qNorm), sqlite3_column_int64(stmt, 0)))
+}
+sqlite3_finalize(stmt)
+scored.sort { $0.score > $1.score }
+
+// ---- print top-k (optionally filtered by framework)
+sqlite3_prepare_v2(db, "select d.document from observations o join documents d on d.asset_id = o.observationid where o.id = ?", -1, &stmt, nil)
+var printed = 0
+for s in scored where printed < k {
+    sqlite3_bind_int64(stmt, 1, s.id)
+    defer { sqlite3_reset(stmt) }
+    guard sqlite3_step(stmt) == SQLITE_ROW,
+          let doc = try? JSONSerialization.jsonObject(with: Data(bytes: sqlite3_column_blob(stmt, 0), count: Int(sqlite3_column_bytes(stmt, 0)))) as? [String: Any]
+    else { continue }
+    if let f = framework, (doc["framework"] as? String)?.caseInsensitiveCompare(f) != .orderedSame { continue }
+    let content = doc["content"] as? String ?? ""
+    // Keys in reading order (short fields first, long content last).
+    let fields: [(String, Any)] = [("title", content.split(separator: "\n").first.map(String.init) ?? ""),
+                                   ("uri", doc["uri"] ?? ""), ("framework", doc["framework"] ?? ""), ("kind", doc["role"] ?? ""),
+                                   ("content", String(content.prefix(600)))]
+    let json = fields.map { key, value in
+        "\"\(key)\":" + String(data: try! JSONSerialization.data(withJSONObject: value, options: [.fragmentsAllowed, .withoutEscapingSlashes]), encoding: .utf8)!
+    }
+    print("{\"score\":\(String(format: "%.3f", s.score))," + json.joined(separator: ",") + "}")
+    printed += 1
+}
+FileHandle.standardError.write(String(format: "embed %.2fs, total %.2fs, %d vectors, db %@\n", tEmbed, Date().timeIntervalSince(t0), scored.count, dbPath).data(using: .utf8)!)
