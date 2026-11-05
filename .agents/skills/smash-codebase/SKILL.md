@@ -1,6 +1,6 @@
 ---
 name: smash-codebase
-description: See the local Super Smash Bros. checkouts under ~/code (Melee decomp, Slippi, Brawlback, Project+, Dolphin). Use whenever asking implementation, introspection, or behavior questions about Smash, Melee, Slippi, .slp replays, Brawl, Brawlback, Project+, or Dolphin netplay.
+description: See the local Super Smash Bros. checkouts under ~/code (Melee decomp, Slippi, Brawl decomp, Brawlback, Project+, BrawlCrate and other Brawl modding tools, Dolphin). Use whenever asking implementation, introspection, or behavior questions about Smash, Melee, Slippi, .slp replays, Brawl, Brawlback, Project+, or Dolphin netplay.
 ---
 
 When investigating Super Smash Bros. Melee, Slippi, Brawl, Brawlback, Project+, or the Dolphin builds those projects use, read the local checkout.
@@ -31,6 +31,12 @@ Brawl:
 - `~/code/github.com/Brawlback-Team/brawlback-asm` — Syringe/ASM plugin for online and offline Brawlback (rollback for Brawl and Project+).
 - `~/code/github.com/Brawlback-Team/brawlback-wiki` — Brawlback docs: getting started, rollback, replays, Ghidra.
 - `~/code/github.com/sarahkittyy/brawlonline.net` — Brawl Online: Project+ rollback, Dolphin, game plugin, launcher, and servers. Started as a fork of Brawlback.
+
+Brawl file and modding tools:
+
+- `~/code/github.com/soopercool101/BrawlCrate` — BrawlBox fork (C#, with BrawlLib) that views and edits Brawl files: ARC `.pac`, BRRES, MDL0 models, collisions, params. Stage blast zones are the `Dead0N` / `Dead1N` bones of the stage's `StgPosition` model (`BrawlLib/SSBB/Types/MDL0.cs` `MDL0Bone`, translation at +0x38; drawn in `BrawlCrate/UI/Model Previewer/ModelEditControl/Rendering.cs`).
+- `~/code/github.com/rukai/brawllib_rs` — read-only Rust parser for Brawl files, based on BrawlLib: fighters, scripts, MDL0, rendering. It has no stage code.
+- `~/code/github.com/squidgy617/BrawlInstaller` — tool that adds, edits and removes fighters, stages, music and trophies in Brawl builds. It bundles its own copy of BrawlLib. `~/code/github.com/soopercool101/BrawlInstaller` is a second clone of the same repo: its `origin` is also `squidgy617/BrawlInstaller`, at the same commit.
 
 Dolphin:
 
