@@ -32,25 +32,32 @@ is_agent_harness() {
   [ -n "${AGENT:-}" ]
 }
 
+# Print an agent hint ($2) once per Claude Code session, tracked by an empty
+# marker file per hint name ($1). Other harnesses still see it on every call.
+agent_hint() {
+  [[ -n "${AGENT_SILENCE_HINTS:-}" ]] && return 0
+  if [[ -n "${CLAUDE_CODE_SESSION_ID:-}" ]]; then
+    local marker="${TMPDIR:-/tmp}/agent-hints/$CLAUDE_CODE_SESSION_ID/$1"
+    [[ -e "$marker" ]] && return 0
+    # `command` skips the verbose mkdir alias; a sandbox that blocks TMPDIR just falls back to printing every time.
+    command mkdir -p "${marker%/*}" 2>/dev/null && : > "$marker"
+  fi
+  printf '%s Silence this message (and the other user notes, but not command output) by setting `AGENT_SILENCE_HINTS=1`.\n' "$2" 1>&2
+}
+
 if is_agent_harness && [ -z "${AGENT_SILENCE_HINTS:-}" ]; then
   grep() {
-    if [[ -z "${AGENT_SILENCE_HINTS:-}" ]]; then
-      echo 'user note: `grep` is okay if necessary, but prefer `rg` or `fff` by default. Silence by setting `AGENT_SILENCE_HINTS=1`' 1>&2
-    fi
+    agent_hint grep 'user note: `grep` is okay if necessary, but prefer `rg` or `fff` by default.'
     command grep "$@"
   }
 
   find() {
-    if [[ -z "${AGENT_SILENCE_HINTS:-}" ]]; then
-      echo 'user note: `find` is okay if necessary, but prefer `fd` or `fff` by default. Silence by setting `AGENT_SILENCE_HINTS=1`' 1>&2
-    fi
+    agent_hint find 'user note: `find` is okay if necessary, but prefer `fd` or `fff` by default.'
     command find "$@"
   }
 
   chrome-devtools() {
-    if [[ -z "${AGENT_SILENCE_HINTS:-}" ]]; then
-      echo 'user note: see `findrepo chrome-devtools` for help. Silence by setting `AGENT_SILENCE_HINTS=1`' 1>&2
-    fi
+    agent_hint chrome-devtools 'user note: see `findrepo chrome-devtools` for help.'
     command chrome-devtools "$@"
   }
 
@@ -58,9 +65,7 @@ if is_agent_harness && [ -z "${AGENT_SILENCE_HINTS:-}" ]; then
     if ! type nvim >/dev/null 2>&1; then
       return 127
     fi
-    if [[ -z "${AGENT_SILENCE_HINTS:-}" ]]; then
-      echo 'user note: the nvim source code is available at `findrepo neovim`. Silence by setting `AGENT_SILENCE_HINTS=1`' 1>&2
-    fi
+    agent_hint nvim 'user note: the nvim source code is available at `findrepo neovim`.'
     command nvim "$@"
   }
 
@@ -68,9 +73,7 @@ if is_agent_harness && [ -z "${AGENT_SILENCE_HINTS:-}" ]; then
     if ! type lark-cli >/dev/null 2>&1; then
       return 127
     fi
-    if [[ -z "${AGENT_SILENCE_HINTS:-}" ]]; then
-      echo 'user note: the lark-cli source code is available at `findrepo lark-cli`. Silence by setting `AGENT_SILENCE_HINTS=1`' 1>&2
-    fi
+    agent_hint lark-cli 'user note: the lark-cli source code is available at `findrepo lark-cli`.'
     command lark-cli "$@"
   }
 
@@ -78,11 +81,9 @@ if is_agent_harness && [ -z "${AGENT_SILENCE_HINTS:-}" ]; then
     if ! type bytedcli >/dev/null 2>&1; then
       return 127
     fi
-    if [[ -z "${AGENT_SILENCE_HINTS:-}" ]]; then
-		echo 'user note: the bytedcli source code is available at `findrepo bytedcli`. Silence by setting `AGENT_SILENCE_HINTS=1`' 1>&2
-		if [[ $1 == "lark" ]]; then
-			echo 'user note: `bytedcli lark` is a wrapper around `findrepo larksuite/cli`. Silence by setting `AGENT_SILENCE_HINTS=1`' 1>&2
-		fi
+    agent_hint bytedcli 'user note: the bytedcli source code is available at `findrepo bytedcli`.'
+    if [[ $1 == "lark" ]]; then
+      agent_hint bytedcli-lark 'user note: `bytedcli lark` is a wrapper around `findrepo larksuite/cli`.'
     fi
     command bytedcli "$@"
   }
@@ -91,9 +92,7 @@ if is_agent_harness && [ -z "${AGENT_SILENCE_HINTS:-}" ]; then
     if ! type adb >/dev/null 2>&1; then
       return 127
     fi
-    if [[ -z "${AGENT_SILENCE_HINTS:-}" ]]; then
-      echo 'user note: the adb source code is available at `~/code/googlesource.com/android/platform/packages/modules/adb`. Silence by setting `AGENT_SILENCE_HINTS=1`' 1>&2
-    fi
+    agent_hint adb 'user note: the adb source code is available at `~/code/googlesource.com/android/platform/packages/modules/adb`.'
     command adb "$@"
   }
 
@@ -101,9 +100,7 @@ if is_agent_harness && [ -z "${AGENT_SILENCE_HINTS:-}" ]; then
 	if ! type cmux >/dev/null 2>&1; then
       return 127
     fi
-    if [[ -z "${AGENT_SILENCE_HINTS:-}" ]]; then
-      echo 'user note: the cmux source code is available at `findrepo cmux`. Silence by setting `AGENT_SILENCE_HINTS=1`' 1>&2
-    fi
+    agent_hint cmux 'user note: the cmux source code is available at `findrepo cmux`.'
     command cmux "$@"
   }
 
@@ -111,9 +108,7 @@ if is_agent_harness && [ -z "${AGENT_SILENCE_HINTS:-}" ]; then
 	if ! type zsh >/dev/null 2>&1; then
       return 127
     fi
-    if [[ -z "${AGENT_SILENCE_HINTS:-}" ]]; then
-      echo 'user note: the zsh source code is available at `findrepo zsh`. Silence by setting `AGENT_SILENCE_HINTS=1`' 1>&2
-    fi
+    agent_hint zsh 'user note: the zsh source code is available at `findrepo zsh`.'
     command zsh "$@"
   }
 fi
@@ -144,9 +139,7 @@ fi
 #git
 if type git > /dev/null; then
   function git() {
-    if is_agent_harness && [[ -z "${AGENT_SILENCE_HINTS:-}" ]]; then
-      echo 'user note: The git source is available for reference at `~/code/github.com/git/git/`. Prefer sapling (`sl`) over git by default. Silence this message by setting `AGENT_SILENCE_HINTS=1`' 1>&2
-    fi
+    is_agent_harness && agent_hint git 'user note: The git source is available for reference at `~/code/github.com/git/git/`. Prefer sapling (`sl`) over git by default.'
     if [[ "$PWD" =~ "code.byted.or" ]]; then
       command git -c 'user.name=Max 🕺 Coplan' -c 'user.email=max.coplan@bytedance.com' "$@"
     else
@@ -177,7 +170,7 @@ fi
 
 if type gh >/dev/null 2>&1 && is_agent_harness && [[ -z "${AGENT_SILENCE_HINTS:-}" ]]; then
   function gh() {
-    echo 'user note: The GitHub CLI source is available for reference at `findrepo github/cli`. Silence this message by setting `AGENT_SILENCE_HINTS=1`' 1>&2
+    agent_hint gh 'user note: The GitHub CLI source is available for reference at `findrepo github/cli`.'
     command gh "$@"
   }
 fi
@@ -188,7 +181,7 @@ if type sl >/dev/null 2>&1; then
   function sl() {
     local -a extra_args=()
     if is_agent_harness; then
-      [[ -z "${AGENT_SILENCE_HINTS:-}" ]] && echo 'user note: if you need extra help, run the sapling skill and see `findrepo sapling`. Silence this message by setting `AGENT_SILENCE_HINTS=1`' 1>&2
+      agent_hint sl 'user note: if you need extra help, run the sapling skill and see `findrepo sapling`.'
       extra_args+=(--pager=never)
     fi
     if [[ "$PWD" == *code.byted.or* ]]; then
