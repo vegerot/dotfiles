@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+#if 0
+# Self-compiling C: bash runs these lines, the C preprocessor skips them.
+# cc rejects the #! line, so blank it (keeping line numbers) and compile
+# into this user's private temp dir on every run (~0.2 s).
+set -o errexit -o nounset -o pipefail
+bin="$(getconf DARWIN_USER_TEMP_DIR)nomaterialize"
+sed '1s/.*//' "$0" | cc -x c -o "$bin" -
+exec "$bin" "$@"
+#endif
+
+// nomaterialize: run a command that can never download iCloud / File
+// Provider files.
+//
+// Usage:   nomaterialize <program> [args...]
+// Example: nomaterialize ncdu --extended --one-file-system /System/Volumes/Data
+//
+// Programs started from a GUI terminal inherit permission to "materialize"
+// (download) dataless cloud files when they touch them. This turns that
+// per-process kernel policy OFF, then execs the program. XNU keeps the
+// policy across fork and exec (P_VFS_IOPOLICY_INHERITED_MASK in
+// bsd/sys/proc_internal.h), so the program and its children can't download
+// anything: touching a cloud-only file fails with EDEADLK ("Resource
+// deadlock avoided") instead.
+#include <stdio.h>
+#include <sys/resource.h>
+#include <unistd.h>
+
+int main(int argc, char *argv[]) {
+	if (argc < 2) {
+		fputs("usage: nomaterialize <program> [args...]\n", stderr);
+		return 2;
+	}
+	if (setiopolicy_np(IOPOL_TYPE_VFS_MATERIALIZE_DATALESS_FILES,
+	                   IOPOL_SCOPE_PROCESS,
+	                   IOPOL_MATERIALIZE_DATALESS_FILES_OFF) != 0) {
+		perror("nomaterialize: setiopolicy_np");
+		return 1;
+	}
+	execvp(argv[1], argv + 1);
+	perror(argv[1]);
+	return 127;
+}
