@@ -124,6 +124,10 @@ if [ -d "/Applications/Dayflow.app/Contents/Helpers/" ]; then
 	export PATH="$PATH:/Applications/Dayflow.app/Contents/Helpers"
 fi
 
+if [ -f "/Applications/Rex Beta.app/Contents/Helpers/Rex Server.rex/Contents/MacOS/rex" ]; then
+	export PATH="$PATH:/Applications/Rex Beta.app/Contents/Helpers/Rex Server.rex/Contents/MacOS"
+fi
+
 if [ -d "$HOME/.railway/bin" ]; then
 	export PATH="$PATH:$HOME/.railway/bin"
 fi
