@@ -191,6 +191,14 @@
         "hooks": [
           {
             "type": "command",
+            "command": "~/dotfiles/bin/claude-friction-nudge"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
             "command": "~/dotfiles/bin/flux-hook relay claude",
             "async": true
           }

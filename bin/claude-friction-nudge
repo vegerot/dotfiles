@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Claude Code Stop hook: when this turn shows friction signals and the final
+# reply has no 🔧 Friction section, ask Claude once to consider adding one,
+# with the counts as evidence. It reads only the current turn: the transcript
+# lines after the last turn_duration marker, read backwards from the end.
+IFS=$'\t' read -r skip transcript < <(jq --raw-output '
+  [ (.stop_hook_active or ((.last_assistant_message // "") | contains("🔧 Friction"))),
+    .transcript_path ] | @tsv')
+# Already nudged this turn, or the reply already reports friction.
+[[ $skip == true || ! -r $transcript ]] && exit 0
+
+tac "$transcript" | awk '/"subtype":"turn_duration"/ {exit} {print}' | jq --slurp --compact-output '
+  def results: .[] | select(.type == "user") | .message.content[]? | select(.type == "tool_result");
+  { calls: [.[] | select(.type == "assistant") | .message.content[]? | select(.type == "tool_use")] | length,
+    failed: [results | select(.is_error == true)] | length,
+    slow: (([results | .content | tostring | select(contains("⏱ Bash took"))] | length)
+         + ([.[] | select(.attachment.type? == "hook_additional_context")
+                 | .attachment.content[]? | select(startswith("⏱ "))] | length)) }
+  | select(.calls >= 40 or .failed >= 3 or .slow >= 3)
+  | {hookSpecificOutput: {hookEventName: "Stop", additionalContext:
+      "Friction check for this turn: \(.calls) tool calls, \(.failed) failed, \(.slow) took 10 s or more (⏱). If any of that came from friction worth reporting, add a short 🔧 Friction section now, as the global instructions describe. If not, stop without adding anything."}}'
