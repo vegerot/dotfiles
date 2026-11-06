@@ -100,9 +100,14 @@ relay:Darwin)
 	exec "$relay" --source "$2"
 	;;
 relay:Linux)
-	# This wrapper exits 0 by itself when the Flux daemon is not running.
-	[ -x "$linux_bin/flux-hooks-$2" ] || exit 0
-	exec "$linux_bin/flux-hooks-$2"
+	# Also a native binary since 0.1.45. Flux's per-agent flux-hooks-<agent>
+	# wrappers from older installs still run it through node and die with a
+	# SyntaxError, and upgrades don't rewrite them, so do what the new
+	# wrappers do. The daemon listens on bridge.sock; no socket means no Flux.
+	relay="$linux_bin/flux-hooks-relay"
+	sock="$HOME/.flux/remote_run/bridge.sock"
+	[ -x "$relay" ] && [ -S "$sock" ] || exit 0
+	FLUX_SOCKET_PATH="$sock" exec "$relay" --source "$2"
 	;;
 bits:Darwin)
 	[ -e "$mac_bin" ] || exit 0
