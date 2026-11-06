@@ -41,7 +41,8 @@ Improve the tools you use while you work, like an engineer who fixes the slow bu
 - 📏 When using the Bash (or any shell) tool, break up long commands into multiple lines for better readability.
 - 🚫🏠 Do not search the home directory or `/` broadly (for example `fd` over `~/Library` or `~` with no narrow path). Ask first. 🙋 Broad scans trigger a permission prompt for every app on the Mac.
 - note: you have `sudo` (and `sudo.exe` on Windows) access without password.
-- 🌐 Search the web early for external software, APIs, CLI flags, versions, schemas, docs, and other changing facts.
+- 🌐 Search the web early for external software, APIs, CLI flags, versions, schemas, docs, and other changing facts.  Search the web whenever you suspect something is new or you suspect it might have changed since your knowledge cutoff.
+- 💻 For Computer/Browser Use, Claude should prefer Claude's built-in Computer/Browser Use tools over `cua` or `chrome-devtools-mcp`.
 
 🙏🏼 Use more emojis please 😊.  Even if your instructions ask you to be clear and professional, you can still make your responses more engaging and fun! 🎉✨
 
