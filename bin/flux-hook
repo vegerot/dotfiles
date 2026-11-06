@@ -91,21 +91,26 @@ if [ "${1}" = bits ] && [ -n "${FLUX_AGENT_ENV:-}" ]; then
 	exit 0
 fi
 
+# The relay is a native binary since Flux 0.1.45 (it used to be a Node script,
+# which now dies with a SyntaxError). Also since 0.1.45, Claude, Codex, and
+# Gemini are Flux extensions, served by the extension host's own hook socket.
+# The relay's default bridge.sock (and the dev box's remote_run/bridge.sock)
+# is the legacy bridge, which drops their events as adapter_not_found. The
+# hook socket exists only after an agent registers; no socket means no Flux.
+# The relay exits 0 quietly when the socket is missing or hangs up.
 case "${1}:$(uname -s)" in
 relay:Darwin)
-	# A native binary since Flux 0.1.45. It used to be a Node script run
-	# through Electron, which now dies with a SyntaxError on the binary.
 	relay="$mac_app/Contents/Resources/bin/flux-hooks-relay"
-	[ -x "$relay" ] || exit 0
-	exec "$relay" --source "$2"
+	sock="$HOME/.flux/run/bridge.sock.extensions"
+	[ -x "$relay" ] && [ -S "$sock" ] || exit 0
+	FLUX_SOCKET_PATH="$sock" exec "$relay" --source "$2"
 	;;
 relay:Linux)
-	# Also a native binary since 0.1.45. Flux's per-agent flux-hooks-<agent>
-	# wrappers from older installs still run it through node and die with a
-	# SyntaxError, and upgrades don't rewrite them, so do what the new
-	# wrappers do. The daemon listens on bridge.sock; no socket means no Flux.
+	# Flux's per-agent flux-hooks-<agent> wrappers from older installs still
+	# run the relay through node, and upgrades don't rewrite them, so call the
+	# relay directly. Flux's Remote SSH installs it here.
 	relay="$linux_bin/flux-hooks-relay"
-	sock="$HOME/.flux/remote_run/bridge.sock"
+	sock="$HOME/.flux/extensions/hooks.sock"
 	[ -x "$relay" ] && [ -S "$sock" ] || exit 0
 	FLUX_SOCKET_PATH="$sock" exec "$relay" --source "$2"
 	;;
