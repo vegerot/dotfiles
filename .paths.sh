@@ -8,7 +8,11 @@
 #[ -f /etc/zprofile ] && . /etc/zprofile
 ## important stuff goes first
 
-case "$(uname -s)" in
+# `uname -s`, run once and inherited by child shells. Each run is a fork + exec
+# (~5 ms), and this file runs in every shell, including every Claude Code Bash call.
+[ -n "${DOTFILES_OS:-}" ] || export DOTFILES_OS="$(uname -s)"
+
+case "$DOTFILES_OS" in
 	Darwin) export PATH="/usr/local/bin:$HOME/.cargo/bin:/usr/local/opt/ruby/bin:$PATH" ;;
 esac
 
@@ -161,7 +165,7 @@ export PATH="$PATH:./node_modules/.bin:."
 ### MAN path
 
 export MANPATH="/usr/local/share/man:${MANPATH:-}:"
-case "$(uname -s)" in
+case "$DOTFILES_OS" in
 Darwin)
 	export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
 	export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
@@ -172,7 +176,7 @@ if [ -d "$HOME/.local/share/man/" ]; then
 fi
 
 ### fpath stuff for zsh on macOS
-case "${SHELL:-}:$(uname -s)" in
+case "${SHELL:-}:$DOTFILES_OS" in
 	*zsh:Darwin)
 		if [ -d /opt/homebrew/share/zsh/site-functions ]; then
 			FPATH="/opt/homebrew/share/zsh/site-functions${FPATH:+:$FPATH}"
