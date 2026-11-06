@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Claude Code PostToolUse / PostToolUseFailure hook: tell Claude when a tool
+# call took 10 s or more, so slow steps show up as friction evidence.
+# Bash is excluded by the hook matcher: its calls report their own time
+# through the EXIT trap in ~/.zshenv, which also covers background commands.
+exec jq --compact-output '
+  select((.duration_ms // 0) >= 10000)
+  | {hookSpecificOutput: {
+      hookEventName: .hook_event_name,
+      additionalContext: "⏱ \(.tool_name) took \(.duration_ms / 1000 | floor) s."
+    }}'
