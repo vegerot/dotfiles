@@ -5,15 +5,15 @@
       "src": "https://github.com/bkad/CamelCaseMotion.git"
     },
     "copilot.lua": {
-      "rev": "bae5beb4bd902498ba80add63db5a7e7e6ffb4d8",
+      "rev": "192b297ef37d9f6a8b889c07fb9a3dd16f1cb86f",
       "src": "https://github.com/zbirenbaum/copilot.lua.git"
     },
     "fff.nvim": {
-      "rev": "7353971198321b5330824c29eb4e49635c072245",
+      "rev": "3004e2d61a69e8c0f9d90b958d21fee3f75fe63e",
       "src": "https://github.com/dmtrKovalenko/fff.nvim.git"
     },
     "fzf": {
-      "rev": "b412a450538e5f4a1d7057732e75d945dafa18a6",
+      "rev": "99bfd5aa0f66133d7dcfbf18f8044eb765f04649",
       "src": "https://github.com/junegunn/fzf.git"
     },
     "fzf.vim": {
@@ -21,7 +21,7 @@
       "src": "https://github.com/junegunn/fzf.vim.git"
     },
     "gitsigns.nvim": {
-      "rev": "683137003522aebd6948358334164a6ba2ca7cd5",
+      "rev": "4bcd99167c265f135886b282baad77afe06206b2",
       "src": "https://github.com/lewis6991/gitsigns.nvim.git"
     },
     "go.nvim": {
@@ -37,7 +37,7 @@
       "src": "https://github.com/davidmh/mdx.nvim.git"
     },
     "mini.align": {
-      "rev": "b4b402d0455e022b878c30971e02e0d7780e6d9e",
+      "rev": "a7f24f57e68a72fd6c19e442288ab835a9c40cdd",
       "src": "https://github.com/nvim-mini/mini.align.git"
     },
     "nvim-colorizer.lua": {
@@ -45,11 +45,11 @@
       "src": "https://github.com/catgoose/nvim-colorizer.lua.git"
     },
     "nvim-lspconfig": {
-      "rev": "77b7432d4770d23b277d37923e5a08a442d8bb07",
+      "rev": "cc404d425c7752f56b8eaa269107be44d888ea51",
       "src": "https://github.com/neovim/nvim-lspconfig.git"
     },
     "nvim-treesitter": {
-      "rev": "29212d826054bb2948fa9d3a99eca9bf6a050eb2",
+      "rev": "610734c5d3e59761d5f79318d120633374537fa5",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter.git"
     },
     "nvim-treesitter-context": {
@@ -149,7 +149,7 @@
       "src": "https://github.com/tpope/vim-unimpaired.git"
     },
     "zig.vim": {
-      "rev": "e3becb683d29c6b15c7ecbbaa349431a1a3bd55d",
+      "rev": "3004232f7432a3d38d2a1a824f89dedac9bb841b",
       "src": "https://codeberg.org/ziglang/zig.vim.git"
     },
     "zoxide.vim": {
