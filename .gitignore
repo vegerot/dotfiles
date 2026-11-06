@@ -30,3 +30,4 @@ Thumbs.db
 # Codex-generated bundled skill caches
 .codex/skills/.system/
 .agents/skills/.system/
+.agents/skills/rex/
