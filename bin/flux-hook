@@ -17,7 +17,7 @@ mac_bin="$mac_app/Contents/MacOS/Flux Island"
 linux_bin="$HOME/.flux/bin"
 
 # Flux stamps its own version into these hooks. Update it after a Flux upgrade.
-tea_env=(TEA_APP_ID=1013111 TEA_CHANNEL=cn TEA_APP_NAME_FOR_BITS=@fluxisland@0.1.35@0.4.16)
+tea_env=(TEA_APP_ID=1013111 TEA_CHANNEL=cn TEA_APP_NAME_FOR_BITS=@fluxisland@0.1.39@0.4.19)
 
 # Antigravity (agy CLI, Desktop, IDE, and Zed antigravity-acp) hook wrapper.
 # Note: antigravity-acp executes hook commands via shlex.split + execve (no
@@ -59,6 +59,30 @@ if [ "${1:-}" = agy ]; then
 	else
 		echo '{}'
 	fi
+	exit 0
+fi
+
+# Flux re-adds its own inline Claude hooks at every launch. It recognizes its
+# groups by these substrings, and the "flux-hook relay|bits" wrappers above
+# contain none of them, so Flux thinks its hooks are missing. The inline copies
+# duplicate the wrappers, and most of them block. An async SessionStart hook
+# runs this to remove them whenever they come back. (Turning Flux's Claude
+# toggle off would also stop the rewrites, but then Flux drops every Claude
+# event, wrappers included.)
+if [ "${1:-}" = dedupe ]; then
+	settings="$HOME/.claude/settings.json"
+	markers='flux-hooks|hooks-cli/index|flux-bits-report'
+	grep -Eq "$markers" "$settings" 2>/dev/null || exit 0
+	command -v jq >/dev/null 2>&1 || exit 0
+	cleaned=$(jq --arg m "$markers" '
+		.hooks |= (
+			with_entries(.value |= map(select(
+				any(.hooks[]?; (.command // "") | test($m)) | not
+			)))
+			| with_entries(select(.value | length > 0))
+		)' "$settings") || exit 0
+	# Write through the symlink, so settings.json stays a link into dotfiles.
+	printf '%s\n' "$cleaned" >"$settings"
 	exit 0
 fi
 

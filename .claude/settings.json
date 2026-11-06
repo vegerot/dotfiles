@@ -165,6 +165,15 @@
             "timeout": 5
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/dotfiles/bin/flux-hook dedupe",
+            "async": true
+          }
+        ]
       }
     ],
     "SessionEnd": [
