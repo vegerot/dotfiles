@@ -169,13 +169,36 @@ setopt interactivecomments
 ## credit: https://stackoverflow.com/a/24237590/6100005
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 
-## Only check compinit once a day
-## credit: https://medium.com/@dannysmith/little-thing-2-speeding-up-zsh-f1860390f92
+## COMPLETIONS
+## Generated `_tool` files live on fpath, so zsh autoloads each one on the
+## first Tab instead of running every tool at every startup.
 autoload -Uz compinit
-for dump in ~/.zcompdump(N.mh+24); do
+local comp_cache=~/.cache/zsh/completions
+fpath=($comp_cache ~/.grok/completions/zsh $fpath)
+## Full check once a day. compinit leaves an unchanged dump's mtime alone, so
+## `touch` marks today's check. `! -e` covers a new machine with no dump yet.
+if [[ ! -e ~/.zcompdump || -n ~/.zcompdump(#qN.mh+24) ]]; then
+	mkdir -p $comp_cache
+	gen_completion() {  # gen_completion NAME COMMAND...
+		local name=$1 tmp=$comp_cache/.$1.$$; shift
+		(( $+commands[$1] )) || return 0
+		# Temp file + rename, like compdump, so panes that start together can't
+		# interleave writes. The leading `.` keeps compinit from loading the temp.
+		"$@" >| $tmp 2>/dev/null && mv -f $tmp $comp_cache/_$name || rm -f $tmp
+	}
+	# Generated from the installed binary, so these come first on fpath and
+	# match its version. If generation fails, no file is written, and zsh falls
+	# back to a packaged copy (Homebrew, vendor-completions) when there is one.
+	gen_completion codex codex completion zsh
+	TCELL_MINIMIZE=1 gen_completion gh gh completion -s zsh
+	gen_completion fd fd --gen-completions zsh
+	gen_completion rg rg --generate=complete-zsh
+	unfunction gen_completion
 	compinit
-done
-compinit -C
+	touch ~/.zcompdump
+else
+	compinit -C
+fi
 
 # PLUGINS
 typeset -A plugin_paths=(
@@ -197,24 +220,6 @@ load_plugins() {
 	  source $zig_shell_complete_path
   fi
 
-  if type gh > /dev/null; then
-	source <(TCELL_MINIMIZE=1 gh completion -s zsh)
-  fi
-
-  if type codex > /dev/null; then
-	  source <(codex completion zsh)
-  fi
-
-  if type fd > /dev/null; then
-	  source <(fd --gen-completions)
-  fi
-
-  if type rg > /dev/null; then
-	  # suppress errors because this doesn't work until my landed patch is packaged
-	  # see https://github.com/BurntSushi/ripgrep/commit/94305125ef33b86151b6cd2ce2b33d641f6b6ac3 for more info
-	  source <(rg --generate=complete-zsh 2>/dev/null) &> /dev/null
-  fi
-
   if type cloudide-cli > /dev/null; then
 	  #source <(cloudide-cli completion zsh) # 80-100ms, infrequently used
   fi
@@ -227,9 +232,6 @@ load_plugins() {
   [[ -s "$HOME/.bun/_bun" ]] && source "$HOME/.bun/_bun"
 
   [[ -s "$HOME/.ttadk/completion/ttadk.zsh" ]] && source "$HOME/.ttadk/completion/ttadk.zsh"
-
-	# Grok Build completions
-	fpath=(~/.grok/completions/zsh $fpath)
 
   # HISTORY plugins start
   if type atuin > /dev/null; then
