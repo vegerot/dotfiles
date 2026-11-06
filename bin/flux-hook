@@ -17,7 +17,7 @@ mac_bin="$mac_app/Contents/MacOS/Flux Island"
 linux_bin="$HOME/.flux/bin"
 
 # Flux stamps its own version into these hooks. Update it after a Flux upgrade.
-tea_env=(TEA_APP_ID=1013111 TEA_CHANNEL=cn TEA_APP_NAME_FOR_BITS=@fluxisland@0.1.39@0.4.19)
+tea_env=(TEA_APP_ID=1013111 TEA_CHANNEL=cn TEA_APP_NAME_FOR_BITS=@fluxisland@0.1.45-hotfix.b7dbf23@0.4.22)
 
 # Antigravity (agy CLI, Desktop, IDE, and Zed antigravity-acp) hook wrapper.
 # Note: antigravity-acp executes hook commands via shlex.split + execve (no
@@ -93,9 +93,11 @@ fi
 
 case "${1}:$(uname -s)" in
 relay:Darwin)
-	[ -e "$mac_bin" ] || exit 0
-	exec env ELECTRON_RUN_AS_NODE=1 "$mac_bin" \
-		"$mac_app/Contents/Resources/bin/flux-hooks-relay" --source "$2"
+	# A native binary since Flux 0.1.45. It used to be a Node script run
+	# through Electron, which now dies with a SyntaxError on the binary.
+	relay="$mac_app/Contents/Resources/bin/flux-hooks-relay"
+	[ -x "$relay" ] || exit 0
+	exec "$relay" --source "$2"
 	;;
 relay:Linux)
 	# This wrapper exits 0 by itself when the Flux daemon is not running.
