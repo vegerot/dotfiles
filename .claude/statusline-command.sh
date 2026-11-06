@@ -16,6 +16,17 @@ cwd=$(echo "$input" | jq -r '.workspace.current_dir // .cwd // empty')
 # Windows gives C:\Users\Max\x. Make it /c/Users/Max/x so $HOME and awk match.
 cwd=$(echo "$cwd" | tr '\\' '/' | sed 's|^\([A-Za-z]\):/|/\L\1/|')
 used_pct=$(echo "$input" | jq -r '.context_window.used_percentage // empty')
+# Only present when the current model supports reasoning effort
+effort=$(echo "$input" | jq -r '.effort.level // empty')
+# Emoji tier by effort: 🥱 low, 🤔 medium, 🧠 high, 🤓 xhigh, 🤯 max, ❔ anything new
+case "$effort" in
+  low)    effort_emoji="🥱" ;;
+  medium) effort_emoji="🤔" ;;
+  high)   effort_emoji="🧠" ;;
+  xhigh)  effort_emoji="🤓" ;;
+  max)    effort_emoji="🤯" ;;
+  *)      effort_emoji="❔" ;;
+esac
 
 # --- Identity (mirrors 🪪%n 💻%m) ---
 user=$(whoami)
@@ -81,6 +92,7 @@ printf '\033[32m🪪 %s\033[0m 💻\033[32m%s\033[0m: \033[34m📁 %s\033[0m' \
 
 [ -n "$branch" ] && printf ' \033[35m%s\033[0m' "$branch"
 [ -n "$model"  ] && printf ' \033[36m[%s]\033[0m' "$model"
+[ -n "$effort" ] && printf ' \033[36m%s %s\033[0m' "$effort_emoji" "$effort"
 [ -n "$ctx_part"  ] && printf '\033[33m%s\033[0m' "$ctx_part"
 [ -n "$cost_part" ] && printf '\033[33m%s\033[0m' "$cost_part"
 [ -n "$rate_part" ] && printf '\033[33m%s\033[0m' "$rate_part"
