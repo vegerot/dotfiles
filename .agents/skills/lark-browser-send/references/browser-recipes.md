@@ -48,7 +48,7 @@ When no shared browser is running, Max's authenticated profile can be launched w
 chrome-devtools start \
   --channel=dev \
   --headless=true \
-  --userDataDir=/home/max.coplan/.cache/sa-tea-chrome-profile \
+  --userDataDir=/home/max.coplan/.config/google-chrome-unstable \
   --usageStatistics=false
 ```
 

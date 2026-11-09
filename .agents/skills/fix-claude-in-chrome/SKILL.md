@@ -118,6 +118,63 @@ respawns one on demand — usually not instantly, so do not wait in a polling lo
 Install from <https://claude.ai/chrome> **in the browser you actually use**. On macOS,
 Chrome channels are entirely separate applications with separate profile trees.
 
+### Headless Chrome (devbox): signed out after every restart
+
+`diagnose.sh` does not detect this. Symptoms: after Chrome restarts, the browser drops out
+of `list_connected_browsers`, and the extension's `options.html` shows "Log in".
+
+Why: the extension keeps its tokens in `chrome.storage.session`, which every browser
+restart clears. Desktop browsers recover through a silent claude.ai sign-in
+(`launchWebAuthFlow`, `prompt=none`) that needs the claude.ai login cookie. A headless
+browser has no such cookie, because claude.ai's Cloudflare check rejects `HeadlessChrome`,
+even when a human clicks it through `chrome://inspect`. The extension does keep a refresh
+token on disk (`diskRefreshToken`), so restore from that:
+
+```bash
+node <skill-base-dir>/scripts/restore-headless-auth.ts    # Node >= 22.18; CDP port 9222 by default
+```
+
+It runs the extension's own refresh inside its service worker over the Chrome DevTools
+Protocol (CDP), saves the rotated refresh token, and does nothing if the extension is
+already signed in. Chrome must have `--remote-debugging-port`. Max's devbox setup (tested
+2026-11-09):
+
+- Launch: `google-chrome-unstable --headless=new --disable-gpu --password-store=basic --no-first-run --user-data-dir=$HOME/.config/google-chrome-unstable --remote-debugging-port=9222`.
+  Headless ignores the default profile unless `--user-data-dir` is passed. The profile's
+  cookies need `--password-store=basic`. `--disable-gpu` because earlyoom kills the GPU
+  process under memory pressure and Chrome then exits.
+- The native host manifest must be in `<user-data-dir>/NativeMessagingHosts/` (symlink it).
+- Installing the extension without a UI: put `{"external_update_url": "https://clients2.google.com/service/update2/crx"}`
+  in `/opt/google/chrome-unstable/extensions/fcoeoabgfenejglbffodgkkbkcdhcgfn.json`, start
+  Chrome once without Puppeteer (its `--disable-background-networking` blocks the
+  download), then restart once to finish the delayed install.
+- chrome-devtools-mcp refuses `chrome://` and extension pages, so use raw CDP for those.
+
+If the script reports `no diskRefreshToken` or `invalid_grant`, sign in again. The
+extension's OAuth flow uses PKCE (a per-sign-in secret, `codeVerifier`, stays in the
+extension), so the approval can happen in another browser. Read the authorize URL from the
+tab the extension opens. Max opens it in an Incognito window on his Mac and approves, then
+copies the `chrome-extension://…/oauth_callback.html?code=…&state=…` address from the
+failed page. In the extension's service worker, POST that code with the stored
+`codeVerifier` to `https://platform.claude.com/v1/oauth/token`, and store the result the way
+`restore()` in the script does. Pasting the code is safe: it is useless without the
+verifier. The extension ignores a callback in a tab it did not open, so this exchange has
+to be done by hand.
+
+### A session uses another machine's browser instead of the local one
+
+With several browsers connected, a session uses, in order: (1) the **persisted pick**,
+`chromeExtension.pairedDeviceId` in `~/.claude.json` ("is the one picked last"); (2) a
+browser **on this computer** (`onThisComputer: true`), but only when a host sends
+`localDeviceIds`, and a plain CLI session has none even with the local native host
+running; (3) otherwise it asks. Removing `pairedDeviceId` therefore makes a plain session
+ask instead of picking the local browser (tested 2026-11-09). Read from the 2.1.321 binary. Hosts such as Remote Control pass the
+pick on as `set_chrome_browser_hints` (`preferredDeviceId`, `localDeviceIds`). So a stale
+pick of a remote browser beats the local one. `isLocal: true` only means the OS matches.
+Fix: `select_browser` with the local `deviceId`. That rewrites `pairedDeviceId`, so new
+sessions default to it, which you can check with the headless check below. Picking another
+browser later moves the default again.
+
 ## Verify functionally, never by reading the panel
 
 The `/chrome` panel is not trustworthy (see below). Confirm with a real tool call in a

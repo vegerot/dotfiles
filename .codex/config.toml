@@ -40,7 +40,7 @@ args = [
   "--chromeArg=--remote-debugging-port=9222",
   "--chromeArg=--remote-debugging-address=127.0.0.1",
   "--chromeArg=--remote-allow-origins=http://127.0.0.1:9223,http://localhost:9223",
-  "--userDataDir=/home/max.coplan/.cache/sa-tea-chrome-profile",
+  "--userDataDir=/home/max.coplan/.config/google-chrome-unstable",
   "--experimental-devtools=true",
   "--experimental-vision=true",
   "--experimental-structured-content=true",
