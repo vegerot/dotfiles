@@ -25,6 +25,15 @@ fi
 
 export PATH="$HOME/.local/bin:$HOME/dotfiles/bin:/sbin:$PATH"
 
+# fnm without `eval "$(fnm env)"`: `aliases/default` is a fixed symlink to the
+# version picked with `fnm default`, so a static PATH entry is enough.  Goes
+# before /usr/bin so it wins over the apt (NodeSource) node.
+# `default` -> `lts-latest`, so updating is just: fnm install --lts
+# (Not --latest: it picks alphas, such as v27.0.0-alpha, from nodejs.org's index.)
+FNM_DIR="$HOME/.local/share/fnm"
+[ -d "$FNM_DIR" ] && export PATH="$FNM_DIR/aliases/default/bin:$FNM_DIR:$PATH"
+unset FNM_DIR
+
 # My own scripts. They go before the system directories, so they win.
 [ -d "$HOME/.claude/my-scripts" ] && export PATH="$HOME/.claude/my-scripts:$PATH"
 [ -d "$HOME/.codex/my-scripts" ] && export PATH="$HOME/.codex/my-scripts:$PATH"
