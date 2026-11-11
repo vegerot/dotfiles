@@ -305,8 +305,7 @@
   "defaultShell": "powershell",
   "statusLine": {
     "type": "command",
-    "command": "/bin/bash '/Users/bytedance/.flux/bin/flux-statusline'",
-    "padding": 0
+    "command": "bash ~/.claude/statusline-command.sh"
   },
   "enabledPlugins": {
     "lua-lsp@claude-plugins-official": true,

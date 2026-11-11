@@ -72,10 +72,17 @@ fi
 if [ "${1:-}" = dedupe ]; then
 	settings="$HOME/.claude/settings.json"
 	markers='flux-hooks|hooks-cli/index|flux-bits-report'
-	grep -Eq "$markers" "$settings" 2>/dev/null || exit 0
+	# Flux also points statusLine at its own wrapper, an absolute macOS path
+	# that breaks the other machines sharing this file. The wrapper only writes
+	# /tmp/flux-rl.json, which statusline-command.sh already does, so put our
+	# portable command back.
+	grep -Eq "$markers|flux-statusline" "$settings" 2>/dev/null || exit 0
 	command -v jq >/dev/null 2>&1 || exit 0
 	cleaned=$(jq --arg m "$markers" '
-		.hooks |= (
+		if (.statusLine.command // "") | test("flux-statusline")
+		then .statusLine = {type: "command", command: "bash ~/.claude/statusline-command.sh"}
+		else . end
+		| .hooks |= (
 			with_entries(.value |= map(select(
 				any(.hooks[]?; (.command // "") | test($m)) | not
 			)))
