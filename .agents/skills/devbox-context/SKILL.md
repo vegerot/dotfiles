@@ -1,6 +1,6 @@
 ---
 name: devbox-context
-description: Explain Codex and Claude Code connections to Max's ByteDance Linux devbox. Use shared machine context plus only the active agent's section for Codex CLI/desktop SSH/Remote Control, or Claude CLI/desktop SSH/Remote Control and cl bridge sessions. Use for questions such as "how am I connected right now", "explain this is the devbox", or a recap of the connection setup.
+description: Explain Codex and Claude Code connections to Max's ByteDance Linux devbox. Use shared machine context plus only the active agent's section for Codex CLI/desktop SSH/Remote Control, or Claude CLI/desktop SSH/Remote Control and cl bridge sessions. Use for questions such as "how am I connected right now", "explain this is the devbox", or a recap of the connection setup. Also use when the devbox headless Chrome hits a ByteDance SSO login page.
 ---
 
 # Devbox connection context
@@ -98,6 +98,44 @@ or killing anything. Gathering context alone should not change connections.
 See `devbox/adb-tunnel-from-mac.md` and
 `devbox/adb-port-owner-and-devtools-origin.md` in the archive for setup and
 the previously observed port collision.
+
+### Headless Chrome and ByteDance SSO
+
+The devbox runs headless Chrome Dev with its debugging port on
+`127.0.0.1:9222`. When a page there redirects to `sso.bytedance.com` or
+`sso.tiktok-intl.com` (Kani, `cloud.bytedance.net` consoles), do not ask
+Max for a password and do not build a tunnel. Copy the ByteCloud SSO
+cookies from `bytedcli`:
+
+```bash
+# 1. Refresh the cookies from the stored Feishu session (about 20 s, no prompt).
+bytedcli --json auth login --begin --session --feishu
+# 2. Load them into the running Chrome's default profile, then reload the page.
+node ~/.claude/skills/devbox-context/scripts/inject-bytecloud-cookies.mjs
+```
+
+Step 1 writes 16 cookies for `bytedance.net`, `cloud.bytedance.net`, and
+`sso.bytedance.com` to `~/.local/share/bytedcli/data/bytecloud_session.json`.
+Never print their values. Step 2 sends them with the Chrome DevTools
+Protocol call `Storage.setCookies`. To check the cookies without touching
+the default profile, pass `--isolated-test URL`: the script loads them into
+a throwaway browser context, opens the URL, and prints where it ends up.
+
+Tested 2026-11-11: with only these cookies, the Kani access page loaded
+with title "Kani V2" and no SSO redirect. If step 1 reports that it needs a
+QR code scan, the stored Feishu session has expired; give Max the link it
+returns. The 2026-10-09 origin of this method is in
+`bytedance/spooky-bio-link-preview-shutdown-and-magic-revival.md`
+(sections 10–11). Its `chrome-devtools set_cookies` command is not in the
+installed `chrome-devtools` CLI (1.12.0), which is why the script exists.
+
+Fallback when Max must act in the page himself: on the Mac run
+`ssh -f -N -L 9229:127.0.0.1:9222 devbox`, then open
+`chrome://inspect/#devices` and click `inspect` on the tab. Use local port
+9229 because the Mac's own Chrome Dev holds 9222 and `chrome://inspect`
+checks both by default. Direct `devtools://` inspector links get a 403
+unless the devbox Chrome was started with
+`--remote-allow-origins=devtools://devtools`.
 
 ## Codex only
 
