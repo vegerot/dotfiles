@@ -324,9 +324,37 @@
   "remoteControlAtStartup": true,
   "inputNeededNotifEnabled": true,
   "agentPushNotifEnabled": true,
-  "voiceEnabled": true,
+  "cleanupPeriodDays": 3650,
+  "showMessageTimestamps": true,
+  "showThinkingSummaries": true,
+  "dialogExpiry": "10m",
+  "autoDreamEnabled": true,
+  "spinnerVerbs": {
+    "mode": "append",
+    "verbs": [
+      "Yak-shaving",
+      "Bikeshedding",
+      "Reticulating splines",
+      "Rubber-ducking",
+      "Blaming DNS",
+      "Reading the source",
+      "Exiting vim",
+      "Rebasing onto regret",
+      "Untangling symlinks",
+      "Asking the devbox nicely",
+      "Dodging earlyoom",
+      "Grepping the void",
+      "Deleting backwards compatibility",
+      "Not being paranoid",
+      "Running a small experiment",
+      "Wavedashing",
+      "Consulting the changelog",
+      "Counting tokens",
+      "Feeding the hooks",
+      "Turning it off and on again"
+    ]
+  },
   "voice": {
-    "enabled": true,
-    "mode": "hold"
+    "enabled": true
   }
 }
