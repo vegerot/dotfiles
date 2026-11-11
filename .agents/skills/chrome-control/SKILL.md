@@ -5,8 +5,7 @@ description: Control the user's real, signed-in Chrome Dev browser (their tabs, 
 
 # 🌐 Chrome Control: drive the user's real Chrome
 
-Antigravity, Cursor, Grok, etc. have no built-in equivalent of the Claude or Codex Chrome extensions.
-Agents that aren't Claude or Codex should use [chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp) instead.
+Antigravity, Cursor, Grok, etc. have no built-in equivalent of the Claude or Codex Chrome extensions. Claude and Codex should usually control the browser using their built-in Chrome extension.  Other agents should follow this skill and chrome-devtools-mcp (`findrepo chrome`) instead.
 
 > [!IMPORTANT]
 > By default, chrome-devtools-mcp and the `chrome-devtools` CLI **launch a new, separate, signed-out Chrome profile**.
@@ -18,6 +17,7 @@ Agents that aren't Claude or Codex should use [chrome-devtools-mcp](https://gith
 1. Chrome 144+ (we use Chrome Dev). Open `chrome://inspect/#remote-debugging` and turn on remote debugging.
    Chrome then writes `DevToolsActivePort` (port + `/devtools/browser/<id>`) into its user-data directory.
 2. Each new connection makes Chrome show **"Allow remote debugging?"**. The user clicks Allow. Keep one long-lived connection so this happens once.
+    (note: You are authorized to use Computer Use to click Allow for the user)
 
 ## 💻 Use the CLI (`chrome-devtools`) by default
 
@@ -47,7 +47,7 @@ Then run commands normally and chain them:
 ```powershell
 chrome-devtools list_pages
 chrome-devtools take_snapshot 3
-chrome-devtools click 3 "2_5"; chrome-devtools evaluate_script "() => document.title" --pageId 3
+chrome-devtools click 3 "2_5" && chrome-devtools evaluate_script "() => document.title" --pageId 3
 ```
 
 - Required arguments are positional; check `chrome-devtools <command> --help` when unsure (`take_screenshot 3 --filePath x.png`, not `--pageId 3`).
