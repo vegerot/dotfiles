@@ -106,6 +106,16 @@ Take a fresh snapshot afterward. The editor update is asynchronous: an `innerTex
 
 When editing an existing sent message (`contextmenu` → `Edit Message`), `document.execCommand('selectAll')` only selects the first paragraph in Slate; clear the edit box with `chrome-devtools press_key <pageId> "Meta+a"` (or `"Control+a"`) and `"Backspace"` before pasting, then click the `Save` button by snapshot UID.
 
+## Inline code
+
+Lark turns `` `text` `` into inline code only when it is **typed**, and only when a space is typed right after the closing backtick. Pasted backticks stay literal, and a paste that includes `text/html` is dropped entirely. For a message with code:
+
+- Type each line with real keystrokes (Claude in Chrome `computer` `type`), and press `shift+Enter` between lines. A plain Enter sends.
+- Put a space after every closing backtick, even before a comma (`` `a` , `b` ``) and at the end of a line. Without it, the spans merge from the first backtick to the last, or stay literal.
+- Don't paste on the same line before typing a code span: pasted text earlier on the line blocks the conversion.
+- Start list lines with `• `. A typed `- ` turns only the first line into a Lark list.
+- Verify before sending: code spans use a monospace font (`SourceCodeProMac`) in `getComputedStyle(node).fontFamily`.
+
 ## Extract a fresh device authorization link
 
 Run this on the actual device-denial page. It clicks the named button and waits up to two seconds for a new matching iframe URL. If none appears, inspect new tabs and the DOM instead of inventing a link.
@@ -148,5 +158,6 @@ In the clean-session experiment the browser redirected to `accounts.feishu.cn/ac
 - A separate isolated context reproduced QR-only sign-in; the QR screenshot was visually inspected, then that context's tab was closed. Device approval was not forced on the already-authorized saved profile. Its completion is established by the historical transcript.
 - A controlled DOM fixture with an old binding iframe, a newly generated matching iframe, and an unrelated final iframe verified that the extraction recipe selected the new link. The fixture was cleared afterward. This checks extraction logic, not live authorization completion.
 - Send conversation `3361fa2a-2d82-4e2a-a61a-51d1e2114ed2` (Claude Code), November 2, 2026, work MacBook: Claude in Chrome on the work profile. Searched a colleague by Chinese name, opened the direct chat, pasted a nine-line message with an emoji, confirmed nine `.ace-line` rows, sent with the Send button, and confirmed delivery in the chat and with `lark-cli im +chat-messages-list`. The search-modal focus trap and the extra trailing `innerText` lines were observed there.
+- Inline-code experiments, November 9, 2026, work MacBook, self chat, drafts only: typed `` `code` `` + space converted; pasted backticks, `text/html` pastes, typed spans after pasted text on the same line, and spans without a following space did not. The user had re-edited two sent oncall messages to add inline code by hand.
 
 Note: This being a web UI, it's subject to change and be buggy.  Experiment with better ways to do things and if one is discovered, ask the user for permission to update this skill.
