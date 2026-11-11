@@ -134,6 +134,19 @@
             "async": true
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/dotfiles/bin/claude-recap-title apply"
+          },
+          {
+            "type": "command",
+            "command": "~/dotfiles/bin/claude-recap-title generate",
+            "async": true
+          }
+        ]
       }
     ],
     "SessionStart": [
