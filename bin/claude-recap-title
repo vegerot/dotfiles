@@ -1,53 +1,71 @@
-#!/usr/bin/env bash
-# Claude Code UserPromptSubmit hooks: make the session title follow the session recap.
-#
-#   claude-recap-title generate   async hook. Names the newest recap with Haiku
-#                                 and saves the name as pending.
-#   claude-recap-title apply      synchronous hook. Prints the pending name as
-#                                 the session title.
-#
-# Two steps because only a synchronous hook can set the title, and the Haiku
-# call takes about 6 seconds, which must not block the prompt.
-# The namer below is itself a `claude` run, so it fires these hooks again.
-[[ -n $CLAUDE_RECAP_TITLE_NAMING ]] && exit 0
+#!/usr/bin/env bun
+// Claude Code UserPromptSubmit hooks: make the session title follow the session recap.
+//
+//   claude-recap-title generate   async hook. Names the newest recap with Haiku
+//                                 and saves the name as pending.
+//   claude-recap-title apply      synchronous hook. Prints the pending name as
+//                                 the session title.
+//
+// Two steps because only a synchronous hook can set the title, and the Haiku
+// call takes about 6 seconds, which must not block the prompt.
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs"
+import { homedir } from "node:os"
 
-IFS=$'\t' read -r session transcript < <(jq --raw-output '[.session_id, .transcript_path] | @tsv')
-state="${XDG_STATE_HOME:-$HOME/.local/state}/claude-recap-title"
-pending="$state/$session.title"
-named="$state/$session.recap"
+// The namer below is itself a `claude` run, so it fires these hooks again.
+if (process.env.CLAUDE_RECAP_TITLE_NAMING) process.exit(0)
 
-# Same style as Claude Code's automatic titles, so the session list stays uniform.
-instruction='Name the coding session this recap describes, so the user can pick it out of a list. Reply with only the name: a noun phrase of two to five words in sentence case, leading with the most specific thing named. No verbs like fix or add, no quotes, no final period. The input starts with the current name. If the current name still fits the recap, reply with it unchanged, so the name changes only when the topic has moved.'
+type HookInput = { session_id: string; transcript_path: string }
+type TranscriptLine = { uuid?: string; content?: string; customTitle?: string; aiTitle?: string }
 
-case $1 in
-generate)
-  # The newest recap is either an automatic one (away_summary) or the output of a typed /recap.
-  IFS=$'\t' read -r uuid recap < <(tac "$transcript" \
-    | rg --max-count 1 --fixed-strings \
-        --regexp '"subtype":"away_summary"' \
-        --regexp '"commandRun":{"command":"recap"' \
-    | jq --raw-output '[.uuid, (.content | ltrimstr("<local-command-stdout>") | rtrimstr("</local-command-stdout>"))] | @tsv')
-  # The newest recap already has a name, or is being named right now.
-  # (With no recap at all, the empty uuid equals the missing marker, so this exits too.)
-  [[ $uuid == "$(cat "$named" 2>/dev/null)" ]] && exit 0
-  mkdir --parents "$state"
-  # Mark before the slow call, so a second prompt within those seconds does not name it again.
-  echo "$uuid" > "$named"
-  # The title shown today: the newest custom title if the session has one, else the automatic title.
-  current=$(tac "$transcript" | rg --max-count 1 --fixed-strings '"type":"custom-title"' | jq --raw-output .customTitle)
-  [[ -z $current ]] \
-    && current=$(tac "$transcript" | rg --max-count 1 --fixed-strings '"type":"ai-title"' | jq --raw-output .aiTitle)
-  # If the call fails, this recap stays unnamed; the next recap gets a new try.
-  # A failed `claude` can still print text ("Not logged in"), so check the exit code too.
-  title=$(CLAUDE_RECAP_TITLE_NAMING=1 claude --print --model haiku --no-session-persistence \
-    "$instruction" <<< "Current name: $current"$'\n\n'"$recap") || exit 0
-  # Haiku repeats the current name when the topic has not moved; then there is nothing to apply.
-  [[ -n $title && $title != "$current" ]] && echo "$title" > "$pending"
-  ;;
-apply)
-  [[ -r $pending ]] || exit 0
-  jq --null-input --compact-output --arg title "$(< "$pending")" \
-    '{hookSpecificOutput: {hookEventName: "UserPromptSubmit", sessionTitle: $title}}'
-  rm "$pending"
-  ;;
-esac
+const input: HookInput = await Bun.stdin.json()
+const state = `${process.env.XDG_STATE_HOME ?? `${homedir()}/.local/state`}/claude-recap-title`
+const pending = `${state}/${input.session_id}.title`
+const named = `${state}/${input.session_id}.recap`
+const readIfExists = (path: string) => (existsSync(path) ? readFileSync(path, "utf8").trimEnd() : "")
+
+// Same style as Claude Code's automatic titles, so the session list stays uniform.
+const INSTRUCTION =
+  "Name the coding session this recap describes, so the user can pick it out of a list. Reply with only the name: a noun phrase of two to five words in sentence case, leading with the most specific thing named. No verbs like fix or add, no quotes, no final period. The input starts with the current name. If the current name still fits the recap, reply with it unchanged, so the name changes only when the topic has moved."
+
+const generate = () => {
+  const lines = readIfExists(input.transcript_path).split("\n")
+  // The newest transcript line that contains one of these markers, parsed.
+  const newest = (...markers: string[]): TranscriptLine | undefined => {
+    const line = lines.findLast((line) => markers.some((marker) => line.includes(marker)))
+    return line ? JSON.parse(line) : undefined
+  }
+
+  // The newest recap is either an automatic one (away_summary) or the output of a typed /recap.
+  const recap = newest('"subtype":"away_summary"', '"commandRun":{"command":"recap"')
+  // No recap yet, or the newest recap already has a name, or is being named right now.
+  if (!recap?.uuid || recap.uuid === readIfExists(named)) return
+  mkdirSync(state, { recursive: true })
+  // Mark before the slow call, so a second prompt within those seconds does not name it again.
+  writeFileSync(named, recap.uuid + "\n")
+
+  const recapText = (recap.content ?? "").replace(/^<local-command-stdout>/, "").replace(/<\/local-command-stdout>$/, "")
+  // The title shown today: the newest custom title if the session has one, else the automatic title.
+  const current = newest('"type":"custom-title"')?.customTitle ?? newest('"type":"ai-title"')?.aiTitle ?? ""
+
+  const namer = Bun.spawnSync(["claude", "--print", "--model", "haiku", "--no-session-persistence", INSTRUCTION], {
+    stdin: Buffer.from(`Current name: ${current}\n\n${recapText}\n`),
+    stderr: "inherit",
+    env: { ...process.env, CLAUDE_RECAP_TITLE_NAMING: "1" },
+  })
+  // If the call fails, this recap stays unnamed; the next recap gets a new try.
+  // A failed `claude` can still print text ("Not logged in"), so check the exit code too.
+  if (namer.exitCode !== 0) return
+  const title = namer.stdout.toString().trimEnd()
+  // Haiku repeats the current name when the topic has not moved; then there is nothing to apply.
+  if (title && title !== current) writeFileSync(pending, title + "\n")
+}
+
+const apply = () => {
+  const title = readIfExists(pending)
+  if (!title) return
+  console.log(JSON.stringify({ hookSpecificOutput: { hookEventName: "UserPromptSubmit", sessionTitle: title } }))
+  rmSync(pending)
+}
+
+if (process.argv[2] === "generate") generate()
+if (process.argv[2] === "apply") apply()
