@@ -225,7 +225,6 @@ local function VANILLA()
 		{ pattern = "*", command = "setlocal formatoptions-=ro" })
 
 	-- Press tab and s-tab to switch between recent windows
-	vim.keymap.set("n", "<c-i>", "<c-i>") -- makes sure tab and <c-i> are different
 	vim.keymap.set("n", "<Tab>", function()
 		return vim.v.count > 0 and "<C-w>w" or "<C-w>p"
 	end, { expr = true })
@@ -233,6 +232,63 @@ local function VANILLA()
 end
 
 VANILLA()
+
+-- One file per tab, like VS Code.
+--
+-- `jump` moves the cursor the standard way, in the current window.  When it
+-- lands in a different file, that file is shown in its own tab instead (the
+-- tab that already shows it, or a new one), and `undo` gives the current
+-- window its file back.
+--
+-- Jump history (jumplist and tag stack) belongs to a window, and Lua cannot
+-- write it.  But a copy of a window gets a copy of its history.  So after the
+-- jump, a copy of the current window goes to the destination tab, and the
+-- history travels with the cursor.
+local function jumpOneFilePerTab(jump, undo)
+	local fromWin, fromBuf = vim.api.nvim_get_current_win(), vim.api.nvim_get_current_buf()
+	local fromTagIndex = vim.fn.gettagstack().curidx
+	jump()
+	local toBuf = vim.api.nvim_get_current_buf()
+	-- an empty window has no file to keep: a fresh nvim, where <C-o> continues the last session
+	local fromEmptyWindow = vim.api.nvim_buf_get_name(fromBuf) == "" and not vim.bo[fromBuf].modified
+	if toBuf == fromBuf or fromEmptyWindow then
+		return
+	end
+
+	local alreadyShownIn = vim.tbl_filter(function(win) return win ~= fromWin end, vim.fn.win_findbuf(toBuf))[1]
+	vim.cmd(alreadyShownIn and "split" or "tab split")
+	local copy = vim.api.nvim_get_current_win()
+	if alreadyShownIn then
+		-- the copy takes the place of the window that shows the file
+		vim.api.nvim_win_set_config(copy, { win = alreadyShownIn, split = "left" })
+		vim.api.nvim_win_close(alreadyShownIn, false)
+	end
+
+	vim.api.nvim_win_call(fromWin, undo)
+	-- `undo` is the inverse of the `jump` that just worked, so it cannot land elsewhere
+	assert(vim.api.nvim_win_get_buf(fromWin) == fromBuf, "jumpOneFilePerTab: undo did not restore the file")
+	vim.fn.settagstack(fromWin, { curidx = fromTagIndex })
+	vim.api.nvim_set_current_win(copy)
+end
+
+-- the count in front also keeps <C-i> (a Tab character) from being trimmed as whitespace
+local function jumplistBack(count) vim.cmd("normal! " .. (count or 1) .. vim.keycode("<C-o>")) end
+local function jumplistForward(count) vim.cmd("normal! " .. (count or 1) .. vim.keycode("<C-i>")) end
+
+vim.keymap.set("n", "<C-o>", function()
+	local count = vim.v.count1
+	jumpOneFilePerTab(function() jumplistBack(count) end, function() jumplistForward(count) end)
+end, { desc = "jumplist back, one file per tab" })
+-- mapping <C-i> also keeps it apart from <Tab>, which switches windows
+vim.keymap.set("n", "<C-i>", function()
+	local count = vim.v.count1
+	jumpOneFilePerTab(function() jumplistForward(count) end, function() jumplistBack(count) end)
+end, { desc = "jumplist forward, one file per tab" })
+-- every tag jump saves its start in the jumplist, so one step back undoes it
+vim.keymap.set("n", "<C-t>", function()
+	local count = vim.v.count1
+	jumpOneFilePerTab(function() vim.cmd(count .. "pop") end, jumplistBack)
+end, { desc = "tag stack back, one file per tab" })
 
 if vim.g.neovide then
 	vim.o.guifont = "SFMono Nerd Font,JetBrainsMono Nerd Font,JetBrains Mono,Menlo,Monaco,Courier New,monospace:h14"
@@ -517,78 +573,30 @@ local function AUTOCOMPLETE()
 		local function handleGotoDefinition(options)
 			local title = options.title
 			local all_items = options.items
-			local method = options.context.method
 			local bufnr = options.context.bufnr
-			local shouldReuseWin = true
 
 			if #all_items == 1 then
 				local item = all_items[1]
 				local item_bufnr = item.bufnr or vim.fn.bufadd(item.filename)
 
-				-- Save position in jumplist
-				vim.cmd("normal! m'")
-				-- Push a new item into tagstack
-				local from = vim.fn.getpos('.')
-				from[1] = bufnr
-				local tagname = vim.fn.expand('<cword>')
-				local tagstack = { { tagname = tagname, from = from } }
-				local currentWindow = vim.api.nvim_get_current_win()
-				vim.fn.settagstack(vim.fn.win_getid(currentWindow), { items = tagstack }, 't')
+				jumpOneFilePerTab(function()
+					-- Save position in jumplist
+					vim.cmd("normal! m'")
+					-- Push a new item into tagstack
+					local from = vim.fn.getpos('.')
+					from[1] = bufnr
+					local tagstack = { { tagname = vim.fn.expand('<cword>'), from = from } }
+					vim.fn.settagstack(0, { items = tagstack }, 't')
 
-				vim.bo[item_bufnr].buflisted = true
-				local resultWindow = currentWindow
-				if shouldReuseWin then
-					local maybeAlreadyOpenedWindow = vim.fn.win_findbuf(item_bufnr)[1]
-					if maybeAlreadyOpenedWindow then
-						resultWindow = maybeAlreadyOpenedWindow
-					else
-						vim.cmd('tabnew');
-						resultWindow = vim.api.nvim_get_current_win()
-						vim.bo[item_bufnr].buflisted = true;
-					end
-					if resultWindow ~= currentWindow then
-						vim.api.nvim_set_current_win(resultWindow)
-					end
-				end
-				vim.api.nvim_win_set_buf(resultWindow, item_bufnr)
-				vim.api.nvim_win_set_cursor(resultWindow, { item.lnum, item.col - 1 })
-				-- Open folds under the cursor
-				vim.api.nvim_win_call(resultWindow, function() vim.cmd('normal! zv') end)
+					vim.bo[item_bufnr].buflisted = true
+					vim.api.nvim_win_set_buf(0, item_bufnr)
+					vim.api.nvim_win_set_cursor(0, { item.lnum, item.col - 1 })
+					-- Open folds under the cursor
+					vim.cmd('normal! zv')
+				end, jumplistBack)
 			else
 				vim.fn.setqflist({}, ' ', { title = title, items = all_items })
 				vim.cmd('botright copen')
-			end
-		end
-
-		local function tagBackInAppropriateTab(direction)
-			local currentWindow = vim.fn.win_getid()
-
-			local tagstack = vim.fn.gettagstack(currentWindow)
-			local items = tagstack.items
-			local current_position = tagstack.curidx
-
-			--vim.print("Tagstack: " .. vim.inspect(tagstack))
-			if current_position > #items + 1 then
-				print("No more items in tagstack")
-				return
-			end
-
-			local next_position = current_position + direction
-			local target = items[next_position]
-			--vim.print("next_position: " .. next_position .. " target: " .. vim.inspect(target))
-			if target then
-				local maybeAlreadyOpenedWindow = vim.fn.win_findbuf(target.from[1])[1]
-				local resultWindow = maybeAlreadyOpenedWindow or currentWindow
-				--vim.print("maybeAlreadyOpenedWindow: " .. vim.inspect(maybeAlreadyOpenedWindow) .. " resultWindow: " .. vim.inspect(resultWindow))
-				vim.api.nvim_set_current_win(resultWindow)
-				vim.fn.settagstack(resultWindow, { items = items, curidx = next_position }, 't')
-				vim.api.nvim_win_set_buf(resultWindow, target.from[1])
-				vim.fn.cursor(target.from[2], target.from[3])
-				if direction == 1 then
-					vim.cmd('stag') -- update the tagstack curidx
-				else
-					vim.cmd('pop') -- update the tagstack curidx
-				end
 			end
 		end
 
@@ -844,18 +852,6 @@ local function AUTOCOMPLETE()
 						lhs = "gd",
 						rhs = function() vim.lsp.buf.definition({ on_list = handleGotoDefinition }) end,
 						desc = "vim.lsp.buf.definition({ on_list = handleGotoDefinition })",
-					},
-					{
-						mode = "n",
-						lhs = "<C-t>",
-						rhs = function() tagBackInAppropriateTab(-1) end,
-						desc = "tagBackInAppropriateTab(-1)",
-					},
-					{
-						mode = "n",
-						lhs = "<C-i>",
-						rhs = function() vim.cmd('stag') end,
-						desc = ":stag",
 					},
 				},
 				[LspMethods.textDocument_signatureHelp] = {
