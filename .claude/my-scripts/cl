@@ -1,148 +1,130 @@
-#!/usr/bin/env bash
-# cl — one Claude Code Remote Control server per repo, one tmux window each.
-#
-#   cl <repo>        jump to (or start) the server for a repo already cloned
-#   cl <git-url>     clone into ~/code/<host>/<org>/<repo>, then start
-#   cl clone <url>   clone only
-#   cl reindex       rebuild the repo index
-#   cl update        update claude, then restart every server on the new binary
-#
-# See README.md next to this script.
+#!/usr/bin/env bun
+// cl — one Claude Code Remote Control server per repo, one tmux window each.
+//
+//   cl <repo>        jump to (or start) the server for a repo already cloned
+//   cl <git-url>     clone into ~/code/<host>/<org>/<repo>, then start
+//   cl clone <url>   clone only
+//   cl reindex       rebuild the repo index
+//   cl update        update claude, then restart every server on the new binary
+//
+// See README.md next to this script.
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs"
+import { homedir } from "node:os"
+import { basename, dirname } from "node:path"
 
-set -o errexit
-set -o nounset
-set -o pipefail
+const USAGE = "usage: cl <repo-name|git-url> | cl clone <url> | cl reindex | cl update"
+const CL_ROOT = `${homedir()}/code`
+const CL_INDEX = `${homedir()}/.cache/cl-repos`
+const CLAUDE = `${homedir()}/.local/bin/claude`
 
-readonly CL_ROOT="$HOME/code"
-readonly CL_INDEX="$HOME/.cache/cl-repos"
-
-die() {
-	printf 'cl: %s\n' "$1" >&2
-	exit 1
+const die = (message: string): never => {
+  console.error(`cl: ${message}`)
+  process.exit(1)
 }
 
-reindex() {
-	mkdir --parents "${CL_INDEX%/*}"
-	fd --hidden --no-ignore --max-depth=4 --type=directory '^\.git$' "$CL_ROOT" \
-		| sed 's:/\.git/$::' | sort > "$CL_INDEX"
-
-	local -a repos
-	mapfile -t repos < "$CL_INDEX"
-	printf 'cl: indexed %d repos\n' "${#repos[@]}" >&2
+// Run a command on the terminal. A failure ends cl with the command's exit code.
+const run = (...argv: string[]) => {
+  const { exitCode } = Bun.spawnSync(argv, { stdin: "inherit", stdout: "inherit", stderr: "inherit" })
+  if (exitCode !== 0) process.exit(exitCode)
 }
 
-# Turn a git URL into ~/code/<host>/<org>/<repo> and clone it there.
-clone() {
-	local url=${1:?usage: cl clone <git-url>}
-	local path=${url#*://}
-	path=${path#*@}
-	path=${path/://}
-	path=${path%.git}
-	path=${path%/}
-
-	local dir="$CL_ROOT/$path"
-	if [[ ! -d $dir/.git ]]; then
-		git clone "$url" "$dir" >&2 || return $?
-		reindex
-	fi
-	printf '%s\n' "$dir"
+// Run a command quietly and return its output, or null when it fails.
+const capture = (...argv: string[]) => {
+  const { exitCode, stdout } = Bun.spawnSync(argv, { stderr: "ignore" })
+  return exitCode === 0 ? stdout.toString().trimEnd() : null
 }
 
-# Print the path of a cloned repo, by its directory name.
-find_repo() {
-	local repo=$1 dir
-	[[ -s $CL_INDEX ]] || reindex
+const tmux = (...args: string[]) => run("tmux", ...args)
+const tmuxQuery = (...args: string[]) => capture("tmux", ...args)
 
-	dir=$(awk -F/ -v r="$repo" '$NF == r { print; exit }' "$CL_INDEX")
-	if [[ -z $dir ]]; then
-		reindex
-		dir=$(awk -F/ -v r="$repo" '$NF == r { print; exit }' "$CL_INDEX")
-	fi
-
-	[[ -n $dir ]] || return 1
-	printf '%s\n' "$dir"
+const reindex = () => {
+  const found = capture("fd", "--hidden", "--no-ignore", "--max-depth=4", "--type=directory", "^\\.git$", CL_ROOT) ?? ""
+  const repos = found.split("\n").filter(Boolean).map((gitDir) => gitDir.replace(/\/\.git\/$/, "")).sort()
+  mkdirSync(dirname(CL_INDEX), { recursive: true })
+  writeFileSync(CL_INDEX, repos.map((repo) => repo + "\n").join(""))
+  console.error(`cl: indexed ${repos.length} repos`)
+  return repos
 }
 
-server_cmd() {
-	printf 'CLAUDE_CODE_ENABLE_CFC=1 %s remote-control --name=devbox-%s --spawn=worktree --permission-mode=bypassPermissions --chrome' \
-		"$HOME/.local/bin/claude" "$1"
+// Turn a git URL into ~/code/<host>/<org>/<repo> and clone it there.
+const clone = (url: string) => {
+  const path = url
+    .replace(/^.*?:\/\//, "") // https://
+    .replace(/^.*?@/, "") // git@
+    .replace(":", "/") // github.com:org/repo
+    .replace(/\.git$/, "")
+    .replace(/\/$/, "")
+  const dir = `${CL_ROOT}/${path}`
+  if (!existsSync(`${dir}/.git`)) {
+    run("git", "clone", url, dir)
+    reindex()
+  }
+  return dir
 }
 
-# A running server keeps the claude binary it started with, and so does every
-# chat it spawns.  Update the binary, then restart the servers onto it.  This
-# interrupts the chats.  It does not lose them: their transcripts live on
-# Anthropic's servers.
-update() {
-	"$HOME/.local/bin/claude" update
-
-	# `-f` keeps the servers and drops the plain shell windows.  It also keeps
-	# every field non-empty, which `read` needs: a tab is IFS whitespace, so an
-	# empty field would collapse and shift the others.
-	local win repo dir
-	while IFS=$'\t' read -r win repo dir; do
-		tmux respawn-window -k -t "cl:$win" -c "$dir" "$(server_cmd "$repo")"
-		printf 'cl: restarted %s\n' "$repo" >&2
-	done < <(tmux list-windows -t cl -f '#{@cl_repo}' \
-		-F $'#{window_name}\t#{@cl_repo}\t#{pane_current_path}' 2>/dev/null)
+// The path of a cloned repo, by its directory name.
+const findRepo = (repo: string) => {
+  const indexed = existsSync(CL_INDEX) ? readFileSync(CL_INDEX, "utf8").split("\n").filter(Boolean) : []
+  const named = (dir: string) => basename(dir) === repo
+  return indexed.find(named) ?? reindex().find(named)
 }
 
-serve() {
-	local repo=$1 dir=$2
-	local win=${repo//[.:]/_}
-	local cmd
-	cmd=$(server_cmd "$repo")
+const serverCommand = (repo: string) =>
+  `CLAUDE_CODE_ENABLE_CFC=1 ${CLAUDE} remote-control --name=devbox-${repo} --spawn=worktree --permission-mode=bypassPermissions --chrome`
 
-	# `=cl` is exactly the session `cl`.  A bare `cl` also matches, by prefix, a
-	# window or session named `claude`, and new-window then fails with
-	# "create window failed: index N in use".
-	tmux has-session -t '=cl' 2>/dev/null || tmux new-session -d -s cl -n home
-
-	if ! tmux has-session -t "cl:$win" 2>/dev/null; then
-		tmux new-window -t '=cl:' -n "$win" -c "$dir" "$cmd"
-		# Keep the window (and the error output) after claude exits, so the next
-		# `cl` can tell a dead server from a live one and restart it.
-		tmux set-option -w -t "cl:$win" remain-on-exit on
-	elif [[ $(tmux display-message -p -t "cl:$win" '#{pane_dead}') == 1 ]]; then
-		tmux respawn-window -t "cl:$win" -c "$dir" "$cmd"
-	fi
-
-	# Mark the window as a server, and with which repo.  `cl update` restarts
-	# exactly these, and skips the plain shell windows in the same session.
-	tmux set-option -w -t "cl:$win" @cl_repo "$repo"
-
-	tmux select-window -t "cl:$win"
-	[[ -n ${TMUX:-} ]] || tmux attach -t cl
+// A running server keeps the claude binary it started with, and so does every
+// chat it spawns.  Update the binary, then restart the servers onto it.  This
+// interrupts the chats.  It does not lose them: their transcripts live on
+// Anthropic's servers.
+const update = () => {
+  run(CLAUDE, "update")
+  // `-f` keeps the servers and drops the plain shell windows.
+  const servers = tmuxQuery("list-windows", "-t", "cl", "-f", "#{@cl_repo}", "-F", "#{window_name}\t#{@cl_repo}\t#{pane_current_path}")
+  for (const server of (servers ?? "").split("\n").filter(Boolean)) {
+    const [window, repo, dir] = server.split("\t")
+    tmux("respawn-window", "-k", "-t", `cl:${window}`, "-c", dir, serverCommand(repo))
+    console.error(`cl: restarted ${repo}`)
+  }
 }
 
-main() {
-	local repo=${1:?usage: cl <repo-name|git-url> | cl clone <url> | cl reindex | cl update}
-	local dir
+const serve = (repo: string, dir: string) => {
+  const window = `cl:${repo.replace(/[.:]/g, "_")}`
+  const command = serverCommand(repo)
 
-	case $repo in
-	reindex)
-		reindex
-		return
-		;;
-	clone)
-		shift
-		clone "$@"
-		return
-		;;
-	update)
-		update
-		return
-		;;
-	*://* | *@*:* | */*)
-		dir=$(clone "$repo") || return $?
-		repo=${dir##*/}
-		;;
-	*)
-		dir=$(find_repo "$repo") ||
-			die "no repo named '$repo'. Give a git URL to clone it."
-		;;
-	esac
+  // `=cl` is exactly the session `cl`.  A bare `cl` also matches, by prefix, a
+  // window or session named `claude`, and new-window then fails with
+  // "create window failed: index N in use".
+  if (tmuxQuery("has-session", "-t", "=cl") === null) tmux("new-session", "-d", "-s", "cl", "-n", "home")
 
-	serve "$repo" "$dir"
+  if (tmuxQuery("has-session", "-t", window) === null) {
+    tmux("new-window", "-t", "=cl:", "-n", window.slice("cl:".length), "-c", dir, command)
+    // Keep the window (and the error output) after claude exits, so the next
+    // `cl` can tell a dead server from a live one and restart it.
+    tmux("set-option", "-w", "-t", window, "remain-on-exit", "on")
+  } else if (tmuxQuery("display-message", "-p", "-t", window, "#{pane_dead}") === "1") {
+    tmux("respawn-window", "-t", window, "-c", dir, command)
+  }
+
+  // Mark the window as a server, and with which repo.  `cl update` restarts
+  // exactly these, and skips the plain shell windows in the same session.
+  tmux("set-option", "-w", "-t", window, "@cl_repo", repo)
+
+  tmux("select-window", "-t", window)
+  if (!process.env.TMUX) tmux("attach", "-t", "cl")
 }
 
-main "$@"
+const [target, url] = process.argv.slice(2)
+if (!target) die(USAGE)
+
+if (target === "reindex") {
+  reindex()
+} else if (target === "clone") {
+  console.log(clone(url ?? die("usage: cl clone <git-url>")))
+} else if (target === "update") {
+  update()
+} else if (target.includes("://") || /@.*:/.test(target) || target.includes("/")) {
+  const dir = clone(target)
+  serve(basename(dir), dir)
+} else {
+  serve(target, findRepo(target) ?? die(`no repo named '${target}'. Give a git URL to clone it.`))
+}

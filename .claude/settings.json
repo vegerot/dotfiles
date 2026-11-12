@@ -239,7 +239,7 @@
           },
           {
             "type": "command",
-            "command": "~/.claude/my-scripts/auto-continue-on-drop.sh",
+            "command": "~/.claude/my-scripts/auto-continue-on-drop",
             "timeout": 10
           }
         ]
@@ -318,7 +318,7 @@
   "defaultShell": "powershell",
   "statusLine": {
     "type": "command",
-    "command": "bash ~/.claude/statusline-command.sh"
+    "command": "zsh -f ~/.claude/statusline-command.zsh"
   },
   "enabledPlugins": {
     "lua-lsp@claude-plugins-official": true,

@@ -1,138 +1,195 @@
-#!/usr/bin/env bash
+#!/usr/bin/env -S python3 -I -S
 # One Flux Island hook entry point for macOS and Linux, so the agent config
 # files can be the same on both machines.
 #
 #   flux-hook relay <agent>          claude | gemini | codex | ...
 #   flux-hook bits <agent> <event>   claude-code postToolUse, codex stop, ...
 #   flux-hook agy <event>            PreToolUse | PostToolUse | PreInvocation | PostInvocation | Stop
+#   flux-hook dedupe                 remove the inline Claude hooks Flux re-adds
 #
 # Flux Island is a macOS app. It installs Linux helpers under ~/.flux/bin on a
 # dev box when you connect to that box from its Remote SSH pane. The two live
 # at different paths, so pick by OS. Exit 0 without output when Flux is absent,
 # so the hook never blocks the agent. Windows falls through and does nothing.
-set -u
+#
+# This runs on every hook event of every agent, so startup time matters:
+# "-I -S" skips the site-packages setup, and json, re, and subprocess are
+# imported inside the two subcommands that use them (relay and bits use none).
+import os
+import sys
 
-mac_app='/Applications/Flux Island.app'
-mac_bin="$mac_app/Contents/MacOS/Flux Island"
-linux_bin="$HOME/.flux/bin"
+HOME = os.path.expanduser("~")
+MAC_APP = "/Applications/Flux Island.app"
+MAC_BIN = f"{MAC_APP}/Contents/MacOS/Flux Island"
+LINUX_BIN = f"{HOME}/.flux/bin"
 
 # Flux stamps its own version into these hooks. Update it after a Flux upgrade.
-tea_env=(TEA_APP_ID=1013111 TEA_CHANNEL=cn TEA_APP_NAME_FOR_BITS=@fluxisland@0.1.45-hotfix.b7dbf23@0.4.22)
+TEA_ENV = {
+    "TEA_APP_ID": "1013111",
+    "TEA_CHANNEL": "cn",
+    "TEA_APP_NAME_FOR_BITS": "@fluxisland@0.1.45-hotfix.b7dbf23@0.4.22",
+}
 
-# Antigravity (agy CLI, Desktop, IDE, and Zed antigravity-acp) hook wrapper.
-# Note: antigravity-acp executes hook commands via shlex.split + execve (no
-# shell), so hooks.json must invoke this script directly without shell syntax.
-if [ "${1:-}" = agy ]; then
-	event="${2:-}"
-	input=$(cat 2>/dev/null || true)
-	(
-		if [ -n "$input" ] && command -v jq >/dev/null 2>&1; then
-			flux_event=""
-			case "$event" in
-			PreInvocation)
-				inv_num=$(printf '%s' "$input" | jq -r '.invocationNum // 1' 2>/dev/null || echo 1)
-				[ "$inv_num" = "1" ] && flux_event="BeforeAgent"
-				;;
-			PreToolUse) flux_event="BeforeTool" ;;
-			PostToolUse) flux_event="AfterTool" ;;
-			Stop) flux_event="AfterAgent" ;;
-			esac
-			if [ -n "$flux_event" ]; then
-				printf '%s' "$input" | jq -c --arg ev "$flux_event" '
-					. + {
-						hook_event_name: $ev,
-						session_id: (.conversationId // .session_id // "agy"),
-						cwd: ((.workspacePaths[0] // .cwd // "") | sub("^file://"; "")),
-						tool_name: (.toolCall.name // .tool_name // null),
-						tool_input: (.toolCall.args // .tool_input // null),
-						tool_response: (.toolOutput // .tool_response // null)
-					}
-				' 2>/dev/null | "$0" relay gemini
-			fi
-		fi
-		if [ "$event" = "Stop" ] && [ -n "$input" ]; then
-			printf '%s' "$input" | "$0" bits agy Stop
-		fi
-	) </dev/null >/dev/null 2>&1 &
-	if [ "$event" = "PreToolUse" ]; then
-		echo '{"decision":"allow"}'
-	else
-		echo '{}'
-	fi
-	exit 0
-fi
+# Flux recognizes its own inline Claude hook groups by these substrings.
+FLUX_INLINE_HOOK = "flux-hooks|hooks-cli/index|flux-bits-report"
+STATUS_LINE = {"type": "command", "command": "zsh -f ~/.claude/statusline-command.zsh"}
 
-# Flux re-adds its own inline Claude hooks at every launch. It recognizes its
-# groups by these substrings, and the "flux-hook relay|bits" wrappers above
-# contain none of them, so Flux thinks its hooks are missing. The inline copies
-# duplicate the wrappers, and most of them block. An async SessionStart hook
-# runs this to remove them whenever they come back. (Turning Flux's Claude
-# toggle off would also stop the rewrites, but then Flux drops every Claude
-# event, wrappers included.)
-if [ "${1:-}" = dedupe ]; then
-	settings="$HOME/.claude/settings.json"
-	markers='flux-hooks|hooks-cli/index|flux-bits-report'
-	# Flux also points statusLine at its own wrapper, an absolute macOS path
-	# that breaks the other machines sharing this file. The wrapper only writes
-	# /tmp/flux-rl.json, which statusline-command.sh already does, so put our
-	# portable command back.
-	grep -Eq "$markers|flux-statusline" "$settings" 2>/dev/null || exit 0
-	command -v jq >/dev/null 2>&1 || exit 0
-	cleaned=$(jq --arg m "$markers" '
-		if (.statusLine.command // "") | test("flux-statusline")
-		then .statusLine = {type: "command", command: "bash ~/.claude/statusline-command.sh"}
-		else . end
-		| .hooks |= (
-			with_entries(.value |= map(select(
-				any(.hooks[]?; (.command // "") | test($m)) | not
-			)))
-			| with_entries(select(.value | length > 0))
-		)' "$settings") || exit 0
-	# Write through the symlink, so settings.json stays a link into dotfiles.
-	printf '%s\n' "$cleaned" >"$settings"
-	exit 0
-fi
+type Command = tuple[list[str], dict[str, str]]  # argv and environment
 
-# Skip reporting when Flux already owns the agent environment.
-if [ "${1}" = bits ] && [ -n "${FLUX_AGENT_ENV:-}" ]; then
-	exit 0
-fi
 
-# The relay is a native binary since Flux 0.1.45 (it used to be a Node script,
-# which now dies with a SyntaxError). Also since 0.1.45, Claude, Codex, and
-# Gemini are Flux extensions, served by the extension host's own hook socket.
-# The relay's default bridge.sock (and the dev box's remote_run/bridge.sock)
-# is the legacy bridge, which drops their events as adapter_not_found. The
-# hook socket exists only after an agent registers; no socket means no Flux.
-# The relay exits 0 quietly when the socket is missing or hangs up.
-case "${1}:$(uname -s)" in
-relay:Darwin)
-	relay="$mac_app/Contents/Resources/bin/flux-hooks-relay"
-	sock="$HOME/.flux/run/bridge.sock.extensions"
-	[ -x "$relay" ] && [ -S "$sock" ] || exit 0
-	FLUX_SOCKET_PATH="$sock" exec "$relay" --source "$2"
-	;;
-relay:Linux)
-	# Flux's per-agent flux-hooks-<agent> wrappers from older installs still
-	# run the relay through node, and upgrades don't rewrite them, so call the
-	# relay directly. Flux's Remote SSH installs it here.
-	relay="$linux_bin/flux-hooks-relay"
-	sock="$HOME/.flux/extensions/hooks.sock"
-	[ -x "$relay" ] && [ -S "$sock" ] || exit 0
-	FLUX_SOCKET_PATH="$sock" exec "$relay" --source "$2"
-	;;
-bits:Darwin)
-	[ -e "$mac_bin" ] || exit 0
-	bits_agent="$2"
-	[ "$bits_agent" = gemini ] && bits_agent=agy
-	exec env "${tea_env[@]}" ELECTRON_RUN_AS_NODE=1 "$mac_bin" \
-		"$mac_app/Contents/Resources/bin/flux-bits-report" "$bits_agent" "$3"
-	;;
-bits:Linux)
-	[ -x "$linux_bin/flux-bits-report-wrapper" ] || exit 0
-	bits_agent="$2"
-	[ "$bits_agent" = gemini ] && bits_agent=agy
-	exec env "${tea_env[@]}" "$linux_bin/flux-bits-report-wrapper" "$bits_agent" "$3"
-	;;
-esac
-exit 0
+def is_socket(path: str) -> bool:
+    import stat
+
+    return os.path.exists(path) and stat.S_ISSOCK(os.stat(path).st_mode)
+
+
+def relay_command(agent: str) -> Command | None:
+    """The Flux relay command, or None when Flux is absent.
+
+    The relay is a native binary since Flux 0.1.45 (it used to be a Node script,
+    which now dies with a SyntaxError). Also since 0.1.45, Claude, Codex, and
+    Gemini are Flux extensions, served by the extension host's own hook socket.
+    The relay's default bridge.sock (and the dev box's remote_run/bridge.sock)
+    is the legacy bridge, which drops their events as adapter_not_found. The
+    hook socket exists only after an agent registers; no socket means no Flux.
+    The relay exits 0 quietly when the socket is missing or hangs up.
+    """
+    match sys.platform:
+        case "darwin":
+            relay = f"{MAC_APP}/Contents/Resources/bin/flux-hooks-relay"
+            sock = f"{HOME}/.flux/run/bridge.sock.extensions"
+        case "linux":
+            # Flux's per-agent flux-hooks-<agent> wrappers from older installs
+            # still run the relay through node, and upgrades don't rewrite
+            # them, so call the relay directly. Flux's Remote SSH installs it here.
+            relay = f"{LINUX_BIN}/flux-hooks-relay"
+            sock = f"{HOME}/.flux/extensions/hooks.sock"
+        case _:
+            return None
+    if not (os.access(relay, os.X_OK) and is_socket(sock)):
+        return None
+    return [relay, "--source", agent], os.environ | {"FLUX_SOCKET_PATH": sock}
+
+
+def bits_command(agent: str, event: str) -> Command | None:
+    """The Flux usage-report command, or None to skip it."""
+    # Skip reporting when Flux already owns the agent environment.
+    if os.environ.get("FLUX_AGENT_ENV"):
+        return None
+    if agent == "gemini":
+        agent = "agy"
+    wrapper = f"{LINUX_BIN}/flux-bits-report-wrapper"
+    if sys.platform == "darwin" and os.path.exists(MAC_BIN):
+        # The report script runs inside Flux's own Electron binary, as Node.
+        argv = [MAC_BIN, f"{MAC_APP}/Contents/Resources/bin/flux-bits-report", agent, event]
+        return argv, os.environ | TEA_ENV | {"ELECTRON_RUN_AS_NODE": "1"}
+    if sys.platform == "linux" and os.access(wrapper, os.X_OK):
+        return [wrapper, agent, event], os.environ | TEA_ENV
+    return None
+
+
+def exec_or_exit(command: Command | None) -> None:
+    """Replace this process with the Flux command, so stdin, stdout, and the
+    exit code pass straight through (PermissionRequest reads the relay's stdout)."""
+    if command is None:
+        sys.exit(0)
+    argv, env = command
+    os.execve(argv[0], argv, env)
+
+
+def first(*values):
+    """jq's `a // b`: the first value that is neither null nor false."""
+    return next((value for value in values if value is not None and value is not False), None)
+
+
+def agy(event: str) -> None:
+    """Antigravity (agy CLI, Desktop, IDE, and Zed antigravity-acp) hook wrapper.
+
+    antigravity-acp executes hook commands via shlex.split + execve (no shell),
+    so hooks.json must invoke this script directly without shell syntax.
+    """
+    import json
+    import subprocess
+
+    raw = sys.stdin.read()
+    # Answer at once; a forked child reports to Flux in the background.
+    print('{"decision":"allow"}' if event == "PreToolUse" else "{}", flush=True)
+    if not raw or os.fork() != 0:
+        return
+    devnull = os.open(os.devnull, os.O_RDWR)
+    for fd in (0, 1, 2):
+        os.dup2(devnull, fd)
+
+    # Antigravity events become the Gemini-style events Flux understands.
+    hook: dict = json.loads(raw)
+    flux_event = {"PreToolUse": "BeforeTool", "PostToolUse": "AfterTool", "Stop": "AfterAgent"}.get(event)
+    if event == "PreInvocation" and first(hook.get("invocationNum"), 1) == 1:
+        flux_event = "BeforeAgent"
+    tool_call = hook.get("toolCall") or {}
+    workspace = (hook.get("workspacePaths") or [None])[0]
+    commands: list[tuple[Command | None, str]] = []
+    if flux_event:
+        normalized = hook | {
+            "hook_event_name": flux_event,
+            "session_id": first(hook.get("conversationId"), hook.get("session_id"), "agy"),
+            "cwd": first(workspace, hook.get("cwd"), "").removeprefix("file://"),
+            "tool_name": first(tool_call.get("name"), hook.get("tool_name")),
+            "tool_input": first(tool_call.get("args"), hook.get("tool_input")),
+            "tool_response": first(hook.get("toolOutput"), hook.get("tool_response")),
+        }
+        commands.append((relay_command("gemini"), json.dumps(normalized, ensure_ascii=False)))
+    if event == "Stop":
+        commands.append((bits_command("agy", "Stop"), raw))
+    for command, stdin in commands:
+        if command:
+            argv, env = command
+            subprocess.run(argv, env=env, input=stdin, text=True)
+    os._exit(0)
+
+
+def dedupe() -> None:
+    """Remove Flux's inline hooks from ~/.claude/settings.json.
+
+    Flux re-adds its own inline Claude hooks at every launch. It recognizes its
+    groups by the FLUX_INLINE_HOOK substrings, and the "flux-hook relay|bits"
+    wrappers contain none of them, so Flux thinks its hooks are missing. The
+    inline copies duplicate the wrappers, and most of them block. An async
+    SessionStart hook runs this to remove them whenever they come back.
+    (Turning Flux's Claude toggle off would also stop the rewrites, but then
+    Flux drops every Claude event, wrappers included.)
+    """
+    import json
+    import re
+
+    path = f"{HOME}/.claude/settings.json"
+    with open(path, encoding="utf-8") as file:
+        text = file.read()
+    if not re.search(f"{FLUX_INLINE_HOOK}|flux-statusline", text):
+        return
+    settings = json.loads(text)
+    # Flux also points statusLine at its own wrapper, an absolute macOS path
+    # that breaks the other machines sharing this file. The wrapper only writes
+    # /tmp/flux-rl.json, which statusline-command.zsh already does, so put our
+    # portable command back.
+    if "flux-statusline" in settings.get("statusLine", {}).get("command", ""):
+        settings["statusLine"] = STATUS_LINE
+
+    def is_flux_inline(group: dict) -> bool:
+        return any(re.search(FLUX_INLINE_HOOK, hook.get("command", "")) for hook in group.get("hooks", []))
+
+    ours = {event: [group for group in groups if not is_flux_inline(group)] for event, groups in settings["hooks"].items()}
+    settings["hooks"] = {event: groups for event, groups in ours.items() if groups}
+    # open() writes through the symlink, so settings.json stays a link into dotfiles.
+    with open(path, "w", encoding="utf-8") as file:
+        file.write(json.dumps(settings, indent=2, ensure_ascii=False) + "\n")
+
+
+match sys.argv[1:]:
+    case ["relay", agent]:
+        exec_or_exit(relay_command(agent))
+    case ["bits", agent, event]:
+        exec_or_exit(bits_command(agent, event))
+    case ["agy", event]:
+        agy(event)
+    case ["dedupe"]:
+        dedupe()

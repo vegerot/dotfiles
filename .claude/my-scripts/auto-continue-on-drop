@@ -1,0 +1,49 @@
+#!/usr/bin/env bun
+// StopFailure hook: when a turn dies with "Connection lost mid-response", post "continue"
+// into this session's own inbox socket so the turn resumes without a keypress.
+//
+// Verified on 2.1.260 (stream-reset-after-first-block.md): a message posted from a hook
+// with the session's own env vars is accepted as self-sent, wakes the idle session, and
+// runs as a user turn. No hook can *reply* to the error, but a hook can *send*.
+//
+// Install (settings.json):
+//   "StopFailure": [{"hooks": [{"type": "command", "command": "~/.claude/my-scripts/auto-continue-on-drop"}]}]
+// Keep it synchronous: the post must come from a live child of the session.
+//
+// Matching: by 2.1.316 a mid-response drop arrives with error "server_error" and
+// error_details null. "Connection lost mid-response" is only the text Claude Code shows,
+// so matching that alone stopped firing. Keep the old phrases for builds that fill
+// error_details. A real 5xx also arrives as "server_error"; continuing is fine there too,
+// and the rate cap below stops a storm.
+import { readFile, writeFile } from "node:fs/promises"
+import { createConnection } from "node:net"
+import { tmpdir } from "node:os"
+import { join } from "node:path"
+
+type StopFailureInput = {
+  error?: string
+  error_details?: string | null
+  last_assistant_message?: string | null
+}
+
+const input: StopFailureInput = await Bun.stdin.json()
+// Only network and server errors. Auth, billing, and prompt-too-long errors do not get better by continuing.
+const text = `${input.error_details ?? ""} ${input.last_assistant_message ?? ""}`
+const dropped = ["Connection lost mid-response", "Connection dropped", "stopped arriving"].some((phrase) => text.includes(phrase))
+if (!dropped && input.error !== "server_error") process.exit(0)
+
+// Rate cap: at most 5 continues per 10 minutes, so a storm cannot loop forever.
+const stamp = join(tmpdir(), `auto-continue.${process.env.CLAUDE_CODE_SESSION_ID ?? "unknown"}`)
+const now = Math.floor(Date.now() / 1000)
+const earlier = (await readFile(stamp, "utf8").catch(() => "")).split("\n").filter((line) => Number(line) > now - 600)
+const recent = [...earlier, String(now)]
+await writeFile(stamp, recent.join("\n") + "\n")
+if (recent.length > 5) process.exit(0)
+
+const socket = createConnection(process.env.CLAUDE_CODE_MESSAGING_SOCKET!)
+socket.write(JSON.stringify({ type: "auth", token: process.env.CLAUDE_CODE_MESSAGING_TOKEN }) + "\n")
+socket.end(JSON.stringify({
+  type: "user",
+  message: { role: "user", content: "continue (auto-sent by the StopFailure hook after a dropped connection)" },
+}) + "\n")
+// Bun keeps the process alive until the socket has flushed and closed.

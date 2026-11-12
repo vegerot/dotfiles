@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Grok Build status line. Same shape as ~/.claude/statusline-command.sh,
+# Grok Build status line. Same shape as ~/.claude/statusline-command.zsh,
 # plus the effort level Codex shows and the dirty mark Antigravity shows.
 # Grok does not send rate limits, a pull-request number, or a sandbox flag.
 
@@ -46,7 +46,7 @@ fi
 
 cost_part=""
 if [ -n "$cost" ]; then
-  # Same tiers as ~/.claude/statusline-command.sh: <$1 🪙, <$5 💵, <$20 💸, else 🔥.
+  # Same tiers as ~/.claude/statusline-command.zsh: <$1 🪙, <$5 💵, <$20 💸, else 🔥.
   cost_emoji=$(awk -v c="$cost" 'BEGIN {
     if (c < 1) print "🪙";
     else if (c < 5) print "💵";

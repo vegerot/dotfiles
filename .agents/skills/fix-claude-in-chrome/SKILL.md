@@ -14,7 +14,7 @@ people try (reinstalling the extension, clicking *Reconnect*) cannot possibly wo
 Run the diagnostic from this skill's base directory (the path given when the skill loads):
 
 ```bash
-bash <skill-base-dir>/scripts/diagnose.sh
+bun <skill-base-dir>/scripts/diagnose.ts
 ```
 
 Read-only. It prints every link in the chain, then a verdict naming the fault and the
@@ -120,7 +120,7 @@ Chrome channels are entirely separate applications with separate profile trees.
 
 ### Headless Chrome (devbox): signed out after every restart
 
-`diagnose.sh` does not detect this. Symptoms: after Chrome restarts, the browser drops out
+`diagnose.ts` does not detect this. Symptoms: after Chrome restarts, the browser drops out
 of `list_connected_browsers`, and the extension's `options.html` shows "Log in".
 
 Why: the extension keeps its tokens in `chrome.storage.session`, which every browser
