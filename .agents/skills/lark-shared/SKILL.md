@@ -11,7 +11,7 @@ metadata:
 
 所有 `lark-*` skill 共享的底座：身份、认证、输出契约与高风险操作。
 
-Note: For meta-questions about lark-cli itself, or for tasks which you're struggling with, refer to ~/code/github.com/larksuite/cli/
+Note: For meta-questions about lark-cli itself, or for tasks which you're struggling with, refer to ~/code/github.com/larksuite/ and ~/code/code.byted.org/lark/.
 
 ## 通用准则
 
