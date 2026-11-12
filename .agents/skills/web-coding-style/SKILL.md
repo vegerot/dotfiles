@@ -24,11 +24,11 @@ Other skills and guides decide *which* platform feature to use; this skill decid
 ## 🎨 CSS
 
 - 📱 **Every feature must be responsive on both desktop and mobile.**
-- Follow the project's existing styling approach. When you write CSS by hand, use the rules below, and don't invent a utility-class mini-framework.
-- Units: prefer `rem` by default. Use `%`, `vw`, `dvh`, `ch`, or `rlh` where they express the intent better (e.g. `rlh` for sizes tied to the line height). Avoid `px` unless it's the most idiomatic unit: sizes that shouldn't grow with the user's font size (e.g. `1px` hairline borders).
-- Colors: write `oklch()` or CSS named colors (`black`, `white`, `transparent`, `currentColor`). Never hex, `rgb()`, or `hsl()`.
+- Follow the project's existing styling approach. When you write CSS by hand, use the rules below.
+- Units: prefer `rem` by default. Use `%`, `vw`, `dvh`, `ch`, `rlh`, etc. where they express the intent better (e.g. `rlh` for sizes tied to the line height). Avoid `px` unless it's the most idiomatic unit: sizes that shouldn't grow with the user's font size (e.g. `1px` hairline borders).
+- Colors: write `oklch()` or CSS named colors (`black`, `white`, `transparent`, `currentColor`). Never hex or `rgb()`.
 - Prefer native CSS nesting.
-- Put repeated values in custom properties: z-index layers (always), gutters, brand colors. `var()` does not work in `@media` conditions, so don't use it for breakpoints.
+- Put repeated values in custom properties: z-index layers (always), gutters, brand colors.
 - Prefer modern native CSS over JS: `:has()`, `:is()`, `:where()`, container queries, `min()` / `max()` / `clamp()`, `aspect-ratio`.
 - Prefer `gap` over margins in Flex and Grid layouts.
 - Use `transition` for simple state changes; save `@keyframes` for complex motion.
@@ -85,9 +85,10 @@ Other skills and guides decide *which* platform feature to use; this skill decid
 - Prefer native web APIs (`Intl`, `URL`, `FormData`, built-in array methods) first, then packages the project already depends on, then new dependencies.
 - Start with local component state; use shared global state only when state truly travels across distant parts of the app.
 
-## ⚙️ TypeScript
+## ⚙️ TypeScript/JavaScript
 
 - Don't create reusable utilities, hooks, or abstractions for logic used only once.
+	- After a third use, consider extracting a reusable function or component.
 - Prefer flat logic: early returns, no deeply nested ternaries, complex conditions stored in named variables.
 - No `any`. Use `unknown` only for truly unknown input (e.g. parsed JSON) and narrow it right away. Prefer to avoid `as` unless the type system can't express the fact.
 - Before adding a dependency, ask "can simple native code do this?" (lodash almost never passes).
