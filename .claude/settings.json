@@ -328,7 +328,8 @@
     "cc-plugin-you-should-know@builtin": true,
     "plugin-dev@anthropic-plugin-directory": true,
     "agent-sdk-dev@anthropic-plugin-directory": true,
-    "explanatory-output-style@anthropic-plugin-directory": true
+    "explanatory-output-style@anthropic-plugin-directory": true,
+    "frontend-design@anthropic-plugin-directory": true
   },
   "askUserQuestionTimeout": "10m",
   "tui": "fullscreen",
