@@ -1413,16 +1413,13 @@ AfterScreen(function()
 	if vim.o.loadplugins then
 		vim.cmd.packadd("fff.nvim")
 		if vim.fn.exists(":FFFFind") == 2 then
-			vim.g.fff = { debug = { show_scores = true } }
-			vim.api.nvim_create_autocmd("User", {
-				pattern = "FFFOpen",
-				callback = function()
-					vim.defer_fn(function() require("fff.picker_ui.picker_ui").monitor_scan_progress(0) end, 50)
-				end,
-			})
+			vim.g.fff = {
+				debug = { show_scores = true },
+				layout = { width = 0.95, preview_size = 0.4 },
+			}
 			vim.keymap.set("n", "<C-p>", function() require("fff").find_files({ cwd = vim.fn.getcwd() }) end)
 			vim.keymap.set("n", "<C-f>", function()
-				require("fff").live_grep({ cwd = vim.fn.getcwd(), grep = { modes = { "fuzzy", "plain", "regex" } } })
+				require("fff").live_grep({ cwd = vim.fn.getcwd(), grep = { modes = { "fuzzy", "plain", "definition_only", "regex" } } })
 			end)
 			vim.keymap.set("n", "<C-S-F>", function() require("fff").live_grep_under_cursor({ cwd = vim.fn.getcwd() }) end)
 		else
