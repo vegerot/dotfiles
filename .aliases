@@ -129,6 +129,13 @@ if is_agent_harness && [ -z "${AGENT_SILENCE_HINTS:-}" ]; then
     fi
     agent_run tailscale 'user note: the tailscale source code is available at `findrepo tailscale/tailscale`.' tailscale "$@"
   }
+
+  imsg() {
+    if ! type imsg >/dev/null 2>&1; then
+      return 127
+    fi
+    agent_run imsg 'user note: the imsg source code is available at `findrepo imsg`.' imsg "$@"
+  }
 fi
 
 # Grok sets GROK_AGENT=1 before zsh reads startup files, then parses
