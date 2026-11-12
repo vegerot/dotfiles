@@ -13,3 +13,7 @@ Introduce a durable plan and an append-only progress handoff. Inspect the projec
 Put the resume convention in the plan or existing agent instructions: read the plan, then the newest progress entries; check the working copy and relevant live state against the handoff. Link the documents from the project's usual entry point. Write the initial plan from what the project actually knows and an initial progress entry for the setup and current state. Do not invent decisions, completed work, or authorization for a next phase.
 
 Add structure only when the project needs it: layers, phases, or tracks for meaningful work stages; explicit completion or stop gates when the user has set them; assumptions and deferred work when they affect decisions; separate experiment or review records when evidence is too detailed for the plan or log. Make these project-specific rather than default rules.
+
+## With Matt Pocock's engineering skills
+
+Those skills read `docs/agents/issue-tracker.md` to learn where specs and tickets live. To keep them in the plan and `progress.md`, pick **Other** when `/setup-matt-pocock-skills` asks for the issue tracker, and write that file from [issue-tracker.md](issue-tracker.md). Replace `plan.md` with the project's real plan document if it uses another one.
