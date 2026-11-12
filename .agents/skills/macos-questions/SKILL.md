@@ -16,14 +16,13 @@ scripts/appledocs --framework FileProvider --k 5 "free up disk space by removing
 
 - Output: one JSON line per hit with `score`, `title`, `uri`, `framework`, `kind` and the first 600 characters of `content`. Prepend `https://developer.apple.com` to `uri` to cite the page. `--framework` takes the exact name stored in the index (`FileProvider`, `Foundation`, `AVFoundation`, …).
 - Use it for intended behavior, guarantees, tech notes (`TN…`) and API contracts. Ask in natural language. Run 2–3 phrasings when the first misses. Semantic search can miss an exact symbol (for example "evict a downloaded item" does not rank `evictItem`), so check symbol names with the keyword search below.
-- Scores: useful hits score about 0.55–0.7. If every result is around 0.15 or lower and off topic, the embedding model no longer matches the index. Try `--version 11`, then fall back to keyword search.
+- Scores: useful hits score about 0.55–0.7. When the best score is below 0.3, `appledocs` exits with "this index does not match the embedding model". Cause seen on 2026-11-10: with the disk nearly full, macOS purged the current index and left an old one that no embedding model matches. Fix: open Xcode ▸ Settings ▸ Components; Xcode downloads Developer Documentation again by itself.
 - Keyword search (exact strings, symbol names):
   ```sh
-  DB=$(ls -t /System/Library/AssetsV2/com_apple_MobileAsset_AppleDeveloperDocumentation/*.asset/AssetData/documentation-db/index.sql | head -1)
+  DB=$(/bin/ls -t /System/Library/AssetsV2/com_apple_MobileAsset_AppleDeveloperDocumentation/*.asset/AssetData/documentation-db/index.sql | head -1)
   sqlite3 -readonly "file:$DB?immutable=1" \
     "select json_extract(document,'$.uri') from documents where document like '%evictItem%' limit 10"
   ```
-- No index on disk? Ask the user to install it from Xcode ▸ Settings ▸ Components ▸ Developer Documentation.
 
 How it works: the query is embedded by the macOS media-analysis daemon (private `MADTextEmbeddingRequest`, version 10 = the config's `md8`), then compared by cosine with every vector in the newest asset's `index.sql`. Details, measurements and diagrams: `~/ai-conversations/macos/README.md` and the "Xcode Doc Index Anatomy" artifact (https://claude.ai/artifact/LWCtC2uV1DkG435gG7Cpqa). It relies on private APIs, so a macOS update can break it. If it breaks, record the fix there.
 

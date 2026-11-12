@@ -30,6 +30,14 @@ while let flag = args.first, flag.hasPrefix("--") {
 let query = args.joined(separator: " ")
 precondition(!query.isEmpty, "usage: appledocs [--k N] [--version V] [--framework NAME] QUERY")
 
+func die(_ message: String) -> Never {
+    FileHandle.standardError.write("appledocs: \(message)\n".data(using: .utf8)!)
+    exit(1)
+}
+
+// A normal query takes 1–4 s. One run produced no output for minutes (cause not found), so never wait longer than this.
+DispatchQueue.global().asyncAfter(deadline: .now() + 30) { die("no result after 30 s; mediaanalysisd may be wedged (try `killall mediaanalysisd`)") }
+
 // ---- newest documentation asset
 let assetRoot = "/System/Library/AssetsV2/com_apple_MobileAsset_AppleDeveloperDocumentation"
 let fm = FileManager.default
@@ -88,6 +96,11 @@ while sqlite3_step(stmt) == SQLITE_ROW {
 }
 sqlite3_finalize(stmt)
 scored.sort { $0.score > $1.score }
+// Real matches score 0.55–0.7. A best score near 0.15 means the index was built with a different embedding model.
+// That happens when macOS purges the current asset on a nearly full disk (it did on 2026-11-10) and only an old one is left.
+if scored[0].score < 0.3 {
+    die("best score is \(scored[0].score), so this index does not match the embedding model: \(dbPath)\nmacOS probably purged the current index. Open Xcode ▸ Settings ▸ Components to download it again.")
+}
 
 // ---- print top-k (optionally filtered by framework)
 sqlite3_prepare_v2(db, "select d.document from observations o join documents d on d.asset_id = o.observationid where o.id = ?", -1, &stmt, nil)
