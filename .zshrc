@@ -368,13 +368,25 @@ fi
 chpwd_functions+=(source_max_scripts)
 source_max_scripts
 
-# Print time taken since zsh startup
-startuptime=$(typeset -F SECONDS && printf '%.2f seconds\n' $SECONDS)
-if type rainbow > /dev/null; then
-	printf "$startuptime\n" | rainbow
-else
-	printf "$startuptime\n"
-fi
+# Print time taken since zsh startup.
+# zsh keeps working after this file ends: it reads the history file and runs
+# the first precmd hooks (powerlevel10k starts gitstatusd there).
+# powerlevel10k's instant prompt also hides all output until those hooks are
+# done. A `sched +0` item runs after every precmd hook, right before the first
+# real prompt, so the time printed is the time waited.
+_print_startuptime() {
+	# -g: a plain `typeset` in a function makes a new local SECONDS that reads 0.
+	# The subshell keeps SECONDS an integer in the interactive shell.
+	local startuptime=$(typeset -gF SECONDS && printf '%.2f seconds' $SECONDS)
+	if type rainbow > /dev/null; then
+		print -r -- $startuptime | rainbow
+	else
+		print -r -- $startuptime
+	fi
+	unfunction _print_startuptime
+}
+zmodload zsh/sched
+sched +0 _print_startuptime
 
 set +o nounset
 set +o pipefail
