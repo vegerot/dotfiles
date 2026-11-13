@@ -39,16 +39,18 @@ is_agent_harness() {
 agent_hint() {
   is_agent_harness || return 0
   [[ -n "${AGENT_SILENCE_HINTS:-}" ]] && return 0
-  local exit_code=${3:-0}
+  local exit_code=${3:-0} again=""
   if [[ -n "${CLAUDE_CODE_SESSION_ID:-}" ]]; then
     local marker="${TMPDIR:-/tmp}/agent-hints/$CLAUDE_CODE_SESSION_ID/$1"
-    if [[ -e "$marker" ]] && (( exit_code == 0 || exit_code == 141 )); then
-      return 0
+    if [[ -e "$marker" ]]; then
+      (( exit_code == 0 || exit_code == 141 )) && return 0
+      # Say why it is back, so a repeat reads as "your command failed", not as spam.
+      again=" (shown again: exit $exit_code)"
     fi
     # `command` skips the verbose mkdir alias; a sandbox that blocks TMPDIR just falls back to printing every time.
     command mkdir -p "${marker%/*}" 2>/dev/null && : > "$marker"
   fi
-  printf '%s Silence this message (and the other user notes, but not command output) by setting `AGENT_SILENCE_HINTS=1`.\n' "$2" 1>&2
+  printf '%s%s Silence this message (and the other user notes, but not command output) by setting `AGENT_SILENCE_HINTS=1`.\n' "$2" "$again" 1>&2
 }
 
 # Run COMMAND, then pass its exit code to agent_hint, and return that code.
