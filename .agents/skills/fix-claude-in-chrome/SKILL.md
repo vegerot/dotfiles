@@ -1,13 +1,13 @@
 ---
 name: fix-claude-in-chrome
-description: 'Diagnose and repair the Claude in Chrome / browser-control integration when `/chrome` cannot see the browser. Use this whenever the user says /chrome is broken, browser tools vanished, "Extension: Not detected", the claude-in-chrome MCP is missing or has 0 tools, browser automation stopped after a Claude Code update, or Claude cannot drive Chrome even though the extension is clearly installed. Also use it proactively before attempting any browser-automation task that fails to find a browser, and whenever the user runs a non-stable Chrome channel (Dev/Beta/Canary) or a non-Chrome Chromium browser.'
+description: 'Diagnose and repair the Claude in Chrome / browser-control integration when `/chrome` cannot see the browser. Max uses Chrome Dev on every machine (Mac, devbox, Windows), never stable. Use this whenever the user says /chrome is broken, browser tools vanished, "Extension: Not detected", the claude-in-chrome MCP is missing or has 0 tools, browser automation stopped after a Claude Code update, or Claude cannot drive Chrome even though the extension is clearly installed. Also use it proactively before a browser-automation task that fails to find a browser, and when setting up Chrome Dev on a new machine.'
 ---
 
-# Repairing Claude in Chrome
+# Repairing Claude in Chrome (Chrome Dev)
 
-The browser integration fails in a handful of specific ways, and the UI is actively
-misleading about which one you have. Diagnose before touching anything — most "fixes"
-people try (reinstalling the extension, clicking *Reconnect*) cannot possibly work.
+Max runs **Chrome Dev** everywhere and never Chrome stable. The integration fails in a
+handful of specific ways, and the UI misleads about which one you have. Diagnose before
+touching anything: reinstalling the extension or clicking *Reconnect* cannot fix any of them.
 
 ## Start here
 
@@ -17,108 +17,108 @@ Run the diagnostic from this skill's base directory (the path given when the ski
 bun <skill-base-dir>/scripts/diagnose.ts
 ```
 
-Read-only. It prints every link in the chain, then a verdict naming the fault and the
-exact repair. Exit 0 means healthy. Work from its verdict rather than guessing, and
-re-run it after each repair.
+Read-only, for Mac and Linux. It prints every link in the chain, then a verdict naming each
+fault and the exact repair commands. Exit 0 means healthy. Work from its verdict, and run it
+again after each repair.
 
-## How the pipe actually works
-
-Understanding the direction of travel saves you from a whole class of wrong theories:
+## How the pipe works
 
 ```
-extension → connectNative() → Chrome spawns ~/.claude/chrome/chrome-native-host
+extension → connectNative() → Chrome reads <user data dir>/NativeMessagingHosts/<manifest>
+          → spawns ~/.claude/chrome/chrome-native-host
           → that execs `claude --chrome-native-host`
           → which listens on /tmp/claude-mcp-browser-bridge-$USER/<pid>.sock
           → Claude Code connects to that socket
 ```
 
-**Chrome starts the chain.** Nothing on the Claude Code side can initiate it. That is why
-*Reconnect extension* can never bootstrap a missing manifest, and why no amount of
-restarting Claude Code helps.
-
-Two facts that mislead almost everyone:
+**Chrome starts the chain.** Nothing on the Claude Code side can start it. That is why
+*Reconnect extension* can never fix a missing manifest, and why restarting Claude Code
+does not help.
 
 - **The sidebar chat working proves nothing.** It talks to claude.ai over ordinary HTTPS
-  and never touches native messaging. Browser *control* is the opposite direction.
+  and never touches native messaging.
 - **There is a second transport.** Browsers also reach Claude Code through a cloud relay
-  (`wss://bridge.claudeusercontent.com`), which is how a browser on another machine can
-  appear in your list. So the browser list can look healthy while the local pipe is dead,
-  and a local socket can be absent even though tools work.
+  (`wss://bridge.claudeusercontent.com`), which is how a browser on another machine appears
+  in your list. So the list can look healthy while the local pipe is dead.
 
-## The faults, and what actually fixes them
+## Chrome Dev setup: link the stable folder (once per machine)
 
-The script names one of these. Fix only what it names.
+`claude --chrome` writes the manifest **only to Chrome stable's folder**. Its browser table
+lists vendors (Chrome, Brave, Arc, Edge, Chromium, Vivaldi, Opera), not Chrome's release
+channels. Chrome reads per-user manifests from `<user data dir>/NativeMessagingHosts`
+(Chromium `chrome_paths.cc`, `DIR_USER_NATIVE_MESSAGING`). So make the stable folder a link
+to Chrome Dev's. Then everything Claude Code writes for "Chrome" lands in Chrome Dev.
 
-### `version-drift` — the common recurrence
+| Machine | Stable folder → Chrome Dev folder | State |
+|---|---|---|
+| Work Mac | `~/Library/Application Support/Google/Chrome` → `Chrome Dev` | done 2026-11-13; old data in `Google/Chrome.stable-backup` |
+| devbox | `~/.config/google-chrome` → `google-chrome-unstable` | done 2026-11-13; old data in `~/.config/google-chrome.stable-backup` |
+| Windows PC | nothing to link | `claude --chrome` writes `HKCU\Software\Google\Chrome\NativeMessagingHosts`, and Chromium reads that key for every channel (hardcoded in `launch_context_win.cc`). Checked 2026-11-13: Chrome Dev runs, the extension is in its `Default` profile, the manifest is registered there, and `HKCU\Software\Google\Chrome Dev` has no `NativeMessagingHosts`. |
 
-The generated wrapper pins an **absolute version path**, so every Claude Code update
-strands it:
+On Windows the wrapper is `~\.claude\chrome\chrome-native-host.bat`. On 2026-11-13 it pinned
+the Claude desktop app's bundled `claude-code\2.1.321\…\claude.exe`, not
+`~\.local\bin\claude.exe` (2.1.325). Whichever Claude Code last ran `--chrome` writes it.
+`diagnose.ts` does not cover Windows. Check over SSH with `pwsh -NoProfile -Command -` and
+a script on stdin; nested quoting through `ssh` breaks.
+
+The `stable-not-linked` verdict prints the commands. In order:
+
+1. Delete a manifest **link** in Chrome Dev's folder that points into the stable folder.
+   Once the folder is linked, it would point at itself.
+2. Move the stable folder aside (`<name>.stable-backup`) and link it to Chrome Dev's folder.
+3. `claude --chrome -p ok` writes the manifest through the link (tested on the Mac
+   2026-11-13: deleted, recreated in Chrome Dev's folder, link intact).
+4. Restart Chrome Dev: it reads manifests at startup.
+
+The link also holds up for other apps that write manifests for "Chrome". The Claude
+desktop app's `com.anthropic.claude_browser_extension.json` showed up in Chrome Dev's
+folder the same way.
+
+## The faults
+
+The script names them. Fix only what it names.
+
+### `version-drift`
+
+The wrapper `~/.claude/chrome/chrome-native-host` runs a different `claude` than the
+launcher, or one an update removed. Since 2.1.243, Claude Code writes the launcher path
+(`exec ~/.local/bin/claude --chrome-native-host`), which survives updates. That holds on
+the Mac. On the devbox it still pins a version, even when run as `~/.local/bin/claude --chrome`
+(seen 2026-11-13 with 2.1.325). A guess, not checked: there `$HOME` is `/home/max.coplan`, a
+link to `/data00/home/max.coplan`, and the launcher check compares the two. So on the devbox,
+after any `claude --chrome`, edit the last line by hand:
 
 ```sh
-# ~/.claude/chrome/chrome-native-host
-exec "/Users/bytedance/.local/share/claude/versions/2.1.228" --chrome-native-host
-#                                              ^^^^^^^ launcher has moved to 2.1.229
+exec "$HOME/.local/bin/claude" --chrome-native-host
 ```
+Never point it at a `claude` found on `PATH`: under cmux it is a shim in a temporary folder.
+Then retire hosts still running the old binary (below).
 
-Repair, then harden so it stops recurring:
+### `stable-not-linked`
 
-```bash
-claude --chrome            # regenerates the wrapper at the current version
-```
+See the setup section above.
 
-Then edit the last line to follow the launcher symlink instead of a version:
+### `no-manifest`
 
-```sh
-exec "/Users/bytedance/.local/bin/claude" --chrome-native-host
-```
+Run `claude --chrome -p ok`. The `/chrome` menu does not write it: **"Install Chrome
+extension" only opens the Web Store link.**
 
-The file says *do not edit manually*, and that is fair — `claude --chrome` overwrites it
-and re-pins a version, so re-apply this edit whenever you run that. The trade is worth it:
-the symlink tracks updates, so the integration survives them. Do **not** point it at a
-`claude` found on `PATH` — under cmux or similar wrappers that is a shim in a temp
-directory whose path changes per panel.
+### `stale-hosts` / `orphan-sockets`
 
-After repairing, retire hosts still running the old binary so Chrome respawns them:
+Hosts from an older version still hold the sockets:
 
 ```bash
 pkill -f 'chrome-native-host'
 rm -f /tmp/claude-mcp-browser-bridge-$(id -un)/*.sock
 ```
 
-### `manifest-wrong-browser` — non-stable channels
-
-`claude --chrome` writes the manifest to a hardcoded list of browser **vendors**
-(`chrome, brave, arc, edge, chromium, vivaldi, opera`) — but not to Chrome's release
-**channels**. If the extension lives in Chrome Dev, Beta or Canary, it never sees a
-manifest and can never connect.
-
-Link the real manifest into the browser that holds the extension:
-
-```bash
-ln -sf ~/Library/Application\ Support/Google/Chrome/NativeMessagingHosts/com.anthropic.claude_code_browser_extension.json \
-       ~/Library/Application\ Support/Google/Chrome\ Dev/NativeMessagingHosts/
-```
-
-A symlink rather than a copy, so it keeps tracking whatever `claude --chrome` regenerates.
-Then quit and reopen the browser — manifests are read at startup.
-
-### `no-manifest` — nothing written anywhere
-
-Run `claude --chrome`. The `/chrome` menu will not do this for you: **"Install Chrome
-extension" only opens the Web Store link.** If the extension is already installed, that
-menu item is a dead end, which is why repeated `/chrome` runs feel like no-ops.
-
-### `stale-hosts` / `orphan-sockets`
-
-Hosts from a previous version still hold the sockets. Kill them as shown above. Chrome
-respawns one on demand — usually not instantly, so do not wait in a polling loop.
+Chrome respawns a host on demand, usually not instantly, so don't wait in a polling loop.
 
 ### `no-extension`
 
-Install from <https://claude.ai/chrome> **in the browser you actually use**. On macOS,
-Chrome channels are entirely separate applications with separate profile trees.
+Install from <https://claude.ai/chrome> in Chrome Dev.
 
-### Headless Chrome (devbox): signed out after every restart
+### Headless Chrome Dev (devbox): signed out after every restart
 
 `diagnose.ts` does not detect this. Symptoms: after Chrome restarts, the browser drops out
 of `list_connected_browsers`, and the extension's `options.html` shows "Log in".
@@ -143,7 +143,6 @@ already signed in. Chrome must have `--remote-debugging-port`. Max's devbox setu
   Headless ignores the default profile unless `--user-data-dir` is passed. The profile's
   cookies need `--password-store=basic`. `--disable-gpu` because earlyoom kills the GPU
   process under memory pressure and Chrome then exits.
-- The native host manifest must be in `<user-data-dir>/NativeMessagingHosts/` (symlink it).
 - Installing the extension without a UI: put `{"external_update_url": "https://clients2.google.com/service/update2/crx"}`
   in `/opt/google/chrome-unstable/extensions/fcoeoabgfenejglbffodgkkbkcdhcgfn.json`, start
   Chrome once without Puppeteer (its `--disable-background-networking` blocks the
@@ -177,8 +176,7 @@ browser later moves the default again.
 
 ## Verify functionally, never by reading the panel
 
-The `/chrome` panel is not trustworthy (see below). Confirm with a real tool call in a
-throwaway headless session:
+Confirm with a real tool call in a throwaway headless session:
 
 ```bash
 cd ~ && claude --chrome -p \
@@ -186,54 +184,42 @@ cd ~ && claude --chrome -p \
   --allowedTools 'mcp__claude-in-chrome__list_connected_browsers'
 ```
 
-A JSON array of browsers means the integration works. `isLocal: true` marks a browser on
-this machine. `--allowedTools` matters: without it the headless run stalls on a permission
-prompt that has no one to answer it.
-
-Going further than that — creating or navigating tabs — hits a per-session permission
-grant that the user must click inside the extension. That gate is normal behaviour, not a
-fault, so do not treat it as evidence the repair failed.
+A JSON array of browsers means the integration works. `--allowedTools` matters: without it
+the headless run stalls on a permission prompt that has no one to answer it. Creating or
+navigating tabs hits a per-session permission grant the user clicks inside the extension.
+That gate is normal, not a fault.
 
 ## Signals that lie
 
 | Signal | Reality |
 |---|---|
-| `Extension: Not detected` | Detection scans the same 7 hardcoded vendors, so it is a **permanent false negative** on Chrome Dev/Beta/Canary. It never turns green there, even when everything works. |
-| `Browser: Browser 1` | This is the signal that matters. It appears, with a `Select browser…` item, only when a browser is genuinely connected. |
-| Greyed *Manage permissions* / *Reconnect extension* | Gated on that same false flag. Both stay unavailable and neither is needed — permissions live in the extension's own settings. |
-| The startup banner "Claude in Chrome extension detected" | A **different** code path from the `/chrome` panel. The two disagree; the banner is the more accurate of the two. |
-| `Status: Disabled` | Real, and worth fixing: run `claude --chrome`, or flip `Enabled by default` in `/chrome` so ordinary sessions get browser tools. |
+| `Extension: Not detected` | Detection scans the stable folder, so without the folder link it is a permanent false negative for Chrome Dev. With the link it says `Installed`, and *Manage permissions* / *Reconnect extension* stop being greyed out (seen on the Mac 2026-11-13). |
+| `Browser: <name>` | The signal that matters. It appears, with `Select browser…`, only when a browser is really connected. |
+| The startup banner "Claude in Chrome extension detected" | A different code path from the `/chrome` panel, and the more accurate of the two. |
+| `Status: Disabled` | Real: run `claude --chrome`, or flip `Enabled by default` in `/chrome`. |
 
-## Environment traps that cost real time
+## Environment traps
 
 - **BSD tools reject GNU long flags.** On macOS `pgrep --full` and `pkill --full` match
-  nothing while looking like they worked. Use `-f`, and put flags before the pattern:
-  `pgrep -fl 'pattern'`. A `pgrep --full` inside an `until` loop will spin forever.
-- **Do not `grep` for `chrome-native-host` alone** when hunting processes — it matches your
-  own shell command line and invents a stale-host fault. Require the executable itself to
-  be a claude binary.
-- **Driving a nested Claude Code in tmux**: piping its output through `tee` breaks the TTY
-  and kills the tmux server. Capture with `tmux capture-pane` instead. Blind
-  `tmux send-keys Enter` on a dialog may also be refused by the permission classifier —
-  prefer the headless `-p` check above, which has no dialogs.
+  nothing while looking like they worked. Use `-f`, flags before the pattern.
+- **Do not `grep` for `chrome-native-host` alone** when hunting processes: it matches your
+  own shell command and invents a stale host. Require the executable to be a claude binary.
+- **Driving a nested Claude Code in tmux**: piping its output through `tee` breaks the TTY.
+  Use `tmux capture-pane`, or better the headless `-p` check above.
 
 ## When none of the above fits
 
-The client is a single large bundled binary, and reading it is a legitimate last resort
-when the UI and the docs disagree:
+The client is one large bundled binary. Reading it is a legitimate last resort:
 
 ```bash
 BIN=$(readlink ~/.local/bin/claude)
-rg -a -o 'com\.anthropic\.[a-zA-Z0-9_.]*' "$BIN" | sort -u        # host names
-rg -a -o 'Chrome (Dev|Beta|Canary)' "$BIN" | sort -u              # channels it knows
-rg -a -o 'chrome-extension://[a-p]{32}' "$BIN" | sort -u          # expected extension id
+rg -a -o '.{0,80}NativeMessagingHosts.{0,80}' "$BIN" | sort -u   # where it writes manifests, per OS
+rg -a -o 'chrome-extension://[a-p]{32}' "$BIN" | sort -u         # expected extension id
 ```
 
-`rg -a` is required — the binary is ~290 MB and is otherwise skipped as binary.
+`rg -a` is required: the binary is ~290 MB and is otherwise skipped as binary.
 
-If you confirm a genuine upstream gap, file it with `/feedback`. Run it from a **non-git
-scratch directory**: `/feedback` attaches git metadata from the launch directory, there is
-no toggle for it, and that would send the repo URL, branch and dirty state to an external
-service for a bug that has nothing to do with the repo. Choose "this session only" for the
-transcript, and prefer a freshly spawned session so nothing from the real conversation
-travels with it.
+If you confirm a genuine upstream gap (for example, `claude --chrome` ignoring Chrome
+channels), file it with `/feedback` from a **non-git scratch directory**: `/feedback`
+attaches git metadata from the launch directory. Choose "this session only" for the
+transcript, and prefer a freshly spawned session.
